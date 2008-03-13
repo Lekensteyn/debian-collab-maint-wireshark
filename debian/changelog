@@ -1,4 +1,4 @@
-wireshark (0.99.8-1) UNRELEASED; urgency=low
+wireshark (0.99.8-1) UNRELEASED; urgency=medium
 
   * New upstream release.
     * release notes:
@@ -16,6 +16,11 @@ wireshark (0.99.8-1) UNRELEASED; urgency=low
   * use su-to-root isof gksu (closes: #454051)
   * make init.lua a conffile (closes: #458689)
   * use $(CURDIR) isof `pwd` in debian/rules
+  * lintian fixes:
+    * I: wireshark binary: desktop-entry-contains-encoding-key
+      /usr/share/applications/wireshark-root.desktop
+    * W: wireshark binary: su-wrapper-not-su-to-root
+      /usr/share/applications/wireshark-root.desktop gksu
 
  -- Joost Yervante Damad <andete@debian.org>  Wed, 12 Mar 2008 20:47:56 +0100
 
