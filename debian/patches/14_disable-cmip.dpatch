@@ -6,9 +6,9 @@
 ## DP: CMIP)
 
 @DPATCH@
-diff -urNad wireshark-0.99.7~/epan/dissectors/Makefile.common wireshark-0.99.7/epan/dissectors/Makefile.common
---- wireshark-0.99.7~/epan/dissectors/Makefile.common	2007-12-18 02:16:03.000000000 +0100
-+++ wireshark-0.99.7/epan/dissectors/Makefile.common	2007-12-21 13:48:38.847127194 +0100
+diff -urNad trunk~/epan/dissectors/Makefile.common trunk/epan/dissectors/Makefile.common
+--- trunk~/epan/dissectors/Makefile.common	2008-02-27 20:58:31.000000000 +0100
++++ trunk/epan/dissectors/Makefile.common	2008-03-12 21:23:36.000000000 +0100
 @@ -84,7 +84,6 @@
  	packet-ansi_tcap.c \
  	packet-camel.c \
@@ -25,7 +25,7 @@ diff -urNad wireshark-0.99.7~/epan/dissectors/Makefile.common wireshark-0.99.7/e
  	packet-gsm_map.c \
  	packet-h225.c \
  	packet-h235.c \
-@@ -813,7 +811,6 @@
+@@ -827,7 +825,6 @@
  	packet-cip.h	\
  	packet-clearcase.h	\
  	packet-clip.h	\
@@ -33,26 +33,26 @@ diff -urNad wireshark-0.99.7~/epan/dissectors/Makefile.common wireshark-0.99.7/e
  	packet-cmp.h	\
  	packet-cms.h	\
  	packet-crmf.h	\
-@@ -881,7 +878,6 @@
+@@ -896,7 +893,6 @@
  	packet-frame.h	\
  	packet-ftam.h	\
  	packet-giop.h	\
 -	packet-gnm.h	\
  	packet-gnutella.h	\
+ 	packet-gre.h	\
  	packet-gsm_a.h	\
- 	packet-gsm_map.h	\
-diff -urNad wireshark-0.99.7~/epan/dissectors/register.c wireshark-0.99.7/epan/dissectors/register.c
---- wireshark-0.99.7~/epan/dissectors/register.c	2007-12-18 02:18:15.000000000 +0100
-+++ wireshark-0.99.7/epan/dissectors/register.c	2007-12-21 13:49:50.567127540 +0100
-@@ -123,7 +123,6 @@
+diff -urNad trunk~/epan/dissectors/register.c trunk/epan/dissectors/register.c
+--- trunk~/epan/dissectors/register.c	2008-02-27 21:00:50.000000000 +0100
++++ trunk/epan/dissectors/register.c	2008-03-12 21:25:32.000000000 +0100
+@@ -124,7 +124,6 @@
    {extern void proto_register_clip (void); if(cb) (*cb)(RA_REGISTER, "proto_register_clip", client_data); proto_register_clip ();}
    {extern void proto_register_clnp (void); if(cb) (*cb)(RA_REGISTER, "proto_register_clnp", client_data); proto_register_clnp ();}
    {extern void proto_register_cltp (void); if(cb) (*cb)(RA_REGISTER, "proto_register_cltp", client_data); proto_register_cltp ();}
 -  {extern void proto_register_cmip (void); if(cb) (*cb)(RA_REGISTER, "proto_register_cmip", client_data); proto_register_cmip ();}
    {extern void proto_register_cmp (void); if(cb) (*cb)(RA_REGISTER, "proto_register_cmp", client_data); proto_register_cmp ();}
+   {extern void proto_register_cmpp (void); if(cb) (*cb)(RA_REGISTER, "proto_register_cmpp", client_data); proto_register_cmpp ();}
    {extern void proto_register_cms (void); if(cb) (*cb)(RA_REGISTER, "proto_register_cms", client_data); proto_register_cms ();}
-   {extern void proto_register_comp_data (void); if(cb) (*cb)(RA_REGISTER, "proto_register_comp_data", client_data); proto_register_comp_data ();}
-@@ -262,7 +261,6 @@
+@@ -268,7 +267,6 @@
    {extern void proto_register_gift (void); if(cb) (*cb)(RA_REGISTER, "proto_register_gift", client_data); proto_register_gift ();}
    {extern void proto_register_giop (void); if(cb) (*cb)(RA_REGISTER, "proto_register_giop", client_data); proto_register_giop ();}
    {extern void proto_register_gmrp (void); if(cb) (*cb)(RA_REGISTER, "proto_register_gmrp", client_data); proto_register_gmrp ();}
@@ -60,15 +60,15 @@ diff -urNad wireshark-0.99.7~/epan/dissectors/register.c wireshark-0.99.7/epan/d
    {extern void proto_register_gnutella (void); if(cb) (*cb)(RA_REGISTER, "proto_register_gnutella", client_data); proto_register_gnutella ();}
    {extern void proto_register_gprs_ns (void); if(cb) (*cb)(RA_REGISTER, "proto_register_gprs_ns", client_data); proto_register_gprs_ns ();}
    {extern void proto_register_gre (void); if(cb) (*cb)(RA_REGISTER, "proto_register_gre", client_data); proto_register_gre ();}
-@@ -861,7 +859,6 @@
+@@ -876,7 +874,6 @@
    {extern void proto_reg_handoff_clearcase (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_clearcase", client_data); proto_reg_handoff_clearcase ();}
    {extern void proto_reg_handoff_clip (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_clip", client_data); proto_reg_handoff_clip ();}
    {extern void proto_reg_handoff_clnp (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_clnp", client_data); proto_reg_handoff_clnp ();}
 -  {extern void proto_reg_handoff_cmip (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_cmip", client_data); proto_reg_handoff_cmip ();}
    {extern void proto_reg_handoff_cmp (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_cmp", client_data); proto_reg_handoff_cmp ();}
+   {extern void proto_reg_handoff_cmpp (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_cmpp", client_data); proto_reg_handoff_cmpp ();}
    {extern void proto_reg_handoff_cms (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_cms", client_data); proto_reg_handoff_cms ();}
-   {extern void proto_reg_handoff_comp_data (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_comp_data", client_data); proto_reg_handoff_comp_data ();}
-@@ -994,7 +991,6 @@
+@@ -1014,7 +1011,6 @@
    {extern void proto_reg_handoff_gift (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_gift", client_data); proto_reg_handoff_gift ();}
    {extern void proto_reg_handoff_giop (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_giop", client_data); proto_reg_handoff_giop ();}
    {extern void proto_reg_handoff_gmrp (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_gmrp", client_data); proto_reg_handoff_gmrp ();}
@@ -76,11 +76,11 @@ diff -urNad wireshark-0.99.7~/epan/dissectors/register.c wireshark-0.99.7/epan/d
    {extern void proto_reg_handoff_gnutella (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_gnutella", client_data); proto_reg_handoff_gnutella ();}
    {extern void proto_reg_handoff_gprs_ns (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_gprs_ns", client_data); proto_reg_handoff_gprs_ns ();}
    {extern void proto_reg_handoff_gre (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_gre", client_data); proto_reg_handoff_gre ();}
-@@ -1459,6 +1455,6 @@
+@@ -1484,6 +1480,6 @@
  
  gulong register_count(void)
  {
--  return 739 + 706;
-+  return 737 + 706;
+-  return 753 + 717;
++  return 751 + 717;
  
  }

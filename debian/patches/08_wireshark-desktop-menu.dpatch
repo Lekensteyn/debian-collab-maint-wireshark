@@ -5,10 +5,10 @@
 ## DP: No description.
 
 @DPATCH@
-diff -urNad wireshark-0.99.7~pre1~/wireshark.desktop wireshark-0.99.7~pre1/wireshark.desktop
---- wireshark-0.99.7~pre1~/wireshark.desktop	2007-11-22 17:57:26.000000000 +0100
-+++ wireshark-0.99.7~pre1/wireshark.desktop	2007-11-22 18:27:36.875226754 +0100
-@@ -68,9 +68,10 @@
+diff -urNad trunk~/wireshark.desktop trunk/wireshark.desktop
+--- trunk~/wireshark.desktop	2008-02-27 20:59:35.000000000 +0100
++++ trunk/wireshark.desktop	2008-03-12 21:21:00.000000000 +0100
+@@ -68,10 +68,11 @@
  Comment[fi]=Verkkoliikenne analysaattori
  Comment[fr]=Analyseur de trafic réseau
  Comment[sv]=Nätverkstrafikanalysator
@@ -17,7 +17,8 @@ diff -urNad wireshark-0.99.7~pre1~/wireshark.desktop wireshark-0.99.7~pre1/wires
  TryExec=wireshark
  Exec=wireshark
  Terminal=false
--Categories=GTK;Network;X-Red-Hat-Extra;
+ # Categorie entry according to version 1.0 of
+ # http://www.freedesktop.org/wiki/Specifications/menu-spec
+-Categories=System;Monitor;GTK;
 +Categories=GNOME;Network;
- X-KDE-SubstituteUID=true
 +Encoding=UTF-8
