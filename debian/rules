@@ -79,28 +79,33 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the files into debian/tmp
-	$(MAKE) install DESTDIR=`pwd`/debian/tmp
-	rm -rf `pwd`/debian/tmp/usr/share/wireshark/wireshark/COPYING
-	cp debian/license-text-about-dialog `pwd`/debian/tmp/usr/share/wireshark/wireshark/ABOUT.GPL
-	mkdir -p `pwd`/debian/tmp/usr/share/applications/
-	cp wireshark.desktop `pwd`/debian/tmp/usr/share/applications/
-	cp tools/idl2wrs.sh `pwd`/debian/tmp/usr/bin/
-	cp debian/wireshark-root.desktop `pwd`/debian/tmp/usr/share/applications/
-	mkdir -p `pwd`/debian/tmp/usr/share/pixmaps/
-	cp image/hi48-app-wireshark.png `pwd`/debian/tmp/usr/share/pixmaps/
-	cp image/wsicon32.xpm `pwd`/debian/tmp/usr/share/pixmaps/
-	mkdir -p `pwd`/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
-	install -m 755 `pwd`/idl2deb `pwd`/debian/tmp/usr/bin/
-	install -m 755 `pwd`/asn2deb `pwd`/debian/tmp/usr/bin/
-	cp `pwd`/tools/wireshark_be.py `pwd`/tools/wireshark_gen.py \
-			`pwd`/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
-	mkdir -p `pwd`/debian/tmp/usr/include/wireshark/
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	rm -rf $(CURDIR)/debian/tmp/usr/share/wireshark/wireshark/COPYING
+	cp debian/license-text-about-dialog $(CURDIR)/debian/tmp/usr/share/wireshark/wireshark/ABOUT.GPL
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/applications/
+	cp wireshark.desktop $(CURDIR)/debian/tmp/usr/share/applications/
+	cp tools/idl2wrs.sh $(CURDIR)/debian/tmp/usr/bin/
+	cp debian/wireshark-root.desktop $(CURDIR)/debian/tmp/usr/share/applications/
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/pixmaps/
+	cp image/hi48-app-wireshark.png $(CURDIR)/debian/tmp/usr/share/pixmaps/
+	cp image/wsicon32.xpm $(CURDIR)/debian/tmp/usr/share/pixmaps/
+	mkdir -p $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
+	install -m 755 $(CURDIR)/idl2deb $(CURDIR)/debian/tmp/usr/bin/
+	install -m 755 $(CURDIR)/asn2deb $(CURDIR)/debian/tmp/usr/bin/
+	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
+	mv $(CURDIR)/debian/tmp/usr/share/wireshark/wireshark/init.lua \
+		$(CURDIR)/debian/tmp/etc/wireshark/
+	ln -s /etc/wireshark/init.lua \
+		$(CURDIR)/debian/tmp/usr/share/wireshark/wireshark/init.lua
+	cp $(CURDIR)/tools/wireshark_be.py $(CURDIR)/tools/wireshark_gen.py \
+			$(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
+	mkdir -p $(CURDIR)/debian/tmp/usr/include/wireshark/
 	for F in `cat debian/wireshark-dev.header-files`; do \
-		cp --parents $$F `pwd`/debian/tmp/usr/include/wireshark; \
+		cp --parents $$F $(CURDIR)/debian/tmp/usr/include/wireshark; \
 	done
 	# .a is no longer built; why was is used ?
-	#cp `pwd`/wiretap/libwiretap.a `pwd`/debian/tmp/usr/lib/
-	-rm -rf `pwd`/debian/tmp/usr/man
+	#cp $(CURDIR)/wiretap/libwiretap.a $(CURDIR)/debian/tmp/usr/lib/
+	-rm -rf $(CURDIR)/debian/tmp/usr/man
 	dh_installman
 
 	dh_movefiles
