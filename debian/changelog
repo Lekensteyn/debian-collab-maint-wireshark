@@ -25,6 +25,7 @@ wireshark (0.99.8-1) unstable; urgency=medium
   * update debhelper compat to 5
   * bump standards version to 3.7.3.0
   * update debhelper compat to 6
+  * remove debian/ dir from upstream tar file
 
  -- Joost Yervante Damad <andete@debian.org>  Wed, 12 Mar 2008 20:47:56 +0100
 
