@@ -1,3 +1,47 @@
+wireshark (0.99.8-2) UNRELEASED; urgency=low
+
+  * Several security issues were solved in 0.99.7 already:
+    (closes: #452381)
+    * allow remote attackers to cause a denial of service (crash) via (1) a
+      crafted MP3 file or (2) unspecified vectors to the NCP dissector
+      (CVE-2007-6111)
+    * Buffer overflow in the PPP dissector Wireshark (formerly Ethereal)
+      0.99.6 allows remote attackers to cause a denial of service (crash)
+      and possibly execute arbitrary code via unknown vectors.
+      (CVE-2007-6112)
+    * Wireshark (formerly Ethereal) 0.10.12 to 0.99.6 allows remote
+      attackers to cause a denial of service (long loop) via a malformed DNP
+      packet (CVE-2007-6113)
+    * Multiple buffer overflows in Wireshark (formerly Ethereal) 0.99.0
+      through 0.99.6 allow remote attackers to cause a denial of service
+      (crash) and possibly execute arbitrary code via (1) the SSL dissector
+      or (2) the iSeries (OS/400) Communication trace file parser
+      (CVE-2007-6114)
+    * Buffer overflow in the ANSI MAP dissector for Wireshark (formerly
+      Ethereal) 0.99.5 to 0.99.6, when running on unspecified platforms,
+      allows remote attackers to cause a denial of service and possibly
+      execute arbitrary code via unknown vectors. (CVE-2007-6115)
+    * The Firebird/Interbase dissector in Wireshark (formerly Ethereal)
+      0.99.6 allows remote attackers to cause a denial of service (infinite
+      loop or crash) via unknown vectors. (CVE-2007-6116)
+    * Unspecified vulnerability in the HTTP dissector for Wireshark
+      (formerly Ethereal) 0.10.14 to 0.99.6 has unknown impact and remote
+      attack vectors related to chunked messages. (CVE-2007-6117)
+    * The MEGACO dissector in Wireshark (formerly Ethereal) 0.9.14 to 0.99.6
+      allows remote attackers to cause a denial of service (long loop and
+      resource consumption) via unknown vectors. (CVE-2007-6118)
+    * The DCP ETSI dissector in Wireshark (formerly Ethereal) 0.99.6 allows
+      remote attackers to cause a denial of service (long loop and resource
+      consumption) via unknown vectors. (CVE-2007-6119)
+    * The Bluetooth SDP dissector Wireshark (formerly Ethereal) 0.99.2 to
+      0.99.6 allows remote attackers to cause a denial of service (infinite
+      loop) via unknown vectors. (CVE-2007-6120)
+    * Wireshark (formerly Ethereal) 0.8.16 to 0.99.6 allows remote attackers
+      to cause a denial of service (crash) via a malformed RPC Portmap
+      packet. (CVE-2007-6121)
+
+ -- Joost Yervante Damad <andete@debian.org>  Fri, 14 Mar 2008 22:34:44 +0100
+
 wireshark (0.99.8-1) unstable; urgency=medium
 
   * New upstream release.
