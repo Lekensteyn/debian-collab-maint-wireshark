@@ -39,6 +39,9 @@ wireshark (0.99.8-2) UNRELEASED; urgency=low
     * Wireshark (formerly Ethereal) 0.8.16 to 0.99.6 allows remote attackers
       to cause a denial of service (crash) via a malformed RPC Portmap
       packet. (CVE-2007-6121)
+  * current wireshark has SSL support (closes: #172939)
+  * and H323 support (closes: #117201)
+  * resizing columns bugfix was applied last year (closes: #369044)
 
  -- Joost Yervante Damad <andete@debian.org>  Fri, 14 Mar 2008 22:34:44 +0100
 
