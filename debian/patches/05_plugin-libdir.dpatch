@@ -5,15 +5,3 @@
 ## DP: No description.
 
 @DPATCH@
-diff -urNad trunk~/configure.in trunk/configure.in
---- trunk~/configure.in	2008-02-27 20:59:35.000000000 +0100
-+++ trunk/configure.in	2008-03-12 21:12:10.000000000 +0100
-@@ -1548,7 +1548,7 @@
- #
- # The plugin dissectors reside in ./plugins/PROTO/
- #
--PLUGIN_LIBS="-L../../epan -lwireshark $GLIB_LIBS"
-+PLUGIN_LIBS="-L../../epan $GLIB_LIBS"
- AC_SUBST(PLUGIN_LIBS)
- 
- dnl libtool defs

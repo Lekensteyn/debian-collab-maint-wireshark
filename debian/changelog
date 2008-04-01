@@ -1,4 +1,4 @@
-wireshark (0.99.8-2) UNRELEASED; urgency=low
+wireshark (1.0.0-1) unstable; urgency=low
 
   * Several security issues were solved in 0.99.7 already:
     (closes: #452381)
@@ -42,8 +42,22 @@ wireshark (0.99.8-2) UNRELEASED; urgency=low
   * current wireshark has SSL support (closes: #172939)
   * and H323 support (closes: #117201)
   * resizing columns bugfix was applied last year (closes: #369044)
+  * new upstream release 1.0.0
+    http://www.wireshark.org/docs/relnotes/wireshark-1.0.0.html
+  * remove debian/ directory from upstream
+  * update 14_disable-cmip.dpatch.
+  * if wireshark has no priv, it now prints:
+      dumpcap: There are no interfaces on which a capture can be done
+      (closes: #468400)
+  * wireshark uses su-to-root now (closes: #472478)
+  * vulnerabilities fixed:
+    * The X.509sat and other dissector could crash (CVE-2008-1561)
+    * The LDAP dissector could crash on Windows and other platforms.
+      (CVE-2008-1562)
+    * The SCCP dissector could crash while using the "decode as"
+      feature (CVE-2008-1563)
 
- -- Joost Yervante Damad <andete@debian.org>  Fri, 14 Mar 2008 22:34:44 +0100
+ -- Joost Yervante Damad <andete@debian.org>  Tue, 01 Apr 2008 19:48:19 +0200
 
 wireshark (0.99.8-1) unstable; urgency=medium
 
