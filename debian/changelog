@@ -1,3 +1,10 @@
+wireshark (1.0.0-2) unstable; urgency=low
+
+  * debian/control: updated Depends from automake1.8 to automake1.9
+    (closes: #474341)
+
+ -- Frederic Peters <fpeters@debian.org>  Sat, 05 Apr 2008 13:03:41 +0200
+
 wireshark (1.0.0-1) unstable; urgency=low
 
   * Several security issues were solved in 0.99.7 already:
