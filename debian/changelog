@@ -1,9 +1,20 @@
 wireshark (1.0.0-2) unstable; urgency=low
 
+  [Joost Yervante Damad]
+  * avoid /usr/share/wireshark/wireshark (Closes: #476574)
+  * disable patch 07 and 14, I think patch 07 caused the
+    build failure which introduced patch 14
+  * this version works with "ForwardX11Trusted no" (Closes: #298740)
+  * disable patch 10 (obsolete)
+  * submission (tcp/587) is recognized as SMTP now (Closes: #456513)
+  * save as works for filtered output (Closes: #456502)
+  * preferences settings get active immediately now (Closes: #259319)
+
+  [Frederic Peters]
   * debian/control: updated Depends from automake1.8 to automake1.9
     (closes: #474341)
 
- -- Frederic Peters <fpeters@debian.org>  Sat, 05 Apr 2008 13:03:41 +0200
+ -- Joost Yervante Damad <andete@debian.org>  Tue, 22 Apr 2008 19:59:24 +0200
 
 wireshark (1.0.0-1) unstable; urgency=low
 

@@ -29,7 +29,7 @@ asn2deb.1: asn2deb.dbk
 	xsltproc --nonet --novalid $(DB2MAN) $<
 
 
-CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share/wireshark --datadir=/usr/share/wireshark --disable-static --disable-ssl --without-ucdsnmp --enable-gtk2 --libdir=/usr/lib/wireshark --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/plugins --with-lua=/usr/
+CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --disable-ssl --without-ucdsnmp --enable-gtk2 --libdir=/usr/lib/wireshark --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/plugins --with-lua=/usr/
 
 configure: configure-stamp
 configure-stamp: patch
@@ -80,8 +80,8 @@ install: build
 
 	# Add here commands to install the files into debian/tmp
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
-	rm -rf $(CURDIR)/debian/tmp/usr/share/wireshark/wireshark/COPYING
-	cp debian/license-text-about-dialog $(CURDIR)/debian/tmp/usr/share/wireshark/wireshark/ABOUT.GPL
+	rm -rf $(CURDIR)/debian/tmp/usr/share/wireshark/COPYING
+	cp debian/license-text-about-dialog $(CURDIR)/debian/tmp/usr/share/wireshark/ABOUT.GPL
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/applications/
 	cp wireshark.desktop $(CURDIR)/debian/tmp/usr/share/applications/
 	cp tools/idl2wrs.sh $(CURDIR)/debian/tmp/usr/bin/
@@ -93,10 +93,10 @@ install: build
 	install -m 755 $(CURDIR)/idl2deb $(CURDIR)/debian/tmp/usr/bin/
 	install -m 755 $(CURDIR)/asn2deb $(CURDIR)/debian/tmp/usr/bin/
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
-	mv $(CURDIR)/debian/tmp/usr/share/wireshark/wireshark/init.lua \
+	mv $(CURDIR)/debian/tmp/usr/share/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/etc/wireshark/
 	ln -s /etc/wireshark/init.lua \
-		$(CURDIR)/debian/tmp/usr/share/wireshark/wireshark/init.lua
+		$(CURDIR)/debian/tmp/usr/share/wireshark/init.lua
 	cp $(CURDIR)/tools/wireshark_be.py $(CURDIR)/tools/wireshark_gen.py \
 			$(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
 	mkdir -p $(CURDIR)/debian/tmp/usr/include/wireshark/

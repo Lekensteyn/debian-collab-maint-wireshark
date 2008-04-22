@@ -1,7 +1,0 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 05_plugin-libdir.dpatch by  <fpeters@debian.org>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
-
-@DPATCH@
