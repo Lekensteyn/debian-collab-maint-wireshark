@@ -1,3 +1,15 @@
+wireshark (1.0.0-3) unstable; urgency=low
+
+  * remove transitional "ethereal" packages
+    (Closes: #477529, #477532, #477534, #477541)
+  * create README.Debian with note about the sometimes surprising
+    display filter syntax (Closes: #456506, #456507)
+  * tethereal is completely gone now (Closes: #410058)
+  * be more liberal with respect to umask when creating files
+    (Closes: 191088): 19_umask.dpatch
+
+ -- Joost Yervante Damad <andete@debian.org>  Sat, 26 Apr 2008 10:20:02 +0200
+
 wireshark (1.0.0-2) unstable; urgency=low
 
   [Joost Yervante Damad]

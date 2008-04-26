@@ -1,0 +1,43 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 19_umask.dpatch by  <andete@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad trunk~/dumpcap.c trunk/dumpcap.c
+--- trunk~/dumpcap.c	2008-03-29 18:27:02.000000000 +0100
++++ trunk/dumpcap.c	2008-04-26 10:26:43.000000000 +0200
+@@ -1645,7 +1645,7 @@
+       } else {
+         /* Try to open/create the specified file for use as a capture buffer. */
+         *save_file_fd = eth_open(capfile_name, O_RDWR|O_BINARY|O_TRUNC|O_CREAT,
+-                             0600);
++                             0666);
+       }
+     }
+     is_tempfile = FALSE;
+diff -urNad trunk~/file.c trunk/file.c
+--- trunk~/file.c	2008-03-29 18:27:02.000000000 +0100
++++ trunk/file.c	2008-04-26 10:27:16.000000000 +0200
+@@ -1155,7 +1155,7 @@
+ 
+   if (*out_filenamep != NULL) {
+     out_filename = *out_filenamep;
+-    out_fd = eth_open(out_filename, O_CREAT|O_TRUNC|O_BINARY, 0600);
++    out_fd = eth_open(out_filename, O_CREAT|O_TRUNC|O_BINARY, 0666);
+     if (out_fd == -1)
+       open_err = errno;
+   } else {
+diff -urNad trunk~/ringbuffer.c trunk/ringbuffer.c
+--- trunk~/ringbuffer.c	2008-03-29 18:27:02.000000000 +0100
++++ trunk/ringbuffer.c	2008-04-26 10:27:04.000000000 +0200
+@@ -125,7 +125,7 @@
+     return -1;
+   }
+ 
+-  rb_data.fd = eth_open(rfile->name, O_RDWR|O_BINARY|O_TRUNC|O_CREAT, 0600);
++  rb_data.fd = eth_open(rfile->name, O_RDWR|O_BINARY|O_TRUNC|O_CREAT, 0666);
+ 
+   if (rb_data.fd == -1 && err != NULL) {
+     *err = errno;
