@@ -1,3 +1,10 @@
+wireshark (1.0.0-4) unstable; urgency=low
+
+  * debian/patches/20_set_foreground.dpatch: set black text for packet detail
+    rows that are set to a light gray background.  (closes: #478769)
+
+ -- Frederic Peters <fpeters@debian.org>  Thu, 01 May 2008 00:41:41 +0200
+
 wireshark (1.0.0-3) unstable; urgency=low
 
   * remove transitional "ethereal" packages

@@ -1,0 +1,19 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 20_set_foreground.dpatch by  <fpeters@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: set foreground on protocol details rows
+
+@DPATCH@
+diff -urNad wireshark-1.0.0~/gtk/proto_draw.c wireshark-1.0.0/gtk/proto_draw.c
+--- wireshark-1.0.0~/gtk/proto_draw.c	2008-05-01 00:38:17.347692791 +0200
++++ wireshark-1.0.0/gtk/proto_draw.c	2008-05-01 00:38:22.873693128 +0200
+@@ -1845,6 +1845,8 @@
+     if(fi->hfinfo->type == FT_PROTOCOL) {
+         g_object_set (cell, "background", "gray90", NULL);
+         g_object_set (cell, "background-set", TRUE, NULL);
++        g_object_set (cell, "foreground", "black", NULL);
++        g_object_set (cell, "foreground-set", TRUE, NULL);
+         /*g_object_set (cell, "weight", PANGO_WEIGHT_BOLD, NULL);
+         g_object_set (cell, "weight-set", TRUE, NULL);*/
+ 	}
