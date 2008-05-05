@@ -2,8 +2,10 @@ wireshark (1.0.0-4) unstable; urgency=low
 
   * debian/patches/20_set_foreground.dpatch: set black text for packet detail
     rows that are set to a light gray background.  (closes: #478769)
+  * debian/control: updated Conflicts and Replaces to 1.0.0-3, so upgrades
+    from more versions are possible.
 
- -- Frederic Peters <fpeters@debian.org>  Thu, 01 May 2008 00:41:41 +0200
+ -- Frederic Peters <fpeters@debian.org>  Mon, 05 May 2008 18:33:11 +0200
 
 wireshark (1.0.0-3) unstable; urgency=low
 

@@ -12,8 +12,8 @@ Package: wireshark-common
 Architecture: any
 Depends: ${shlibs:Depends}
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
-Replaces: ethereal-common (<< 0.99.2-0)
-Conflicts: ethereal-common (<< 0.99.2-0)
+Replaces: ethereal-common (<< 1.0.0-3)
+Conflicts: ethereal-common (<< 1.0.0-3)
 Description: network traffic analyser (common files)
  Wireshark is a network traffic analyzer, or "sniffer", for Unix and
  Unix-like operating systems. A sniffer is a tool used to capture 
@@ -27,8 +27,8 @@ Package: wireshark
 Architecture: any
 Depends: ${shlibs:Depends}, wireshark-common (= ${binary:Version})
 Recommends: gksu
-Replaces: ethereal (<< 0.99.2-0)
-Conflicts: ethereal (<< 0.99.2-0)
+Replaces: ethereal (<< 1.0.0-3)
+Conflicts: ethereal (<< 1.0.0-3)
 Description: network traffic analyzer
  Wireshark is a network traffic analyzer, or "sniffer", for Unix and
  Unix-like operating systems. A sniffer is a tool used to capture 
@@ -40,8 +40,8 @@ Description: network traffic analyzer
 Package: tshark
 Architecture: any
 Depends: ${shlibs:Depends}, wireshark-common (= ${binary:Version})
-Replaces: tethereal (<< 0.99.2-0)
-Conflicts: tethereal (<< 0.99.2-0)
+Replaces: tethereal (<< 1.0.0-3)
+Conflicts: tethereal (<< 1.0.0-3)
 Description: network traffic analyzer (console)
  Wireshark is a network traffic analyzer, or "sniffer", for Unix and
  Unix-like operating systems. A sniffer is a tool used to capture 
@@ -55,8 +55,8 @@ Package: wireshark-dev
 Architecture: any
 Section: devel
 Depends: ${shlibs:Depends}, omniidl (>> 1:3.0.4.1-10) | omniidl4 (>= 4.0.1-2) , libpcap0.8-dev, libtool, libglib2.0-dev, ${python:Depends}, snacc, autotools-dev, debhelper, cdbs, automake1.9, autoconf
-Replaces: ethereal-dev (<< 0.99.2-0)
-Conflicts: ethereal-dev (<< 0.99.2-0)
+Replaces: ethereal-dev (<< 1.0.0-3)
+Conflicts: ethereal-dev (<< 1.0.0-3)
 XB-Python-Version: ${python:Versions}
 Description: network traffic analyser (development tools)
  Wireshark is a network traffic analyzer, or "sniffer", for Unix and
