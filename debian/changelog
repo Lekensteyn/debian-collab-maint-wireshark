@@ -1,11 +1,25 @@
-wireshark (1.0.0-4) unstable; urgency=low
+wireshark (1.0.1-1) UNRELEASED; urgency=high
 
+  [ Frederic Peters ]
   * debian/patches/20_set_foreground.dpatch: set black text for packet detail
     rows that are set to a light gray background.  (closes: #478769)
   * debian/control: updated Conflicts and Replaces to 1.0.0-3, so upgrades
     from more versions are possible.
 
- -- Frederic Peters <fpeters@debian.org>  Mon, 05 May 2008 18:33:11 +0200
+  [ Joost Yervante Damad ]
+  * New upstream release 1.0.1
+    - release notes:
+     http://www.wireshark.org/docs/relnotes/wireshark-1.0.1.html
+    -  security fixes:
+      - The PANA and KISMET dissectors could force Wireshark to quit
+        unexpectedly
+      - The RTMPT dissector could crash
+      - The RMI dissector could disclose system memory
+      - The syslog dissector could crash
+    - enable setuid dumpcap install
+    - del 20_set_foreground.dpatch; incorporated upstream
+
+ -- Joost Yervante Damad <andete@debian.org>  Tue, 01 Jul 2008 21:08:31 +0200
 
 wireshark (1.0.0-3) unstable; urgency=low
 
