@@ -29,7 +29,8 @@ asn2deb.1: asn2deb.dbk
 	xsltproc --nonet --novalid $(DB2MAN) $<
 
 
-CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --disable-ssl --without-ucdsnmp --enable-gtk2 --libdir=/usr/lib/wireshark --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/plugins --with-lua=/usr/ --enable-setuid-install
+#TODO: --enable-setuid-install
+CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --disable-ssl --without-ucdsnmp --enable-gtk2 --libdir=/usr/lib/wireshark --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/plugins --with-lua=/usr/
 
 configure: configure-stamp
 configure-stamp: patch
@@ -129,6 +130,7 @@ binary-arch: install check
 	dh_strip
 	dh_compress
 	dh_fixperms
+	#dh_fixperms -Xdumpcap
 
 	dh_installdeb
 	LD_LIBRARY_PATH=/usr/lib/wireshark/ dh_shlibdeps

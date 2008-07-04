@@ -1,4 +1,4 @@
-wireshark (1.0.1-1) UNRELEASED; urgency=high
+wireshark (1.0.1-1) unstable; urgency=high
 
   [ Frederic Peters ]
   * debian/patches/20_set_foreground.dpatch: set black text for packet detail
@@ -16,7 +16,8 @@ wireshark (1.0.1-1) UNRELEASED; urgency=high
       - The RTMPT dissector could crash
       - The RMI dissector could disclose system memory
       - The syslog dissector could crash
-    - enable setuid dumpcap install
+    - (enable setuid dumpcap install -> disabled again for now,
+       needs discussion first)
     - del 20_set_foreground.dpatch; incorporated upstream
 
  -- Joost Yervante Damad <andete@debian.org>  Tue, 01 Jul 2008 21:08:31 +0200
