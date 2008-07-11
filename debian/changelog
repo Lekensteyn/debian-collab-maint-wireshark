@@ -1,3 +1,14 @@
+wireshark (1.0.2-1) unstable; urgency=high
+
+  * New upstream release 1.0.2
+    - release notes:
+     http://www.wireshark.org/docs/relnotes/wireshark-1.0.2.html
+    - security fixes:
+      - Wireshark could crash while reassembling packets
+        (CVE-2008-3145)
+
+ -- Joost Yervante Damad <andete@debian.org>  Fri, 11 Jul 2008 13:48:49 +0200
+
 wireshark (1.0.1-1) unstable; urgency=high
 
   [ Frederic Peters ]
