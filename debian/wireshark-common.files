@@ -1,4 +1,5 @@
 /usr/bin/dumpcap
+/usr/bin/rawshark
 /usr/bin/capinfos
 /usr/bin/editcap
 /usr/bin/mergecap

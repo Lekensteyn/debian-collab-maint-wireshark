@@ -3,3 +3,5 @@ mergecap.1
 text2pcap.1
 wireshark-filter.4
 capinfos.1
+dumpcap.1
+rawshark.1

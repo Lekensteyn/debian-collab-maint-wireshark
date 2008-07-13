@@ -61,7 +61,7 @@ clean: unpatch-stamp
 	rm -f build-stamp configure-stamp
 
 	[ ! -f Makefile ] || $(MAKE) distclean 
-	rm -f rdps wireshark.1 tshark.1 idl2deb.1 wireshark-filter.4 asn2deb.1
+	rm -f rdps wireshark.1 tshark.1 idl2deb.1 wireshark-filter.4 asn2deb.1 dumpcap.1 rawshark.1
 	rm -f conftest conftest.c
 	rm -f config.guess config.sub config.log
 	rm -f config.h.in config.h configure
