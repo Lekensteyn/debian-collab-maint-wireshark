@@ -1,3 +1,11 @@
+wireshark (1.0.2-3) unstable; urgency=low
+
+  * remove build-dependency on libsmi-dev; libsmi
+    seems to be in bad shape in Debian; don't want
+    to be dependant on it this close to the release
+
+ -- Joost Yervante Damad <andete@debian.org>  Tue, 22 Jul 2008 19:15:23 +0200
+
 wireshark (1.0.2-2) unstable; urgency=low
 
   * switch to libcap2 (Closes: #489310)
