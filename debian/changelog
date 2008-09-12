@@ -1,8 +1,27 @@
+wireshark (1.0.3-1) unstable; urgency=high
+
+  * New upstream release 1.0.3 (Closes: #497878)
+    - release notes:
+     http://www.wireshark.org/docs/relnotes/wireshark-1.0.3.html
+    - security fixes:
+      - The NCP dissector was susceptible to a number of problems,
+        including buffer overflows and an infinite loop
+        (CVE-2008-3146, CVE-2008-3932)
+      - Wireshark could crash while uncompressing zlib-compressed
+        packet data (CVE-2008-3933)
+      - Wireshark could crash while reading a Tektronix .rf5 file
+        (CVE-2008-3934)
+    - other fixes:
+      - Following a TCP stream could incorrectly reassemble packets
+        (Closes: #496768)
+
+ -- Joost Yervante Damad <andete@debian.org>  Fri, 12 Sep 2008 15:05:58 +0200
+
 wireshark (1.0.2-3) unstable; urgency=low
 
   * remove build-dependency on libsmi-dev; libsmi
     seems to be in bad shape in Debian; don't want
-    to be dependant on it this close to the release
+    to be dependent on it this close to the release
 
  -- Joost Yervante Damad <andete@debian.org>  Tue, 22 Jul 2008 19:15:23 +0200
 
