@@ -1,9 +1,13 @@
 wireshark (1.0.2-3+lenny1) testing-security; urgency=low
 
   * security fixes:
-   - TODO
-   - TODO
-   - TODO
+   - Wireshark could crash while uncompressing zlib-compressed
+     packet data (CVE-2008-3933)
+   - The NCP dissector was susceptible to a number of problems,
+        including buffer overflows and an infinite loop
+        (CVE-2008-3146, CVE-2008-3932)
+   - Wireshark could crash while reading a Tektronix .rf5 file
+        (CVE-2008-3934)
 
  -- Joost Yervante Damad <andete@debian.org>  Mon, 15 Sep 2008 20:12:46 +0200
 
