@@ -1,3 +1,9 @@
+wireshark (1.0.2-3+lenny2) testing-proposed-updates; urgency=high
+
+  * Fix CVE-2008-4680 to CVE-2008-4685 (Closes: #503589)
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Thu, 13 Nov 2008 23:13:27 +0100
+
 wireshark (1.0.2-3+lenny1) testing-security; urgency=low
 
   * security fixes:
