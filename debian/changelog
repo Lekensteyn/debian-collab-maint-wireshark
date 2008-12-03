@@ -1,4 +1,4 @@
-wireshark (1.0.2-3+lenny3) testing-proposed-updates; urgency=high
+wireshark (1.0.2-3+lenny3) testing-security; urgency=high
 
   * Fix DoS attack (upstream svn rev 24988-24989 and 24993-24994)
     (Closes: #506741)
