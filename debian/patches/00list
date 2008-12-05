@@ -1,11 +1,10 @@
 01_idl2deb
 02_asn2deb
 03_preferences
-#04_drop-capabilities
 06_giop-buffer
 08_wireshark-desktop-menu
 09_idl2wrs
 15_sensitive_open
 16_licence_about_location
-17_clique_rm_support
+#17_clique_rm_support
 19_umask

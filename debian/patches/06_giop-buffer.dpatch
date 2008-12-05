@@ -2,7 +2,7 @@
 ## 06_giop-buffer.dpatch by  <fpeters@debian.org>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: fixed segfault with some GIOP packets
 
 @DPATCH@
 diff -urNad --exclude=CVS --exclude=.svn ./epan/dissectors/packet-giop.c /tmp/dpep-work.7N90PO/wireshark-0.10.11/epan/dissectors/packet-giop.c

@@ -2,7 +2,7 @@
 ## 19_umask.dpatch by  <andete@debian.org>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: use 0666 isof 0600 as umask when creating files
 
 @DPATCH@
 diff -urNad trunk~/dumpcap.c trunk/dumpcap.c

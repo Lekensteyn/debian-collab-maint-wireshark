@@ -2,7 +2,7 @@
 ## 16_licence_about_location.dpatch by  <fpeters@debian.org>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: Change location of license file in about dialog
 
 @DPATCH@
 diff -urNad wireshark-0.99.6rel~/gtk/about_dlg.c wireshark-0.99.6rel/gtk/about_dlg.c

@@ -1,8 +1,22 @@
-wireshark (1.0.3-2) UNRELEASED; urgency=low
+wireshark (1.0.4-1) unstable; urgency=low
 
-  * NOT RELEASED YET
+  * New upstream release 1.0.4
+    - release notes:
+     http://www.wireshark.org/docs/relnotes/wireshark-1.0.4.html
+    - security fixes:
+      - Bluetooth ACL dissector could crash or abort
+      - The Q.931 dissector could crash or abort
+      - Wireshark could abort while reading Tamos CommView
+        capture files
+      - the USB dissector could crash, also BT RFCOMM
+      - PRP and MATE dissectors could make Wireshark crash
+    - CVE-2008-4680, CVE-2008-4681, CVE-2008-4682, CVE-2008-4683,
+      CVE-2008-4684, CVE-2008-4685
+  * disable clique_rm support patch (if you're interested in this
+    dissector please get it accepted by upstream)
+  * add description to some patches
 
- -- Joost Yervante Damad <andete@debian.org>  Fri, 12 Sep 2008 16:14:08 +0200
+ -- Joost Yervante Damad <andete@debian.org>  Fri, 05 Dec 2008 10:35:47 +0100
 
 wireshark (1.0.3-1) unstable; urgency=high
 

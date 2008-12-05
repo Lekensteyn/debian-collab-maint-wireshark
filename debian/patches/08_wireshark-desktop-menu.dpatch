@@ -2,7 +2,7 @@
 ## 08_wireshark-desktop-menu.dpatch by  <fred@candle>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: change Icon and Categories for desktop file
 
 @DPATCH@
 diff -urNad trunk~/wireshark.desktop trunk/wireshark.desktop
