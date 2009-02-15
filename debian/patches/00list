@@ -8,3 +8,4 @@
 16_licence_about_location
 #17_clique_rm_support
 19_umask
+20_sigpipe.dpatch

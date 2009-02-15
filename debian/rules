@@ -36,7 +36,6 @@ configure: configure-stamp
 configure-stamp: patch
 	dh_testdir
 
-	cp /usr/share/misc/config.guess /usr/share/misc/config.sub .
 	libtoolize --force --copy
 	-mkdir aclocal-missing
 	./autogen.sh

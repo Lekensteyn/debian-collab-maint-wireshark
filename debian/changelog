@@ -1,4 +1,4 @@
-wireshark (1.0.6-1) UNRELEASED; urgency=low
+wireshark (1.0.6-1) unstable; urgency=low
 
   * new upstream release 1.0.6
     - release notes:
@@ -11,6 +11,9 @@ wireshark (1.0.6-1) UNRELEASED; urgency=low
         snoop file
       - Wireshark could crash while reading a Tektronix K12 text
         capture file
+  * add 20_sigpipe patch from ubuntu, which restores the default
+    sigpipe action, meaning that the app won't hang under gksu
+    (Closes: #478169)
 
  -- Joost Yervante Damad <andete@debian.org>  Sat, 07 Feb 2009 15:35:10 +0100
 
