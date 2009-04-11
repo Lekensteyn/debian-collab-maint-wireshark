@@ -1,3 +1,23 @@
+wireshark (1.0.7-1) unstable; urgency=low
+
+  * New upstream release 1.0.7
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.0.7.html
+    - security fixes:
+      - The PROFINET dissector was vulnerable to a format string
+        overflow. (CVE-2009-1210)
+      - The LDAP dissector could crash on Windows. (CVE-2009-1267)
+      - The Check Point High-Availability Protocol (CPHAP) dissector
+        could crash. (CVE-2009-1268)
+      - Wireshark could crash while loading a Tektronix .rf5 file
+        (CVE-2009-1269)
+  * update standards-version to 3.8.1
+  * add 21_dumpcap.dpatch with patch from Rob Leslie <rob@mars.org>
+    that should avoid dumpcap seeing stop on CTRL-C as an error
+    (Closes: #518435)
+
+ -- Joost Yervante Damad <andete@debian.org>  Sat, 11 Apr 2009 10:06:45 +0200
+
 wireshark (1.0.6-1) unstable; urgency=low
 
   * new upstream release 1.0.6
