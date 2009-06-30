@@ -1,3 +1,15 @@
+wireshark (1.0.8-1) unstable; urgency=low
+
+  * New upstream release 1.0.8
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.0.8.html
+    - security fixes:
+       - The PCNFSD dissector could crash.(No assigned CVE number.)
+  * add README.source (Closes: #524364)
+  * removed wireshark-dev's dependency on removed omniidl package
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 26 Jun 2009 20:31:26 -0700
+
 wireshark (1.0.7-1) unstable; urgency=low
 
   * New upstream release 1.0.7
