@@ -1,0 +1,185 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backport security fixes from 1.0.6 <jmm@debian.org>
+
+@DPATCH@
+diff -aur wireshark-1.0.2.orig/epan/dissectors/packet-dcerpc-nt.c wireshark-1.0.2/epan/dissectors/packet-dcerpc-nt.c
+--- wireshark-1.0.2.orig/epan/dissectors/packet-dcerpc-nt.c	2008-07-10 19:39:22.000000000 +0200
++++ wireshark-1.0.2/epan/dissectors/packet-dcerpc-nt.c	2009-02-08 22:50:29.000000000 +0100
+@@ -118,7 +118,7 @@
+ 	if (add_subtree) {
+ 
+ 		item = proto_tree_add_text(
+-			tree, tvb, offset, 0,
++			tree, tvb, offset, 0, "%s",
+ 			proto_registrar_get_name(hf_index));
+ 
+ 		subtree = proto_item_add_subtree(item, ett_nt_counted_string);
+@@ -185,7 +185,7 @@
+ 	if (di->conformant_run)
+ 		return offset;
+ 
+-	item = proto_tree_add_text(tree, tvb, offset, 0,
++	item = proto_tree_add_text(tree, tvb, offset, 0, "%s",
+ 		proto_registrar_get_name(hf_index));
+ 
+ 	subtree = proto_item_add_subtree(item, ett_nt_counted_byte_array);
+@@ -291,7 +291,7 @@
+ 	if (di->conformant_run)
+ 		return offset;
+ 
+-	item = proto_tree_add_text(tree, tvb, offset, 0,
++	item = proto_tree_add_text(tree, tvb, offset, 0, "%s",
+ 		proto_registrar_get_name(hf_index));
+ 
+ 	subtree = proto_item_add_subtree(item, ett_nt_counted_ascii_string);
+diff -aur wireshark-1.0.2.orig/epan/dissectors/packet-mq.c wireshark-1.0.2/epan/dissectors/packet-mq.c
+--- wireshark-1.0.2.orig/epan/dissectors/packet-mq.c	2008-07-10 19:39:24.000000000 +0200
++++ wireshark-1.0.2/epan/dissectors/packet-mq.c	2009-02-08 22:51:21.000000000 +0100
+@@ -2278,7 +2278,7 @@
+ 						structId = tvb_get_ntohl(tvb, offset);
+ 						if (tree)
+ 						{
+-							proto_tree_add_text(mqroot_tree, tvb, offset, -1, val_to_str(structId, mq_structid_vals, "Unknown (0x%08x)"));
++							proto_tree_add_text(mqroot_tree, tvb, offset, -1, "%s", val_to_str(structId, mq_structid_vals, "Unknown (0x%08x)"));
+ 						}
+ 					}
+ 				}
+diff -aur wireshark-1.0.2.orig/epan/dissectors/packet-q2931.c wireshark-1.0.2/epan/dissectors/packet-q2931.c
+--- wireshark-1.0.2.orig/epan/dissectors/packet-q2931.c	2008-07-10 19:39:24.000000000 +0200
++++ wireshark-1.0.2/epan/dissectors/packet-q2931.c	2009-02-08 22:51:32.000000000 +0100
+@@ -1990,17 +1990,17 @@
+ 	    "Information element extension: 0x%02x",
+ 	    info_element_ext);
+ 	ie_ext_tree = proto_item_add_subtree(ti, ett_q2931_ie_ext);
+-	proto_tree_add_text(ie_ext_tree, tvb, offset + 1, 1,
++	proto_tree_add_text(ie_ext_tree, tvb, offset + 1, 1, "%s",
+ 	    decode_enumerated_bitfield(info_element_ext,
+ 	        Q2931_IE_COMPAT_CODING_STD, 8,
+ 		coding_std_vals, "Coding standard: %s"));
+-	proto_tree_add_text(ie_ext_tree, tvb, offset + 1, 1,
++	proto_tree_add_text(ie_ext_tree, tvb, offset + 1, 1, "%s",
+ 	    decode_boolean_bitfield(info_element_ext,
+ 	    Q2931_IE_COMPAT_FOLLOW_INST, 8,
+ 	    "Follow explicit error handling instructions",
+   	    "Regular error handling procedures apply"));
+ 	if (info_element_ext & Q2931_IE_COMPAT_FOLLOW_INST) {
+-		proto_tree_add_text(ie_ext_tree, tvb, offset + 1, 1,
++		proto_tree_add_text(ie_ext_tree, tvb, offset + 1, 1, "%s",
+ 		    decode_enumerated_bitfield(info_element_ext,
+ 		        Q2931_IE_COMPAT_ACTION_IND, 8,
+ 			ie_action_ind_vals,
+diff -aur wireshark-1.0.2.orig/epan/dissectors/packet-wccp.c wireshark-1.0.2/epan/dissectors/packet-wccp.c
+--- wireshark-1.0.2.orig/epan/dissectors/packet-wccp.c	2008-07-10 19:39:25.000000000 +0200
++++ wireshark-1.0.2/epan/dissectors/packet-wccp.c	2009-02-08 22:51:48.000000000 +0100
+@@ -471,7 +471,7 @@
+ 			break;
+ 		}
+ 
+-		ti = proto_tree_add_text(wccp_tree, tvb, offset, item_length + 4,
++		ti = proto_tree_add_text(wccp_tree, tvb, offset, item_length + 4, "%s",
+ 		    val_to_str(type, info_type_vals, "Unknown info type (%u)"));
+ 		info_tree = proto_item_add_subtree(ti, ett);
+ 		proto_tree_add_text(info_tree, tvb, offset, 2,
+diff -aur wireshark-1.0.2.orig/epan/dissectors/packet-xml.c wireshark-1.0.2/epan/dissectors/packet-xml.c
+--- wireshark-1.0.2.orig/epan/dissectors/packet-xml.c	2008-07-10 19:39:26.000000000 +0200
++++ wireshark-1.0.2/epan/dissectors/packet-xml.c	2009-02-08 22:51:59.000000000 +0100
+@@ -304,7 +304,7 @@
+ 	xml_frame_t* current_frame = g_ptr_array_index(stack,stack->len - 1);
+ 
+ 	proto_tree_add_text(current_frame->tree,
+-						   tok->tvb, tok->offset, tok->len,
++						   tok->tvb, tok->offset, tok->len, "%s",
+ 						   tvb_format_text(tok->tvb,tok->offset,tok->len));
+ 
+ 	if (stack->len > 1) {
+diff -aur wireshark-1.0.2.orig/epan/filesystem.c wireshark-1.0.2/epan/filesystem.c
+--- wireshark-1.0.2.orig/epan/filesystem.c	2008-07-10 19:39:28.000000000 +0200
++++ wireshark-1.0.2/epan/filesystem.c	2009-02-08 22:54:45.000000000 +0100
+@@ -951,7 +951,7 @@
+ 	  persconffile_profile_dir = g_strdup_printf ("%s%s%s", get_profiles_dir (),
+ 						      G_DIR_SEPARATOR_S, profilename);
+ 	} else {
+-	  persconffile_profile_dir = g_strdup_printf (get_persconffile_dir_no_profile ());
++	  persconffile_profile_dir = g_strdup_printf ("%s", get_persconffile_dir_no_profile ());
+ 	}
+ 
+ 	return persconffile_profile_dir;
+diff -aur wireshark-1.0.2.orig/file.c wireshark-1.0.2/file.c
+--- wireshark-1.0.2.orig/file.c	2008-07-10 19:39:35.000000000 +0200
++++ wireshark-1.0.2/file.c	2009-02-08 22:49:39.000000000 +0100
+@@ -1131,7 +1131,6 @@
+   int               err_fileno;
+   int               i;
+   char              errmsg_errno[1024+1];
+-  gchar             err_str[2048+1];
+   const char       *errmsg;
+   gboolean          got_read_error = FALSE, got_write_error = FALSE;
+   gint64            data_offset;
+@@ -1323,8 +1322,7 @@
+ 	  errmsg = errmsg_errno;
+ 	  break;
+ 	}
+-	g_snprintf(err_str, sizeof err_str, errmsg, in_files[i].filename);
+-        simple_dialog(ESD_TYPE_ERROR, ESD_BTN_OK, err_str);
++        simple_dialog(ESD_TYPE_ERROR, ESD_BTN_OK, errmsg, in_files[i].filename);
+       }
+     }
+   }
+diff -aur wireshark-1.0.2.orig/gtk/rtp_analysis.c wireshark-1.0.2/gtk/rtp_analysis.c
+--- wireshark-1.0.2.orig/gtk/rtp_analysis.c	2008-07-10 19:37:27.000000000 +0200
++++ wireshark-1.0.2/gtk/rtp_analysis.c	2009-02-08 22:52:14.000000000 +0100
+@@ -2892,13 +2892,14 @@
+ 
+ /****************************************************************************/
+ /* append a line to clist */
++#define RTP_FIELD_MAX 40
+ static void add_to_clist(GtkCList *clist, guint32 number, guint16 seq_num,
+                          double delta, double jitter, double bandwidth, gchar *status, gboolean marker,
+                          gchar *timeStr, guint32 pkt_len, GdkColor *bg_color)
+ {
+ 	guint added_row;
+ 	gchar *data[9];
+-	gchar field[9][32];
++	gchar field[9][RTP_FIELD_MAX];
+ 	char *savelocale;
+ 	GdkColor fg_color = COLOR_FOREGROUND;
+ 
+@@ -2917,15 +2918,15 @@
+ 	/* switch to "C" locale to avoid problems with localized decimal separators
+ 		in g_snprintf("%f") functions */
+ 	setlocale(LC_NUMERIC, "C");
+-	g_snprintf(field[0], 20, "%u", number);
+-	g_snprintf(field[1], 20, "%u", seq_num);
+-	g_snprintf(field[2], 20, "%.2f", delta);
+-	g_snprintf(field[3], 20, "%.2f", jitter);
+-	g_snprintf(field[4], 20, "%.2f", bandwidth);
+-	g_snprintf(field[5], 20, "%s", marker? "SET" : "");
+-	g_snprintf(field[6], 40, "%s", status);
+-	g_snprintf(field[7], 32, "%s", timeStr);
+-	g_snprintf(field[8], 20, "%u", pkt_len);
++	g_snprintf(field[0], RTP_FIELD_MAX, "%u", number);
++	g_snprintf(field[1], RTP_FIELD_MAX, "%u", seq_num);
++	g_snprintf(field[2], RTP_FIELD_MAX, "%.2f", delta);
++	g_snprintf(field[3], RTP_FIELD_MAX, "%.2f", jitter);
++	g_snprintf(field[4], RTP_FIELD_MAX, "%.2f", bandwidth);
++	g_snprintf(field[5], RTP_FIELD_MAX, "%s", marker? "SET" : "");
++	g_snprintf(field[6], RTP_FIELD_MAX, "%s", status);
++	g_snprintf(field[7], RTP_FIELD_MAX, "%s", timeStr);
++	g_snprintf(field[8], RTP_FIELD_MAX, "%u", pkt_len);
+ 	/* restore previous locale setting */
+ 	setlocale(LC_NUMERIC, savelocale);
+ 
+diff -aur wireshark-1.0.2.orig/wiretap/netscreen.c wireshark-1.0.2/wiretap/netscreen.c
+--- wireshark-1.0.2.orig/wiretap/netscreen.c	2008-07-10 19:39:33.000000000 +0200
++++ wireshark-1.0.2/wiretap/netscreen.c	2009-02-08 22:50:15.000000000 +0100
+@@ -336,7 +336,7 @@
+ 	int	dsec, pkt_len;
+ 	char	direction[2];
+ 
+-	if (sscanf(line, "%d.%d: %[a-z0-9/:.](%[io]) len=%d:",
++	if (sscanf(line, "%d.%d: %15[a-z0-9/:.](%1[io]) len=%d:",
+ 		   &sec, &dsec, cap_int, direction, &pkt_len) != 5) {
+ 		*err = WTAP_ERR_BAD_RECORD;
+ 		*err_info = g_strdup("netscreen: Can't parse packet-header");

@@ -1,9 +1,20 @@
-wireshark (1.0.2-3+lenny3) testing-security; urgency=high
+wireshark (1.0.2-3+lenny5) stable-security; urgency=high
 
-  * Fix DoS attack (upstream svn rev 24988-24989 and 24993-24994)
-    (Closes: #506741)
+  * Security fixes from Wireshark 1.0.7
 
- -- Joost Yervante Damad <andete@debian.org>  Wed, 03 Dec 2008 20:00:34 +0100
+ -- Moritz Mühlenhoff <jmm@debian.org>  Sun, 26 Apr 2009 19:58:12 +0200
+
+wireshark (1.0.2-3+lenny4) testing-proposed-updates; urgency=high
+
+  * Security fixes from Wireshark 1.0.6
+
+ -- Moritz Mühlenhoff <jmm@debian.org>  Sun, 08 Feb 2009 22:56:41 +0100
+
+wireshark (1.0.2-3+lenny3) testing-proposed-updates; urgency=high
+
+  * CVE-2008-5285 and another security issue from 1.0.5 (WLCCP)
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Sat, 20 Dec 2008 18:11:36 +0100
 
 wireshark (1.0.2-3+lenny2) testing-proposed-updates; urgency=high
 
