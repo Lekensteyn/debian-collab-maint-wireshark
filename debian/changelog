@@ -1,3 +1,15 @@
+wireshark (1.0.2-3+lenny7) stable-security; urgency=high
+
+  * apply security patches from Wireshark 1.0.8 correctly (Closes: #533347)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 27 Jun 2009 16:58:45 -0700
+
+wireshark (1.0.2-3+lenny6) stable-security; urgency=high
+
+  * Security fixes from Wireshark 1.0.8 (Closes: #533347)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 26 Jun 2009 20:05:13 -0700
+
 wireshark (1.0.2-3+lenny5) stable-security; urgency=high
 
   * Security fixes from Wireshark 1.0.7

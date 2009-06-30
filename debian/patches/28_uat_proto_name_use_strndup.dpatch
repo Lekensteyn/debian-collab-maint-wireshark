@@ -1,0 +1,66 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 22_uat_proto_name_use_strndup.dpatch by  <eblircz@oceanus.sz13.dyndns.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Use g_strndup() instead of ep_strndup() to avoid freeing it up too early
+
+@DPATCH@
+
+Index: trunk/epan/uat.h
+===================================================================
+--- trunk/epan/uat.h	(revision 27662)
++++ trunk/epan/uat.h	(revision 27663)
+@@ -452,7 +452,7 @@
+ #define UAT_PROTO_DEF(basename, field_name, dissector_field, name_field, rec_t) \
+ static void basename ## _ ## field_name ## _set_cb(void* rec, const char* buf, unsigned len, void* u1 _U_, void* u2 _U_) {\
+ 	if (len) { \
+-		((rec_t*)rec)->name_field = ep_strndup(buf,len); g_strdown(((rec_t*)rec)->name_field ); g_strchug(((rec_t*)rec)->name_field); \
++		((rec_t*)rec)->name_field = g_strndup(buf,len); g_strdown(((rec_t*)rec)->name_field ); g_strchug(((rec_t*)rec)->name_field); \
+ 		((rec_t*)rec)->dissector_field = find_dissector(((rec_t*)rec)->name_field); \
+ 	} else { \
+ 		((rec_t*)rec)->dissector_field = find_dissector("data"); \
+Index: trunk/epan/dissectors/packet-user_encap.c
+===================================================================
+--- trunk/epan/dissectors/packet-user_encap.c	(revision 27662)
++++ trunk/epan/dissectors/packet-user_encap.c	(revision 27663)
+@@ -126,9 +126,27 @@
+ 	}
+ }
+ 
+-static void user_update_cb(void* r _U_, const char** err _U_) {
++static void* user_copy_cb(void* dest, const void* orig, unsigned len _U_) 
++{
++  const user_encap_t *o = orig;
++  user_encap_t *d = dest;
++
++  d->payload_proto_name = g_strdup(o->payload_proto_name);
++  d->header_proto_name  = g_strdup(o->header_proto_name);
++  d->trailer_proto_name = g_strdup(o->trailer_proto_name);
++
++  return d;
+ }
+ 
++static void user_free_cb(void* record)
++{
++  user_encap_t *u = record;
++
++  if (u->payload_proto_name) g_free(u->payload_proto_name);
++  if (u->header_proto_name)  g_free(u->header_proto_name);
++  if (u->trailer_proto_name) g_free(u->trailer_proto_name);
++}
++
+ UAT_VS_DEF(user_encap, encap, user_encap_t, WTAP_ENCAP_USER0, ENCAP0_STR)
+ UAT_PROTO_DEF(user_encap, payload_proto, payload_proto, payload_proto_name, user_encap_t)
+ UAT_DEC_CB_DEF(user_encap, header_size, user_encap_t)
+@@ -177,9 +195,9 @@
+ 						 &num_encaps,
+ 						 UAT_CAT_FFMT,
+ 						 "ChUserDLTsSection",
++						 user_copy_cb,
+ 						 NULL,
+-						 user_update_cb,
+-						 NULL,
++						 user_free_cb,
+ 						 user_flds );
+ 	
+ 	prefs_register_uat_preference(module,

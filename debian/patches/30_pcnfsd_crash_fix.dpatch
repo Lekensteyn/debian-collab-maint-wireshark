@@ -1,0 +1,84 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 24__pcnfsd_crash_fix.dpatch by  <eblircz@oceanus.sz13.dyndns.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Fix buffer allocation to prevent crash
+
+@DPATCH@
+
+Index: trunk/epan/dissectors/packet-pcnfsd.c
+===================================================================
+--- trunk/epan/dissectors/packet-pcnfsd.c	(revision 28127)
++++ trunk/epan/dissectors/packet-pcnfsd.c	(revision 28128)
+@@ -211,7 +211,10 @@
+ 	}
+ 
+ 	if (ident) {
+-		pcnfsd_decode_obscure(ident, strlen(ident));
++		/* Only attempt to decode the ident if it has been specified */
++		if (strcmp(ident, RPC_STRING_EMPTY))	
++			pcnfsd_decode_obscure(ident, (int)strlen(ident));
++
+ 		if (ident_tree)
+ 			proto_tree_add_string(ident_tree,
+ 				hf_pcnfsd_auth_ident_clear,
+@@ -238,7 +241,10 @@
+ 	}
+ 
+ 	if (password) {
+-		pcnfsd_decode_obscure(password, strlen(password));
++		/* Only attempt to decode the password if it has been specified */
++		if (strcmp(password, RPC_STRING_EMPTY))	
++			pcnfsd_decode_obscure(password, (int)strlen(password));
++
+ 		if (password_tree)
+ 			proto_tree_add_string(password_tree,
+ 				hf_pcnfsd_auth_password_clear,
+Index: trunk/epan/dissectors/packet-rpc.c
+===================================================================
+--- trunk/epan/dissectors/packet-rpc.c	(revision 28127)
++++ trunk/epan/dissectors/packet-rpc.c	(revision 28128)
+@@ -626,24 +626,21 @@
+ 				char *formatted;
+ 
+ 				formatted = format_text(string_buffer, strlen(string_buffer));
+-				/* alloc maximum data area */
+-#define STRING_BUFFER_PRINT_MAX_LEN (strlen(formatted)+12+1)
+-				string_buffer_print = (char*)ep_alloc(STRING_BUFFER_PRINT_MAX_LEN);
+ 				/* copy over the data and append <TRUNCATED> */
+-				g_snprintf(string_buffer_print, STRING_BUFFER_PRINT_MAX_LEN, "%s<TRUNCATED>", formatted);
++				string_buffer_print=ep_strdup_printf("%s%s", formatted, RPC_STRING_TRUNCATED);
+ 			} else {
+-				string_buffer_print="<DATA><TRUNCATED>";
++				string_buffer_print=RPC_STRING_DATA RPC_STRING_TRUNCATED;
+ 			}
+ 		} else {
+ 			if (string_data) {
+ 				string_buffer_print =
+ 				    ep_strdup(format_text(string_buffer, strlen(string_buffer)));
+ 			} else {
+-				string_buffer_print="<DATA>";
++				string_buffer_print=RPC_STRING_DATA;
+ 			}
+ 		}
+ 	} else {
+-		string_buffer_print="<EMPTY>";
++		string_buffer_print=RPC_STRING_EMPTY;
+ 	}
+ 
+ 	if (tree) {
+Index: trunk/epan/dissectors/packet-rpc.h
+===================================================================
+--- trunk/epan/dissectors/packet-rpc.h	(revision 28127)
++++ trunk/epan/dissectors/packet-rpc.h	(revision 28128)
+@@ -93,6 +93,10 @@
+ #define AUTHDES_NAMEKIND_FULLNAME 0
+ #define AUTHDES_NAMEKIND_NICKNAME 1
+ 
++#define RPC_STRING_EMPTY "<EMPTY>"
++#define RPC_STRING_DATA "<DATA>"
++#define RPC_STRING_TRUNCATED "<TRUNCATED>"
++
+ extern value_string rpc_authgss_svc[];
+ typedef enum {
+ 	FLAVOR_UNKNOWN,		/* authentication flavor unknown */
