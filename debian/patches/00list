@@ -9,3 +9,5 @@
 #17_clique_rm_support
 19_umask
 20_sigpipe.dpatch
+22_detect-gnutls-with-pkg-config.dpatch
+
