@@ -1,4 +1,4 @@
-wireshark (1.0.8-2) UNRELEASED; urgency=low
+wireshark (1.0.8-2) unstable; urgency=low
 
   * detect gnutls using pkg-config (Closes: #529913)
      Thanks to Andreas Metzler for the patch.
