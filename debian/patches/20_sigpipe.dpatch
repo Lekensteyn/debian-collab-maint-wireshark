@@ -1,5 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## 20_sigpipe.dpatch by  <james.westby@canonical.com>
+## 20_sigpipe.dpatch based on patch by <james.westby@canonical.com>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Restore the default SIGPIPE action so that if a parent blocks
@@ -7,29 +7,13 @@
 ## DP: and so don't hang when the capture preview window is closed.
 
 @DPATCH@
-diff -urNad wireshark-1.0.3~/capture_opts.c wireshark-1.0.3/capture_opts.c
---- wireshark-1.0.3~/capture_opts.c	2008-10-09 16:02:12.000000000 +0100
-+++ wireshark-1.0.3/capture_opts.c	2008-10-09 16:13:54.000000000 +0100
-@@ -59,6 +59,7 @@
- # include "inet_v6defs.h"
- #endif
- 
-+#include <signal.h>
- #include <glib.h>
- 
- #include <epan/packet.h>
-@@ -755,6 +756,14 @@
-             "Dropped");
-     }
- 
-+#ifndef _WIN32
-+    /* handle SIGPIPE signal to default action */
-+    struct sigaction act;
-+    act.sa_handler = SIG_DFL;
-+    sigemptyset(&act.sa_mask);
-+    sigaction(SIGPIPE,&act,NULL);
-+#endif	
-+
-     while (1) {    /* XXX - Add signal handling? */
-         for (stat_entry = g_list_first(stat_list); stat_entry != NULL; stat_entry = g_list_next(stat_entry)) {
-             if_stat = stat_entry->data;
+--- trunk-ref/dumpcap.c	(revision 28548)
++++ trunk/dumpcap.c	(revision 28549)
+@@ -2629,6 +2618,7 @@
+   sigemptyset(&action.sa_mask);
+   sigaction(SIGTERM, &action, NULL);
+   sigaction(SIGINT, &action, NULL);
++  sigaction(SIGPIPE, &action, NULL);
+   sigaction(SIGHUP, NULL, &oldaction);
+   if (oldaction.sa_handler == SIG_DFL)
+     sigaction(SIGHUP, &action, NULL);

@@ -3,6 +3,7 @@ wireshark (1.0.8-2) UNRELEASED; urgency=low
   * detect gnutls using pkg-config (Closes: #529913)
      Thanks to Andreas Metzler for the patch.
   * depend on libsmi2-dev (Closes: #490429)
+  * updated sigpipe patch to match upstream's latest solution
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 30 Jun 2009 12:55:39 -0700
 
