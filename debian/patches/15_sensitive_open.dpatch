@@ -7,18 +7,19 @@
 ## DP: closes: #439198
 
 @DPATCH@
-diff -urNad wireshark-0.99.6~/gtk/capture_file_dlg.c wireshark-0.99.6/gtk/capture_file_dlg.c
---- wireshark-0.99.6~/gtk/capture_file_dlg.c	2007-07-05 19:22:28.000000000 +0000
-+++ wireshark-0.99.6/gtk/capture_file_dlg.c	2007-08-23 10:09:17.000000000 +0000
-@@ -339,7 +339,11 @@
+diff -urNad wireshark-1.2.0~/gtk/capture_file_dlg.c wireshark-1.2.0/gtk/capture_file_dlg.c
+--- wireshark-1.2.0~/gtk/capture_file_dlg.c	2009-06-30 22:09:03.000000000 -0700
++++ wireshark-1.2.0/gtk/capture_file_dlg.c	2009-06-30 22:10:24.000000000 -0700
+@@ -338,8 +338,12 @@
+     gtk_widget_set_sensitive(prev, have_preview);
  
      /* make the open/save/... dialog button sensitive */
- #if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION >= 4) || GTK_MAJOR_VERSION > 2
 +    /* don't make the open button unsensitive with the new GtkFileChooser
 +     * dialog since filename can also be changed from the location bar */
 +    /*
+ 
      gtk_dialog_set_response_sensitive(file_sel, GTK_RESPONSE_ACCEPT, have_preview);
 +    */
- #else
-     gtk_widget_set_sensitive(GTK_FILE_SELECTION(file_sel)->ok_button, have_preview);
- #endif
+ 
+     /* do the actual preview */
+     if(have_preview)

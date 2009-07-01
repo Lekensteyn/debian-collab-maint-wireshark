@@ -2,7 +2,8 @@
 ## 09_idl2wrs.dpatch by  <fpeters@debian.org>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: Do not try to locate wireshark_be.py and wireshark_gen.py in
+## DP: in non-standard places
 
 @DPATCH@
 diff -urNad wireshark-0.99.5~/tools/idl2wrs.sh.in wireshark-0.99.5/tools/idl2wrs.sh.in
