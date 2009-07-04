@@ -6,7 +6,6 @@
 09_idl2wrs
 15_sensitive_open
 16_licence_about_location
-#17_clique_rm_support
 19_umask
 20_sigpipe.dpatch
 22_detect-gnutls-with-pkg-config.dpatch
