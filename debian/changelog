@@ -3,7 +3,7 @@ wireshark (1.2.0-1) UNRELEASED; urgency=low
   * New upstream release 1.2.0
     - release notes:
       http://www.wireshark.org/docs/relnotes/wireshark-1.2.0.html
-    (Closes: #487613, #520884, #482545, #376405)
+    (Closes: #487613, #520884, #482545, #376405, #512298)
   * use c-ares instead of adns (Closes: #427928, #411265)
   * depend on libgeoip1 to make use of brand new GeoIP support in 1.2.0 
   * added description for 09_idl2wrs.dpatch
