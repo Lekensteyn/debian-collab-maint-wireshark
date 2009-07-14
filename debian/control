@@ -10,7 +10,7 @@ XS-Python-Version: all
 
 Package: wireshark-common
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, libsmi2-common
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
 Replaces: ethereal-common (<< 1.0.0-3)
 Conflicts: ethereal-common (<< 1.0.0-3)

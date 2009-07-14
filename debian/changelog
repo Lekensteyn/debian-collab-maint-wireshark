@@ -1,4 +1,4 @@
-wireshark (1.2.0-1) UNRELEASED; urgency=low
+wireshark (1.2.0-1) unstable; urgency=low
 
   * New upstream release 1.2.0
     - release notes:
@@ -9,6 +9,7 @@ wireshark (1.2.0-1) UNRELEASED; urgency=low
   * added description for 09_idl2wrs.dpatch
   * recommend menu instead of gksu (Closes: #524360)
   * dropped Clique RM dissector patch as it is still not integrated upstream
+  * depend on libsmi2-common
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 30 Jun 2009 20:48:16 -0700
 
