@@ -5,6 +5,6 @@
 /usr/lib/wireshark/libwireshark.la
 /usr/lib/wireshark/libwiretap.so
 /usr/lib/wireshark/libwiretap.la
-/usr/lib/python2.3/*
+/usr/lib/python2.4/*
 /usr/include/wireshark/*
 

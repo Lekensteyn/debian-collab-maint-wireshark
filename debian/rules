@@ -98,7 +98,7 @@ install: build
 	ln -s /etc/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/usr/share/wireshark/init.lua
 	cp $(CURDIR)/tools/wireshark_be.py $(CURDIR)/tools/wireshark_gen.py \
-			$(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
+		$(CURDIR)/tools/asn2wrs.py $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
 	mkdir -p $(CURDIR)/debian/tmp/usr/include/wireshark/
 	for F in `cat debian/wireshark-dev.header-files`; do \
 		cp --parents $$F $(CURDIR)/debian/tmp/usr/include/wireshark; \
