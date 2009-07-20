@@ -9,4 +9,5 @@
 19_umask
 20_sigpipe.dpatch
 22_detect-gnutls-with-pkg-config.dpatch
+23_lintian-overrides.dpatch
 

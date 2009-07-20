@@ -11,5 +11,6 @@
 /usr/lib/wireshark/libwsutil.so.0
 /usr/lib/wireshark/libwsutil.so.0.0.0
 /usr/lib/wireshark/plugins/*
+/usr/share/lintian/overrides/wireshark-common
 /usr/share/wireshark/*
 /etc/wireshark/init.lua

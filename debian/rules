@@ -92,6 +92,11 @@ install: build
 	mkdir -p $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
 	install -m 755 $(CURDIR)/idl2deb $(CURDIR)/debian/tmp/usr/bin/
 	install -m 755 $(CURDIR)/asn2deb $(CURDIR)/debian/tmp/usr/bin/
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/lintian/overrides/
+	install -m 644 $(CURDIR)/tshark.lintian-overrides \
+		$(CURDIR)/debian/tmp/usr/share/lintian/overrides/tshark
+	install -m 644 $(CURDIR)/wireshark-common.lintian-overrides \
+		$(CURDIR)/debian/tmp/usr/share/lintian/overrides/wireshark-common
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
 	mv $(CURDIR)/debian/tmp/usr/share/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/etc/wireshark/
