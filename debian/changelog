@@ -1,8 +1,17 @@
-wireshark (1.2.1-1) unstable; urgency=low
+wireshark (1.2.1-1) unstable; urgency=high
 
   * New upstream release 1.2.1
     - release notes:
       http://www.wireshark.org/docs/relnotes/wireshark-1.2.1.html
+    - security fixes
+       - The IPMI dissector could overrun a buffer. (CVE-2009-2559)
+       - The AFS dissector could crash. (CVE-2009-2562)
+       - The Infiniband dissector could crash on some platforms. (CVE-2009-2563)
+       - The Bluetooth L2CAP dissector could crash. (CVE-2009-2560)
+       - The RADIUS dissector could crash. (CVE-2009-2560)
+       - The MIOP dissector could crash. (CVE-2009-2560)
+       - The sFlow dissector could use excessive CPU and memory. (CVE-2009-2561)
+    (Closes: #538237)
   * dropped gnutls pkg-config patch as it has been integrated upstream
   * include asn2wrs.py (Closes: #518441)
   * fix inclusion of Python modules wireshark_be.py and wireshark_gen.py
