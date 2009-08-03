@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+GROUP=wireshark
+
+if [ "$1" = "purge" ] ; then
+      if getent group $GROUP >/dev/null; then
+                if [ -x /usr/sbin/delgroup ]; then
+                        delgroup --system $GROUP
+                fi
+        fi
+fi
+
+#DEBHELPER#

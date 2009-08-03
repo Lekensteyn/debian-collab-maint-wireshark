@@ -4,13 +4,13 @@ Priority: optional
 Maintainer: Frederic Peters <fpeters@debian.org>
 Uploaders: Joost Yervante Damad <andete@debian.org>
 Standards-Version: 3.8.2
-Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, dpatch, debhelper (>= 6), libtool, python, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libpcre3-dev, libcap2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], bison, libgnutls-dev, python-support (>= 0.3), portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev
+Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, dpatch, debhelper (>= 6), po-debconf, libtool, python, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libpcre3-dev, libcap2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], bison, libgnutls-dev, python-support (>= 0.3), portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev
 Build-Conflicts: libsnmp4.2-dev, libsnmp-dev
 XS-Python-Version: all
 
 Package: wireshark-common
 Architecture: any
-Depends: ${shlibs:Depends}, libsmi2-common
+Depends: ${shlibs:Depends}, ${misc:Depends}, libsmi2-common, debconf
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
 Replaces: ethereal-common (<< 1.0.0-3)
 Conflicts: ethereal-common (<< 1.0.0-3)
@@ -25,7 +25,7 @@ Description: network traffic analyser (common files)
 
 Package: wireshark
 Architecture: any
-Depends: ${shlibs:Depends}, wireshark-common (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, wireshark-common (= ${binary:Version})
 Recommends: menu
 Replaces: ethereal (<< 1.0.0-3)
 Conflicts: ethereal (<< 1.0.0-3)
@@ -39,7 +39,7 @@ Description: network traffic analyzer
 
 Package: tshark
 Architecture: any
-Depends: ${shlibs:Depends}, wireshark-common (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, wireshark-common (= ${binary:Version})
 Replaces: tethereal (<< 1.0.0-3)
 Conflicts: tethereal (<< 1.0.0-3)
 Description: network traffic analyzer (console)
@@ -54,7 +54,7 @@ Description: network traffic analyzer (console)
 Package: wireshark-dev
 Architecture: any
 Section: devel
-Depends: ${shlibs:Depends}, omniidl4 (>= 4.0.1-2), libpcap0.8-dev, libtool, libglib2.0-dev, ${python:Depends}, snacc, autotools-dev, debhelper, cdbs, automake1.9, autoconf
+Depends: ${shlibs:Depends}, ${misc:Depends}, omniidl4 (>= 4.0.1-2), libpcap0.8-dev, libtool, libglib2.0-dev, ${python:Depends}, snacc, autotools-dev, debhelper, cdbs, automake1.9, autoconf
 Replaces: ethereal-dev (<< 1.0.0-3)
 Conflicts: ethereal-dev (<< 1.0.0-3)
 XB-Python-Version: ${python:Versions}
