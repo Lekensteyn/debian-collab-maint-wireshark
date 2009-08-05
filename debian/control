@@ -26,7 +26,6 @@ Description: network traffic analyser (common files)
 Package: wireshark
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, wireshark-common (= ${binary:Version})
-Recommends: menu
 Replaces: ethereal (<< 1.0.0-3)
 Conflicts: ethereal (<< 1.0.0-3)
 Description: network traffic analyzer
