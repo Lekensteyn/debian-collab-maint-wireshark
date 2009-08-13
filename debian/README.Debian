@@ -10,6 +10,10 @@ will be used for capturing and displaying packets at the same time, since
 that way only the dumpcap process has to be run with root privileges 
 thanks to the privilege separation[1].
 
+Note that no user will be added to gro up wireshark automatically, the system
+administrator has to add them manually.
+
+
 II. Installing dumpcap without SETUID bit set
 
 Only root user will be able to capture packets. It is advised to capture
