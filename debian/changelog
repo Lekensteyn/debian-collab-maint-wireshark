@@ -1,7 +1,8 @@
-wireshark (1.2.1-2) UNRELEASED; urgency=low
+wireshark (1.2.1-2) unstable; urgency=low
 
   * added option to install dumpcap with setuid root
   * removed wireshark-root.desktop to discourage running Wireshark as root
+  * dropped umask patch
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 28 Jul 2009 18:30:03 +0200
 
