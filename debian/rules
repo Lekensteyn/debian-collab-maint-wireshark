@@ -5,6 +5,7 @@
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
+export DEB_BUILD_HARDENING=1
 
 include /usr/share/dpatch/dpatch.make 
 DB2MAN=/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl
