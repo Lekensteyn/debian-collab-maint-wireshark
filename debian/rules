@@ -11,15 +11,15 @@ include /usr/share/dpatch/dpatch.make
 DB2MAN=/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl
 
 
-DEB_HOST_GNU_TYPE       ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-DEB_BUILD_GNU_TYPE      ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_ARCH_CPU       ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU)
+DEB_BUILD_ARCH_CPU      ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH_CPU)
 
 PYTHON_VERSION=python2.4
 
 CFLAGS=-g -O2
 
 # Enable IEEE-conformant floating point math on alphas (not the default)
-ifeq (alpha-linux,$(DEB_HOST_GNU_TYPE))
+ifeq (alpha,$(DEB_HOST_ARCH_CPU))
   CFLAGS += -mieee
 endif
 
