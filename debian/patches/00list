@@ -6,5 +6,6 @@
 09_idl2wrs
 15_sensitive_open
 16_licence_about_location
+21_dumpcap
 23_lintian-overrides.dpatch
 
