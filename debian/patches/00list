@@ -6,6 +6,5 @@
 09_idl2wrs
 15_sensitive_open
 16_licence_about_location
-20_sigpipe.dpatch
 23_lintian-overrides.dpatch
 

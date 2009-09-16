@@ -1,5 +1,13 @@
-wireshark (1.2.1-3) UNRELEASED; urgency=low
+wireshark (1.2.2-1) unstable; urgency=high
 
+  * New upstream release 1.2.2
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.2.2.html
+    - security fixes
+       - The GSM A RR dissector could crash.
+       - The OpcUa dissector could use excessive CPU and memory.
+       - The TLS dissector could crash on some platforms.
+  * dropped sigpipe patch as it has been integrated upstream
   * debian/{control,rules}: add and enable hardened build for PIE
     Thanks to Kees Cook <kees@ubuntu.com> for the patch. (Closes: #542736)
   * added Czech and Russian translation of debconf templates
