@@ -1,4 +1,4 @@
-wireshark (1.2.2-1) unstable; urgency=high
+wireshark (1.2.2-1) UNRELEASED; urgency=high
 
   * New upstream release 1.2.2
     - release notes:
@@ -10,9 +10,6 @@ wireshark (1.2.2-1) unstable; urgency=high
   * dropped sigpipe patch as it has been integrated upstream
   * debian/{control,rules}: add and enable hardened build for PIE
     Thanks to Kees Cook <kees@ubuntu.com> for the patch. (Closes: #542736)
-  * added Czech and Russian translation of debconf templates
-    Thanks to Michal Simunek <michal.simunek@gmail.com> and 
-    Yuri Kozlov <yuray@komyakino.ru>. (Closes: #543535, #545213)
   * update standards-version to 3.8.3
   * applied dumpcap patch that was added to source package in 1.0.7-1 
     but was not applied during build
