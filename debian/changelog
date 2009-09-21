@@ -4,9 +4,10 @@ wireshark (1.2.2-1) UNRELEASED; urgency=high
     - release notes:
       http://www.wireshark.org/docs/relnotes/wireshark-1.2.2.html
     - security fixes
-       - The GSM A RR dissector could crash.
-       - The OpcUa dissector could use excessive CPU and memory.
+       - The GSM A RR dissector could crash. (CVE-2009-3242)
+       - The OpcUa dissector could use excessive CPU and memory. (CVE-2009-3241)
        - The TLS dissector could crash on some platforms.
+    (Closes: #547704)
   * dropped sigpipe patch as it has been integrated upstream
   * debian/{control,rules}: add and enable hardened build for PIE
     Thanks to Kees Cook <kees@ubuntu.com> for the patch. (Closes: #542736)
