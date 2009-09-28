@@ -1,0 +1,19 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 13_secu_0.99.6_bug-1415.dpatch by  <fpeters@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backport of r20990 to 0.99.4
+
+@DPATCH@
+diff -urNad wireshark-0.99.4~/wiretap/iseries.c wireshark-0.99.4/wiretap/iseries.c
+--- wireshark-0.99.4~/wiretap/iseries.c	2006-10-31 18:59:54.000000000 +0100
++++ wireshark-0.99.4/wiretap/iseries.c	2007-06-23 12:34:58.021913467 +0200
+@@ -254,7 +254,7 @@
+ {
+   guint line;
+   int num_items_scanned;
+-  char buf[ISERIES_LINE_LENGTH], protocol[8], tcpformat[1];
++  char buf[ISERIES_LINE_LENGTH], protocol[9], tcpformat[2];
+   guint8 *sdate;
+ 
+   /* Save trace format for passing between packets */

@@ -1,0 +1,86 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 12_secu_0.99.5_r20007.dpatch by  <fpeters@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backport of r20007 to 0.99.4
+
+@DPATCH@
+diff -urNad wireshark-0.99.4~/epan/dissectors/packet-llt.c wireshark-0.99.4/epan/dissectors/packet-llt.c
+--- wireshark-0.99.4~/epan/dissectors/packet-llt.c	2006-10-31 18:59:06.000000000 +0100
++++ wireshark-0.99.4/epan/dissectors/packet-llt.c	2007-01-19 22:03:03.129443851 +0100
+@@ -73,16 +73,16 @@
+ 	proto_item *ti=NULL;
+ 	proto_tree *llt_tree=NULL;
+ 	guint8 message_type;
+-	
++
+ 	/* Make entries in Protocol column and Info column on summary display */
+-	if(check_col(pinfo->cinfo, COL_PROTOCOL)) 
++	if(check_col(pinfo->cinfo, COL_PROTOCOL))
+ 		col_set_str(pinfo->cinfo, COL_PROTOCOL, "LLT");
+ 
+ 	message_type = tvb_get_guint8(tvb, 3);
+ 
+ 	if(check_col(pinfo->cinfo, COL_INFO)) {
+ 		col_clear(pinfo->cinfo, COL_INFO);
+-		col_add_fstr(pinfo->cinfo, COL_INFO, "Message type: %s", match_strval(message_type, message_type_vs));
++		col_add_fstr(pinfo->cinfo, COL_INFO, "Message type: %s", val_to_str(message_type, message_type_vs, "Unknown (0x%02x)"));
+ 	}
+ 
+ 	if (tree) {
+@@ -95,38 +95,38 @@
+ 	proto_tree_add_item(llt_tree, hf_llt_node_id, tvb, 7, 1, FALSE);
+ 	proto_tree_add_item(llt_tree, hf_llt_sequence_num, tvb, 24, 4, FALSE);
+ 	proto_tree_add_item(llt_tree, hf_llt_message_time, tvb, 40, 4, FALSE);
+-	
++
+ }
+ 
+ /* Register the protocol with Wireshark */
+ void
+ proto_register_llt(void)
+-{                 
++{
+ 	module_t *llt_module;
+ 
+ 	static hf_register_info hf[] = {
+-		
++
+ 		{ &hf_llt_cluster_num,  { "Cluster number", "llt.cluster_num",
+ 					  FT_UINT8, BASE_DEC, NULL, 0,
+ 					  "Cluster number that this node belongs to", HFILL } },
+-		
++
+ 		{ &hf_llt_message_type, { "Message type", "llt.message_type",
+ 					  FT_UINT8, BASE_HEX, VALS(message_type_vs), 0,
+ 					  "Type of LLT message contained in this frame", HFILL } },
+-		
++
+ 		{ &hf_llt_node_id,      { "Node ID", "llt.node_id",
+ 					  FT_UINT8, BASE_DEC, NULL, 0,
+ 					  "Number identifying this node within the cluster", HFILL } },
+-		
++
+ 		{ &hf_llt_sequence_num, { "Sequence number", "llt.sequence_num",
+ 					  FT_UINT32, BASE_DEC, NULL, 0,
+ 					  "Sequence number of this frame", HFILL } },
+-		
++
+ 		{ &hf_llt_message_time, { "Message time", "llt.message_time",
+ 					  FT_UINT32, BASE_DEC, NULL, 0,
+ 					  "Number of ticks since this node was last rebooted", HFILL } }
+ 	};
+-	
++
+ 	/* Setup protocol subtree array */
+ 	static gint *ett[] = {
+ 		&ett_llt,
+@@ -156,7 +156,7 @@
+ 	llt_handle = create_dissector_handle(dissect_llt, proto_llt);
+ 	dissector_add("ethertype", ETHERTYPE_LLT, llt_handle);
+ 
+-	if((preference_alternate_ethertype != 0xCAFE) 
++	if((preference_alternate_ethertype != 0xCAFE)
+ 	&& (preference_alternate_ethertype != 0x0)){
+ 		dissector_delete("ethertype", preference_alternate_ethertype_last, llt_handle);
+ 		preference_alternate_ethertype_last = preference_alternate_ethertype; /* Save the setting to see if it has changed later */

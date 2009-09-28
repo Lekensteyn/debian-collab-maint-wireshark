@@ -1,0 +1,102 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 12_secu_0.99.5_r19859.dpatch by  <fpeters@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backport of r19859 to 0.99.4
+
+@DPATCH@
+diff -urNad wireshark-0.99.4~/epan/dissectors/packet-tcp.c wireshark-0.99.4/epan/dissectors/packet-tcp.c
+--- wireshark-0.99.4~/epan/dissectors/packet-tcp.c	2006-10-31 18:59:05.000000000 +0100
++++ wireshark-0.99.4/epan/dissectors/packet-tcp.c	2007-01-19 21:59:42.193993192 +0100
+@@ -374,6 +374,7 @@
+ 	msp->first_frame=pinfo->fd->num;
+ 	msp->last_frame=pinfo->fd->num;
+ 	msp->last_frame_time=pinfo->fd->abs_ts;
++	msp->flags=0;
+ 	se_tree_insert32(tcpd->fwd->multisegment_pdus, seq, (void *)msp);
+ 	return msp;
+ }
+@@ -1096,7 +1097,14 @@
+ 		/* OK, this PDU was found, which means the segment continues
+ 		   a higher-level PDU and that we must desegment it.
+ 		*/
+-		len=MIN(nxtseq, msp->nxtpdu) - seq;
++		if(msp->flags&MSP_FLAGS_REASSEMBLE_ENTIRE_SEGMENT){
++			/* The dissector asked for the entire segment */
++			len=tvb_length_remaining(tvb, offset);
++			msp->flags&=(~MSP_FLAGS_REASSEMBLE_ENTIRE_SEGMENT);
++		} else {
++			len=MIN(nxtseq, msp->nxtpdu) - seq;
++		}
++
+ 		ipfd_head = fragment_add(tvb, offset, pinfo, msp->first_frame,
+ 			tcp_fragment_table,
+ 			seq - msp->seq,
+@@ -1317,8 +1325,20 @@
+ 
+ 	    if( ((nxtseq - deseg_seq) <= 1024*1024)
+ 	    &&  (!pinfo->fd->flags.visited) ){
+-		msp = pdu_store_sequencenumber_of_next_pdu(pinfo, deseg_seq,
+-			nxtseq + pinfo->desegment_len, tcpd);
++		if(pinfo->desegment_len==DESEGMENT_ONE_MORE_SEGMENT){
++			/* The subdissector asked to reassemble using the
++			 * entire next segment.
++			 * Just ask reassembly for one more byte
++			 * but set this msp flag so we can pick it up
++			 * above.
++			 */
++			msp = pdu_store_sequencenumber_of_next_pdu(pinfo, 
++				deseg_seq, nxtseq+1, tcpd);
++			msp->flags|=MSP_FLAGS_REASSEMBLE_ENTIRE_SEGMENT;
++		} else {
++			msp = pdu_store_sequencenumber_of_next_pdu(pinfo, 
++				deseg_seq, nxtseq+pinfo->desegment_len, tcpd);
++		}
+ 
+ 		/* add this segment as the first one for this new pdu */
+ 		fragment_add(tvb, deseg_offset, pinfo, msp->first_frame,
+diff -urNad wireshark-0.99.4~/epan/dissectors/packet-tcp.h wireshark-0.99.4/epan/dissectors/packet-tcp.h
+--- wireshark-0.99.4~/epan/dissectors/packet-tcp.h	2006-10-31 18:59:05.000000000 +0100
++++ wireshark-0.99.4/epan/dissectors/packet-tcp.h	2007-01-19 21:59:46.786254890 +0100
+@@ -116,6 +116,8 @@
+ 	guint32 first_frame;
+ 	guint32 last_frame;
+         nstime_t last_frame_time;
++	guint32 flags;
++#define MSP_FLAGS_REASSEMBLE_ENTIRE_SEGMENT	0x00000001
+ };
+ 
+ typedef struct _tcp_flow_t {
+diff -urNad wireshark-0.99.4~/epan/packet_info.h wireshark-0.99.4/epan/packet_info.h
+--- wireshark-0.99.4~/epan/packet_info.h	2006-10-31 18:59:14.000000000 +0100
++++ wireshark-0.99.4/epan/packet_info.h	2007-01-19 21:59:38.257768880 +0100
+@@ -91,7 +91,7 @@
+ 				   or 
+ 				   DESEGMENT_ONE_MORE_SEGMENT:
+ 				     Desegment one more full segment 
+-				     (not yet implemented)
++				     (warning! only partially implemented)
+ 				   DESEGMENT_UNTIL_FIN:
+ 				     Desgment all data for this tcp session 
+ 				     until the FIN segment.
+diff -urNad wireshark-0.99.4~/epan/req_resp_hdrs.c wireshark-0.99.4/epan/req_resp_hdrs.c
+--- wireshark-0.99.4~/epan/req_resp_hdrs.c	2006-10-31 18:59:13.000000000 +0100
++++ wireshark-0.99.4/epan/req_resp_hdrs.c	2007-01-19 21:59:34.253540692 +0100
+@@ -107,7 +107,7 @@
+ 			 */
+ 			if (reported_length_remaining < 1) {
+ 				pinfo->desegment_offset = offset;
+-				pinfo->desegment_len = 1;
++				pinfo->desegment_len = DESEGMENT_ONE_MORE_SEGMENT;
+ 				return FALSE;
+ 			}
+ 
+@@ -124,7 +124,7 @@
+ 				 * byte.
+ 				 */
+ 				pinfo->desegment_offset = offset;
+-				pinfo->desegment_len = 1;
++				pinfo->desegment_len = DESEGMENT_ONE_MORE_SEGMENT;
+ 				return FALSE;
+ 			} else if (linelen == 0) {
+ 				/*

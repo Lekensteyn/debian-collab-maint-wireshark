@@ -1,0 +1,19 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 13_secu_0.99.6_bug-1416.dpatch by  <fpeters@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backport of r21947 to 0.99.4
+
+@DPATCH@
+diff -urNad wireshark-0.99.4~/epan/dissectors/packet-bootp.c wireshark-0.99.4/epan/dissectors/packet-bootp.c
+--- wireshark-0.99.4~/epan/dissectors/packet-bootp.c	2006-10-31 18:59:08.000000000 +0100
++++ wireshark-0.99.4/epan/dissectors/packet-bootp.c	2007-06-23 12:36:59.528837752 +0200
+@@ -2348,7 +2348,7 @@
+ 	unsigned long raw_val;
+ 	int off = DOCS_CM_TLV_OFF + voff;
+ 	int tlv_len, i;
+-	guint8 asc_val[3] = "  ";
++	guint8 asc_val[4] = "  ";
+ 	proto_item *ti;
+ 
+ 	tvb_memcpy (tvb, asc_val, off, 2);
