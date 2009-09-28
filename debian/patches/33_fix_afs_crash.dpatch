@@ -1,0 +1,36 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 33_fix_afs_crash.dpatch by  <balint@balintreczey.hu>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Fix crash in AFS dissector
+
+@DPATCH@
+
+--- wireshark-1.0.2/epan/dissectors/packet-afs.c.orig	2009-09-28 13:19:22.000000000 +0200
++++ wireshark-1.0.2/epan/dissectors/packet-afs.c	2009-09-28 13:23:37.000000000 +0200
+@@ -414,19 +414,12 @@
+ /* Output a rx style string, up to a maximum length first
+    4 bytes - length, then char data */
+ #define OUT_RXString(field) \
+-	{	guint32 i,len; \
+-		char *tmp; \
+-		const guint8 *p; \
+-		i = tvb_get_ntohl(tvb, offset); \
+-		offset += 4; \
+-		p = tvb_get_ptr(tvb,offset,i); \
+-		len = ((i+4-1)/4)*4; \
+-		tmp = ep_alloc(i+1); \
+-		memcpy(tmp, p, i); \
+-		tmp[i] = '\0'; \
+-		proto_tree_add_string(tree, field, tvb, offset-4, len+4, \
+-		(void *)tmp); \
+-		offset += len; \
++	{	guint32 i_orxs,len_orxs; \
++		i_orxs = tvb_get_ntohl(tvb, offset); \
++		len_orxs = ((i_orxs+4-1)/4)*4 + 4; \
++		proto_tree_add_item(tree, field, tvb, offset-4, len_orxs, \
++		FALSE); \
++		offset += len_orxs; \
+ 	}
+ 
+ /* Output a fixed length vectorized string (each char is a 32 bit int) */

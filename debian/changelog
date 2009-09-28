@@ -1,14 +1,17 @@
-wireshark (1.0.2-3+lenny7) stable-security; urgency=high
+wireshark (1.0.2-3+lenny6) UNRELEASED; urgency=high
 
-  * apply security patches from Wireshark 1.0.8 correctly (Closes: #533347)
+  * security fixes from Wireshark 1.0.8 and 1.0.9:
+    - The PCNFSD dissector could crash 
+    - The AFS dissector could crash (CVE-2009-2562)
+    - The OpcUa dissector could use excessive CPU and memory
+   (Closes: #533347)
+  * stability fixes from Wireshark 1.0.8:
+    - The SCCP dissector could crash when loading more than one file in a 
+      single session
+    - The NDMP dissector could crash if reassembly was enabled
+    - Fix memory leak in DCM dissector
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 27 Jun 2009 16:58:45 -0700
-
-wireshark (1.0.2-3+lenny6) stable-security; urgency=high
-
-  * Security fixes from Wireshark 1.0.8 (Closes: #533347)
-
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 26 Jun 2009 20:05:13 -0700
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 28 Sep 2009 13:05:13 +0100
 
 wireshark (1.0.2-3+lenny5) stable-security; urgency=high
 

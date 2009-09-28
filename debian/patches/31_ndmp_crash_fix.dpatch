@@ -1,5 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## 25_ndmp_crash_fix.dpatch by  <eblircz@oceanus.sz13.dyndns.org>
+## 25_ndmp_crash_fix.dpatch by  <balint@balintreczey.hu>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Check pointers in NDMP dissector to prevent crash
