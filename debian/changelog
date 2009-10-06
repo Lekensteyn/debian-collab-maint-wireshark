@@ -5,11 +5,6 @@ wireshark (1.0.2-3+lenny6) UNRELEASED; urgency=high
     - The AFS dissector could crash (CVE-2009-2562)
     - The OpcUa dissector could use excessive CPU and memory
    (Closes: #533347)
-  * stability fixes from Wireshark 1.0.8:
-    - The SCCP dissector could crash when loading more than one file in a 
-      single session
-    - The NDMP dissector could crash if reassembly was enabled
-    - Fix memory leak in DCM dissector
 
  -- Balint Reczey <balint@balintreczey.hu>  Mon, 28 Sep 2009 13:05:13 +0100
 
