@@ -7,6 +7,7 @@ Standards-Version: 3.8.3
 Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, dpatch, debhelper (>= 6), po-debconf, libtool, python, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libpcre3-dev, libcap2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], bison, libgnutls-dev, python-support (>= 0.3), portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, hardening-wrapper
 Build-Conflicts: libsnmp4.2-dev, libsnmp-dev
 XS-Python-Version: all
+Homepage: http://www.wireshark.org/
 
 Package: wireshark-common
 Architecture: any
@@ -14,11 +15,10 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, libsmi2-common, debconf
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
 Replaces: ethereal-common (<< 1.0.0-3)
 Conflicts: ethereal-common (<< 1.0.0-3)
-Description: network traffic analyser (common files)
- Wireshark is a network traffic analyzer, or "sniffer", for Unix and
- Unix-like operating systems. A sniffer is a tool used to capture 
- packets off the wire. Wireshark decodes numerous protocols (too many
- to list).
+Description: network traffic analyzer - common files
+ Wireshark is a network "sniffer" - a tool that captures and analyzes
+ packets off the wire. Wireshark can decode too many protocols to list
+ here.
  .
  This package provides files common to both wireshark (the GTK+ version)
  and tshark (the console version).
@@ -28,24 +28,22 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, wireshark-common (= ${binary:Version})
 Replaces: ethereal (<< 1.0.0-3)
 Conflicts: ethereal (<< 1.0.0-3)
-Description: network traffic analyzer
- Wireshark is a network traffic analyzer, or "sniffer", for Unix and
- Unix-like operating systems. A sniffer is a tool used to capture 
- packets off the wire. Wireshark decodes numerous protocols (too many
- to list).
+Description: network traffic analyzer - GTK+ version
+ Wireshark is a network "sniffer" - a tool that captures and analyzes
+ packets off the wire. Wireshark can decode too many protocols to list
+ here.
  .
- This package provides wireshark (the GTK+ version)
+ This package provides the GTK+ version of wireshark.
 
 Package: tshark
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, wireshark-common (= ${binary:Version})
 Replaces: tethereal (<< 1.0.0-3)
 Conflicts: tethereal (<< 1.0.0-3)
-Description: network traffic analyzer (console)
- Wireshark is a network traffic analyzer, or "sniffer", for Unix and
- Unix-like operating systems. A sniffer is a tool used to capture 
- packets off the wire. Wireshark decodes numerous protocols (too many
- to list).
+Description: network traffic analyzer - console version
+ Wireshark is a network "sniffer" - a tool that captures and analyzes
+ packets off the wire. Wireshark can decode too many protocols to list
+ here.
  .
  This package provides the console version of wireshark, named
  "tshark".
@@ -57,12 +55,10 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, omniidl4 (>= 4.0.1-2), libpcap0.8-d
 Replaces: ethereal-dev (<< 1.0.0-3)
 Conflicts: ethereal-dev (<< 1.0.0-3)
 XB-Python-Version: ${python:Versions}
-Description: network traffic analyser (development tools)
- Wireshark is a network traffic analyzer, or "sniffer", for Unix and
- Unix-like operating systems. A sniffer is a tool used to capture 
- packets off the wire. Wireshark decodes numerous protocols (too many
- to list).
+Description: network traffic analyzer - development tools
+ Wireshark is a network "sniffer" - a tool that captures and analyzes
+ packets off the wire. Wireshark can decode too many protocols to list
+ here.
  .
- This package provides idl2wrs and other necessary files to develop
+ This package provides idl2wrs and other files necessary for developing
  new packet dissectors.
-

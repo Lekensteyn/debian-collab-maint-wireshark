@@ -1,3 +1,23 @@
+wireshark (1.2.2-2) unstable; urgency=low
+
+  * Debconf templates and debian/control reviewed by the debian-l10n-
+    english team as part of the Smith review project. Closes: #547130
+  * [Debconf translation updates]
+    - German (Helge Kreutzmann).  Closes: #547229
+    - Basque (Piarres Beobide).  Closes: #547268
+    - Portuguese (Pedro Ribeiro).  Closes: #547381
+    - Swedish (Martin Ågren).  Closes: #547383
+    - Vietnamese (Clytie Siddall).  Closes: #547800
+    - French (Simon Paillard).  Closes: #548340
+    - Italian (Luca Monducci).  Closes: #548605
+    - Japanese (Hideki Yamane (Debian-JP)).  Closes: #548655
+    - Spanish (Francisco Javier Cuadrado).  Closes: #548700
+    - Czech (Martin Sin).  Closes: #548728
+    - Russian (Yuri Kozlov).  Closes: #549086
+    - Finnish (Esko Arajärvi).  Closes: #549609
+
+ -- Christian Perrier <bubulle@debian.org>  Thu, 17 Sep 2009 14:06:52 +0200
+
 wireshark (1.2.2-1) unstable; urgency=high
 
   * New upstream release 1.2.2
