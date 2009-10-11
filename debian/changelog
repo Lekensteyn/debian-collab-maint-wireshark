@@ -1,9 +1,9 @@
-wireshark (1.0.2-3+lenny6) UNRELEASED; urgency=high
+wireshark (1.0.2-3+lenny6) stable-security; urgency=high
 
   * security fixes from Wireshark 1.0.8 and 1.0.9:
     - The PCNFSD dissector could crash (CVE-2009-1829)
     - The AFS dissector could crash (CVE-2009-2562)
-    - The OpcUa dissector could use excessive CPU and memory (CVE-2009-3242)
+    - The OpcUa dissector could use excessive CPU and memory (CVE-2009-3241)
    (Closes: #533347)
 
  -- Balint Reczey <balint@balintreczey.hu>  Mon, 28 Sep 2009 13:05:13 +0100
