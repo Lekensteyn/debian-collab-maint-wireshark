@@ -1,5 +1,6 @@
 wireshark (1.2.2-2) unstable; urgency=low
 
+  [ Christian Perrier ]
   * Debconf templates and debian/control reviewed by the debian-l10n-
     english team as part of the Smith review project. Closes: #547130
   * [Debconf translation updates]
@@ -16,7 +17,7 @@ wireshark (1.2.2-2) unstable; urgency=low
     - Russian (Yuri Kozlov).  Closes: #549086
     - Finnish (Esko Arajärvi).  Closes: #549609
 
- -- Christian Perrier <bubulle@debian.org>  Thu, 17 Sep 2009 14:06:52 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 11 Oct 2009 02:08:13 +0200
 
 wireshark (1.2.2-1) unstable; urgency=high
 
