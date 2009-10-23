@@ -1,3 +1,10 @@
+wireshark (1.2.2-3) UNRELEASED; urgency=low
+
+  [ Eloy Paris ]
+  * added missing libraries and header files to wireshark-dev (Closes: #552025)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 23 Oct 2009 23:18:36 +0200
+
 wireshark (1.2.2-2) unstable; urgency=low
 
   * Debconf templates and debian/control reviewed by the debian-l10n-
