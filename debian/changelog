@@ -1,4 +1,4 @@
-wireshark (1.0.2-3+lenny6) stable-security; urgency=high
+wireshark (1.0.2-3+lenny6) stable; urgency=high
 
   * security fixes from Wireshark 1.0.8 and 1.0.9:
     - The PCNFSD dissector could crash (CVE-2009-1829)
