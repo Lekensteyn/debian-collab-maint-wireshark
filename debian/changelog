@@ -1,5 +1,13 @@
-wireshark (1.2.2-3) UNRELEASED; urgency=low
+wireshark (1.2.3-1) UNRELEASED; urgency=low
 
+  * New upstream release 1.2.3
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.2.3.html
+    - security fixes
+       - The Paltalk dissector could crash on alignment-sensitive processors.
+         (CVE-2009-3549)
+       - The DCERPC/NT dissector could crash. (CVE-2009-3550)
+       - The SMB dissector could crash. (CVE-2009-3551)
   [ Eloy Paris ]
   * added missing libraries and header files to wireshark-dev (Closes: #552025)
 
