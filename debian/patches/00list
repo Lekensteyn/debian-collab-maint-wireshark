@@ -17,8 +17,8 @@
 25_security_fixes_from_1.0.5
 26_security_fixes_from_1.0.6
 27_security_fixes_from_1.0.7
-28_uat_proto_name_use_strndup.dpatch
-29_sccp_crash_fix.dpatch
 30_pcnfsd_crash_fix.dpatch
-31_ndmp_crash_fix.dpatch
-32_dcm_memleak_fix.dpatch
+33_fix_afs_crash.dpatch
+34_fix_opcua_lockup.dpatch
+35_security_fixes_from_1.0.10
+36_fix_erf_crash

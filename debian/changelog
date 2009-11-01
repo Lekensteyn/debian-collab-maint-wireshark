@@ -1,14 +1,22 @@
 wireshark (1.0.2-3+lenny7) stable-security; urgency=high
 
-  * apply security patches from Wireshark 1.0.8 correctly (Closes: #533347)
+  * security fixes from Wireshark 1.0.10:
+     - The RADIUS dissector could crash. (CVE-CVE-2009-2560)
+     - The DCERPC/NT dissector could crash. (CVE-2009-3550)
+  * security fixes from Wireshark 1.2.2:
+     - Integer overflow in wiretap/erf.c. (CVE-2009-3829)
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 27 Jun 2009 16:58:45 -0700
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 31 Oct 2009 00:20:13 +0100
 
-wireshark (1.0.2-3+lenny6) stable-security; urgency=high
+wireshark (1.0.2-3+lenny6) stable; urgency=high
 
-  * Security fixes from Wireshark 1.0.8 (Closes: #533347)
+  * security fixes from Wireshark 1.0.8 and 1.0.9:
+    - The PCNFSD dissector could crash (CVE-2009-1829)
+    - The AFS dissector could crash (CVE-2009-2562)
+    - The OpcUa dissector could use excessive CPU and memory (CVE-2009-3241)
+   (Closes: #533347)
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 26 Jun 2009 20:05:13 -0700
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 28 Sep 2009 13:05:13 +0100
 
 wireshark (1.0.2-3+lenny5) stable-security; urgency=high
 

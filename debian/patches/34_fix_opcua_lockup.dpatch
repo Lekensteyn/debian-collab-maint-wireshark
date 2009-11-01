@@ -1,0 +1,256 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 34_fix_opcua_lockup.dpatch by  <balint@balintreczey.hu>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Fix excessive CPU and memory use in OpcUa disssector
+
+@DPATCH@
+
+Index: trunk/plugins/opcua/opcua_simpletypes.c
+===================================================================
+--- trunk/plugins/opcua/opcua_simpletypes.c	(revision 29828)
++++ trunk/plugins/opcua/opcua_simpletypes.c	(revision 29829)
+@@ -34,9 +34,6 @@
+ #include <string.h>
+ #include <epan/emem.h>
+ 
+-/* string buffer */
+-#define MAX_BUFFER 256
+-
+ #define DIAGNOSTICINFO_ENCODINGMASK_SYMBOLICID_FLAG           0x01
+ #define DIAGNOSTICINFO_ENCODINGMASK_NAMESPACE_FLAG            0x02
+ #define DIAGNOSTICINFO_ENCODINGMASK_LOCALIZEDTEXT_FLAG        0x04
+@@ -53,6 +50,9 @@
+ #define EXTOBJ_ENCODINGMASK_BINBODY_FLAG                      0x01
+ #define EXTOBJ_ENCODINGMASK_XMLBODY_FLAG                      0x02
+ 
++/* Chosen arbitrarily */
++#define MAX_ARRAY_LEN 10000
++
+ static int hf_opcua_diag_mask_symbolicflag = -1;
+ static int hf_opcua_diag_mask_namespaceflag = -1;
+ static int hf_opcua_diag_mask_localizedtextflag = -1;
+@@ -317,35 +317,28 @@
+ 
+ void parseString(proto_tree *tree, tvbuff_t *tvb, gint *pOffset, int hfIndex)
+ {
+-    char *szValue = ep_alloc(MAX_BUFFER);
++    char *szValue;
+     gint iOffset = *pOffset;
+     gint32 iLen = tvb_get_letohl(tvb, *pOffset);
+     iOffset+=4;
+ 
+-    if (szValue)
++    if (iLen == -1)
+     {
+-        if (iLen == -1)
+-        {
+-            g_snprintf(szValue, MAX_BUFFER, "[OpcUa Null String]");
+-        }
+-        else if (iLen >= 0)
+-        {
+-            int iStrLen = iLen;
+-            if (iStrLen > (MAX_BUFFER-1)) iStrLen = MAX_BUFFER - 1;
+-            /* copy non null terminated string of length iStrlen */
+-            strncpy(szValue, (char*)&tvb->real_data[iOffset], iStrLen);
+-            /* set null terminator */
+-            szValue[iStrLen] = 0;
+-            iOffset += iLen; /* eat the whole string */
+-        }
+-        else
+-        {
+-            g_snprintf(szValue, MAX_BUFFER, "[Invalid String] Ups, something is wrong with this message.");
+-        }
+-
++        proto_tree_add_string(tree, hfIndex, tvb, *pOffset, (iOffset - *pOffset),
++                              "[OpcUa Null String]");
++    }
++    else if (iLen >= 0)
++    {
++        iOffset += iLen; /* eat the whole string */
++        proto_tree_add_item(tree, hfIndex, tvb, *pOffset, (iOffset - *pOffset), TRUE);
++    }
++    else
++    {
++        szValue = ep_strdup_printf("[Invalid String] Invalid length: %d", iLen);
+         proto_tree_add_string(tree, hfIndex, tvb, *pOffset, (iOffset - *pOffset), szValue);
+-        *pOffset = iOffset;
+     }
++
++    *pOffset = iOffset;
+ }
+ 
+ void parseStatusCode(proto_tree *tree, tvbuff_t *tvb, gint *pOffset, int hfIndex)
+@@ -623,11 +616,17 @@
+     /* read array length */
+     iLen = tvb_get_letohl(tvb, *pOffset);
+     proto_tree_add_item(subtree, hf_opcua_ArraySize, tvb, *pOffset, 4, TRUE);
+-    *pOffset += 4;
+ 
+     if (iLen == -1) return; /* no array */
+     if (iLen == 0)  return; /* array with zero elements*/
+ 
++    if (iLen > MAX_ARRAY_LEN)
++    {
++        PROTO_ITEM_SET_GENERATED(proto_tree_add_text(tree, tvb, *pOffset, 4, "Array length %d too large to process", iLen));
++        return;
++    }
++
++    *pOffset += 4;
+     for (i=0; i<iLen; i++)
+     {
+         (*pParserFunction)(subtree, tvb, pOffset, hfIndex);
+@@ -649,11 +648,17 @@
+     /* read array length */
+     iLen = tvb_get_letohl(tvb, *pOffset);
+     proto_tree_add_item(subtree, hf_opcua_ArraySize, tvb, *pOffset, 4, TRUE);
+-    *pOffset += 4;
+ 
+     if (iLen == -1) return; /* no array */
+     if (iLen == 0)  return; /* array with zero elements*/
+ 
++    if (iLen > MAX_ARRAY_LEN)
++    {
++        PROTO_ITEM_SET_GENERATED(proto_tree_add_text(tree, tvb, *pOffset, 4, "Array length %d too large to process", iLen));
++        return;
++    }
++
++    *pOffset += 4;
+     for (i=0; i<iLen; i++)
+     {
+         (*pParserFunction)(subtree, tvb, pOffset);
+@@ -674,11 +679,17 @@
+     /* read array length */
+     iLen = tvb_get_letohl(tvb, *pOffset);
+     proto_tree_add_item(subtree, hf_opcua_ArraySize, tvb, *pOffset, 4, TRUE);
+-    *pOffset += 4;
+ 
+     if (iLen == -1) return; /* no array */
+     if (iLen == 0)  return; /* array with zero elements*/
+ 
++    if (iLen > MAX_ARRAY_LEN)
++    {
++        PROTO_ITEM_SET_GENERATED(proto_tree_add_text(tree, tvb, *pOffset, 4, "Array length %d too large to process", iLen));
++        return;
++    }
++
++    *pOffset += 4;
+     for (i=0; i<iLen; i++)
+     {
+         char szNum[20];
+Index: plugins/opcua/opcua.c
+===================================================================
+--- trunk/plugins/opcua/opcua.c	(revision 29828)
++++ trunk/plugins/opcua/opcua.c	(revision 29829)
+@@ -184,11 +184,11 @@
+     }
+ 
+     /* parse message type */
+-    if (tvb->real_data[0] == 'U' && tvb->real_data[1] == 'A')
++    if (tvb_get_guint8(tvb, 0) == 'U' && tvb_get_guint8(tvb, 1) == 'A')
+     {
+-        if (tvb->real_data[2] == 'T')
++        if (tvb_get_guint8(tvb, 2) == 'T')
+         {
+-            switch(tvb->real_data[3])
++            switch(tvb_get_guint8(tvb, 3))
+             {
+             case 'H': msgtype = MSG_HELLO;
+                 pfctParse = parseHello;
+@@ -203,9 +203,9 @@
+                 break;
+             }                
+         }
+-        else if (tvb->real_data[2] == 'M')
++        else if (tvb_get_guint8(tvb, 2) == 'M')
+         {
+-            switch(tvb->real_data[3])
++            switch(tvb_get_guint8(tvb, 3))
+             {
+             case 'G': msgtype = MSG_DATA_LAST_CHUNK;
+                 pfctParse = parseData;
+Index: plugins/opcua/opcua_transport_layer.c
+===================================================================
+--- trunk/plugins/opcua/opcua_transport_layer.c	(revision 29828)
++++ trunk/plugins/opcua/opcua_transport_layer.c	(revision 29829)
+@@ -107,34 +107,10 @@
+     proto_register_field_array(proto, hf, array_length(hf));
+ }
+ 
+-/** helper functions for adding strings,
+-  * that are not zero terminated.
+-  */
+-void addString(proto_tree *tree,  
+-               int  hfindex,  
+-               tvbuff_t *tvb,  
+-               gint  start,  
+-               gint  length,  
+-               const char *value)
+-{
+-    char *szValue = ep_alloc(256);
+-
+-    if (szValue)
+-    {
+-        if (length > 255) length = 255;
+-        /* copy non null terminated string data */
+-        strncpy(szValue, value, length);
+-        /* set null terminator */
+-        szValue[length] = 0;
+-
+-        proto_tree_add_string(tree, hfindex, tvb, start, length, szValue);
+-    }
+-}
+-
+ /* Transport Layer: message parsers */
+ void parseHello(proto_tree *tree, tvbuff_t *tvb, gint *pOffset)
+ {
+-    addString(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, tvb->real_data); *pOffset+=4;
++    proto_tree_add_item(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_len, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_ver, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_cid, tvb, *pOffset, 16, TRUE); *pOffset+=16;
+@@ -146,7 +122,7 @@
+ 
+ void parseAcknowledge(proto_tree *tree, tvbuff_t *tvb, gint *pOffset)
+ {
+-    addString(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, tvb->real_data); *pOffset+=4;
++    proto_tree_add_item(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_len, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_cid, tvb, *pOffset, 16, TRUE); *pOffset+=16;
+     proto_tree_add_item(tree, hf_opcua_transport_rlifetime, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+@@ -157,7 +133,7 @@
+ 
+ void parseDisconnect(proto_tree *tree, tvbuff_t *tvb, gint *pOffset)
+ {
+-    addString(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, tvb->real_data); *pOffset+=4;
++    proto_tree_add_item(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_len, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_cid, tvb, *pOffset, 16, TRUE); *pOffset+=16;
+ }
+@@ -169,7 +145,7 @@
+     proto_tree *nodeid_tree;
+     int ServiceId = 0;
+ 
+-    addString(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, tvb->real_data); *pOffset+=4;
++    proto_tree_add_item(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_len, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_cid, tvb, *pOffset, 16, TRUE); *pOffset+=16;
+     proto_tree_add_item(tree, hf_opcua_transport_rqid, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+@@ -195,7 +171,7 @@
+ 
+ void parseAbort(proto_tree *tree, tvbuff_t *tvb, gint *pOffset)
+ {
+-    addString(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, tvb->real_data); *pOffset+=4;
++    proto_tree_add_item(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_len, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_cid, tvb, *pOffset, 16, TRUE); *pOffset+=16;
+     proto_tree_add_item(tree, hf_opcua_transport_rqid, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+@@ -203,7 +179,7 @@
+ 
+ void parseError(proto_tree *tree, tvbuff_t *tvb, gint *pOffset)
+ {
+-    addString(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, tvb->real_data); *pOffset+=4;
++    proto_tree_add_item(tree, hf_opcua_transport_sig, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_len, tvb, *pOffset, 4, TRUE); *pOffset+=4;
+     proto_tree_add_item(tree, hf_opcua_transport_cid, tvb, *pOffset, 16, TRUE); *pOffset+=16;
+     proto_tree_add_item(tree, hf_opcua_transport_rqid, tvb, *pOffset, 4, TRUE); *pOffset+=4;

@@ -1,5 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## 24__pcnfsd_crash_fix.dpatch by  <eblircz@oceanus.sz13.dyndns.org>
+## 24__pcnfsd_crash_fix.dpatch by  <balint@balintreczey.hu>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Fix buffer allocation to prevent crash
