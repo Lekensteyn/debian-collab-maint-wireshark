@@ -1,0 +1,26 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 36_fix_erf_crash.dpatch by  <balint@balintreczey.hu>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Fix erf crash, released in Wireshark 1.2.2
+
+@DPATCH@
+
+Index: trunk/wiretap/erf.c
+===================================================================
+--- trunk/wiretap/erf.c	(revision 29363)
++++ trunk/wiretap/erf.c	(revision 29364)
+@@ -218,6 +218,13 @@
+ 
+     /* The file_seek function do not return an error if the end of file
+        is reached whereas the record is truncated */
++    if (packet_size > WTAP_MAX_PACKET_SIZE) {
++      /*
++       * Probably a corrupt capture file; don't blow up trying
++       * to allocate space for an immensely-large packet.
++       */
++      return 0;
++    }
+     buffer=g_malloc(packet_size);
+     r = file_read(buffer, 1, packet_size, wth->fh);
+     g_free(buffer);

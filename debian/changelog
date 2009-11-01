@@ -1,8 +1,10 @@
-wireshark (1.0.2-3+lenny7) UNRELEASED; urgency=high
+wireshark (1.0.2-3+lenny7) stable-security; urgency=high
 
   * security fixes from Wireshark 1.0.10:
      - The RADIUS dissector could crash. (CVE-CVE-2009-2560)
      - The DCERPC/NT dissector could crash. (CVE-2009-3550)
+  * security fixes from Wireshark 1.2.2:
+     - Integer overflow in wiretap/erf.c. (CVE-2009-3829)
 
  -- Balint Reczey <balint@balintreczey.hu>  Sat, 31 Oct 2009 00:20:13 +0100
 

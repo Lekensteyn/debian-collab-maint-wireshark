@@ -21,3 +21,4 @@
 33_fix_afs_crash.dpatch
 34_fix_opcua_lockup.dpatch
 35_security_fixes_from_1.0.10
+36_fix_erf_crash
