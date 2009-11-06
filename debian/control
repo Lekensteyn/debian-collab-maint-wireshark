@@ -51,7 +51,7 @@ Description: network traffic analyzer - console version
 Package: wireshark-dev
 Architecture: any
 Section: devel
-Depends: ${shlibs:Depends}, ${misc:Depends}, omniidl4 (>= 4.0.1-2), libpcap0.8-dev, libtool, libglib2.0-dev, ${python:Depends}, snacc, autotools-dev, debhelper, cdbs, automake1.9, autoconf
+Depends: ${shlibs:Depends}, ${misc:Depends}, omniidl4 (>= 4.0.1-2), libpcap0.8-dev, libtool, libglib2.0-dev, ${python:Depends}, python-ply, snacc, autotools-dev, debhelper, cdbs, automake1.9, autoconf
 Replaces: ethereal-dev (<< 1.0.0-3)
 Conflicts: ethereal-dev (<< 1.0.0-3)
 XB-Python-Version: ${python:Versions}
