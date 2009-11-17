@@ -1,8 +1,12 @@
-wireshark (1.2.3-2) UNRELEASED; urgency=low
+wireshark (1.2.4-1) unstable; urgency=low
 
+  * New upstream release 1.2.4
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.2.4.html
+  [ Jakub Wilk ]
   * make wireshark-dev depend on python-ply to fix asn2wrs (Closes: #554613)
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 06 Nov 2009 15:52:15 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 17 Nov 2009 15:11:10 +0100
 
 wireshark (1.2.3-1) unstable; urgency=high
 
