@@ -1,3 +1,10 @@
+wireshark (1.2.4-2) unstable; urgency=low
+
+  [ Jakub Wilk ]
+  * import lex from ply in asn2wrs (Closes: #554613)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 19 Nov 2009 23:29:24 +0100
+
 wireshark (1.2.4-1) unstable; urgency=low
 
   * New upstream release 1.2.4
