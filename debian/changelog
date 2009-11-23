@@ -1,3 +1,9 @@
+wireshark (1.2.4-3) UNRELEASED; urgency=low
+
+  * build-depend on python-ply
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 23 Nov 2009 10:38:21 +0100
+
 wireshark (1.2.4-2) unstable; urgency=low
 
   [ Jakub Wilk ]
