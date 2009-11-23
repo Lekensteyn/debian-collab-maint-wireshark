@@ -1,5 +1,7 @@
 wireshark (1.2.4-3) UNRELEASED; urgency=low
 
+  * depend on libsnmp-base instead of libsmi2-common (Closes: #557626)
+  * libsmi2-common is still suggested by wireshark-common
   * build-depend on python-ply
 
  -- Balint Reczey <balint@balintreczey.hu>  Mon, 23 Nov 2009 10:38:21 +0100

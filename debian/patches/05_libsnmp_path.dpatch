@@ -1,0 +1,23 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 05_libsnmp_path.dpatch by Balint Reczey <balint@balintreczey.hu>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: add /usr/share/snmp/mibs to MIB search path
+
+@DPATCH@
+--- trunk/epan/oids.c	(revision 31051)
++++ trunk/epan/oids.c	(revision 31052)
+@@ -1078,12 +1078,10 @@
+ #else
+ #define PATH_SEPARATOR ":"
+ 	path = smiGetPath();
+-#ifdef __APPLE__
+ 	g_string_append(path_str, "/usr/share/snmp/mibs");
+ 	if (strlen(path) > 0 ) {
+ 		g_string_append(path_str, PATH_SEPARATOR);
+ 	}
+-#endif
+ 	g_string_append_printf(path_str, "%s", path);
+ 	free (path);
+ #endif
+

@@ -2,6 +2,7 @@
 02_asn2deb
 03_preferences
 04_asn2wrs_ply
+05_libsnmp_path
 06_giop-buffer
 08_wireshark-desktop-menu
 09_idl2wrs
