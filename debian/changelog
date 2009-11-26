@@ -1,4 +1,4 @@
-wireshark (0.99.4-5.etch.4) stable-security; urgency=high
+wireshark (0.99.4-5.etch.4) oldstable-security; urgency=high
 
   * Backport further security fixes:
   * CVE-2009-3829
