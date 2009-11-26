@@ -1,4 +1,4 @@
-wireshark (0.99.4-5.etch.5) UNRELEASED; urgency=high
+wireshark (0.99.4-5.etch.4) oldstable-security; urgency=high
 
   * Backport further security fixes:
   * CVE-2009-3550
@@ -6,15 +6,9 @@ wireshark (0.99.4-5.etch.5) UNRELEASED; urgency=high
   * CVE-2009-2562
   * CVE-2009-1829
   * CVE-2009-1268
-
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 25 Nov 2009 23:28:35 +0100
-
-wireshark (0.99.4-5.etch.4) oldstable-security; urgency=high
-
-  * Backport further security fixes:
   * CVE-2009-3829
 
- -- Balint Reczey <balint@balintreczey.hu>  Tue, 17 Nov 2009 00:45:17 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 25 Nov 2009 23:28:35 +0100
 
 wireshark (0.99.4-5.etch.3) stable-security; urgency=high
 
