@@ -1,0 +1,21 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backport security fixes from 1.0.7 <jmm@debian.org>
+
+@DPATCH@
+--- trunk/epan/dissectors/packet-cpha.c	2008/12/18 19:08:49	27050
++++ wireshark-1.0.2/epan/dissectors/packet-cpha.c	2008/12/22 14:03:00	27083
+@@ -145,8 +145,12 @@
+   "New Sync packet"
+ };
+ 
++/* XXX: Array below found by Lint to be missing an initializer. */
++/*      So: "Unknown" added as the first initializer so that    */
++/*       this array is similar to opcode_type_str_long & etc    */
+ #define NUM_STATES 5
+ static const char *state_str[NUM_STATES+1] = {
++  "Unknown",
+   "Down/Dead",
+   "Initializing",
+   "Standby",
