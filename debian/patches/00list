@@ -27,4 +27,8 @@
 22_CVE-2008-3138
 23_CVE-2008-3137
 24_backport_exception
+27_security_fixes_from_1.0.7
+30_pcnfsd_crash_fix
+33_fix_afs_crash
+35_security_fixes_from_1.0.10
 36_fix_erf_crash
