@@ -106,15 +106,6 @@ diff -urN wireshark-1.0.9/epan/dissectors/packet-dcerpc-nt.c wireshark-1.0.10/ep
 diff -urN wireshark-1.0.9/epan/dissectors/packet-radius.c wireshark-1.0.10/epan/dissectors/packet-radius.c
 --- wireshark-1.0.9/epan/dissectors/packet-radius.c	2009-09-14 18:33:55.000000000 -0700
 +++ wireshark-1.0.10/epan/dissectors/packet-radius.c	2009-10-26 14:09:44.000000000 -0700
-@@ -6,7 +6,7 @@
-  * Changed 07/2005 Luis Ontanon <luis.ontanon@gmail.com> - use FreeRADIUS' dictionary
-  * Changed 10/2006 Alejandro Vaquero <alejandrovaquero@yahoo.com> - add Conversations support
-  *
-- * $Id: packet-radius.c 24533 2008-03-03 18:07:47Z jmayer $
-+ * $Id: packet-radius.c 30219 2009-09-30 18:41:55Z gerald $
-  *
-  * Wireshark - Network traffic analyzer
-  * By Gerald Combs <gerald@wireshark.org>
 @@ -604,7 +604,7 @@
              item = proto_tree_add_text(tree, tvb, offset, 0,
                          "Not enough room in packet for AVP header");
