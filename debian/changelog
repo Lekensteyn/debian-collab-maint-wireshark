@@ -1,3 +1,9 @@
+wireshark (1.2.4-4) unstable; urgency=low
+
+  * fix FTBS because of missing idl2deb.dbk (Closes: #560553)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 11 Dec 2009 16:29:01 +0100
+
 wireshark (1.2.4-3) unstable; urgency=low
 
   * depend on libsnmp-base instead of libsmi2-common (Closes: #557626)
