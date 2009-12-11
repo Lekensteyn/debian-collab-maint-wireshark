@@ -227,7 +227,7 @@ diff -urNad --exclude=CVS --exclude=.svn ./idl2deb /tmp/dpep-work.K2bQz4/wiresha
 +    main()
 diff -urNad --exclude=CVS --exclude=.svn ./idl2deb.dbk /tmp/dpep-work.K2bQz4/wireshark-0.10.11/idl2deb.dbk
 --- ./idl2deb.dbk	1970-01-01 01:00:00.000000000 +0100
-+++ /tmp/dpep-work.K2bQz4/wireshark-0.10.11/idl2deb.dbk	2005-07-17 19:35:08.000000000 +0200
++++ ./idl2deb.dbk	2005-07-17 19:35:08.000000000 +0200
 @@ -0,0 +1,157 @@
 +<?xml version='1.0' encoding='ISO-8859-1'?>
 +<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"

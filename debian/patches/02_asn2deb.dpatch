@@ -7,7 +7,7 @@
 @DPATCH@
 diff -urNad --exclude=CVS --exclude=.svn ./asn2deb /tmp/dpep-work.5BSR7A/wireshark-0.10.11/asn2deb
 --- ./asn2deb	1970-01-01 01:00:00.000000000 +0100
-+++ /tmp/dpep-work.5BSR7A/wireshark-0.10.11/asn2deb	2005-07-17 19:37:02.000000000 +0200
++++ ./asn2deb	2005-07-17 19:37:02.000000000 +0200
 @@ -0,0 +1,219 @@
 +#!/usr/bin/env python
 +
@@ -230,7 +230,7 @@ diff -urNad --exclude=CVS --exclude=.svn ./asn2deb /tmp/dpep-work.5BSR7A/wiresha
 +    main()
 diff -urNad --exclude=CVS --exclude=.svn ./asn2deb.dbk /tmp/dpep-work.5BSR7A/wireshark-0.10.11/asn2deb.dbk
 --- ./asn2deb.dbk	1970-01-01 01:00:00.000000000 +0100
-+++ /tmp/dpep-work.5BSR7A/wireshark-0.10.11/asn2deb.dbk	2005-07-17 19:37:02.000000000 +0200
++++ ./asn2deb.dbk	2005-07-17 19:37:02.000000000 +0200
 @@ -0,0 +1,158 @@
 +<?xml version='1.0' encoding='ISO-8859-1'?>
 +<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
