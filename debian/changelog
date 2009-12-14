@@ -2,6 +2,7 @@ wireshark (1.2.4-4) unstable; urgency=low
 
   * fix FTBS because of missing idl2deb.dbk (Closes: #560553)
   * suggest solutions on missing MIBs popup (Closes: #560727)
+  * restrict watch check to stable versions
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 11 Dec 2009 16:29:01 +0100
 
