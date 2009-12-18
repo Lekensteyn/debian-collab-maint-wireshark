@@ -1,8 +1,18 @@
-wireshark (1.2.4-4) unstable; urgency=low
+wireshark (1.2.5-1) unstable; urgency=high
 
+  * New upstream release 1.2.5
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.2.5.html
+    - security fixes
+       - The Daintree SNA file parser could overflow a buffer. 
+         (No assigned CVE number.)
+       - The SMB and SMB2 dissectors could crash. (No assigned CVE number.)
+       - The IPMI dissector could crash on Windows. (No assigned CVE number.)
   * fix FTBS because of missing idl2deb.dbk (Closes: #560553)
   * suggest solutions on missing MIBs popup (Closes: #560727)
   * restrict watch check to stable versions
+  * change source package format to 3.0 (quilt)
+  * new maintainer is Balint Reczey
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 11 Dec 2009 16:29:01 +0100
 
