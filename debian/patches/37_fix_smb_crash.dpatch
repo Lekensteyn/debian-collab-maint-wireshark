@@ -1,0 +1,57 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 37_fix_smb_crash.dpatch by  <balint@balintreczey.hu>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Fix crash in SMB and SMB2 dissectors, released in Wireshark 1.2.5
+
+@DPATCH@
+
+Index: trunk/epan/dissectors/packet-smb.c
+===================================================================
+--- trunk/epan/dissectors/packet-smb.c	(revision 31186)
++++ trunk/epan/dissectors/packet-smb.c	(revision 31187)
+@@ -8443,7 +8443,7 @@
+ 	proto_tree *tree = NULL;
+ 	int old_offset = offset;
+ 	smb_info_t *si;
+-	smb_nt_transact_info_t *nti;
++	smb_nt_transact_info_t *nti = NULL;
+ 	smb_saved_info_t *sip;
+ 
+ 
+@@ -8451,9 +8451,10 @@
+ 	DISSECTOR_ASSERT(si);
+ 	sip = si->sip;
+ 	DISSECTOR_ASSERT(sip);
+-	nti=sip->extra_info;
++	if (sip->extra_info_type == SMB_EI_NTI) {
++	  nti=sip->extra_info;
++	}
+ 
+-
+ 	if(parent_tree){
+ 		tvb_ensure_bytes_exist(tvb, offset, len);
+ 		item = proto_tree_add_text(parent_tree, tvb, offset, len,
+@@ -8469,7 +8470,7 @@
+ 		guint16 fid;
+ 
+ 		/* function code */
+-		offset = dissect_smb2_ioctl_function(tvb, pinfo, tree, offset, &nti->ioctl_function);
++		offset = dissect_smb2_ioctl_function(tvb, pinfo, tree, offset, nti ? &nti->ioctl_function : NULL);
+ 
+ 		/* fid */
+ 		fid = tvb_get_letohs(tvb, offset);
+Index: trunk/epan/dissectors/packet-smb2.c
+===================================================================
+--- trunk/epan/dissectors/packet-smb2.c	(revision 31186)
++++ trunk/epan/dissectors/packet-smb2.c	(revision 31187)
+@@ -951,7 +951,8 @@
+ 	}
+ 
+ 	ioctl_function=tvb_get_letohl(tvb, offset);
+-	*ioctlfunc=ioctl_function;
++	if (ioctlfunc) 
++		*ioctlfunc=ioctl_function;
+ 	if(ioctl_function){
+ 		/* device */
+ 		proto_tree_add_item(tree, hf_smb2_ioctl_function_device, tvb, offset, 4, TRUE);
