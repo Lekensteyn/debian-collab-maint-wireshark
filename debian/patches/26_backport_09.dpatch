@@ -1,0 +1,22 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 26_backport_09.dpatch by  <balint@balintreczey.hu>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backported commit 09 for CVE-2008-3146_3932
+
+@DPATCH@
+
+diff --git a/epan/dissectors/packet-ncp2222.inc b/epan/dissectors/packet-ncp2222.inc
+index 952524f..779d3e6 100644
+--- a/epan/dissectors/packet-ncp2222.inc
++++ b/epan/dissectors/packet-ncp2222.inc
+@@ -5748,7 +5748,7 @@ process_multivalues(proto_tree *ncp_tree, tvbuff_t *tvb, packet_info *pinfo, nds
+                                4, valuestr, "Protocol -> %s", valuestr);
+                                ioffset = ioffset+4;
+                         }
+-                        strcpy(values->vstring, " ");
++                        values->vstring = " ";
+                         break;
+ 
+                 case MVTYPE_PRINT_TIMESTAMP:	/* Print Timestamp */
+

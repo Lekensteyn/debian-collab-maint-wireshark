@@ -1,0 +1,27 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 26_backport_03.dpatch by  <balint@balintreczey.hu>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backported commit 03 for CVE-2008-3146_3932
+
+@DPATCH@
+
+diff --git a/epan/dissectors/packet-ncp2222.inc b/epan/dissectors/packet-ncp2222.inc
+index df79d5f..5fb34a2 100644
+--- a/epan/dissectors/packet-ncp2222.inc
++++ b/epan/dissectors/packet-ncp2222.inc
+@@ -5825,10 +5825,10 @@ dissect_ncp_request(tvbuff_t *tvb, packet_info *pinfo,
+ 	proto_tree		*temp_tree = NULL;
+ 	volatile gboolean	run_req_cond = FALSE;
+ 	volatile gboolean	run_info_str = FALSE;
+-    guint32                 length_remaining;
+-    guint32                 testvar;
+-    unsigned long           except_code;
+-    const char              *message;
++    	guint32                 length_remaining;
++   	guint32                 testvar;
++    	volatile unsigned long  except_code;
++	const char              *volatile message;
+ 
+ 	func = tvb_get_guint8(tvb, 6);
+ 

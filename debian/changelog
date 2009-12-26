@@ -1,3 +1,11 @@
+wireshark (0.99.4-5.etch.5) UNRELEASED; urgency=high
+
+  * Backport further security fixes:
+  * CVE-2008-3143, CVE-2008-3932 and backported changes to ncp2222.inc up to
+    1.0.2 which were needed for the fixes
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 20 Dec 2009 23:25:48 +0100
+
 wireshark (0.99.4-5.etch.4) oldstable-security; urgency=high
 
   * Backport further security fixes:

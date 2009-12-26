@@ -67,6 +67,9 @@ clean: unpatch-stamp
 	rm -f conftest conftest.c
 	rm -f config.guess config.sub config.log
 	rm -f config.h.in config.h configure
+	
+	# CVE-2008-3146_3932, force generation of packet-ncp2222.c
+	rm -f epan/dissectors/packet-ncp2222.c
 
 	dh_clean
 
