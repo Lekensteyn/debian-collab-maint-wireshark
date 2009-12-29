@@ -45,3 +45,4 @@
 33_fix_afs_crash
 35_security_fixes_from_1.0.10
 36_fix_erf_crash
+37_CVE-2008-5285
