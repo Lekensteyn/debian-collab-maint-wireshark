@@ -3,6 +3,8 @@ wireshark (1.2.5-2) UNRELEASED; urgency=low
   * [Debconf translation updates]
     - Brazilian Portuguese (Rafael Henrique da Silva Correia).
       (Closes: #565306)
+  * remove dependency on libsnmp-base
+  * suggest snmp-mibs-downloader instead of libsmi2-common
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 15 Jan 2010 21:51:34 +0100
 

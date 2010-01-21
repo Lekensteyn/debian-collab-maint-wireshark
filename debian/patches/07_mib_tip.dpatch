@@ -15,7 +15,7 @@
 +					   "The Current Path is: %s\n\nYou can avoid this error message "
 +					   "by removing the missing MIB modules at Edit -> Preferences"
 +					   " -> Name Resolution -> SMI (MIB and PIB) modules or by "
-+					   "installing them.\n" , smi_errors->str , path_str);
++					   "installing them using the snmp-mibs-downloader package.\n" , smi_errors->str , path_str);
  		D(1,("Errors while loading:\n%s\n",smi_errors->str));
  	}
  

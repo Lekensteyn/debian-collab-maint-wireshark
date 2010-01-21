@@ -12,9 +12,9 @@ Homepage: http://www.wireshark.org/
 
 Package: wireshark-common
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libsnmp-base, debconf
+Depends: ${shlibs:Depends}, ${misc:Depends}, debconf
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
-Suggests: libsmi-mibs-nonfree
+Suggests: snmp-mibs-downloader
 Replaces: ethereal-common (<< 1.0.0-3)
 Conflicts: ethereal-common (<< 1.0.0-3)
 Description: network traffic analyzer - common files
