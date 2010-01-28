@@ -1,7 +1,8 @@
-wireshark (1.0.2-3+lenny8) UNRELEASED; urgency=high
+wireshark (1.0.2-3+lenny8) stable-security; urgency=high
 
-  * security fixes from Wireshark 1.2.5:
-     - The SMB and SMB2 dissector could crash. (CVE id is not assigned yet)
+  * security fixes from Wireshark 1.0.11:
+     - The SMB and SMB2 dissector could crash. (CVE-2009-4377)
+     - Babi discovered several buffer overflows in the LWRES dissector.
 
  -- Balint Reczey <balint@balintreczey.hu>  Sun, 20 Dec 2009 23:06:16 +0100
 
