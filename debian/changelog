@@ -1,5 +1,12 @@
-wireshark (1.2.5-2) UNRELEASED; urgency=low
+wireshark (1.2.6-1) unstable; urgency=high
 
+  * New upstream release 1.2.6
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.2.6.html
+    - security fixes
+       - Babi discovered several buffer overflows in the LWRES dissector.
+         (No assigned CVE number.)
+    (Closes: #565744)
   * [Debconf translation updates]
     - Brazilian Portuguese (Rafael Henrique da Silva Correia).
       (Closes: #565306)
