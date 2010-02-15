@@ -1,0 +1,13 @@
+01_idl2deb.dpatch
+02_asn2deb.dpatch
+03_preferences.dpatch
+04_asn2wrs_ply.dpatch
+05_libsnmp_path.dpatch
+06_giop-buffer.dpatch
+07_mib_tip.dpatch
+08_wireshark-desktop-menu.dpatch
+09_idl2wrs.dpatch
+15_sensitive_open.dpatch
+16_licence_about_location.dpatch
+21_dumpcap.dpatch
+23_lintian-overrides.dpatch

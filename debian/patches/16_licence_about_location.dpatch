@@ -1,14 +1,12 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 16_licence_about_location.dpatch by  <fpeters@debian.org>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Change location of license file in about dialog
+Description: Change location of license file in about dialog
+Forwarded: not-needed
+Author: Frederic Peters <fpeters@debian.org>
 
-@DPATCH@
-diff -urNad wireshark-0.99.6rel~/gtk/about_dlg.c wireshark-0.99.6rel/gtk/about_dlg.c
---- wireshark-0.99.6rel~/gtk/about_dlg.c	2007-07-05 21:22:28.000000000 +0200
-+++ wireshark-0.99.6rel/gtk/about_dlg.c	2007-09-29 15:53:16.822998083 +0200
-@@ -411,7 +411,7 @@
+Index: b/gtk/about_dlg.c
+===================================================================
+--- a/gtk/about_dlg.c	2010-02-15 17:23:17.000000000 +0100
++++ b/gtk/about_dlg.c	2010-02-15 17:24:59.000000000 +0100
+@@ -476,7 +476,7 @@
    GtkWidget   *page;
    char *absolute_path;
  

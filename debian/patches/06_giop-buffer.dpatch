@@ -1,14 +1,12 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 06_giop-buffer.dpatch by  <fpeters@debian.org>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: fixed segfault with some GIOP packets
+Description: Fixed segfault with some GIOP packets
+Forwarded: http://anonsvn.wireshark.org/viewvc?view=rev&revision=29509
+Author: Frederic Peters <fpeters@debian.org>
 
-@DPATCH@
-diff -urNad --exclude=CVS --exclude=.svn ./epan/dissectors/packet-giop.c /tmp/dpep-work.7N90PO/wireshark-0.10.11/epan/dissectors/packet-giop.c
---- ./epan/dissectors/packet-giop.c	2005-07-17 18:52:08.000000000 +0200
-+++ ./epan/dissectors/packet-giop.c	2005-07-17 18:55:32.000000000 +0200
-@@ -1760,6 +1760,8 @@
+Index: b/epan/dissectors/packet-giop.c
+===================================================================
+--- a/epan/dissectors/packet-giop.c	2010-02-15 17:23:16.000000000 +0100
++++ b/epan/dissectors/packet-giop.c	2010-02-15 17:24:58.000000000 +0100
+@@ -1727,6 +1727,8 @@
  
    if (len == 0)
      return FALSE;

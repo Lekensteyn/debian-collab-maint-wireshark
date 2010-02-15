@@ -1,19 +1,17 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 21_dumpcap.dpatch by  <andete@debian.org>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: From: Rob Leslie <rob@mars.org>
-## DP: Date: Wed, 4 Mar 2009 15:48:04 -0800
-## DP: Subject: [PATCH] Fix dumpcap believing error on ^C i.e. pcap_breakloop()
-## DP: When ^C was pressed during a packet capture, dumpcap believed a pcap
-## DP: error had occurred.  We check the return value more closely to avoid
-## DP: this problem.
+From: Rob Leslie <rob@mars.org>
+Date: Wed, 4 Mar 2009 15:48:04 -0800
+Subject: [PATCH] Fix dumpcap believing error on ^C i.e. pcap_breakloop()
+ When ^C was pressed during a packet capture, dumpcap believed a pcap
+ error had occurred.  We check the return value more closely to avoid
+ this problem.
+Forwarded: http://anonsvn.wireshark.org/viewvc?view=rev&revision=29510
+Bug-Debian: http://bugs.debian.org/518435
 
-@DPATCH@
-diff -urNad trunk~/dumpcap.c trunk/dumpcap.c
---- trunk~/dumpcap.c	2009-04-09 01:33:06.000000000 +0200
-+++ trunk/dumpcap.c	2009-04-11 10:32:58.000000000 +0200
-@@ -1511,7 +1511,10 @@
+Index: b/dumpcap.c
+===================================================================
+--- a/dumpcap.c	2010-02-15 17:23:15.000000000 +0100
++++ b/dumpcap.c	2010-02-15 17:24:59.000000000 +0100
+@@ -1619,7 +1619,10 @@
          inpkts = pcap_dispatch(ld->pcap_h, 1, capture_loop_packet_cb,
                                 (u_char *)ld);
          if (inpkts < 0) {

@@ -1,12 +1,12 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 07_mib_tip.dpatch by Balint Reczey <balint@balintreczey.hu>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Suggest solutions on the missing MIBs popup window.
+Description: Suggest solutions on the missing MIBs popup window.
+Forwarded: not-needed
+Bug-Debian: http://bugs.debian.org/560727
+Author: Balint Reczey <balint@balintreczey.hu>
 
-@DPATCH@
---- ./epan/oids.c	(revision 31246)
-+++ ./epan/oids.c	(working copy)
+Index: b/epan/oids.c
+===================================================================
+--- a/epan/oids.c	2010-02-15 17:24:58.000000000 +0100
++++ b/epan/oids.c	2010-02-15 17:24:58.000000000 +0100
 @@ -571,7 +571,10 @@
  
  	if (smi_errors->len) {

@@ -1,17 +1,18 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 23_lintian-overrides.dpatch by Balint Reczey <balint@balintreczey.hu>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: lintian override files
+Description: Lintian override files
+Forwarded: not-needed
+Author: Balint Reczey <balint@balintreczey.hu>
 
-@DPATCH@
---- /dev/null	2009-07-20 11:31:15.504680204 +0200
-+++ ./tshark.lintian-overrides	2009-07-20 14:30:50.000000000 +0200
+Index: b/tshark.lintian-overrides
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ b/tshark.lintian-overrides	2010-02-15 17:29:01.000000000 +0100
 @@ -0,0 +1,2 @@
 +tshark binary: binary-or-shlib-defines-rpath
 +
---- /dev/null	2009-07-20 11:31:15.504680204 +0200
-+++ ./wireshark-common.lintian-overrides	2009-07-20 14:30:59.000000000 +0200
+Index: b/wireshark-common.lintian-overrides
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ b/wireshark-common.lintian-overrides	2010-02-15 17:29:01.000000000 +0100
 @@ -0,0 +1,2 @@
 +wireshark-common binary: binary-or-shlib-defines-rpath
 +

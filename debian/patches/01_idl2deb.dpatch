@@ -1,13 +1,11 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 01_idl2deb.dpatch by  <fpeters@debian.org>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: idl2deb - create Debian packages from idl2wrs modules
+Description: idl2deb - create Debian packages from idl2wrs modules
+Forwarded: not-needed
+Author: W. Borgert <debacle@debian.org>
 
-@DPATCH@
-diff -urNad --exclude=CVS --exclude=.svn ./idl2deb /tmp/dpep-work.K2bQz4/wireshark-0.10.11/idl2deb
---- /dev/null	2009-07-16 11:05:56.504619748 +0200
-+++ ./idl2deb	2009-07-16 17:48:25.000000000 +0200
+Index: b/idl2deb
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ b/idl2deb	2010-02-15 17:24:57.000000000 +0100
 @@ -0,0 +1,216 @@
 +#!/usr/bin/env python
 +
@@ -225,9 +223,10 @@ diff -urNad --exclude=CVS --exclude=.svn ./idl2deb /tmp/dpep-work.K2bQz4/wiresha
 +
 +if __name__ == '__main__':
 +    main()
-diff -urNad --exclude=CVS --exclude=.svn ./idl2deb.dbk /tmp/dpep-work.K2bQz4/wireshark-0.10.11/idl2deb.dbk
---- ./idl2deb.dbk	1970-01-01 01:00:00.000000000 +0100
-+++ ./idl2deb.dbk	2005-07-17 19:35:08.000000000 +0200
+Index: b/idl2deb.dbk
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ b/idl2deb.dbk	2010-02-15 17:24:57.000000000 +0100
 @@ -0,0 +1,157 @@
 +<?xml version='1.0' encoding='ISO-8859-1'?>
 +<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
