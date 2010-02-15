@@ -7,7 +7,6 @@
 #export DH_VERBOSE=1
 export DEB_BUILD_HARDENING=1
 
-include /usr/share/dpatch/dpatch.make 
 DB2MAN=/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl
 
 
@@ -33,7 +32,7 @@ asn2deb.1: asn2deb.dbk
 CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --disable-ssl --without-ucdsnmp --enable-gtk2 --libdir=/usr/lib/wireshark --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/plugins --with-lua=/usr/
 
 configure: configure-stamp
-configure-stamp: patch
+configure-stamp:
 	dh_testdir
 
 	libtoolize --force --copy
@@ -49,12 +48,7 @@ build-stamp: configure-stamp
 
 	touch build-stamp
 
-patch: patch-stamp
-patch-stamp:
-	dpatch apply-all
-
-
-clean: unpatch-stamp
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
@@ -66,11 +60,6 @@ clean: unpatch-stamp
 	rm -f config.h.in config.h configure
 
 	dh_clean
-
-unpatch: unpatch-stamp
-unpatch-stamp:
-	dpatch deapply-all
-	rm -rf patch-stamp debian/patched
 
 install: build
 	dh_testdir

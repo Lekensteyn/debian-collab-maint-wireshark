@@ -1,13 +1,11 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 08_wireshark-desktop-menu.dpatch by  <fred@candle>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: change Icon and Categories for desktop file
+Description: Change Icon and Categories for desktop file
+Forwarded: not-needed
+Author: <fred@candle>
 
-@DPATCH@
-diff -urNad trunk~/wireshark.desktop trunk/wireshark.desktop
---- trunk~/wireshark.desktop	2008-02-27 20:59:35.000000000 +0100
-+++ trunk/wireshark.desktop	2008-03-12 21:21:00.000000000 +0100
+Index: b/wireshark.desktop
+===================================================================
+--- a/wireshark.desktop	2010-02-15 17:23:17.000000000 +0100
++++ b/wireshark.desktop	2010-02-15 17:24:59.000000000 +0100
 @@ -68,10 +68,11 @@
  Comment[fi]=Verkkoliikenne analysaattori
  Comment[fr]=Analyseur de trafic réseau
