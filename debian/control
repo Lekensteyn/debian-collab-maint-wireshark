@@ -5,7 +5,7 @@ Maintainer: Balint Reczey <balint@balintreczey.hu>
 Uploaders: Joost Yervante Damad <andete@debian.org>
 DM-Upload-Allowed: yes
 Standards-Version: 3.8.4
-Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, dpatch, debhelper (>= 6), po-debconf, libtool, python, python-ply, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libpcre3-dev, libcap2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386] | libcap-dev (>= 2.17) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], bison, libgnutls-dev, python-support (>= 0.3), portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, hardening-wrapper
+Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, debhelper (>= 6), po-debconf, libtool, python, python-ply, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libpcre3-dev, libcap2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386] | libcap-dev (>= 2.17) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], bison, libgnutls-dev, python-support (>= 0.3), portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, hardening-wrapper
 Build-Conflicts: libsnmp4.2-dev, libsnmp-dev
 XS-Python-Version: all
 Homepage: http://www.wireshark.org/
