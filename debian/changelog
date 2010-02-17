@@ -1,3 +1,10 @@
+wireshark (1.2.6-3) unstable; urgency=low
+
+  * falling back to setting set-user-id bit if using Linux Capabilities fails
+    (Closes: #570193)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 17 Feb 2010 11:29:56 +0100
+
 wireshark (1.2.6-2) unstable; urgency=low
 
   * build-depend on new libcap-dev instead of libcap2-dev if libcap2 is not

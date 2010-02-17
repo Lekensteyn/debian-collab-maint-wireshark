@@ -17,9 +17,13 @@ if [ -e "$PROGRAM" ]; then
             ! /usr/sbin/dpkg-statoverride --list $PROGRAM >/dev/null; then
             addgroup --quiet --system $GROUP
             chown root:$GROUP $PROGRAM
-            if which /sbin/setcap > /dev/null ; then
+            if which setcap > /dev/null ; then
                 chmod u=rwx,g=rx,o=r $PROGRAM
-                setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap
+                if ! setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap; then
+                    echo "Setting capabilities for dumpcap using Linux Capabilities failed."
+                    echo "Falling back to setting set-user-id bit."
+                    chmod u=rwxs,g=rx,o=r $PROGRAM
+                fi
             else
                 chmod u=rwxs,g=rx,o=r $PROGRAM
             fi

@@ -18,6 +18,16 @@ I. Capturing packets with Wireshark/Tshark
       system where possible or using the set-user-id bit, where the Linux 
       Capabilities are not present (Debian GNU/kFreeBSD, Debian GNU/Hurd).
 
+      Linux kernels provided by Debian support Linux Capabilities, but custom
+      built kernels may lack this support. If the support for Linux
+      Capabilities is not present at the time of installing wireshark-common
+      package, the installer will fall back to set the set-user-id bit to
+      allow non-root users to capture packets.
+
+      If installation succeeds with using Linux Capabilities, non-root users
+      will not be able to capture packets while running kernels not supporting
+      Linux Capabilities.
+
     I./b. Installing dumpcap without allowing non-root users to capture packets
 
       Only root user will be able to capture packets. It is advised to capture
