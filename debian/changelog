@@ -1,6 +1,7 @@
 wireshark (1.2.6-4) UNRELEASED; urgency=low
 
   * fix spelling of 'privileges' in README.Debian (Closes: #571258)
+  * prevent crash in libsmi (Closes: #567799)
 
  -- Balint Reczey <balint@balintreczey.hu>  Wed, 17 Feb 2010 15:36:53 +0100
 
