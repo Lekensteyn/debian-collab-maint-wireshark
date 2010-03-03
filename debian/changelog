@@ -1,3 +1,9 @@
+wireshark (1.2.6-5) unstable; urgency=low
+
+  * disable OID resolution in default configuration (Closes: #568050)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 02 Mar 2010 19:38:07 +0100
+
 wireshark (1.2.6-4) unstable; urgency=low
 
   * fix spelling of 'privileges' in README.Debian (Closes: #571258)

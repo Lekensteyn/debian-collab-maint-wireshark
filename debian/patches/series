@@ -8,6 +8,7 @@
 08_wireshark-desktop-menu.patch
 09_idl2wrs.patch
 10_prevent_libsmi_crash.patch
+11_disable_oid_resolution_by_default.patch
 15_sensitive_open.patch
 16_licence_about_location.patch
 21_dumpcap.patch
