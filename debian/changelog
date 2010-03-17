@@ -1,6 +1,8 @@
 wireshark (1.2.6-6) UNRELEASED; urgency=low
 
   * fix purging wireshark-common when removing wireshark system group fails
+  * fix crash when opening About box with disabled OID resolution
+    (Closes: #574086)
 
  -- Balint Reczey <balint@balintreczey.hu>  Sat, 06 Mar 2010 01:11:37 +0100
 
