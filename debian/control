@@ -64,3 +64,16 @@ Description: network traffic analyzer - development tools
  .
  This package provides idl2wrs and other files necessary for developing
  new packet dissectors.
+
+Package: wireshark-dbg
+Priority: extra
+Architecture: any
+Section: debug
+Depends:  ${misc:Depends}, wireshark-common (= ${binary:Version}) | wireshark (= ${binary:Version}) | tshark (= ${binary:Version})
+Description: network traffic analyzer - debug symbols
+ Wireshark is a network "sniffer" - a tool that captures and analyzes
+ packets off the wire. Wireshark can decode too many protocols to list
+ here.
+ .
+ This package contains stripped debugging symbols for all Wireshark
+ programs and libraries.

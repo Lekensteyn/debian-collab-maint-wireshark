@@ -119,7 +119,7 @@ check: install
 
 # Build architecture-dependent files here.
 binary-arch: install check
-	dh_strip
+	dh_strip --dbg-package=wireshark-dbg
 	dh_compress
 	dh_fixperms
 
