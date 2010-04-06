@@ -105,7 +105,6 @@ install: build
 	dh_pysupport
 	dh_python
 	dh_installdocs
-	-rm debian/menu   # from upstream debian/ package
 	dh_installmenu
 	dh_installchangelogs NEWS
 
