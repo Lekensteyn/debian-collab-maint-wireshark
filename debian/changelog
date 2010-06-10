@@ -1,3 +1,23 @@
+wireshark (1.2.9-1) unstable; urgency=high
+
+  * New upstream release 1.2.9
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.2.9.html
+    - security fixes
+       - The SMB dissector could dereference a NULL pointer.
+         (No assigned CVE number.)
+       - J. Oquendo discovered that the ASN.1 BER dissector could overrun
+         the stack. (No assigned CVE number.)
+       - The SMB PIPE dissector could dereference a NULL pointer on some
+         platforms. (No assigned CVE number.)
+       - The SigComp Universal Decompressor Virtual Machine could go into
+         an infinite loop. (No assigned CVE number.)
+       - The SigComp Universal Decompressor Virtual Machine could overrun a
+         buffer. (No assigned CVE number.)
+  * drop sensitive open patch as it has been integrated upstream
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 10 Jun 2010 21:44:58 +0200
+
 wireshark (1.2.8-1) unstable; urgency=low
   * New upstream release 1.2.8
     - release notes:
