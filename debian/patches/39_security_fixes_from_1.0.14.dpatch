@@ -1,0 +1,451 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backport security fixes from 1.0.6 <jmm@debian.org>
+
+@DPATCH@
+diff -urN wireshark-1.0.13/epan/dissectors/packet-ber.c wireshark-1.0.14/epan/dissectors/packet-ber.c
+--- wireshark-1.0.13/epan/dissectors/packet-ber.c	2010-05-04 16:24:42.000000000 -0700
++++ wireshark-1.0.14/epan/dissectors/packet-ber.c	2010-06-08 11:47:12.000000000 -0700
+@@ -755,20 +755,24 @@
+ 	return offset;
+ }
+ 
+-/* this function gets the length octets of the BER TLV.
+- * We only handle (TAGs and) LENGTHs that fit inside 32 bit integers.
++/** Try to get the length octets of the BER TLV.
++ * Only (TAGs and) LENGTHs that fit inside 32 bit integers are supported.
++ *
++ * @return TRUE if we have the entire length, FALSE if we're in the middle of
++ * an indefinite length and haven't reached EOC.
+  */
+ /* 8.1.3 Length octets */
+-int
+-get_ber_length(tvbuff_t *tvb, int offset, guint32 *length, gboolean *ind) {
++static gboolean
++try_get_ber_length(tvbuff_t *tvb, int *bl_offset, guint32 *length, gboolean *ind) {
++	int offset = *bl_offset;
+ 	guint8 oct, len;
+-	guint32 tmp_len;
++	guint32 tmp_len; 
+ 	guint32 tmp_length;
+ 	gboolean tmp_ind;
+-	int tmp_offset,s_offset;
++	int tmp_offset;
+ 	gint8 tclass;
+-	gboolean tpc;
+ 	gint32 ttag;
++
+ 	tmp_length = 0;
+ 	tmp_ind = FALSE;
+ 
+@@ -790,24 +794,21 @@
+ 		} else {
+ 			/* 8.1.3.6 */
+ 
++			/* indefinite length encoded - must be constructed */
+ 			tmp_offset = offset;
+-			/* ok in here we can traverse the BER to find the length, this will fix most indefinite length issues */
+-			/* Assumption here is that indefinite length is always used on constructed types*/
+-			/* check for EOC */
+-			while (tvb_get_guint8(tvb, offset) || tvb_get_guint8(tvb, offset+1)) {
+-				/* not an EOC at offset */
+-				s_offset=offset;
+-				offset= get_ber_identifier(tvb, offset, &tclass, &tpc, &ttag);
+-				offset= get_ber_length(tvb,offset, &tmp_len, NULL);
+-				tmp_length += tmp_len+(offset-s_offset); /* length + tag and length */
+-				offset += tmp_len;
+-                                /* Make sure we've moved forward in the packet */
+-				if (offset <= s_offset)
+-					THROW(ReportedBoundsError);
+-			}
+-			tmp_length += 2;
++
++			do {
++				tmp_offset = get_ber_identifier(tvb, tmp_offset, &tclass, NULL, &ttag);
++				
++				try_get_ber_length(tvb, &tmp_offset, &tmp_len, &tmp_ind);
++
++				tmp_offset += tmp_len;
++
++			} while (!((tclass == BER_CLASS_UNI) && (ttag == 0) && (tmp_len == 0))); 
++
++			tmp_length = tmp_offset - offset;
+ 			tmp_ind = TRUE;
+-			offset = tmp_offset;
++
+ 		}
+ 	}
+ 
+@@ -820,7 +821,22 @@
+ printf("get BER length %d, offset %d (remaining %d)\n", tmp_length, offset, tvb_length_remaining(tvb, offset));
+ #endif
+ 
+-	return offset;
++	*bl_offset = offset;
++	return TRUE;
++}
++
++int
++get_ber_length(tvbuff_t *tvb, int offset, guint32 *length, gboolean *ind) 
++{
++	int bl_offset = offset;
++	guint32 bl_length;
++
++	try_get_ber_length(tvb, &bl_offset, &bl_length, ind);
++
++	if (length)
++		*length = bl_length;
++
++	return bl_offset;
+ }
+ 
+ /* this function dissects the length octets of the BER TLV.
+diff -urN wireshark-1.0.13/epan/dissectors/packet-smb.c wireshark-1.0.14/epan/dissectors/packet-smb.c
+--- wireshark-1.0.13/epan/dissectors/packet-smb.c	2010-05-04 16:24:41.000000000 -0700
++++ wireshark-1.0.14/epan/dissectors/packet-smb.c	2010-06-08 11:47:11.000000000 -0700
+@@ -8175,7 +8175,9 @@
+ 	case NT_TRANS_IOCTL:
+ 		/* ioctl data */
+ 		ioctl_tvb=tvb_new_subset(tvb, offset, MIN((int)bc, tvb_length_remaining(tvb, offset)), bc);
+-		dissect_smb2_ioctl_data(ioctl_tvb, pinfo, tree, top_tree, nti->ioctl_function, TRUE);
++		if (nti){
++			dissect_smb2_ioctl_data(ioctl_tvb, pinfo, tree, top_tree, nti->ioctl_function, TRUE);
++		}
+ 
+ 
+ 		offset += bc;
+diff -urN wireshark-1.0.13/epan/dissectors/packet-smb-pipe.c wireshark-1.0.14/epan/dissectors/packet-smb-pipe.c
+--- wireshark-1.0.13/epan/dissectors/packet-smb-pipe.c	2010-05-04 16:24:42.000000000 -0700
++++ wireshark-1.0.14/epan/dissectors/packet-smb-pipe.c	2010-06-08 11:47:13.000000000 -0700
+@@ -2139,7 +2139,7 @@
+ 				    (*items->hf_index == -1) ?
+ 				      "String Param" :
+ 				      proto_registrar_get_name(*items->hf_index),
+-				    string);
++				    string ? string : "(null)");
+ 				items++;
+ 			} else {
+ 				offset = (*items->func)(tvb, offset, 0,
+diff -urN wireshark-1.0.13/epan/sigcomp-udvm.c wireshark-1.0.14/epan/sigcomp-udvm.c
+--- wireshark-1.0.13/epan/sigcomp-udvm.c	2010-05-04 16:24:45.000000000 -0700
++++ wireshark-1.0.14/epan/sigcomp-udvm.c	2010-06-08 11:47:15.000000000 -0700
+@@ -133,7 +133,7 @@
+ 	tvbuff_t	*decomp_tvb;
+ 	guint8		buff[UDVM_MEMORY_SIZE];
+ 	char		string[2];
+-	guint8		*out_buff;		/* Largest allowed size for a message is 65535  */
++	guint8		*out_buff;		/* Largest allowed size for a message is UDVM_MEMORY_SIZE = 65536 */
+ 	guint32		i = 0;
+ 	guint16		n = 0;
+ 	guint16		m = 0;
+@@ -322,8 +322,8 @@
+ 		offset++;
+ 
+ 	}
+-	/* Largest allowed size for a message is 65535  */
+-	out_buff = g_malloc(65535);
++	/* Largest allowed size for a message is UDVM_MEMORY_SIZE = 65536  */
++	out_buff = g_malloc(UDVM_MEMORY_SIZE);
+ 	/* Start executing code */
+ 	current_address = udvm_start_ip;
+ 	input_address = 0;
+@@ -338,11 +338,11 @@
+ 		result_code = 15;
+ 		goto decompression_failure;
+ 	}
++	used_udvm_cycles++;
+ 	current_instruction = buff[current_address];
+ 
+ 	switch ( current_instruction ) {
+ 	case SIGCOMP_INSTR_DECOMPRESSION_FAILURE:
+-		used_udvm_cycles++;
+ 		if ( result_code == 0 )
+ 			result_code = 9;
+ 		proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+@@ -371,7 +371,6 @@
+ 		break;
+ 
+ 	case SIGCOMP_INSTR_AND: /* 1 AND ($operand_1, %operand_2) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ## AND(1) (operand_1, operand_2)",
+@@ -413,7 +412,6 @@
+ 		break;
+ 
+ 	case SIGCOMP_INSTR_OR: /* 2 OR ($operand_1, %operand_2) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ## OR(2) (operand_1, operand_2)",
+@@ -455,7 +453,6 @@
+ 		break;
+ 
+ 	case SIGCOMP_INSTR_NOT: /* 3 NOT ($operand_1) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ## NOT(3) ($operand_1)",
+@@ -489,7 +486,6 @@
+ 		break;
+ 
+ 	case SIGCOMP_INSTR_LSHIFT: /* 4 LSHIFT ($operand_1, %operand_2) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ## LSHIFT(4) ($operand_1, operand_2)",
+@@ -530,7 +526,6 @@
+ 
+ 		break;
+ 	case SIGCOMP_INSTR_RSHIFT: /* 5 RSHIFT ($operand_1, %operand_2) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ## RSHIFT(5) (operand_1, operand_2)",
+@@ -570,7 +565,6 @@
+ 		goto execute_next_instruction;
+ 		break;
+ 	case SIGCOMP_INSTR_ADD: /* 6 ADD ($operand_1, %operand_2) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ## ADD(6) (operand_1, operand_2)",
+@@ -610,7 +604,6 @@
+ 		goto execute_next_instruction;
+ 
+ 	case SIGCOMP_INSTR_SUBTRACT: /* 7 SUBTRACT ($operand_1, %operand_2) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ## SUBTRACT(7) (operand_1, operand_2)",
+@@ -651,7 +644,6 @@
+ 		break;
+ 
+ 	case SIGCOMP_INSTR_MULTIPLY: /* 8 MULTIPLY ($operand_1, %operand_2) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ##MULTIPLY(8) (operand_1, operand_2)",
+@@ -699,7 +691,6 @@
+ 		break;
+ 
+ 	case SIGCOMP_INSTR_DIVIDE: /* 9 DIVIDE ($operand_1, %operand_2) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ## DIVIDE(9) (operand_1, operand_2)",
+@@ -749,7 +740,6 @@
+ 		break;
+ 
+ 	case SIGCOMP_INSTR_REMAINDER: /* 10 REMAINDER ($operand_1, %operand_2) */
+-		used_udvm_cycles++;
+ 		if (show_instr_detail_level == 2 ){
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,
+ 				"Addr: %u ## REMAINDER(10) (operand_1, operand_2)",
+@@ -855,7 +845,7 @@
+ 				operand_address, ref_destination);
+ 		}
+ 		current_address = next_operand_address;
+-		used_udvm_cycles = used_udvm_cycles + 1 + length;
++		used_udvm_cycles = used_udvm_cycles + length;
+ 
+ 		n = 0;
+ 		k = position;
+@@ -950,7 +940,6 @@
+ 			proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,"     Loading bytes at %u Value %u 0x%x",
+ 					address, value, value);
+ 		}
+-		used_udvm_cycles++;
+ 		current_address = next_operand_address;
+ 		goto execute_next_instruction;
+ 		break;
+@@ -988,7 +977,7 @@
+ 				current_address, address, n, n-1);
+ 		}
+ 		operand_address = next_operand_address;
+-		used_udvm_cycles = used_udvm_cycles + 1 + n;
++		used_udvm_cycles = used_udvm_cycles + n;
+ 		while ( n > 0) {
+ 			n = n - 1;
+ 			/* %value */
+@@ -1057,7 +1046,6 @@
+ 		buff[stack_location] = (stack_fill >> 8) & 0x00FF;
+ 		buff[(stack_location+1) & 0xFFFF] = stack_fill & 0x00FF;
+ 
+-		used_udvm_cycles++;
+ 		goto execute_next_instruction;
+ 
+ 		break;
+@@ -1114,7 +1102,6 @@
+ 		buff[destination] = (value >> 8) & 0x00FF;
+ 		buff[(destination+1) & 0xFFFF] = value & 0x00FF;
+ 
+-		used_udvm_cycles++;
+ 		goto execute_next_instruction;
+ 
+ 		break;
+@@ -1202,7 +1189,7 @@
+ 				position = byte_copy_left;
+ 			}
+ 		}
+-		used_udvm_cycles = used_udvm_cycles + 1 + length;
++		used_udvm_cycles = used_udvm_cycles + length;
+ 		goto execute_next_instruction;
+ 		break;
+ 
+@@ -1296,7 +1283,7 @@
+ 		buff[result_dest] = k >> 8;
+ 		buff[result_dest + 1] = k & 0x00ff;
+ 
+-		used_udvm_cycles = used_udvm_cycles + 1 + length;
++		used_udvm_cycles = used_udvm_cycles + length;
+ 		goto execute_next_instruction;
+ 		break;
+ 
+@@ -1426,7 +1413,7 @@
+ 		}
+ 		buff[result_dest] = k >> 8;
+ 		buff[result_dest + 1] = k & 0x00ff;
+-		used_udvm_cycles = used_udvm_cycles + 1 + length;
++		used_udvm_cycles = used_udvm_cycles + length;
+ 		goto execute_next_instruction;
+ 
+ 		break;
+@@ -1503,7 +1490,7 @@
+ 			k = ( k + 1 ) & 0xffff;
+ 			n++;
+ 		}/* end while */
+-		used_udvm_cycles = used_udvm_cycles + 1 + length;
++		used_udvm_cycles = used_udvm_cycles + length;
+ 		goto execute_next_instruction;
+ 		break;
+ 
+@@ -1529,7 +1516,6 @@
+ 				current_address, at_address);
+ 		}
+ 		current_address = at_address;
+-		used_udvm_cycles++;
+ 		goto execute_next_instruction;
+ 		break;
+ 
+@@ -1606,7 +1592,6 @@
+ 			current_address = at_address_2;
+ 		if ( value_1 > value_2 )
+ 			current_address = at_address_3;
+-		used_udvm_cycles++;
+ 		goto execute_next_instruction;
+ 		break;
+ 
+@@ -1650,7 +1635,6 @@
+ 		/* ... and jump to the destination address */
+ 		current_address = at_address;
+ 
+-		used_udvm_cycles++;
+ 		goto execute_next_instruction;
+ 
+ 		break;
+@@ -1685,7 +1669,6 @@
+ 		/* ... and set the PC to the popped value */
+ 		current_address = at_address;
+ 
+-		used_udvm_cycles++;
+ 		goto execute_next_instruction;
+ 
+ 		break;
+@@ -1747,7 +1730,7 @@
+ 			result_code = 6;
+ 			goto decompression_failure;
+ 		}
+-		used_udvm_cycles = used_udvm_cycles + 1 + n;
++		used_udvm_cycles = used_udvm_cycles + n;
+ 
+ 		goto execute_next_instruction;
+ 
+@@ -1793,7 +1776,7 @@
+ 				operand_address, at_address);
+ 		}
+ 		 /* operand_value = (memory_address_of_instruction + D) modulo 2^16 */
+-		used_udvm_cycles = used_udvm_cycles + 1 + length;
++		used_udvm_cycles = used_udvm_cycles + length;
+ 
+ 		n = 0;
+ 		k = position;
+@@ -1949,7 +1932,7 @@
+ 			k = ( k + 1 ) & 0xffff;
+ 			n++;
+ 		}
+-		used_udvm_cycles = used_udvm_cycles + 1 + length;
++		used_udvm_cycles = used_udvm_cycles + length;
+ 		current_address = next_operand_address;
+ 		goto execute_next_instruction;
+ 		break;
+@@ -2040,7 +2023,6 @@
+ 				buff, &old_input_bit_order, &remaining_bits,
+ 				&input_bits, &input_address, length, &result_code, msg_end);
+ 		if ( result_code == 11 ){
+-			used_udvm_cycles = used_udvm_cycles + 1;
+ 			current_address = at_address;
+ 			goto execute_next_instruction;
+ 		}
+@@ -2055,7 +2037,6 @@
+ 			"               Loading value: %u (0x%x) at Addr: %u, remaining_bits: %u", value, value, destination, remaining_bits);
+ 		}
+ 
+-		used_udvm_cycles = used_udvm_cycles + 1;
+ 		goto execute_next_instruction;
+ 		break;
+ 	case SIGCOMP_INSTR_INPUT_HUFFMAN: /* 30 */
+@@ -2102,7 +2083,7 @@
+ 				current_address, destination, at_address, n, n, n, n, n);
+ 		}
+ 
+-		used_udvm_cycles = used_udvm_cycles + 1 + n;
++		used_udvm_cycles = used_udvm_cycles + n;
+ 
+ 		/*
+ 		 * Note that if n = 0 then the INPUT-HUFFMAN instruction is ignored and
+@@ -2344,7 +2325,7 @@
+ 		if ( result_code != 0 ){
+ 			goto decompression_failure;
+ 		}
+-		used_udvm_cycles = used_udvm_cycles + 1 + state_length;
++		used_udvm_cycles = used_udvm_cycles + state_length;
+ 		goto execute_next_instruction;
+ 		break;
+ 	case SIGCOMP_INSTR_STATE_CREATE: /* 32 */
+@@ -2446,7 +2427,7 @@
+ 		state_instruction_buff[no_of_state_create] = state_instruction;
+ 		state_minimum_access_length_buff[no_of_state_create] = minimum_access_length;
+ 		state_state_retention_priority_buff[no_of_state_create] = state_retention_priority;
+-		used_udvm_cycles = used_udvm_cycles + 1 + state_length;
++		used_udvm_cycles = used_udvm_cycles + state_length;
+ 		/* Debug */
+ 		byte_copy_right = buff[66] << 8;
+ 		byte_copy_right = byte_copy_right | buff[67];
+@@ -2513,7 +2494,6 @@
+ 		 * TODO implement it
+ 		 */
+ 		udvm_state_free(buff,p_id_start,p_id_length);
+-		used_udvm_cycles++;
+ 
+ 		goto execute_next_instruction;
+ 		break;
+@@ -2590,7 +2570,7 @@
+ 			output_address ++;
+ 			n++;
+ 		}
+-		used_udvm_cycles = used_udvm_cycles + 1 + output_length;
++		used_udvm_cycles = used_udvm_cycles + output_length;
+ 		goto execute_next_instruction;
+ 		break;
+ 	case SIGCOMP_INSTR_END_MESSAGE: /* 35 */
+@@ -2759,7 +2739,7 @@
+ 		/*
+ 		proto_tree_add_text(udvm_tree, decomp_tvb, 0, -1,"SigComp message Decompressed");
+ 		*/
+-		used_udvm_cycles = used_udvm_cycles + 1 + state_length;
++		used_udvm_cycles = used_udvm_cycles + state_length;
+ 		proto_tree_add_text(udvm_tree, bytecode_tvb, 0, -1,"maximum_UDVM_cycles %u used_udvm_cycles %u",
+ 			maximum_UDVM_cycles, used_udvm_cycles);
+ 		return decomp_tvb;

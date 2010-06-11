@@ -1,3 +1,19 @@
+wireshark (1.0.2-3+lenny9) stable-security; urgency=high
+
+  * security fixes from Wireshark 1.0.14:
+     - The SMB dissector could dereference a NULL pointer.
+       (No assigned CVE number.)
+     - J. Oquendo discovered that the ASN.1 BER dissector could overrun
+       the stack. (No assigned CVE number.)
+     - The SMB PIPE dissector could dereference a NULL pointer on some
+       platforms. (No assigned CVE number.)
+     - The SigComp Universal Decompressor Virtual Machine could go into
+       an infinite loop. (No assigned CVE number.)
+     - The SigComp Universal Decompressor Virtual Machine could overrun a
+       buffer. (No assigned CVE number.)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 11 Jun 2010 21:58:02 +0200
+
 wireshark (1.0.2-3+lenny8) stable-security; urgency=high
 
   * security fixes from Wireshark 1.0.11:
