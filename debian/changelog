@@ -2,6 +2,8 @@ wireshark (1.2.9-2) unstable; urgency=low
 
   * ship README.Debian with wireshark and tshark packages in addition to
     shipping it with wireshark-common
+  * Debconf template update to refer to README.Debian instead of going into
+    technical details
 
  -- Balint Reczey <balint@balintreczey.hu>  Wed, 16 Jun 2010 16:34:26 +0200
 
