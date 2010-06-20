@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: wireshark@packages.debian.org\n"
-"POT-Creation-Date: 2009-09-17 23:07+0200\n"
+"POT-Creation-Date: 2010-06-20 16:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,18 +19,25 @@ msgstr ""
 #. Type: boolean
 #. Description
 #: ../templates:2001
-msgid "Should dumpcap be installed \"setuid root\"?"
+msgid "Should non-superusers be able to capture packets?"
 msgstr ""
 
 #. Type: boolean
 #. Description
 #: ../templates:2001
 msgid ""
-"Dumpcap can be installed with the set-user-id bit set, so members of the "
-"\"wireshark\" system group will have the privileges required to use it. This "
-"way of capturing packets using Wireshark/Tshark is recommended over the "
-"alternative of running them directly as superuser, because less of the code "
-"will run with elevated privileges."
+"Dumpcap can be installed in a way that allows members of the \"wireshark\" "
+"system group to capture packets. This is recommended over the alternative of "
+"running Wireshark/Tshark directly as root, because less of the code will run "
+"with elevated privileges."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:2001
+msgid ""
+"For more detailed information please see  /usr/share/doc/wireshark-common/"
+"README.Debian."
 msgstr ""
 
 #. Type: boolean
