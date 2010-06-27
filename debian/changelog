@@ -4,6 +4,12 @@ wireshark (1.2.9-2) unstable; urgency=low
     shipping it with wireshark-common
   * Debconf template update to refer to README.Debian instead of going into
     technical details
+  * [Debconf translation updates]
+    - Portuguese (Pedro Ribeiro).  (Closes: #587213)
+    - Swedish (Martin Ågren).
+    - Italian (Luca Monducci).
+    - Czech (Martin Sin).  (Closes: #586556)
+    - Russian (Yuri Kozlov).  (Closes: #586580)
 
  -- Balint Reczey <balint@balintreczey.hu>  Wed, 16 Jun 2010 16:34:26 +0200
 

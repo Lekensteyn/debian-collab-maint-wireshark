@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wireshark 1.2.1-3\n"
 "Report-Msgid-Bugs-To: wireshark@packages.debian.org\n"
 "POT-Creation-Date: 2010-06-20 16:35+0200\n"
-"PO-Revision-Date: 2009-09-28 15:29+0200\n"
+"PO-Revision-Date: 2010-06-20 17:12+0200\n"
 "Last-Translator: Martin Sin <martin.sin@zshk.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,12 +19,11 @@ msgstr ""
 #. Description
 #: ../templates:2001
 msgid "Should non-superusers be able to capture packets?"
-msgstr ""
+msgstr "Mohou obyčejní uživatelé zachytávat pakety?"
 
 #. Type: boolean
 #. Description
 #: ../templates:2001
-#, fuzzy
 #| msgid ""
 #| "Dumpcap can be installed with the set-user-id bit set, so members of the "
 #| "\"wireshark\" system group will have the privileges required to use it. "
@@ -37,11 +36,11 @@ msgid ""
 "running Wireshark/Tshark directly as root, because less of the code will run "
 "with elevated privileges."
 msgstr ""
-"Dumpcap je mo??no nainstalovat s nastaven??m bitu set-user-id, tak??e ho "
-"budou moci pou????vat u??ivatel?? skupiny ???wireshark???. Tento zp??sob z??"
-"sk??v??n?? paket?? pomoc?? Wireshark/Tshark je doporu??ovan?? oproti mo??"
-"nosti spu??t??n?? programu s pr??vy u??ivatele root, proto??e bude s t??mito "
-"pr??vy superu??ivatele spu??t??na pouze men???? ????st programu."
+"Dumpcap můžete nainstalovat tak, že budou moci zachytávat pakety pouze "
+"členové skupiny „wireshark“. Tento způsob zachytávání paketů pomocí "
+"Wireshark/Tshark se obecně doporučuje. Druhou možností je spuštění programu "
+"přímo pod superuživatelem, to ovšem nelze doporučit, protože je pak pod tímto "
+"uživatelem spuštěna větší část potencionálně nebezpečného kódu."
 
 #. Type: boolean
 #. Description
@@ -50,6 +49,8 @@ msgid ""
 "For more detailed information please see  /usr/share/doc/wireshark-common/"
 "README.Debian."
 msgstr ""
+"Pro více informací se prosím podívejte na /usr/share/doc/wireshark-common/"
+"README.Debian."
 
 #. Type: boolean
 #. Description
@@ -58,9 +59,8 @@ msgid ""
 "Enabling this feature may be a security risk, so it is disabled by default. "
 "If in doubt, it is suggested to leave it disabled."
 msgstr ""
-"Povolen?? t??to mo??nosti m????e b??t sou??asn?? bezpe??nostn?? rizikem, "
-"tak??e je ve v??choz??m nastaven?? zak??z??no. Jste-li na pochyb??ch, "
-"doporu??uje se nechat ho vypnut??."
+"Povolení této možnosti může být bezpečnostním rizikem a tak je ve výchozím "
+"nastavení vypnuté. Jste-li na pochybách, doporučuje se nechat volbu vypnutou."
 
 #~ msgid "Should dumpcap be installed \"setuid root\"?"
 #~ msgstr "M?? se dumpcap nainstalovat s ???setuid root????"
