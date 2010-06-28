@@ -1,0 +1,3 @@
+/usr/lib/libwiretap.so
+/usr/lib/libwiretap.la
+/usr/include/wireshark/wiretap/*

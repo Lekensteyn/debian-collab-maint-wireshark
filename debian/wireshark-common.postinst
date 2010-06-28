@@ -19,7 +19,7 @@ if [ -e "$PROGRAM" ]; then
             chown root:$GROUP $PROGRAM
             if which setcap > /dev/null ; then
                 chmod u=rwx,g=rx,o=r $PROGRAM
-                if ! setcap cap_net_raw,cap_net_admin=eip $PROGRAM; then
+                if ! setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap; then
                     echo "Setting capabilities for dumpcap using Linux Capabilities failed."
                     echo "Falling back to setting set-user-id bit."
                     chmod u=rwxs,g=rx,o=r $PROGRAM

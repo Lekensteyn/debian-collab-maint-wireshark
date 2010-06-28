@@ -1,3 +1,27 @@
+wireshark (1.4.0~rc1-1) UNRELEASED; urgency=low
+
+  [ Eloy Paris ]
+  * New upstream release.
+  * New libwireshark0, libwireshark-dev, libwiretap0, libwiretap-dev
+    packages that reorganize libraries, header files, etc. as follows:
+    - libwireshark from package wireshark-common to package libwireshark0.
+    - libwsutil from package wireshark-common to package libwireshark0.
+    - libwiretap from package wireshark-common to package libwiretap0.
+    - Header file, .so symlinks and static libraries from package
+      wireshark-dev to libwireshark-dev and libwiretap-dev.
+    This provides more package granularity and allows easier use of
+    libraries provided by the Wireshark project by applications that
+    are not maintained by the Wireshark project.
+  * Dropped the following patches since they have been integrated
+    upstream:
+    - 05_libsnmp_path.patch
+    - 07_mib_tip.patch
+    - 11_disable_oid_resolution_by_default.patch
+    - 12_fix_about_crash.patch
+    - 21_dumpcap.patch
+
+ -- Eloy Paris <peloy@debian.org>  Sun, 27 Jun 2010 22:58:05 -0400
+
 wireshark (1.2.9-2) unstable; urgency=low
 
   * ship README.Debian with wireshark and tshark packages in addition to
