@@ -2,6 +2,9 @@ wireshark (1.4.0~rc1-1) UNRELEASED; urgency=low
 
   [ Eloy Paris ]
   * New upstream release.
+    - Make tshark list interfaces for non-root user (Closes: #582298)
+    - Fix duplicate inconsistent attributes in RADIUS dictionary.
+      (Closes: #570132)
   * New libwireshark0, libwireshark-dev, libwiretap0, libwiretap-dev
     packages that reorganize libraries, header files, etc. as follows:
     - Moved libwireshark.so.* from package wireshark-common to package
