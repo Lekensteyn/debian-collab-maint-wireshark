@@ -5,6 +5,5 @@
 /usr/bin/mergecap
 /usr/bin/text2pcap
 /usr/lib/wireshark/plugins/*
-/usr/share/lintian/overrides/wireshark-common
 /usr/share/wireshark/*
 /etc/wireshark/init.lua

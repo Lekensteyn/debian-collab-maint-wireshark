@@ -4,14 +4,26 @@ wireshark (1.4.0~rc1-1) UNRELEASED; urgency=low
   * New upstream release.
   * New libwireshark0, libwireshark-dev, libwiretap0, libwiretap-dev
     packages that reorganize libraries, header files, etc. as follows:
-    - libwireshark from package wireshark-common to package libwireshark0.
-    - libwsutil from package wireshark-common to package libwireshark0.
-    - libwiretap from package wireshark-common to package libwiretap0.
-    - Header file, .so symlinks and static libraries from package
-      wireshark-dev to libwireshark-dev and libwiretap-dev.
+    - Moved libwireshark.so.* from package wireshark-common to package
+      libwireshark0.
+    - Moved libwsutil.so.* from package wireshark-common to package
+      libwireshark0.
+    - Moved libwiretap.so.* from package wireshark-common to package
+      libwiretap0.
+    - Moved header files, .so symlinks, and static libraries from package
+      wireshark-dev to libwireshark-dev and libwiretap-dev, depending on
+      the case.
     This provides more package granularity and allows easier use of
     libraries provided by the Wireshark project by applications that
-    are not maintained by the Wireshark project.
+    are not maintained by the Wireshark project (package kismet currently
+    appears to use services offered by libwiretap, and upcoming package
+    netexpect will use libwireshark services [see ITP bug #587056]).
+  * Dropped 23_lintian-overrides.patch since we no longer have binaries
+    with RPATHs because after the library separation work mentioned above
+    our libraries are in /usr/lib and not in /usr/lib/wireshark, eliminating
+    the need for RPATHs. Also tweaked debian/rules, debian/tshark.files,
+    and debian/wireshark-common.files so the lintian overrides
+    are not installed.
   * Dropped the following patches since they have been integrated
     upstream:
     - 05_libsnmp_path.patch
@@ -27,7 +39,7 @@ wireshark (1.4.0~rc1-1) UNRELEASED; urgency=low
     - 04_asn2wrs_ply.patch
     - 06_giop-buffer.patch
 
- -- Eloy Paris <peloy@debian.org>  Sun, 27 Jun 2010 22:58:05 -0400
+ -- Eloy Paris <peloy@debian.org>  Mon, 28 Jun 2010 12:59:38 -0400
 
 wireshark (1.2.9-2) unstable; urgency=low
 
