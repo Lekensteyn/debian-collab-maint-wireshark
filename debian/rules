@@ -109,7 +109,7 @@ binary-indep: install
 
 check: install
 	# check all necessary headers are included
-	gcc -c debian/headers-check.c `pkg-config --cflags glib-2.0` -Idebian/libwireshark-dev/usr/include/wireshark -Idebian/libwiretap-dev/usr/include/wireshark -o /dev/null
+	gcc -c debian/headers-check.c `pkg-config --cflags glib-2.0` -Idebian/libwireshark-dev/usr/include -Idebian/libwireshark-dev/usr/include/wireshark -Idebian/libwiretap-dev/usr/include/wireshark -o /dev/null
 
 # Build architecture-dependent files here.
 binary-arch: install check
