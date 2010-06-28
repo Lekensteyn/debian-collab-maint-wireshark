@@ -20,6 +20,13 @@ wireshark (1.4.0~rc1-1) UNRELEASED; urgency=low
     - 12_fix_about_crash.patch
     - 21_dumpcap.patch
 
+  [ Balint Reczey ]
+  * Dropped the following patches since they have been integrated
+    upstream:
+    - 10_prevent_libsmi_crash.patch
+    - 04_asn2wrs_ply.patch
+    - 06_giop-buffer.patch
+
  -- Eloy Paris <peloy@debian.org>  Sun, 27 Jun 2010 22:58:05 -0400
 
 wireshark (1.2.9-2) unstable; urgency=low

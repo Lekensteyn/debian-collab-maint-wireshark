@@ -2,10 +2,8 @@
 02_asn2deb.patch
 03_preferences.patch
 04_asn2wrs_ply.patch
-06_giop-buffer.patch
 08_wireshark-desktop-menu.patch
 09_idl2wrs.patch
-10_prevent_libsmi_crash.patch
 16_licence_about_location.patch
 23_lintian-overrides.patch
 25_libwsutil-version.patch
