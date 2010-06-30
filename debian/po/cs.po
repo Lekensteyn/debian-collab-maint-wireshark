@@ -46,7 +46,7 @@ msgstr ""
 #. Description
 #: ../templates:2001
 msgid ""
-"For more detailed information please see  /usr/share/doc/wireshark-common/"
+"For more detailed information please see /usr/share/doc/wireshark-common/"
 "README.Debian."
 msgstr ""
 "Pro více informací se prosím podívejte na /usr/share/doc/wireshark-common/"
