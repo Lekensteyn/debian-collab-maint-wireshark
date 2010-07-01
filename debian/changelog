@@ -16,6 +16,8 @@ wireshark (1.4.0~rc1-1) UNRELEASED; urgency=low
     - Moved header files, .so symlinks, and static libraries from package
       wireshark-dev to libwireshark-dev and libwiretap-dev, depending on
       the case.
+    - Moved plugins in /usr/lib/wireshark/ from package wireshark-common
+      to package libwireshark0.
     This provides more package granularity and allows easier use of
     libraries provided by the Wireshark project by applications that
     are not maintained by the Wireshark project (package kismet currently
