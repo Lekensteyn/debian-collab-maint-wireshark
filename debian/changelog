@@ -14,7 +14,7 @@ wireshark (1.2.9-2) unstable; urgency=low
     - Spanish (Francisco Javier Cuadrado). (Closes: #588809)
   * debian/control: updated policy to 3.9.0 (no changes needed)
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 16 Jun 2010 16:34:26 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 21 Jul 2010 00:33:00 +0200
 
 wireshark (1.2.9-1) unstable; urgency=high
 
