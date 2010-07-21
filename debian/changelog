@@ -5,14 +5,16 @@ wireshark (1.2.9-2) unstable; urgency=low
   * Debconf template update to refer to README.Debian instead of going into
     technical details
   * [Debconf translation updates]
-    - German (Helge Kreutzmann).  (Closes: #587559, #587560)
-    - Portuguese (Pedro Ribeiro).  (Closes: #587213)
+    - German (Helge Kreutzmann). (Closes: #587559, #587560)
+    - Portuguese (Pedro Ribeiro). (Closes: #587213)
     - Swedish (Martin Ågren).
     - Italian (Luca Monducci).
-    - Czech (Martin Sin).  (Closes: #586556)
-    - Russian (Yuri Kozlov).  (Closes: #586580)
+    - Czech (Martin Sin). (Closes: #586556)
+    - Russian (Yuri Kozlov). (Closes: #586580)
+    - Spanish (Francisco Javier Cuadrado). (Closes: #588809)
+  * debian/control: updated policy to 3.9.0 (no changes needed)
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 16 Jun 2010 16:34:26 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 21 Jul 2010 00:33:00 +0200
 
 wireshark (1.2.9-1) unstable; urgency=high
 
