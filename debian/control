@@ -111,15 +111,12 @@ Description: a network packet capture library -- shared library
  the current standard Unix library for packet capturing, that attempts
  to address some of libpcap's shortcomings. Some of Wiretap's features
  include:
- .
    * The library can easily be amended with new packet filtering objects.
      libpcap is very TCP/IP-oriented. The objective is to be able to
      filter on IPX objects, SNA objects, etc. as well as allowing any decent
      programmer to be able to add new filters to the library.
- .
    * The library can read file formats from many packet-capturing utilities.
      libpcap only reads pcap files.
- .
    * Network names can be resolved immediately after a trace and saved in
      the trace file.
  .
@@ -137,15 +134,12 @@ Description: a network packet capture library -- development files
  the current standard Unix library for packet capturing, that attempts
  to address some of libpcap's shortcomings. Some of Wiretap's features
  include:
- .
    * The library can easily be amended with new packet filtering objects.
      libpcap is very TCP/IP-oriented. The objective is to be able to
      filter on IPX objects, SNA objects, etc. as well as allowing any decent
      programmer to be able to add new filters to the library.
- .
    * The library can read file formats from many packet-capturing utilities.
      libpcap only reads pcap files.
- .
    * Network names can be resolved immediately after a trace and saved in
      the trace file.
  .
