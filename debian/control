@@ -85,14 +85,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: wireshark-common (<= 1.2.7-1)
 Replaces: wireshark-common (<= 1.2.7-1)
 Description: a network packet dissection library -- shared library
- The "libwireshark" library provides network packet dissection services and
- is at the core of the Wireshark project. The "wireshark" and "tshark"
- applications, which are part of the Wireshark project, make use of the
- services offered by this library.
- .
- This package provides the "libwireshark" library, which can be
- used by applications other than "wireshark" and "tshark" to take
- advantage of the sophisticated network packet dissection capabilities
+ The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.
 
 Package: libwireshark-dev
@@ -102,14 +95,11 @@ Conflicts: wireshark-dev (<= 1.2.7-1)
 Replaces: wireshark-dev (<= 1.2.7-1)
 Architecture: any
 Description: a network packet dissection library -- development files
- The "libwireshark" library provides network packet dissection services and
- is at the core of the Wireshark project. The "wireshark" and "tshark"
- applications, which are part of the Wireshark project, make use of the
- services offered by this library, although the library may be used by
- applications not affiliated with the Wireshark project.
+ The "libwireshark" library provides the network packet dissection services
+ developed by the Wireshark project.
  .
  This package contains the static library and the C header files that are
- needed for application to use libwireshark services.
+ needed for applications to use libwireshark services.
 
 Package: libwiretap0
 Section: libs
@@ -135,11 +125,6 @@ Description: a network packet capture library -- shared library
  .
  Wiretap's shortcomings are: no filter capability and no support for packet
  capture.
- .
- This package provides the "libwiretap" library, which can be
- used by applications other than "wireshark" and "tshark" to get access
- to more packet capture file formats than the pcap format offered
- by libpcap.
 
 Package: libwiretap-dev
 Section: libdevel
