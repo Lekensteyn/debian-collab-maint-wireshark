@@ -90,7 +90,7 @@ Description: a network packet dissection library -- shared library
 
 Package: libwireshark-dev
 Section: libdevel
-Depends: ${shlibs:Depends}, libwireshark0 (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark0 (= ${binary:Version})
 Conflicts: wireshark-dev (<= 1.2.7-1)
 Replaces: wireshark-dev (<= 1.2.7-1)
 Architecture: any
@@ -134,7 +134,7 @@ Description: a network packet capture library -- shared library
 
 Package: libwiretap-dev
 Section: libdevel
-Depends: ${shlibs:Depends}, libwiretap0 (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwiretap0 (= ${binary:Version})
 Conflicts: wireshark-dev (<= 1.2.7-1)
 Replaces: wireshark-dev (<= 1.2.7-1)
 Architecture: any
