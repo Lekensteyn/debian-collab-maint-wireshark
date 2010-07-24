@@ -16,7 +16,7 @@ _Description: Should non-superusers be able to capture packets?
  alternative of running Wireshark/Tshark directly as root, because
  less of the code will run with elevated privileges.
  .
- For more detailed information please see 
+ For more detailed information please see
  /usr/share/doc/wireshark-common/README.Debian.
  .
  Enabling this feature may be a security risk, so it is disabled by
