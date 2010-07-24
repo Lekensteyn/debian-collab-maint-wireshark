@@ -107,18 +107,27 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: wireshark-common (<= 1.2.7-1)
 Description: a network packet capture library -- shared library
- Wiretap, part of the Wireshark project, is a library similar to libpcap,
- the current standard Unix library for packet capturing, that attempts
- to address some of libpcap's shortcomings. Some of Wiretap's features
- include:
-   * The library can easily be amended with new packet filtering objects.
-     libpcap is very TCP/IP-oriented. The objective is to be able to
-     filter on IPX objects, SNA objects, etc. as well as allowing any decent
-     programmer to be able to add new filters to the library.
-   * The library can read file formats from many packet-capturing utilities.
-     libpcap only reads pcap files.
-   * Network names can be resolved immediately after a trace and saved in
-     the trace file.
+ Wiretap, part of the Wireshark project, is a library that allows to
+ read and write several packet capture file formats.
+ .
+ Supported formats are: 
+  * Libpcap
+  * Sniffer
+  * LANalyzer
+  * Network Monitor
+  * "snoop"
+  * "iptrace"
+  * Sniffer Basic (NetXRay)/Windows Sniffer Pro
+  * RADCOM WAN/LAN Analyzers
+  * Lucent/Ascend access products
+  * HP-UX nettl
+  * Toshiba ISDN Router
+  * ISDN4BSD "i4btrace" utility
+  * Cisco Secure Intrustion Detection System iplogging facility
+  * pppd logs (pppdump-format files)
+  * VMS TCPTRACE
+  * DBS Etherwatch (text format)
+  * Catapult DCT2000 (.out files)
  .
  Wiretap's shortcomings are: no filter capability and no support for packet
  capture.
@@ -130,20 +139,30 @@ Conflicts: wireshark-dev (<= 1.2.7-1)
 Replaces: wireshark-dev (<= 1.2.7-1)
 Architecture: any
 Description: a network packet capture library -- development files
- Wiretap, part of the Wireshark project, is a library similar to libpcap,
- the current standard Unix library for packet capturing, that attempts
- to address some of libpcap's shortcomings. Some of Wiretap's features
- include:
-   * The library can easily be amended with new packet filtering objects.
-     libpcap is very TCP/IP-oriented. The objective is to be able to
-     filter on IPX objects, SNA objects, etc. as well as allowing any decent
-     programmer to be able to add new filters to the library.
-   * The library can read file formats from many packet-capturing utilities.
-     libpcap only reads pcap files.
-   * Network names can be resolved immediately after a trace and saved in
-     the trace file.
+ Wiretap, part of the Wireshark project, is a library that allows to
+ read and write several packet capture file formats.
+ .
+ Supported formats are: 
+  * Libpcap
+  * Sniffer
+  * LANalyzer
+  * Network Monitor
+  * "snoop"
+  * "iptrace"
+  * Sniffer Basic (NetXRay)/Windows Sniffer Pro
+  * RADCOM WAN/LAN Analyzers
+  * Lucent/Ascend access products
+  * HP-UX nettl
+  * Toshiba ISDN Router
+  * ISDN4BSD "i4btrace" utility
+  * Cisco Secure Intrustion Detection System iplogging facility
+  * pppd logs (pppdump-format files)
+  * VMS TCPTRACE
+  * DBS Etherwatch (text format)
+  * Catapult DCT2000 (.out files)
  .
  Wiretap's shortcomings are: no filter capability and no support for packet
  capture.
  .
  This package contains the static library and the C header files.
+
