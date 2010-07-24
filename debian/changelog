@@ -43,8 +43,10 @@ wireshark (1.4.0~rc1-1) UNRELEASED; urgency=low
     - 10_prevent_libsmi_crash.patch
     - 04_asn2wrs_ply.patch
     - 06_giop-buffer.patch
+  * readded 23_lintian-overrides.patch to override wireshark-common's
+    pkg-has-shlibs-control-file-but-no-actual-shared-libs
 
- -- Eloy Paris <peloy@debian.org>  Mon, 28 Jun 2010 12:59:38 -0400
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 24 Jul 2010 19:23:04 +0200
 
 wireshark (1.2.9-2) unstable; urgency=low
 

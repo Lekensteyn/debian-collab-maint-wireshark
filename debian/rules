@@ -80,13 +80,17 @@ install: build
 	mkdir -p $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
 	install -m 755 $(CURDIR)/idl2deb $(CURDIR)/debian/tmp/usr/bin/
 	install -m 755 $(CURDIR)/asn2deb $(CURDIR)/debian/tmp/usr/bin/
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/lintian/overrides/
+	install -m 644 $(CURDIR)/wireshark-common.lintian-overrides \
+		$(CURDIR)/debian/tmp/usr/share/lintian/overrides/wireshark-common
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
 	mv $(CURDIR)/debian/tmp/usr/share/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/etc/wireshark/
 	ln -s /etc/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/usr/share/wireshark/init.lua
-	cp $(CURDIR)/tools/wireshark_be.py $(CURDIR)/tools/wireshark_gen.py \
-		$(CURDIR)/tools/asn2wrs.py $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
+	install -m 644 $(CURDIR)/tools/wireshark_be.py $(CURDIR)/tools/wireshark_gen.py \
+		$(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
+	install	-m 755 $(CURDIR)/tools/asn2wrs.py $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
 	mkdir -p $(CURDIR)/debian/tmp/usr/include/wireshark/
 	for F in `cat debian/libwireshark-dev.header-files debian/libwiretap-dev.header-files`; do \
 		cp --parents $$F $(CURDIR)/debian/tmp/usr/include/wireshark; \
