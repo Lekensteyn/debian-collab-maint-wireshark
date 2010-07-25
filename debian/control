@@ -12,7 +12,7 @@ Homepage: http://www.wireshark.org/
 
 Package: wireshark-common
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, debconf, libcap2-bin [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark0 (>= ${binary:Version}), libwiretap0 (>= ${binary:Version}), debconf, libcap2-bin [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
 Suggests: snmp-mibs-downloader
 Replaces: ethereal-common (<< 1.0.0-3)
