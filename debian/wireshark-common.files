@@ -4,5 +4,3 @@
 /usr/bin/editcap
 /usr/bin/mergecap
 /usr/bin/text2pcap
-/usr/share/wireshark/*
-/etc/wireshark/init.lua

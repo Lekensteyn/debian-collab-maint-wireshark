@@ -43,6 +43,8 @@ wireshark (1.4.0~rc1-1) UNRELEASED; urgency=low
     - 10_prevent_libsmi_crash.patch
     - 04_asn2wrs_ply.patch
     - 06_giop-buffer.patch
+  * moved platform independent files needed by libwireshark0 to 
+    new libwireshark0-data package from wireshark-common
 
  -- Balint Reczey <balint@balintreczey.hu>  Sat, 24 Jul 2010 19:23:04 +0200
 
