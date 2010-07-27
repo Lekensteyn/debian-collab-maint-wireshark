@@ -60,7 +60,7 @@ msgstr "Dumpcap se puede instalar de un modo que permite a los miembros del grup
 #. Type: boolean
 #. Description
 #: ../templates:2001
-msgid "For more detailed information please see  /usr/share/doc/wireshark-common/README.Debian."
+msgid "For more detailed information please see /usr/share/doc/wireshark-common/README.Debian."
 msgstr "Para más información, vea el archivo «/usr/share/doc/wireshark-common/README.Debian»."
 
 #. Type: boolean
