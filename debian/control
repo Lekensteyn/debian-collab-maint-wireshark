@@ -81,14 +81,14 @@ Description: network traffic analyzer - debug symbols
 Package: libwireshark0
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark0-data (= ${source:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version})
 Conflicts: wireshark-common (<= 1.2.7-1)
 Replaces: wireshark-common (<= 1.2.7-1)
 Description: a network packet dissection library -- shared library
  The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.
 
-Package: libwireshark0-data
+Package: libwireshark-data
 Section: libs
 Architecture: all
 Depends: ${misc:Depends}
