@@ -1,4 +1,4 @@
-wireshark (1.4.0~rc1-1) UNRELEASED; urgency=low
+wireshark (1.4.0~rc1-1) experimental; urgency=low
 
   [ Eloy Paris ]
   * New upstream release.
