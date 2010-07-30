@@ -1,9 +1,20 @@
-wireshark (1.2.9-3) UNRELEASED; urgency=low
+wireshark (1.2.10-1) unstable; urgency=high
 
+  * New upstream release 1.2.10
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.2.10.html
+    - security fixes
+       - The SigComp Universal Decompressor Virtual Machine could overrun a
+         buffer. (CVE-2010-2287)
+       - Due to a regression the ASN.1 BER dissector could exhaust stack
+         memory. (CVE-2010-2284)
+       - The GSM A RR dissector could crash. (No assigned CVE number.)
+       - The IPMI dissector could go into an infinite loop.
+         (No assigned CVE number.)
   * [Debconf translation updates]
     - German (Helge Kreutzmann). (Closes: #590484)
 
- -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 Jul 2010 18:30:02 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 30 Jul 2010 08:30:02 +0200
 
 wireshark (1.2.9-2) unstable; urgency=low
 
