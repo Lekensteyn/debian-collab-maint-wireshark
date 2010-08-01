@@ -5,7 +5,7 @@ Maintainer: Balint Reczey <balint@balintreczey.hu>
 Uploaders: Joost Yervante Damad <andete@debian.org>
 DM-Upload-Allowed: yes
 Standards-Version: 3.9.0
-Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, debhelper (>= 6), po-debconf, libtool, python, python-ply, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libpcre3-dev, libcap2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386] | libcap-dev (>= 2.17) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], bison, libgnutls-dev, python-support (>= 0.3), portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, hardening-wrapper
+Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, debhelper (>= 6), po-debconf, libtool, python, python-ply, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libxml2-utils, libpcre3-dev, libcap2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386] | libcap-dev (>= 2.17) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], bison, libgnutls-dev, python-support (>= 0.3), portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, hardening-wrapper
 Build-Conflicts: libsnmp4.2-dev, libsnmp-dev
 XS-Python-Version: all
 Homepage: http://www.wireshark.org/
@@ -14,7 +14,6 @@ Package: wireshark-common
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark0 (>= ${binary:Version}), libwiretap0 (>= ${binary:Version}), debconf, libcap2-bin [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
-Suggests: snmp-mibs-downloader
 Replaces: ethereal-common (<< 1.0.0-3)
 Conflicts: ethereal-common (<< 1.0.0-3)
 Description: network traffic analyzer - common files
@@ -78,10 +77,24 @@ Description: network traffic analyzer - debug symbols
  This package contains stripped debugging symbols for all Wireshark
  programs and libraries.
 
+Package: wireshark-doc
+Priority: extra
+Architecture: all
+Section: doc
+Depends:  ${misc:Depends}
+Description: network traffic analyzer - documentation
+ Wireshark is a network "sniffer" - a tool that captures and analyzes
+ packets off the wire. Wireshark can decode too many protocols to list
+ here.
+ .
+ This package contains Wireshark User's guide, Wireshark Developer's Guide
+ and the Lua Reference.
+
 Package: libwireshark0
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version})
+Suggests: wireshark-doc (>= ${source:Version})
 Conflicts: wireshark-common (<= 1.2.7-1)
 Replaces: wireshark-common (<= 1.2.7-1)
 Description: a network packet dissection library -- shared library
@@ -94,6 +107,7 @@ Architecture: all
 Depends: ${misc:Depends}
 Conflicts: wireshark-common (<= 1.2.7-1)
 Replaces: wireshark-common (<= 1.2.7-1)
+Suggests: snmp-mibs-downloader
 Description: a network packet dissection library -- data files
  The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.

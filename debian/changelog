@@ -1,3 +1,12 @@
+wireshark (1.4.0~rc2-2) UNRELEASED; urgency=low
+
+  * New wireshark-doc package for shipping offline documentation
+    (Closes: #68746)
+  * make libwireshark0-data suggest snmp-mibs-downloader instead of
+    wireshark-common
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 30 Jul 2010 16:34:05 +0200
+
 wireshark (1.4.0~rc2-1) experimental; urgency=low
 
   [ Eloy Paris ]
