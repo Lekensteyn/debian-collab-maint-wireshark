@@ -1,3 +1,10 @@
+wireshark (1.2.10-2) UNRELEASED; urgency=low
+
+  * [Debconf translation updates]
+    - Japanese (Hideki Yamane (Debian-JP)).  (Closes: #591563)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 04 Aug 2010 13:24:07 +0200
+
 wireshark (1.2.10-1) unstable; urgency=high
 
   * New upstream release 1.2.10
