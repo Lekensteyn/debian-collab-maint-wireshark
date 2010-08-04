@@ -1,4 +1,4 @@
-wireshark (1.4.0~rc2-2) UNRELEASED; urgency=low
+wireshark (1.4.0~rc2-2) experimental; urgency=low
 
   * New wireshark-doc package for shipping offline documentation
     (Closes: #68746)
