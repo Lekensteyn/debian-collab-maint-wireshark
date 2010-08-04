@@ -4,6 +4,8 @@ wireshark (1.4.0~rc2-2) UNRELEASED; urgency=low
     (Closes: #68746)
   * make libwireshark0-data suggest snmp-mibs-downloader instead of
     wireshark-common
+  * [Debconf translation updates]
+    - Japanese (Hideki Yamane (Debian-JP)).  (Closes: #591563)
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 30 Jul 2010 16:34:05 +0200
 
