@@ -1,3 +1,13 @@
+wireshark (1.0.2-3+lenny10) stable-security; urgency=high
+
+  * security fixes from Wireshark 1.0.15:
+     - The SigComp Universal Decompressor Virtual Machine could overrun
+       a buffer. (CVE-2010-2995)
+     - Due to a regression the ASN.1 BER dissector could overrun the stack. 
+       (CVE-2010-2994)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 17 Aug 2010 14:41:51 +0200
+
 wireshark (1.0.2-3+lenny9) stable-security; urgency=high
 
   * security fixes from Wireshark 1.0.14:
