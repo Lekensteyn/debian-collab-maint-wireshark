@@ -95,8 +95,8 @@ Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version})
 Suggests: wireshark-doc (>= ${source:Version})
-Conflicts: wireshark-common (<= 1.2.7-1)
-Replaces: wireshark-common (<= 1.2.7-1)
+Conflicts: wireshark-common (<< 1.4.0~rc2-1)
+Replaces: wireshark-common (<< 1.4.0~rc2-1)
 Description: a network packet dissection library -- shared library
  The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.
@@ -105,8 +105,8 @@ Package: libwireshark-data
 Section: libs
 Architecture: all
 Depends: ${misc:Depends}
-Conflicts: wireshark-common (<= 1.2.7-1)
-Replaces: wireshark-common (<= 1.2.7-1)
+Conflicts: wireshark-common (<< 1.4.0~rc2-1)
+Replaces: wireshark-common (<< 1.4.0~rc2-1)
 Suggests: snmp-mibs-downloader
 Description: a network packet dissection library -- data files
  The libwireshark library provides the network packet dissection services 
@@ -117,8 +117,8 @@ Description: a network packet dissection library -- data files
 Package: libwireshark-dev
 Section: libdevel
 Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark0 (= ${binary:Version})
-Conflicts: wireshark-dev (<= 1.2.7-1)
-Replaces: wireshark-dev (<= 1.2.7-1)
+Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
+Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
 Description: a network packet dissection library -- development files
  The "libwireshark" library provides the network packet dissection services
@@ -131,7 +131,7 @@ Package: libwiretap0
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Conflicts: wireshark-common (<= 1.2.7-1)
+Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Description: a network packet capture library -- shared library
  Wiretap, part of the Wireshark project, is a library that allows to
  read and write several packet capture file formats.
@@ -161,8 +161,8 @@ Description: a network packet capture library -- shared library
 Package: libwiretap-dev
 Section: libdevel
 Depends: ${shlibs:Depends}, ${misc:Depends}, libwiretap0 (= ${binary:Version})
-Conflicts: wireshark-dev (<= 1.2.7-1)
-Replaces: wireshark-dev (<= 1.2.7-1)
+Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
+Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
 Description: a network packet capture library -- development files
  Wiretap, part of the Wireshark project, is a library that allows to
