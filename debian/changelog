@@ -3,7 +3,7 @@ wireshark (1.4.0~rc2-3) UNRELEASED; urgency=low
   * [Debconf translation updates]
     - French (Simon Paillard). (Closes: #593214)
   * changed versioned conflicts to conflict with << 1.4.0~rc2-1 versions
-    instead of conflicting vith <= 1.2.7-1 ones to allow smooth upgrades
+    instead of conflicting with <= 1.2.7-1 ones to allow smooth upgrades
     from versions between 1.2.7-1 and 1.4.0~rc2-1 (Closes: #593875)
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 17 Aug 2010 18:28:56 +0200
