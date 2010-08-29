@@ -3,6 +3,7 @@ wireshark (1.2.10-2) UNRELEASED; urgency=low
   * [Debconf translation updates]
     - Japanese (Hideki Yamane (Debian-JP)).  (Closes: #591563)
     - French (Simon Paillard).  (Closes: #593214)
+    - Danish (Joe Hansen). (Closes: #594738)
   * debian/control: updated policy to 3.9.1 (no changes needed)
 
  -- Balint Reczey <balint@balintreczey.hu>  Wed, 04 Aug 2010 13:24:07 +0200
