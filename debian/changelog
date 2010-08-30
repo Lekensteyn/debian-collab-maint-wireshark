@@ -1,5 +1,10 @@
-wireshark (1.4.0~rc2-3) UNRELEASED; urgency=low
+wireshark (1.4.0-1) UNRELEASED; urgency=low
 
+  * New upstream release 1.4.0
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.0.html
+  * drop 26_offline-documentation.patch patch since it has been integrated
+    upstream
   * [Debconf translation updates]
     - French (Simon Paillard). (Closes: #593214)
     - Danish (Joe Hansen). (Closes: #594738)
