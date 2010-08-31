@@ -1,7 +1,5 @@
 /usr/lib/libwireshark.so
-/usr/lib/libwireshark.la
 /usr/lib/libwsutil.so
-/usr/lib/libwsutil.la
 /usr/include/wireshark/*.h
 /usr/include/wireshark/epan/*
 /usr/include/wireshark/wsutil/*

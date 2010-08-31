@@ -1,5 +1,6 @@
 wireshark (1.4.0-1) UNRELEASED; urgency=low
 
+  [ Balint Reczey ]
   * New upstream release 1.4.0
     - release notes:
       http://www.wireshark.org/docs/relnotes/wireshark-1.4.0.html
@@ -12,7 +13,14 @@ wireshark (1.4.0-1) UNRELEASED; urgency=low
     instead of conflicting with <= 1.2.7-1 ones to allow smooth upgrades
     from versions between 1.2.7-1 and 1.4.0~rc2-1 (Closes: #593875)
 
- -- Balint Reczey <balint@balintreczey.hu>  Tue, 17 Aug 2010 18:28:56 +0200
+  [ Eloy Paris ]
+  * Removed /usr/lib/libwiretap.la from the libwiretap-dev package and
+    /usr/lib/libwireshark.la and /usr/lib/libwsutil.la from the
+    libwireshark-dev package since external programs linking against
+    libwiretap and libwireshark do not need them. Refer to the Debian
+    Policy Manual 10.2 ("Libraries") for further information.
+
+ -- Eloy Paris <peloy@debian.org>  Tue, 31 Aug 2010 12:56:04 -0400
 
 wireshark (1.4.0~rc2-2) experimental; urgency=low
 
