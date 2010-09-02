@@ -2,14 +2,15 @@
 # Copyright (C) 2009 the wireshark's copyright holder
 # This file is distributed under the same license as the wireshark package.
 # Rafael Henrique da Silva Correia <rafaelhenriqu@gmail.com>, 2009.
+# Adriano Rafael Gomes <adrianorg@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: wireshark-1.2.2-2\n"
+"Project-Id-Version: wireshark 1.2.10-2\n"
 "Report-Msgid-Bugs-To: wireshark@packages.debian.org\n"
 "POT-Creation-Date: 2010-06-20 16:35+0200\n"
-"PO-Revision-Date: 2009-10-30 14:00+0300\n"
-"Last-Translator: Rafael Henrique da Silva Correia <rafaelhenriqu@gmail.com>\n"
+"PO-Revision-Date: 2010-08-24 22:57-0300\n"
+"Last-Translator: Adriano Rafael Gomes <adrianorg@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <debian-l10n-portuguese@lists.debian."
 "org>\n"
 "MIME-Version: 1.0\n"
@@ -21,12 +22,11 @@ msgstr ""
 #. Description
 #: ../templates:2001
 msgid "Should non-superusers be able to capture packets?"
-msgstr ""
+msgstr "Não-superusuários deverão ser capazes de capturar pacotes?"
 
 #. Type: boolean
 #. Description
 #: ../templates:2001
-#, fuzzy
 #| msgid ""
 #| "Dumpcap can be installed with the set-user-id bit set, so members of "
 #| "group wireshark will be able to run it with the permissions of the  "
@@ -39,11 +39,10 @@ msgid ""
 "running Wireshark/Tshark directly as root, because less of the code will run "
 "with elevated privileges."
 msgstr ""
-"Dumpcap pode ser instalado com o bit set-user-id ativado, assim os membros "
-"do grupo wireshark poderão executá-lo com as permissões de usuário 'root'. É "
-"a forma preferida de capturar pacotes usando Wireshark/Tshark em lugar de "
-"executar o Wireshark/Tshark como root, porque desta forma a maioria do "
-"código executará com menos privilégios."
+"O dumpcap pode ser instalado em um modo que permite a membros do grupo de "
+"sistema \"wireshark\" capturar pacotes. Isto é recomendado em vez da "
+"alternativa de executar o Wireshark/Tshark diretamente como root, porque "
+"menos código será executado com privilégios elevados."
 
 #. Type: boolean
 #. Description
@@ -52,11 +51,12 @@ msgid ""
 "For more detailed information please see /usr/share/doc/wireshark-common/"
 "README.Debian."
 msgstr ""
+"Para informações mais detalhadas, por favor veja /usr/share/doc/"
+"wireshark-common/README.Debian."
 
 #. Type: boolean
 #. Description
 #: ../templates:2001
-#, fuzzy
 #| msgid ""
 #| "Enabling this feature may be a security risk, so it is disabled by "
 #| "default.  If in doubt, it is suggested to leave it disabled."
