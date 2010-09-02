@@ -1,4 +1,4 @@
-wireshark (1.4.0-1) UNRELEASED; urgency=low
+wireshark (1.4.0-1) experimental; urgency=low
 
   [ Balint Reczey ]
   * New upstream release 1.4.0
@@ -9,9 +9,13 @@ wireshark (1.4.0-1) UNRELEASED; urgency=low
   * [Debconf translation updates]
     - French (Simon Paillard). (Closes: #593214)
     - Danish (Joe Hansen). (Closes: #594738)
+    - Brazilian Portuguese (Adriano Rafael Gomes). (Closes: #594780)
+    - Basque (Iñaki Larrañaga Murgoitio).
   * changed versioned conflicts to conflict with << 1.4.0~rc2-1 versions
     instead of conflicting with <= 1.2.7-1 ones to allow smooth upgrades
     from versions between 1.2.7-1 and 1.4.0~rc2-1 (Closes: #593875)
+  * debian/control: updated policy to 3.9.1 (Eloy Paris removed the .la
+    files to become compliant)
 
   [ Eloy Paris ]
   * Removed /usr/lib/libwiretap.la from the libwiretap-dev package and
@@ -20,7 +24,7 @@ wireshark (1.4.0-1) UNRELEASED; urgency=low
     libwiretap and libwireshark do not need them. Refer to the Debian
     Policy Manual 10.2 ("Libraries") for further information.
 
- -- Eloy Paris <peloy@debian.org>  Tue, 31 Aug 2010 12:56:04 -0400
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 01 Sep 2010 23:52:27 +0200
 
 wireshark (1.4.0~rc2-2) experimental; urgency=low
 
