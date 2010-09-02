@@ -1,4 +1,4 @@
-wireshark (1.4.0-1) UNRELEASED; urgency=low
+wireshark (1.4.0-1) experimental; urgency=low
 
   [ Balint Reczey ]
   * New upstream release 1.4.0
@@ -9,6 +9,8 @@ wireshark (1.4.0-1) UNRELEASED; urgency=low
   * [Debconf translation updates]
     - French (Simon Paillard). (Closes: #593214)
     - Danish (Joe Hansen). (Closes: #594738)
+    - Brazilian Portuguese (Adriano Rafael Gomes). (Closes: #594780)
+    - Basque (Iñaki Larrañaga Murgoitio).
   * changed versioned conflicts to conflict with << 1.4.0~rc2-1 versions
     instead of conflicting with <= 1.2.7-1 ones to allow smooth upgrades
     from versions between 1.2.7-1 and 1.4.0~rc2-1 (Closes: #593875)
