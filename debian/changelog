@@ -1,3 +1,10 @@
+wireshark (1.4.0-2) UNRELEASED; urgency=low
+
+  * [Debconf translation updates]
+    - Basque (Iñaki Larrañaga Murgoitio).
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 03 Sep 2010 13:20:33 +0200
+
 wireshark (1.4.0-1) experimental; urgency=low
 
   [ Balint Reczey ]
