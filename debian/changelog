@@ -1,9 +1,15 @@
-wireshark (1.2.10-3) UNRELEASED; urgency=low
+wireshark (1.2.11-1) unstable; urgency=high
 
+  * New upstream release 1.2.10
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.2.10.html
+      (Closes: #597703)
+    - security fixes
+       - The RTSP dissector could crash. (No assigned CVE number.)
   * [Debconf translation updates]
     - Basque (Iñaki Larrañaga Murgoitio).
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 03 Sep 2010 13:08:21 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 24 Sep 2010 14:31:19 +0200
 
 wireshark (1.2.10-2) unstable; urgency=low
 
