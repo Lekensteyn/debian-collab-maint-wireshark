@@ -13,3 +13,4 @@
 16_licence_about_location.patch
 21_dumpcap.patch
 23_lintian-overrides.patch
+24_backport-fixes-from-1.2.11.patch

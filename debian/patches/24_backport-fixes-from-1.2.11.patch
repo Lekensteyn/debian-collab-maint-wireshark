@@ -1,0 +1,314 @@
+diff -urN wireshark-1.2.10/epan/column-utils.c wireshark-1.2.11/epan/column-utils.c
+--- wireshark-1.2.10/epan/column-utils.c	2010-07-28 16:22:14.000000000 -0700
++++ wireshark-1.2.11/epan/column-utils.c	2010-08-29 18:24:59.000000000 -0700
+@@ -1,7 +1,7 @@
+ /* column-utils.c
+  * Routines for column utilities.
+  *
+- * $Id: column-utils.c 33645 2010-07-27 23:41:12Z gerald $
++ * $Id: column-utils.c 33704 2010-08-03 21:28:22Z morriss $
+  *
+  * Wireshark - Network traffic analyzer
+  * By Gerald Combs <gerald@wireshark.org>
+@@ -367,6 +367,9 @@
+   int  len, max_len;
+   va_list ap;
+ 
++  if (!check_col(cinfo, el))
++    return;
++
+   if (el == COL_INFO)
+     max_len = COL_MAX_INFO_LEN;
+   else
+@@ -401,6 +404,9 @@
+   int  len, max_len, sep_len;
+   va_list ap;
+ 
++  if (!check_col(cinfo, el))
++    return;
++
+   if (separator == NULL)
+     separator = ", ";    /* default */
+ 
+diff -urN wireshark-1.2.10/epan/dissectors/packet-bootp.c wireshark-1.2.11/epan/dissectors/packet-bootp.c
+--- wireshark-1.2.10/epan/dissectors/packet-bootp.c	2010-07-28 16:22:13.000000000 -0700
++++ wireshark-1.2.11/epan/dissectors/packet-bootp.c	2010-08-29 18:24:57.000000000 -0700
+@@ -3,7 +3,7 @@
+  * Copyright 1998, Gilbert Ramirez <gram@alumni.rice.edu>
+  * Copyright 2004, Thomas Anders <thomas.anders [AT] blue-cable.de>
+  *
+- * $Id: packet-bootp.c 31539 2010-01-16 01:02:51Z gerald $
++ * $Id: packet-bootp.c 33848 2010-08-19 02:59:06Z morriss $
+  *
+  * The information used comes from:
+  * RFC  951: Bootstrap Protocol
+@@ -3065,7 +3065,8 @@
+ 
+ 			/* Length */
+ 			tvb_memcpy(tvb, asc_val, off + 2, 2);
+-			if (sscanf((gchar*)asc_val, "%x", &tlv_len) != 1 || tlv_len < 1) {
++			if (sscanf((gchar*)asc_val, "%x", &tlv_len) != 1
++			    || tlv_len < 1 || tlv_len > G_MAXUINT16) {
+ 				proto_tree_add_text(v_tree, tvb, off, len - off,
+ 							"[Bogus length: %s]", asc_val);
+ 				return;
+diff -urN wireshark-1.2.10/epan/dissectors/packet-rtsp.c wireshark-1.2.11/epan/dissectors/packet-rtsp.c
+--- wireshark-1.2.10/epan/dissectors/packet-rtsp.c	2010-07-28 16:22:02.000000000 -0700
++++ wireshark-1.2.11/epan/dissectors/packet-rtsp.c	2010-08-29 18:24:44.000000000 -0700
+@@ -4,7 +4,7 @@
+  * Jason Lango <jal@netapp.com>
+  * Liberally copied from packet-http.c, by Guy Harris <guy@alum.mit.edu>
+  *
+- * $Id: packet-rtsp.c 28415 2009-05-19 18:42:33Z etxrab $
++ * $Id: packet-rtsp.c 33973 2010-08-27 23:40:31Z gerald $
+  *
+  * Wireshark - Network traffic analyzer
+  * By Gerald Combs <gerald@wireshark.org>
+@@ -436,7 +436,7 @@
+ 		/* Create new data if necessary */
+ 		if (!data)
+ 		{
+-			data = se_alloc(sizeof(rtsp_conversation_data_t));
++			data = se_alloc0(sizeof(rtsp_conversation_data_t));
+ 			conversation_add_proto_data(conv, proto_rtsp, data);
+ 		}
+ 
+diff -urN wireshark-1.2.10/epan/ftypes/ftype-tvbuff.c wireshark-1.2.11/epan/ftypes/ftype-tvbuff.c
+--- wireshark-1.2.10/epan/ftypes/ftype-tvbuff.c	2010-07-28 16:21:30.000000000 -0700
++++ wireshark-1.2.11/epan/ftypes/ftype-tvbuff.c	2010-08-29 18:24:03.000000000 -0700
+@@ -1,5 +1,5 @@
+ /*
+- * $Id: ftype-tvbuff.c 31605 2010-01-21 17:30:45Z gerald $
++ * $Id: ftype-tvbuff.c 33973 2010-08-27 23:40:31Z gerald $
+  *
+  * Wireshark - Network traffic analyzer
+  * By Gerald Combs <gerald@wireshark.org>
+@@ -133,11 +133,20 @@
+ 	guint length;
+ 
+ 	if (rtype != FTREPR_DFILTER) return -1;
++
++	TRY {
+ 	length = tvb_length(fv->value.tvb);
+ 	/* 3 bytes for each byte of the byte "NN:" minus 1 byte
+ 	 * as there's no trailing ":". */
+ 	return length * 3 - 1;
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++
++	return 0;
++}
+ 
+ static void
+ val_to_repr(fvalue_t *fv, ftrepr_t rtype, char *buf)
+@@ -148,6 +157,8 @@
+ 	unsigned int i;
+ 
+ 	g_assert(rtype == FTREPR_DFILTER);
++
++	TRY {
+ 	length = tvb_length(fv->value.tvb);
+ 	c = tvb_get_ptr(fv->value.tvb, 0, length);
+ 	write_cursor = buf;
+@@ -163,6 +174,11 @@
+ 		}
+ 	}
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++}
+ 
+ static gpointer
+ value_get(fvalue_t *fv)
+@@ -173,11 +189,19 @@
+ static guint
+ len(fvalue_t *fv)
+ {
++	TRY {
+ 	if (fv->value.tvb)
+ 		return tvb_length(fv->value.tvb);
+ 	else
+ 		return 0;
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++
++	return 0;
++}
+ 
+ static void
+ slice(fvalue_t *fv, GByteArray *bytes, guint offset, guint length)
+@@ -202,6 +226,8 @@
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++
++	TRY {
+ 	guint		a_len = tvb_length(a);
+ 
+ 	if (a_len != tvb_length(b)) {
+@@ -210,12 +236,21 @@
+ 
+ 	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) == 0);
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++
++	return FALSE;
++}
+ 
+ static gboolean
+ cmp_ne(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++
++	TRY {
+ 	guint		a_len = tvb_length(a);
+ 
+ 	if (a_len != tvb_length(b)) {
+@@ -224,12 +259,21 @@
+ 
+ 	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) != 0);
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++
++	return FALSE;
++}
+ 
+ static gboolean
+ cmp_gt(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++
++	TRY {
+ 	guint		a_len = tvb_length(a);
+ 	guint		b_len = tvb_length(b);
+ 
+@@ -243,12 +287,21 @@
+ 
+ 	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) > 0);
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++
++	return FALSE;
++}
+ 
+ static gboolean
+ cmp_ge(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++	
++	TRY {
+ 	guint		a_len = tvb_length(a);
+ 	guint		b_len = tvb_length(b);
+ 
+@@ -262,12 +315,21 @@
+ 
+ 	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) >= 0);
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++
++	return FALSE;
++}
+ 
+ static gboolean
+ cmp_lt(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++
++	TRY {
+ 	guint		a_len = tvb_length(a);
+ 	guint		b_len = tvb_length(b);
+ 
+@@ -281,12 +343,21 @@
+ 
+ 	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) < 0);
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++
++	return FALSE;
++}
+ 
+ static gboolean
+ cmp_le(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++
++	TRY {
+ 	guint		a_len = tvb_length(a);
+ 	guint		b_len = tvb_length(b);
+ 
+@@ -300,10 +371,18 @@
+ 
+ 	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) <= 0);
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++
++	return FALSE;
++}
+ 
+ static gboolean
+ cmp_contains(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
++	TRY {
+ 	if (tvb_find_tvb(fv_a->value.tvb, fv_b->value.tvb, 0) > -1) {
+ 		return TRUE;
+ 	}
+@@ -311,6 +390,13 @@
+ 		return FALSE;
+ 	}
+ }
++	CATCH_ALL {
++		/* nothing */
++	}
++	ENDTRY;
++
++	return FALSE;
++}
+ 
+ #ifdef HAVE_LIBPCRE
+ static gboolean
+diff -urN wireshark-1.2.10/print.c wireshark-1.2.11/print.c
+--- wireshark-1.2.10/print.c	2010-07-28 16:22:21.000000000 -0700
++++ wireshark-1.2.11/print.c	2010-08-29 18:25:03.000000000 -0700
+@@ -926,6 +934,11 @@
+ 	int rd, wr;
+ 	char c;
+ 
++	if (in == NULL) {
++		out[0] = '\0';
++		return;
++	}
++
+ 	for (rd = 0, wr = 0 ; wr < outbuf_size; rd++, wr++ ) {
+ 		c = in[rd];
+ 		switch (c) {
