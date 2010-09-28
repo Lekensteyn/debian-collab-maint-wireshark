@@ -1,4 +1,4 @@
-wireshark (1.2.10-2+squeeze1) UNRELEASED; urgency=low
+wireshark (1.2.10-2+squeeze1) testing-proposed-updates; urgency=low
 
   * [Debconf translation updates]
     - Basque (Iñaki Larrañaga Murgoitio).
