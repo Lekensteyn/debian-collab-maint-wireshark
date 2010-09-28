@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wireshark_1.2.10-2_eu\n"
 "Report-Msgid-Bugs-To: wireshark@packages.debian.org\n"
 "POT-Creation-Date: 2010-06-20 16:35+0200\n"
-"PO-Revision-Date: 2010-08-31 12:48+0200\n"
+"PO-Revision-Date: 2010-09-03 10:53+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <debian-l10n-basque@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 #. Description
 #: ../templates:2001
 msgid "Should non-superusers be able to capture packets?"
-msgstr "Supererabiltzailea ez denak paketeak kapturatzeko gai izan daiteke?"
+msgstr "Supererabiltzailea ez direnak paketeak kapturatzeko gai izan daitezke?"
 
 #. Type: boolean
 #. Description

@@ -1,3 +1,22 @@
+wireshark (1.2.10-2+squeeze1) testing-proposed-updates; urgency=low
+
+  * [Debconf translation updates]
+    - Basque (Iñaki Larrañaga Murgoitio).
+  * Backport changes from 1.2.11
+    - Fix segmentation fault (Closes: #597703)
+    - Fix inifinite loop in Bootstrap Protocol dissector
+    - Fix crash in RTSP dissector
+    - Fix crash when filtering packets based on expert info
+    - Fix crash when generating PostScript output
+  [Daniel T Chen]
+  * 22_lp606063-fix-assertion-capture_start.patch:
+    Handle event handler being invoked recursively.  Fix backported from
+    upstream SVN r33906.  Thanks, Gregor Beck!
+    https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=5126
+    (LP: #606063)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 03 Sep 2010 13:08:21 +0200
+
 wireshark (1.2.10-2) unstable; urgency=low
 
   * [Debconf translation updates]
