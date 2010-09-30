@@ -2,6 +2,8 @@ wireshark (1.2.11-2) UNRELEASED; urgency=low
 
   * backport fix for IP header checksum calculation regression introduced
     in 1.2.10
+  * [Debconf translation updates]
+    - Vietnamese (Clytie Siddall). (Closes: #598498)
 
   [ Daniel T Chen ]
   * 22_lp606063-fix-assertion-capture_start.patch:
