@@ -12,4 +12,5 @@
 12_fix_about_crash.patch
 16_licence_about_location.patch
 21_dumpcap.patch
+22_lp606063-fix-assertion-capture_start.patch
 23_lintian-overrides.patch
