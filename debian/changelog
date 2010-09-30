@@ -3,7 +3,7 @@ wireshark (1.4.0-2) UNRELEASED; urgency=low
   * [Debconf translation updates]
     - Basque (Iñaki Larrañaga Murgoitio).
     - Vietnamese (Clytie Siddall). (Closes: #598498)
-  * make wireshark-dev depend on libwireshak-dev and libwiretap-dev
+  * make wireshark-dev depend on libwireshark-dev and libwiretap-dev
     (Closes: #596108)
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 03 Sep 2010 13:20:33 +0200
