@@ -1,4 +1,4 @@
-wireshark (1.2.11-2) UNRELEASED; urgency=low
+wireshark (1.2.11-2) unstable; urgency=low
 
   * backport fix for IP header checksum calculation regression introduced
     in 1.2.10
