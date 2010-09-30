@@ -1,0 +1,21 @@
+Index: wireshark-1.2.11/capture.c
+===================================================================
+--- wireshark-1.2.11.orig/capture.c	2010-09-26 15:56:30.000000000 -0400
++++ wireshark-1.2.11/capture.c	2010-09-26 15:56:35.000000000 -0400
+@@ -171,12 +171,13 @@
+   gboolean ret;
+   GString *source = g_string_new("");
+ 
++  if (capture_opts->state != CAPTURE_STOPPED)
++	  return FALSE;
++  capture_opts->state = CAPTURE_PREPARING;
++
+   /* close the currently loaded capture file */
+   cf_close(capture_opts->cf);
+ 
+-  g_assert(capture_opts->state == CAPTURE_STOPPED);
+-  capture_opts->state = CAPTURE_PREPARING;
+-
+   g_log(LOG_DOMAIN_CAPTURE, G_LOG_LEVEL_MESSAGE, "Capture Start ...");
+ 
+   g_string_printf(source, "%s", get_iface_description(capture_opts));

@@ -1,3 +1,21 @@
+wireshark (1.2.11-2) unstable; urgency=low
+
+  * 25_fix-libsmi-workaround.patch:
+    Fix the libsmi workaround by adding missing brackets.
+  * backport fix for IP header checksum calculation regression introduced
+    in 1.2.10
+  * [Debconf translation updates]
+    - Vietnamese (Clytie Siddall). (Closes: #598498)
+
+  [ Daniel T Chen ]
+  * 22_lp606063-fix-assertion-capture_start.patch:
+    Handle event handler being invoked recursively.  Fix backported from
+    upstream SVN r33906.  Thanks, Gregor Beck!
+    https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=5126
+    (LP: #606063)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 30 Sep 2010 15:24:29 +0200
+
 wireshark (1.2.11-1) unstable; urgency=high
 
   * New upstream release 1.2.10
