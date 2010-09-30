@@ -1,5 +1,7 @@
 wireshark (1.2.11-2) unstable; urgency=low
 
+  * 25_fix-libsmi-workaround.patch:
+    Fix the libsmi workaround by adding missing brackets.
   * backport fix for IP header checksum calculation regression introduced
     in 1.2.10
   * [Debconf translation updates]

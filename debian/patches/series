@@ -15,3 +15,4 @@
 22_lp606063-fix-assertion-capture_start.patch
 23_lintian-overrides.patch
 24_revert-ip-header-checksum-regression.patch
+25_fix-libsmi-workaround.patch
