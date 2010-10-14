@@ -1,5 +1,15 @@
-wireshark (1.4.0-2) UNRELEASED; urgency=low
+wireshark (1.4.1-1) experimental; urgency=high
 
+  * New upstream release 1.4.1
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.1.html
+    - add support for sll.ltype hooks (Closes: #594390)
+    - security fixes
+       - The Penetration Test Team of NCNIPC (China) discovered that the
+         ASN.1 BER dissector was susceptible to a stack overflow
+         (CVE-2010-3445)
+  * pick fix for improperly backported display filter update when changing
+    profile
   * [Debconf translation updates]
     - Basque (Iñaki Larrañaga Murgoitio).
     - Vietnamese (Clytie Siddall). (Closes: #598498)
