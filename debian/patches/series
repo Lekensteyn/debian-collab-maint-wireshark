@@ -16,3 +16,5 @@
 23_lintian-overrides.patch
 24_revert-ip-header-checksum-regression.patch
 25_fix-libsmi-workaround.patch
+26_fix-BER-stack-overflow.patch
+27_fix-RPC-crash.patch

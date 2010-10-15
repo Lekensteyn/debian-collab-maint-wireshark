@@ -1,3 +1,13 @@
+wireshark (1.2.11-3) unstable; urgency=high
+
+  * security fixes from Wireshark 1.2.12:
+    - The Penetration Test Team of NCNIPC (China) discovered that the
+      ASN.1 BER dissector was susceptible to a stack overflow
+      (CVE-2010-3445)
+    - fix crash in RPC dissector
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 15 Oct 2010 22:46:22 +0200
+
 wireshark (1.2.11-2) unstable; urgency=low
 
   * 25_fix-libsmi-workaround.patch:
