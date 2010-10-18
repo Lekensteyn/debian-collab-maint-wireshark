@@ -1,3 +1,9 @@
+wireshark (1.2.11-4) UNRELEASED; urgency=low
+
+  * fix crash when running tshark -x without -V (Closes: #600314)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 18 Oct 2010 16:58:01 +0200
+
 wireshark (1.2.11-3) unstable; urgency=high
 
   * security fixes from Wireshark 1.2.12:

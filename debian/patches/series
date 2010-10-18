@@ -18,3 +18,4 @@
 25_fix-libsmi-workaround.patch
 26_fix-BER-stack-overflow.patch
 27_fix-RPC-crash.patch
+28_fix-tshark-crash-with--x.patch
