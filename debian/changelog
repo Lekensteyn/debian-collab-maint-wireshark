@@ -1,3 +1,18 @@
+wireshark (1.4.2-1) experimental; urgency=low
+
+  * New upstream release 1.4.2
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.2.html
+    - security fixes
+       - Nephi Johnson of BreakingPoint discovered that the LDSS dissector
+         could overflow a buffer. (No assigned CVE number.)
+       - The ZigBee ZCL dissector could go into an infinite loop.
+         (No assigned CVE number.)
+  * drop 05_fix-display-filter-update-when-changing-profile.patch
+    patch since it has been integrated upstream
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 20 Nov 2010 18:41:41 +0100
+
 wireshark (1.4.1-1) experimental; urgency=high
 
   * New upstream release 1.4.1
