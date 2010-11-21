@@ -1,8 +1,12 @@
-wireshark (1.2.11-4) UNRELEASED; urgency=low
+wireshark (1.2.11-4) unstable; urgency=high
 
-  * fix crash when running tshark -x without -V (Closes: #600314)
+  * security fixes from Wireshark 1.2.13:
+    - Nephi Johnson of BreakingPoint discovered that the LDSS dissector
+      could overflow a buffer. (No assigned CVE number.)
+  * stability fix from Wireshark 1.2.13:
+    - fix crash when running tshark -x without -V (Closes: #600314)
 
- -- Balint Reczey <balint@balintreczey.hu>  Mon, 18 Oct 2010 16:58:01 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 21 Nov 2010 20:26:36 +0100
 
 wireshark (1.2.11-3) unstable; urgency=high
 
