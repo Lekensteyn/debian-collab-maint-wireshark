@@ -6,4 +6,3 @@ epan/crypt/*.h
 epan/dfilter/*.h
 epan/dissectors/*.h
 epan/ftypes/*.h
-wsutil/*.h
