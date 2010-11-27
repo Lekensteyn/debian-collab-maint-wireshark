@@ -1,4 +1,4 @@
-wireshark (1.4.2-2) UNRELEASED; urgency=low
+wireshark (1.4.2-2) experimental; urgency=low
 
   * separated libwsutil and related headers in libwireshark-util0 and
     libwireshark-util-dev packages
