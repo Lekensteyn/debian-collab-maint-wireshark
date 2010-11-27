@@ -90,7 +90,7 @@ install: build
 		$(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
 	install	-m 755 $(CURDIR)/tools/asn2wrs.py $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
 	mkdir -p $(CURDIR)/debian/tmp/usr/include/wireshark/
-	for F in `cat debian/libwireshark-dev.header-files debian/libwiretap-dev.header-files`; do \
+	for F in `cat debian/libwireshark-dev.header-files debian/libwireshark-util-dev.header-files debian/libwiretap-dev.header-files`; do \
 		cp --parents $$F $(CURDIR)/debian/tmp/usr/include/wireshark; \
 	done
 	# .a is no longer built; why was is used ?
