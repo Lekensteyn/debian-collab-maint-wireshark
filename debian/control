@@ -93,7 +93,7 @@ Description: network traffic analyzer - documentation
 Package: libwireshark0
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version}), libwireshark-util0 (>= ${source:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version}), libwsutil0 (>= ${source:Version})
 Suggests: wireshark-doc (>= ${source:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
@@ -101,7 +101,7 @@ Description: a network packet dissection library -- shared library
  The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.
 
-Package: libwireshark-util0
+Package: libwsutil0
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -110,10 +110,10 @@ Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark0 (<< 1.4.2-2)
 Description: network packet dissection utilities library -- shared library
  The libwsutil library provides utility functions for libwireshark0.
 
-Package: libwireshark-util-dev
-Section: libs
+Package: libwsutil-dev
+Section: libdevel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends} , libwireshark-util0 (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends} , libwsutil0 (= ${binary:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2)
 Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2)
 Description: network packet dissection utilities library -- shared library
@@ -137,7 +137,7 @@ Description: a network packet dissection library -- data files
 
 Package: libwireshark-dev
 Section: libdevel
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-util-dev, libwireshark0 (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwsutil-dev, libwireshark0 (= ${binary:Version})
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
