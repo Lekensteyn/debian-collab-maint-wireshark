@@ -5,6 +5,7 @@ wireshark (1.4.2-3) UNRELEASED; urgency=low
   
   [ Balint Reczey ]
   * really ship include files in libwsutil-dev
+  * raise Python 2.6 compatible exceptions (Closes: #585370)
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 24 Dec 2010 00:00:11 +0100
 
