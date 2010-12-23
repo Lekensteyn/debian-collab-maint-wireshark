@@ -1,3 +1,10 @@
+wireshark (1.4.2-3) UNRELEASED; urgency=low
+
+  [ W. Borgert ]
+  * support IDL's #include in idl2deb (Closes: #314833)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 24 Dec 2010 00:00:11 +0100
+
 wireshark (1.4.2-2) experimental; urgency=low
 
   * separated libwsutil and related headers in libwsutil0 and

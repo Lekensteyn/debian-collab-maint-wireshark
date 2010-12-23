@@ -64,7 +64,7 @@ Index: b/idl2deb
 +
 +def create_files(version, deb, email, idl, name, preserve, iso, rfc):
 +    """Create all files for the .deb build process."""
-+    base = idl.lower()[:-4]
++    base = os.path.basename(idl.lower().split(".idl")[0])
 +    create_file(preserve, "Makefile.am", """#
 +
 +plugindir = @plugindir@
@@ -93,7 +93,7 @@ Index: b/idl2deb
 +	  -D__WIRESHARK_STATIC__ packet-%s.c
 +
 +packet-%s.c: """  % ((base,) * 12) + idl + """
-+	$(IDL2WRS) $< > $@
++	$(IDL2WRS) -I. $< > $@
 +""")
 +
 +    create_file(preserve, "configure.ac", """AC_INIT(%s, 1.0)
