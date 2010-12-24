@@ -1,4 +1,4 @@
-wireshark (1.4.2-3) UNRELEASED; urgency=low
+wireshark (1.4.2-3) experimental; urgency=low
 
   [ W. Borgert ]
   * support IDL's #include in idl2deb (Closes: #314833)
