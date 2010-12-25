@@ -1,3 +1,9 @@
+wireshark (1.2.11-5) unstable; urgency=low
+
+  * raise Python 2.6 compatible exceptions (Closes: #585370)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 24 Dec 2010 15:13:09 +0100
+
 wireshark (1.2.11-4) unstable; urgency=high
 
   * security fixes from Wireshark 1.2.13:

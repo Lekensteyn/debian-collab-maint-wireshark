@@ -10,6 +10,7 @@
 10_prevent_libsmi_crash.patch
 11_disable_oid_resolution_by_default.patch
 12_fix_about_crash.patch
+13_raise-python2.6-compatible-exceptions.patch
 16_licence_about_location.patch
 21_dumpcap.patch
 22_lp606063-fix-assertion-capture_start.patch
