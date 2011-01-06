@@ -1,3 +1,10 @@
+wireshark (1.0.2-3+lenny12) stable-security; urgency=high
+
+  * Fix an overflow in the ENTTEC dissector (CVE-2010-4538)
+    (Closes: #608990)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 05 Jan 2011 23:35:38 +0100
+
 wireshark (1.0.2-3+lenny11) stable-security; urgency=high
 
   * security fixes from Wireshark 1.2.12:
