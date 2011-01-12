@@ -1,3 +1,19 @@
+wireshark (1.4.3-1) experimental; urgency=high
+
+  * New upstream release 1.4.3
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.3.html
+    - security fixes
+       - FRAsse discovered that the MAC-LTE dissector could overflow a buffer.
+         (No assigned CVE number.)
+       - FRAsse discovered that the ENTTEC dissector could overflow a buffer.
+         (CVE-2010-4538) (Closes: #608990)
+       - The ASN.1 BER dissector could assert and make Wireshark exit
+         prematurely. (No assigned CVE number.)
+  * drop 25_libwsutil-version.patch since it has been integrated upstream
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 12 Jan 2011 15:31:35 +0100
+
 wireshark (1.4.2-3) experimental; urgency=low
 
   [ W. Borgert ]
