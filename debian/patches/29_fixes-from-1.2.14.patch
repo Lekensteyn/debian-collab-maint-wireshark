@@ -1,0 +1,64 @@
+diff -urN wireshark-1.2.13/epan/dissectors/packet-enttec.c wireshark-1.2.14/epan/dissectors/packet-enttec.c
+--- wireshark-1.2.13/epan/dissectors/packet-enttec.c	2010-11-18 13:30:48.000000000 -0800
++++ wireshark-1.2.14/epan/dissectors/packet-enttec.c	2011-01-11 11:07:22.000000000 -0800
+@@ -195,8 +195,8 @@
+ 		"%3u: %s"
+ 	};
+ 
+-	static guint8 dmx_data[512];
+-	static guint16 dmx_data_offset[513]; /* 1 extra for last offset */
++	guint8 *dmx_data = ep_alloc(512 * sizeof(guint8));
++	guint16 *dmx_data_offset = ep_alloc(513 * sizeof(guint16)); /* 1 extra for last offset */
+ 	emem_strbuf_t *dmx_epstr;
+ 
+ 	proto_tree *hi,*si;
+@@ -227,10 +227,10 @@
+ 		length = 512;
+ 
+ 	if (type == ENTTEC_DATA_TYPE_RLE) {
+-		/* uncompres the DMX data */
++		/* uncompress the DMX data */
+ 		ui = 0;
+ 		ci = 0;
+-		while (ci < length) {
++		while (ci < length && ui < 512) {
+ 			v = tvb_get_guint8(tvb, offset+ci);
+ 			if (v == 0xFE) {
+ 				ci++;
+@@ -238,7 +238,7 @@
+ 				ci++;
+ 				v = tvb_get_guint8(tvb, offset+ci);
+ 				ci++;
+-				for (i=0;i < count;i++) {
++				for (i=0;i < count && ui < 512;i++) {
+ 					dmx_data[ui] = v;
+ 					dmx_data_offset[ui] = ci-3;
+ 					ui++;
+diff -urN wireshark-1.2.13/epan/dissectors/packet-mac-lte.c wireshark-1.2.14/epan/dissectors/packet-mac-lte.c
+--- wireshark-1.2.13/epan/dissectors/packet-mac-lte.c	2010-11-18 13:31:02.000000000 -0800
++++ wireshark-1.2.14/epan/dissectors/packet-mac-lte.c	2011-01-11 11:07:33.000000000 -0800
+@@ -458,13 +458,13 @@
+     return offset;
+ }
+ 
+-
++#define MAX_RAR_PDUS 64
+ /* Dissect Random Access Reponse (RAR) PDU */
+ static void dissect_rar(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree,
+                         gint offset, mac_lte_info *p_mac_lte_info, mac_lte_tap_info *tap_info)
+ {
+     gint     number_of_rars = 0;   /* No of RAR bodies expected following headers */
+-    guint8   rapids[64];
++    guint8   *rapids = ep_alloc(MAX_RAR_PDUS * sizeof(guint8));
+     gboolean backoff_indicator_seen = FALSE;
+     guint8   extension;
+     gint     n;
+@@ -566,7 +566,7 @@
+         /* Finalise length of header tree selection */
+         proto_item_set_len(rar_header_ti, offset - start_header_offset);
+ 
+-    } while (extension);
++    } while (extension && number_of_rars < MAX_RAR_PDUS);
+ 
+     /* Append summary to headers root */
+     proto_item_append_text(rar_headers_ti, " (%u RARs%s)",
