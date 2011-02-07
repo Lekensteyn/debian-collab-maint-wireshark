@@ -1,0 +1,37 @@
+Description: Fix for LDSS buffer overflow and crash when running tshark -x without -V (backported from Wireshark 1.2.13)
+
+diff -urN wireshark-1.2.12/epan/dissectors/packet-ldss.c wireshark-1.2.13/epan/dissectors/packet-ldss.c
+--- wireshark-1.2.12/epan/dissectors/packet-ldss.c	2010-10-11 11:29:26.000000000 -0700
++++ wireshark-1.2.13/epan/dissectors/packet-ldss.c	2010-11-18 13:30:46.000000000 -0800
+@@ -607,6 +607,8 @@
+ 						tvb_get_ptr(tvb, offset+digest_type_len, linelen-digest_type_len),
+ 						digest_bytes, FALSE);
+ 
++					if(digest_bytes->len >= DIGEST_LEN)
++						digest_bytes->len = (DIGEST_LEN-1);
+ 					/* Ensure the digest is zero-padded */
+ 					transfer_info->file->digest = se_alloc0(DIGEST_LEN);
+ 					memcpy(transfer_info->file->digest, digest_bytes->data, digest_bytes->len);
+diff -urN wireshark-1.2.12/epan/packet.c wireshark-1.2.13/epan/packet.c
+--- wireshark-1.2.12/epan/packet.c	2010-10-11 11:29:39.000000000 -0700
++++ wireshark-1.2.13/epan/packet.c	2010-11-18 13:31:08.000000000 -0800
+@@ -202,10 +202,17 @@
+ 	pinfo->data_src = g_slist_append(pinfo->data_src, src);
+ }
+ 
++/*
++ * This should only add a data source to the list of data sources for
++ * a frame if the data sources are being used.  Note that they can
++ * be used even if the protocol tree isn't being built or isn't visible,
++ * e.g. if you run tshark with -x but without -V or anything else to
++ * cause the protocol tree to be built.
++ */
+ void
+-packet_add_new_data_source(packet_info *pinfo, proto_tree *tree, tvbuff_t *tvb, const char *name)
++packet_add_new_data_source(packet_info *pinfo, proto_tree *tree _U_,
++    tvbuff_t *tvb, const char *name)
+ {
+-	if (tree && PTREE_DATA(tree)->visible)
+ 		add_new_data_source(pinfo, tvb, name);
+ }
+ 
