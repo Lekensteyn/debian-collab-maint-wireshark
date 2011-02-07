@@ -1,3 +1,9 @@
+wireshark (1.4.3-2) unstable; urgency=low
+
+  * re-upload to unstable
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 07 Feb 2011 14:34:06 +0100
+
 wireshark (1.4.3-1) experimental; urgency=high
 
   * New upstream release 1.4.3
