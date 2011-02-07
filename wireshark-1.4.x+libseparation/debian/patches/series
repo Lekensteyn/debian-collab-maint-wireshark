@@ -1,9 +1,0 @@
-01_idl2deb.patch
-02_asn2deb.patch
-03_preferences.patch
-04_asn2wrs_ply.patch
-05_bump_so_versions.patch
-08_wireshark-desktop-menu.patch
-09_idl2wrs.patch
-13_raise-python2.6-compatible-exceptions.patch
-16_licence_about_location.patch

@@ -29,7 +29,7 @@ asn2deb.1: asn2deb.dbk
 	xsltproc --nonet --novalid $(DB2MAN) $<
 
 
-CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --disable-ssl --without-ucdsnmp --enable-gtk2 --libdir=/usr/lib/wireshark --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/plugins --with-lua=/usr/
+CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --disable-ssl --without-ucdsnmp --enable-gtk2 --libdir=/usr/lib --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/libwireshark0/plugins --with-lua=/usr/ --docdir=/usr/share/doc/wireshark-doc/
 
 configure: configure-stamp
 configure-stamp:
@@ -45,6 +45,7 @@ configure-stamp:
 build: build-stamp idl2deb.1 asn2deb.1
 build-stamp: configure-stamp
 	$(MAKE)
+	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
 
 	touch build-stamp
 
@@ -80,20 +81,16 @@ install: build
 	mkdir -p $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
 	install -m 755 $(CURDIR)/idl2deb $(CURDIR)/debian/tmp/usr/bin/
 	install -m 755 $(CURDIR)/asn2deb $(CURDIR)/debian/tmp/usr/bin/
-	mkdir -p $(CURDIR)/debian/tmp/usr/share/lintian/overrides/
-	install -m 644 $(CURDIR)/tshark.lintian-overrides \
-		$(CURDIR)/debian/tmp/usr/share/lintian/overrides/tshark
-	install -m 644 $(CURDIR)/wireshark-common.lintian-overrides \
-		$(CURDIR)/debian/tmp/usr/share/lintian/overrides/wireshark-common
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
 	mv $(CURDIR)/debian/tmp/usr/share/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/etc/wireshark/
 	ln -s /etc/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/usr/share/wireshark/init.lua
-	cp $(CURDIR)/tools/wireshark_be.py $(CURDIR)/tools/wireshark_gen.py \
-		$(CURDIR)/tools/asn2wrs.py $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
+	install -m 644 $(CURDIR)/tools/wireshark_be.py $(CURDIR)/tools/wireshark_gen.py \
+		$(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
+	install	-m 755 $(CURDIR)/tools/asn2wrs.py $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
 	mkdir -p $(CURDIR)/debian/tmp/usr/include/wireshark/
-	for F in `cat debian/wireshark-dev.header-files`; do \
+	for F in `cat debian/libwireshark-dev.header-files debian/libwsutil-dev.header-files debian/libwiretap-dev.header-files`; do \
 		cp --parents $$F $(CURDIR)/debian/tmp/usr/include/wireshark; \
 	done
 	# .a is no longer built; why was is used ?
@@ -103,7 +100,6 @@ install: build
 
 	dh_movefiles
 	dh_pysupport
-	dh_python
 	dh_installdocs
 	dh_installmenu
 	dh_installchangelogs NEWS
@@ -114,17 +110,18 @@ binary-indep: install
 
 check: install
 	# check all necessary headers are included
-	gcc -c debian/headers-check.c `pkg-config --cflags glib-2.0` -Idebian/wireshark-dev/usr/include/ -Idebian/wireshark-dev/usr/include/wireshark/ -o /dev/null
+	gcc -c debian/headers-check.c `pkg-config --cflags glib-2.0` -Idebian/libwireshark-dev/usr/include -Idebian/libwireshark-dev/usr/include/wireshark -Idebian/libwiretap-dev/usr/include/wireshark -o /dev/null
 
 # Build architecture-dependent files here.
 binary-arch: install check
 	dh_strip --dbg-package=wireshark-dbg
 	dh_compress
 	dh_fixperms
-
+	dh_makeshlibs
+	rm -f debian/wireshark-common.shlibs
 	dh_installdebconf
 	dh_installdeb
-	LD_LIBRARY_PATH=/usr/lib/wireshark/ dh_shlibdeps
+	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

@@ -1,81 +1,161 @@
-wireshark (1.2.11-6) unstable; urgency=high
+wireshark (1.4.3-1) experimental; urgency=high
 
-  * security fixes from Wireshark 1.2.14:
-    - FRAsse discovered that the MAC-LTE dissector could overflow a buffer.
-      (No assigned CVE number.)
-    - FRAsse discovered that the ENTTEC dissector could overflow a buffer.
-      (CVE-2010-4538) (Closes: #608990)
+  * New upstream release 1.4.3
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.3.html
+    - security fixes
+       - FRAsse discovered that the MAC-LTE dissector could overflow a buffer.
+         (No assigned CVE number.)
+       - FRAsse discovered that the ENTTEC dissector could overflow a buffer.
+         (CVE-2010-4538) (Closes: #608990)
+       - The ASN.1 BER dissector could assert and make Wireshark exit
+         prematurely. (No assigned CVE number.)
+  * drop 25_libwsutil-version.patch since it has been integrated upstream
 
- -- Balint Reczey <balint@balintreczey.hu>  Thu, 13 Jan 2011 01:58:46 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 12 Jan 2011 15:31:35 +0100
 
-wireshark (1.2.11-5) unstable; urgency=low
+wireshark (1.4.2-3) experimental; urgency=low
 
+  [ W. Borgert ]
+  * support IDL's #include in idl2deb (Closes: #314833)
+  
+  [ Balint Reczey ]
+  * really ship include files in libwsutil-dev
   * raise Python 2.6 compatible exceptions (Closes: #585370)
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 24 Dec 2010 15:13:09 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 24 Dec 2010 00:00:11 +0100
 
-wireshark (1.2.11-4) unstable; urgency=high
+wireshark (1.4.2-2) experimental; urgency=low
 
-  * security fixes from Wireshark 1.2.13:
-    - Nephi Johnson of BreakingPoint discovered that the LDSS dissector
-      could overflow a buffer. (No assigned CVE number.)
-  * stability fix from Wireshark 1.2.13:
-    - fix crash when running tshark -x without -V (Closes: #600314)
+  * separated libwsutil and related headers in libwsutil0 and
+    libwsutil-dev packages
 
- -- Balint Reczey <balint@balintreczey.hu>  Sun, 21 Nov 2010 20:26:36 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 25 Nov 2010 23:26:09 +0100
 
-wireshark (1.2.11-3) unstable; urgency=high
+wireshark (1.4.2-1) experimental; urgency=low
 
-  * security fixes from Wireshark 1.2.12:
-    - The Penetration Test Team of NCNIPC (China) discovered that the
-      ASN.1 BER dissector was susceptible to a stack overflow
-      (CVE-2010-3445)
-    - fix crash in RPC dissector
-
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 15 Oct 2010 22:46:22 +0200
-
-wireshark (1.2.11-2) unstable; urgency=low
-
-  * 25_fix-libsmi-workaround.patch:
-    Fix the libsmi workaround by adding missing brackets.
-  * backport fix for IP header checksum calculation regression introduced
-    in 1.2.10
-  * [Debconf translation updates]
-    - Vietnamese (Clytie Siddall). (Closes: #598498)
-
-  [ Daniel T Chen ]
-  * 22_lp606063-fix-assertion-capture_start.patch:
-    Handle event handler being invoked recursively.  Fix backported from
-    upstream SVN r33906.  Thanks, Gregor Beck!
-    https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=5126
-    (LP: #606063)
-
- -- Balint Reczey <balint@balintreczey.hu>  Thu, 30 Sep 2010 15:24:29 +0200
-
-wireshark (1.2.11-1) unstable; urgency=high
-
-  * New upstream release 1.2.10
+  * New upstream release 1.4.2
     - release notes:
-      http://www.wireshark.org/docs/relnotes/wireshark-1.2.10.html
-      (Closes: #597703)
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.2.html
     - security fixes
-       - The RTSP dissector could crash. (No assigned CVE number.)
+       - Nephi Johnson of BreakingPoint discovered that the LDSS dissector
+         could overflow a buffer. (No assigned CVE number.)
+       - The ZigBee ZCL dissector could go into an infinite loop.
+         (No assigned CVE number.)
+  * drop 05_fix-display-filter-update-when-changing-profile.patch
+    patch since it has been integrated upstream
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 20 Nov 2010 18:41:41 +0100
+
+wireshark (1.4.1-1) experimental; urgency=high
+
+  * New upstream release 1.4.1
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.1.html
+    - add support for sll.ltype hooks (Closes: #594390)
+    - security fixes
+       - The Penetration Test Team of NCNIPC (China) discovered that the
+         ASN.1 BER dissector was susceptible to a stack overflow
+         (CVE-2010-3445)
+  * pick fix for improperly backported display filter update when changing
+    profile
   * [Debconf translation updates]
     - Basque (Iñaki Larrañaga Murgoitio).
+    - Vietnamese (Clytie Siddall). (Closes: #598498)
+  * make wireshark-dev depend on libwireshark-dev and libwiretap-dev
+    (Closes: #596108)
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 24 Sep 2010 14:31:19 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 03 Sep 2010 13:20:33 +0200
 
-wireshark (1.2.10-2) unstable; urgency=low
+wireshark (1.4.0-1) experimental; urgency=low
 
+  [ Balint Reczey ]
+  * New upstream release 1.4.0
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.0.html
+  * drop 26_offline-documentation.patch patch since it has been integrated
+    upstream
   * [Debconf translation updates]
-    - Japanese (Hideki Yamane (Debian-JP)).  (Closes: #591563)
-    - French (Simon Paillard).  (Closes: #593214)
+    - French (Simon Paillard). (Closes: #593214)
     - Danish (Joe Hansen). (Closes: #594738)
     - Brazilian Portuguese (Adriano Rafael Gomes). (Closes: #594780)
     - Basque (Iñaki Larrañaga Murgoitio).
-  * debian/control: updated policy to 3.9.1 (no changes needed)
+  * changed versioned conflicts to conflict with << 1.4.0~rc2-1 versions
+    instead of conflicting with <= 1.2.7-1 ones to allow smooth upgrades
+    from versions between 1.2.7-1 and 1.4.0~rc2-1 (Closes: #593875)
+  * debian/control: updated policy to 3.9.1 (Eloy Paris removed the .la
+    files to become compliant)
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 04 Aug 2010 13:24:07 +0200
+  [ Eloy Paris ]
+  * Removed /usr/lib/libwiretap.la from the libwiretap-dev package and
+    /usr/lib/libwireshark.la and /usr/lib/libwsutil.la from the
+    libwireshark-dev package since external programs linking against
+    libwiretap and libwireshark do not need them. Refer to the Debian
+    Policy Manual 10.2 ("Libraries") for further information.
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 01 Sep 2010 23:52:27 +0200
+
+wireshark (1.4.0~rc2-2) experimental; urgency=low
+
+  * New wireshark-doc package for shipping offline documentation
+    (Closes: #68746)
+  * make libwireshark0-data suggest snmp-mibs-downloader instead of
+    wireshark-common
+  * [Debconf translation updates]
+    - Japanese (Hideki Yamane (Debian-JP)).  (Closes: #591563)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 30 Jul 2010 16:34:05 +0200
+
+wireshark (1.4.0~rc2-1) experimental; urgency=low
+
+  [ Eloy Paris ]
+  * New upstream release.
+    - Make tshark list interfaces for non-root user (Closes: #582298)
+    - Fix duplicate inconsistent attributes in RADIUS dictionary.
+      (Closes: #570132)
+  * New libwireshark0, libwireshark-dev, libwiretap0, libwiretap-dev
+    packages that reorganize libraries, header files, etc. as follows:
+    - Moved libwireshark.so.* from package wireshark-common to package
+      libwireshark0.
+    - Moved libwsutil.so.* from package wireshark-common to package
+      libwireshark0.
+    - Moved libwiretap.so.* from package wireshark-common to package
+      libwiretap0.
+    - Moved header files, .so symlinks, and static libraries from package
+      wireshark-dev to libwireshark-dev and libwiretap-dev, depending on
+      the case.
+    - Moved plugins in /usr/lib/wireshark/ from package wireshark-common
+      to package libwireshark0.
+    This provides more package granularity and allows easier use of
+    libraries provided by the Wireshark project by applications that
+    are not maintained by the Wireshark project (package kismet currently
+    appears to use services offered by libwiretap, and upcoming package
+    netexpect will use libwireshark services [see ITP bug #587056]).
+  * Dropped 23_lintian-overrides.patch since we no longer have binaries
+    with RPATHs because after the library separation work mentioned above
+    our libraries are in /usr/lib and not in /usr/lib/wireshark, eliminating
+    the need for RPATHs. Also tweaked debian/rules, debian/tshark.files,
+    and debian/wireshark-common.files so the lintian overrides
+    are not installed.
+  * Dropped the following patches since they have been integrated
+    upstream:
+    - 05_libsnmp_path.patch
+    - 07_mib_tip.patch
+    - 11_disable_oid_resolution_by_default.patch
+    - 12_fix_about_crash.patch
+    - 21_dumpcap.patch
+
+  [ Balint Reczey ]
+  * Dropped the following patches since they have been integrated
+    upstream:
+    - 10_prevent_libsmi_crash.patch
+    - 04_asn2wrs_ply.patch
+    - 06_giop-buffer.patch
+  * moved platform independent files needed by libwireshark0 to 
+    new libwireshark0-data package from wireshark-common
+  * New upstream release 1.4.0~rc2
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 30 Jul 2010 15:27:21 +0200
 
 wireshark (1.2.10-1) unstable; urgency=high
 

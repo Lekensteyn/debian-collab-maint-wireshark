@@ -7,7 +7,7 @@ Index: b/tools/asn2wrs.py
 ===================================================================
 --- a/tools/asn2wrs.py	2010-02-15 17:23:17.000000000 +0100
 +++ b/tools/asn2wrs.py	2010-02-15 17:24:58.000000000 +0100
-@@ -47,8 +47,8 @@
+@@ -50,8 +50,8 @@
  import getopt
  import traceback
  
@@ -16,5 +16,5 @@ Index: b/tools/asn2wrs.py
 +from ply import lex
 +from ply import yacc
  
- # OID name -> number conversion table
- oid_names = {
+ from string import maketrans
+ 
