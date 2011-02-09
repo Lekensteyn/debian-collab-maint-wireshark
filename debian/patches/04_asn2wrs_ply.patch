@@ -3,11 +3,9 @@ Forwarded: not-needed
 Bug-Debian: http://bugs.debian.org/554613
 Author: Jakub Wilk <ubanus@users.sf.net>
 
-Index: b/tools/asn2wrs.py
-===================================================================
---- a/tools/asn2wrs.py	2010-02-15 17:23:17.000000000 +0100
-+++ b/tools/asn2wrs.py	2010-02-15 17:24:58.000000000 +0100
-@@ -50,8 +50,8 @@
+--- a/tools/asn2wrs.py
++++ b/tools/asn2wrs.py
+@@ -47,8 +47,8 @@
  import getopt
  import traceback
  
