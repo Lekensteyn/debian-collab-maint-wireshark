@@ -1,3 +1,14 @@
+wireshark (1.5.0-1) experimental; urgency=low
+
+  * New upstream development release 1.5.0
+    - release notes:
+      http://www.wireshark.org/news/20110124.html
+    - Allow <interval> to be successfully sscanf'd no matter the locale
+      for the decimal symbol (Closes: #454621)
+    - Use more meaningful temp file name (Closes: #419710)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 08 Feb 2011 14:30:12 +0100
+
 wireshark (1.4.3-2) unstable; urgency=low
 
   * re-upload to unstable
