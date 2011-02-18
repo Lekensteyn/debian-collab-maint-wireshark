@@ -3,6 +3,7 @@
 03_preferences.patch
 04_asn2wrs_ply.patch
 05_bump_so_versions.patch
+06_fix_crash_on_pcapng_file_error.patch
 08_wireshark-desktop-menu.patch
 09_idl2wrs.patch
 13_raise-python2.6-compatible-exceptions.patch
