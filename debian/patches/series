@@ -21,3 +21,4 @@
 27_fix-RPC-crash.patch
 28_fixes-from-1.2.13.patch
 29_fixes-from-1.2.14.patch
+30_fix_crash_on_pcapng_file_error.patch
