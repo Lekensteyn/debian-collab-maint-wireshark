@@ -1,3 +1,10 @@
+wireshark (1.4.3-3) unstable; urgency=high
+
+  * pick fix for crash triggered by opening a malformed pcap-ng file
+    (CVE-2011-0538) (Closes: #613202)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 18 Feb 2011 18:02:41 +0100
+
 wireshark (1.4.3-2) unstable; urgency=low
 
   * re-upload to unstable
