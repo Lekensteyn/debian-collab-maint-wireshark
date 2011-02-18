@@ -1,28 +1,69 @@
-wireshark (1.2.10-2+squeeze2) UNRELEASED; urgency=low
+wireshark (1.2.11-6) unstable; urgency=high
+
+  * security fixes from Wireshark 1.2.14:
+    - FRAsse discovered that the MAC-LTE dissector could overflow a buffer.
+      (No assigned CVE number.)
+    - FRAsse discovered that the ENTTEC dissector could overflow a buffer.
+      (CVE-2010-4538) (Closes: #608990)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 13 Jan 2011 01:58:46 +0100
+
+wireshark (1.2.11-5) unstable; urgency=low
+
+  * raise Python 2.6 compatible exceptions (Closes: #585370)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 24 Dec 2010 15:13:09 +0100
+
+wireshark (1.2.11-4) unstable; urgency=high
+
+  * security fixes from Wireshark 1.2.13:
+    - Nephi Johnson of BreakingPoint discovered that the LDSS dissector
+      could overflow a buffer. (No assigned CVE number.)
+  * stability fix from Wireshark 1.2.13:
+    - fix crash when running tshark -x without -V (Closes: #600314)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 21 Nov 2010 20:26:36 +0100
+
+wireshark (1.2.11-3) unstable; urgency=high
+
+  * security fixes from Wireshark 1.2.12:
+    - The Penetration Test Team of NCNIPC (China) discovered that the
+      ASN.1 BER dissector was susceptible to a stack overflow
+      (CVE-2010-3445)
+    - fix crash in RPC dissector
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 15 Oct 2010 22:46:22 +0200
+
+wireshark (1.2.11-2) unstable; urgency=low
 
   * 25_fix-libsmi-workaround.patch:
     Fix the libsmi workaround by adding missing brackets.
-
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 29 Sep 2010 18:27:38 +0200
-
-wireshark (1.2.10-2+squeeze1) testing-proposed-updates; urgency=low
-
+  * backport fix for IP header checksum calculation regression introduced
+    in 1.2.10
   * [Debconf translation updates]
-    - Basque (Iñaki Larrañaga Murgoitio).
-  * Backport changes from 1.2.11
-    - Fix segmentation fault (Closes: #597703)
-    - Fix inifinite loop in Bootstrap Protocol dissector
-    - Fix crash in RTSP dissector
-    - Fix crash when filtering packets based on expert info
-    - Fix crash when generating PostScript output
-  [Daniel T Chen]
+    - Vietnamese (Clytie Siddall). (Closes: #598498)
+
+  [ Daniel T Chen ]
   * 22_lp606063-fix-assertion-capture_start.patch:
     Handle event handler being invoked recursively.  Fix backported from
     upstream SVN r33906.  Thanks, Gregor Beck!
     https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=5126
     (LP: #606063)
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 03 Sep 2010 13:08:21 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 30 Sep 2010 15:24:29 +0200
+
+wireshark (1.2.11-1) unstable; urgency=high
+
+  * New upstream release 1.2.10
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.2.10.html
+      (Closes: #597703)
+    - security fixes
+       - The RTSP dissector could crash. (No assigned CVE number.)
+  * [Debconf translation updates]
+    - Basque (Iñaki Larrañaga Murgoitio).
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 24 Sep 2010 14:31:19 +0200
 
 wireshark (1.2.10-2) unstable; urgency=low
 
