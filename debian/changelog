@@ -2,6 +2,8 @@ wireshark (1.2.11-6+squeeze1) stable-security; urgency=high
 
   * pick fix for crash triggered by opening a malformed pcap-ng file
     (CVE-2011-0538) (Closes: #613202)
+  * pick fix for potential buffer overflow in DCT3 capture file handling
+    code (CVE-2011-0713)
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 18 Feb 2011 18:02:41 +0100
 
