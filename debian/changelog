@@ -1,3 +1,10 @@
+wireshark (1.0.2-3+lenny13) oldstable-security; urgency=high
+
+  * add sanity checks to pcapng file parsing code (Closes: #613202)
+    (CVE-2011-0538)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 26 Feb 2011 00:41:10 +0100
+
 wireshark (1.0.2-3+lenny12) stable-security; urgency=high
 
   * Fix an overflow in the ENTTEC dissector (CVE-2010-4538)
