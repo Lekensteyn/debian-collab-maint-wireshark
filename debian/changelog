@@ -1,3 +1,28 @@
+wireshark (1.4.4-1) unstable; urgency=high
+
+  * New upstream release 1.4.4
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.4.html
+    - security fixes
+      - Huzaifa Sidhpurwala of the Red Hat Security Response Team discovered
+        that a large packet length in a pcap-ng file could crash Wireshark.
+        (No assigned CVE number.)
+      - Wireshark could overflow a buffer while reading a Nokia DCT3 trace
+        file. (CVE-2011-0713)
+      - Paul Makowski working for SEI/CERT discovered that Wireshark on 32
+        bit systems could crash while reading a malformed 6LoWPAN packet.
+        (No assigned CVE number.)
+      - joernchen of Phenoelit discovered that the LDAP and SMB dissectors
+        could overflow the stack.
+        (No assigned CVE number.)
+      - Xiaopeng Zhang of Fortinet's Fortiguard Labs discovered that large
+        LDAP Filter strings can consume excessive amounts of memory.
+        (No assigned CVE number.)
+   * drop 06_fix_crash_on_pcapng_file_error.patch since it is included in
+     the new release
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 02 Mar 2011 14:07:27 +0100
+
 wireshark (1.4.3-3) unstable; urgency=high
 
   * pick fix for crash triggered by opening a malformed pcap-ng file
