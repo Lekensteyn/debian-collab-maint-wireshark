@@ -1,0 +1,908 @@
+diff -urN wireshark-1.2.14/asn1/ldap/ldap.cnf wireshark-1.2.15/asn1/ldap/ldap.cnf
+--- wireshark-1.2.14/asn1/ldap/ldap.cnf	2011-01-11 11:05:48.000000000 -0800
++++ wireshark-1.2.15/asn1/ldap/ldap.cnf	2011-03-01 09:03:11.000000000 -0800
+@@ -676,6 +676,16 @@
+ 	proto_tree *tr=NULL;
+ 	proto_item *it=NULL;
+ 
++	if (Filter_length++ > MAX_FILTER_LEN) {
++		expert_add_info_format(actx->pinfo, tree, PI_UNDECODED, PI_ERROR, "Filter length exceeds %%u. Giving up.", MAX_FILTER_LEN);
++		THROW(ReportedBoundsError);
++	}
++
++	if (Filter_elements++ > MAX_FILTER_ELEMENTS) {
++		expert_add_info_format(actx->pinfo, tree, PI_UNDECODED, PI_ERROR, "Found more than %%u filter elements. Giving up.", MAX_FILTER_ELEMENTS);
++		THROW(ReportedBoundsError);
++	}
++
+ 	if(tree){
+ 		it=proto_tree_add_text(tree, tvb, offset, tvb_length_remaining(tvb, offset), "Filter: ");
+ 		tr=proto_item_add_subtree(it, ett_ldap_Filter);
+diff -urN wireshark-1.2.14/asn1/ldap/packet-ldap-template.c wireshark-1.2.15/asn1/ldap/packet-ldap-template.c
+--- wireshark-1.2.14/asn1/ldap/packet-ldap-template.c	2011-01-11 11:05:48.000000000 -0800
++++ wireshark-1.2.15/asn1/ldap/packet-ldap-template.c	2011-03-01 09:03:11.000000000 -0800
+@@ -96,6 +96,7 @@
+ #include <epan/dissectors/packet-windows-common.h>
+ #include <epan/dissectors/packet-dcerpc.h>
+ #include <epan/asn1.h>
++#include <epan/expert.h>
+ 
+ #include "packet-frame.h"
+ #include "packet-ldap.h"
+@@ -106,6 +107,8 @@
+ #include "packet-ber.h"
+ #include "packet-per.h"
+ 
++#include "packet-dns.h"
++
+ #define PNAME  "Lightweight-Directory-Access-Protocol"
+ #define PSNAME "LDAP"
+ #define PFNAME "ldap"
+@@ -547,6 +550,12 @@
+ static char *matching_rule_string=NULL;
+ static gboolean matching_rule_dnattr=FALSE;
+ 
++#define MAX_FILTER_LEN 4096
++static gint Filter_length;
++
++#define MAX_FILTER_ELEMENTS 200
++static gint Filter_elements;
++
+ /* Global variables */
+ char *mechanism = NULL;
+ static gint MessageID =-1;
+@@ -1099,63 +1108,19 @@
+     }
+ }
+ 
+-static int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int maxlen, gboolean prepend_dot)
++/*
++ * prepend_dot is no longer used, but is being left in place in order to
++ * maintain ABI compatibility.
++ */
++int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int max_len, gboolean prepend_dot _U_)
+ {
+-  guint8 len;
+-
+-  len=tvb_get_guint8(tvb, offset);
+-  offset+=1;
+-  *str=0;
+-
+-  while(len){
+-    /* add potential field separation dot */
+-    if(prepend_dot){
+-      if(!maxlen){
+-        *str=0;
+-        return offset;
+-      }
+-      maxlen--;
+-      *str++='.';
+-      *str=0;
+-    }
+-
+-    if(len==0xc0){
+-      int new_offset;
+-      /* ops its a mscldap compressed string */
+-
+-      new_offset=tvb_get_guint8(tvb, offset);
+-      if (new_offset == offset - 1)
+-        THROW(ReportedBoundsError);
+-      offset+=1;
+-
+-      dissect_mscldap_string(tvb, new_offset, str, maxlen, FALSE);
++  int compr_len;
++  const guchar *name;
+ 
+-      return offset;
+-    }
+-
+-    prepend_dot=TRUE;
+-
+-    if(maxlen<=len){
+-      if(maxlen>3){
+-        *str++='.';
+-        *str++='.';
+-        *str++='.';
+-      }
+-      *str=0;
+-      return offset; /* will mess up offset in caller, is unlikely */
+-    }
+-    tvb_memcpy(tvb, str, offset, len);
+-    str+=len;
+-    *str=0;
+-    maxlen-=len;
+-    offset+=len;
+-
+-
+-    len=tvb_get_guint8(tvb, offset);
+-    offset+=1;
+-  }
+-  *str=0;
+-  return offset;
++  /* The name data MUST start at offset 0 of the tvb */
++  compr_len = expand_dns_name(tvb, offset, max_len, 0, &name);
++  g_strlcpy(str, name, max_len);
++  return offset + compr_len;
+ }
+ 
+ 
+diff -urN wireshark-1.2.14/epan/dissectors/packet-dns.c wireshark-1.2.15/epan/dissectors/packet-dns.c
+--- wireshark-1.2.14/epan/dissectors/packet-dns.c	2011-01-11 11:07:35.000000000 -0800
++++ wireshark-1.2.15/epan/dissectors/packet-dns.c	2011-03-01 09:05:48.000000000 -0800
+@@ -599,7 +599,7 @@
+  * it will be automatically free()d when the packet has been dissected.
+  */
+ int
+-get_dns_name(tvbuff_t *tvb, int offset, int max_len, int dns_data_offset,
++expand_dns_name(tvbuff_t *tvb, int offset, int max_len, int dns_data_offset,
+     const guchar **name)
+ {
+   int start_offset = offset;
+@@ -761,14 +761,25 @@
+      set the length, so set it. */
+   if (len < 0)
+     len = offset - start_offset;
+-  /* Zero-length name means "root server" */
+-  if (**name == '\0')
+-    *name="<Root>";
+   if (len < min_len)
+     THROW(ReportedBoundsError);
+   return len;
+ }
+ 
++int
++get_dns_name(tvbuff_t *tvb, int offset, int max_len, int dns_data_offset,
++    const guchar **name)
++{
++  int len;
++
++  len = expand_dns_name(tvb, offset, max_len, dns_data_offset, name);
++
++  /* Zero-length name means "root server" */
++  if (**name == '\0')
++    *name="<Root>";
++
++  return len;
++}
+ 
+ static int
+ get_dns_name_type_class(tvbuff_t *tvb, int offset, int dns_data_offset,
+diff -urN wireshark-1.2.14/epan/dissectors/packet-dns.h wireshark-1.2.15/epan/dissectors/packet-dns.h
+--- wireshark-1.2.14/epan/dissectors/packet-dns.h	2011-01-11 11:07:35.000000000 -0800
++++ wireshark-1.2.15/epan/dissectors/packet-dns.h	2011-03-01 09:05:49.000000000 -0800
+@@ -29,6 +29,8 @@
+ 
+ const char *dns_class_name(int class);
+ 
++int expand_dns_name(tvbuff_t *, int, int, int, const guchar **);
++/* Just like expand_dns_name, but pretty-prints empty names. */
+ int get_dns_name(tvbuff_t *, int, int, int, const guchar **);
+ 
+ #define MAXDNAME        1025            /* maximum domain name length */
+diff -urN wireshark-1.2.14/epan/dissectors/packet-ldap.c wireshark-1.2.15/epan/dissectors/packet-ldap.c
+--- wireshark-1.2.14/epan/dissectors/packet-ldap.c	2011-01-11 11:07:33.000000000 -0800
++++ wireshark-1.2.15/epan/dissectors/packet-ldap.c	2011-03-01 09:05:40.000000000 -0800
+@@ -104,6 +104,7 @@
+ #include <epan/dissectors/packet-windows-common.h>
+ #include <epan/dissectors/packet-dcerpc.h>
+ #include <epan/asn1.h>
++#include <epan/expert.h>
+ 
+ #include "packet-frame.h"
+ #include "packet-ldap.h"
+@@ -114,6 +115,8 @@
+ #include "packet-ber.h"
+ #include "packet-per.h"
+ 
++#include "packet-dns.h"
++
+ #define PNAME  "Lightweight-Directory-Access-Protocol"
+ #define PSNAME "LDAP"
+ #define PFNAME "ldap"
+@@ -310,7 +313,7 @@
+ static int hf_ldap_cancelID = -1;                 /* MessageID */
+ 
+ /*--- End of included file: packet-ldap-hf.c ---*/
+-#line 181 "packet-ldap-template.c"
++#line 184 "packet-ldap-template.c"
+ 
+ /* Initialize the subtree pointers */
+ static gint ett_ldap = -1;
+@@ -371,7 +374,7 @@
+ static gint ett_ldap_CancelRequestValue = -1;
+ 
+ /*--- End of included file: packet-ldap-ett.c ---*/
+-#line 192 "packet-ldap-template.c"
++#line 195 "packet-ldap-template.c"
+ 
+ static dissector_table_t ldap_name_dissector_table=NULL;
+ static const char *object_identifier_id = NULL; /* LDAP OID */
+@@ -730,6 +733,12 @@
+ static char *matching_rule_string=NULL;
+ static gboolean matching_rule_dnattr=FALSE;
+ 
++#define MAX_FILTER_LEN 4096
++static gint Filter_length;
++
++#define MAX_FILTER_ELEMENTS 200
++static gint Filter_elements;
++
+ /* Global variables */
+ char *mechanism = NULL;
+ static gint MessageID =-1;
+@@ -1175,7 +1184,7 @@
+ 
+ static int
+ dissect_ldap_T_ntlmsspNegotiate(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 689 "ldap.cnf"
++#line 699 "ldap.cnf"
+ 	/* make sure the protocol op comes first */
+        	ldap_do_protocolop(actx->pinfo);
+ 
+@@ -1191,7 +1200,7 @@
+ 
+ static int
+ dissect_ldap_T_ntlmsspAuth(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 696 "ldap.cnf"
++#line 706 "ldap.cnf"
+ 	/* make sure the protocol op comes first */
+        	ldap_do_protocolop(actx->pinfo);
+ 
+@@ -1357,7 +1366,7 @@
+ 
+ static int
+ dissect_ldap_T_bindResponse_matchedDN(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 703 "ldap.cnf"
++#line 713 "ldap.cnf"
+ 	tvbuff_t *new_tvb=NULL;
+ 
+ 	offset = dissect_ber_octet_string(FALSE, actx, tree, tvb, offset, hf_ldap_matchedDN, &new_tvb);
+@@ -2035,6 +2044,16 @@
+ 	proto_tree *tr=NULL;
+ 	proto_item *it=NULL;
+ 
++	if (Filter_length++ > MAX_FILTER_LEN) {
++		expert_add_info_format(actx->pinfo, tree, PI_UNDECODED, PI_ERROR, "Filter length exceeds %u. Giving up.", MAX_FILTER_LEN);
++		THROW(ReportedBoundsError);
++	}
++
++	if (Filter_elements++ > MAX_FILTER_ELEMENTS) {
++		expert_add_info_format(actx->pinfo, tree, PI_UNDECODED, PI_ERROR, "Found more than %u filter elements. Giving up.", MAX_FILTER_ELEMENTS);
++		THROW(ReportedBoundsError);
++	}
++
+ 	if(tree){
+ 		it=proto_tree_add_text(tree, tvb, offset, tvb_length_remaining(tvb, offset), "Filter: ");
+ 		tr=proto_item_add_subtree(it, ett_ldap_Filter);
+@@ -2343,7 +2362,7 @@
+ 
+ static int
+ dissect_ldap_SearchResultReference(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 746 "ldap.cnf"
++#line 756 "ldap.cnf"
+ 
+    offset = dissect_ber_tagged_type(implicit_tag, actx, tree, tvb, offset,
+                                       hf_index, BER_CLASS_APP, 19, TRUE, dissect_ldap_SEQUENCE_OF_LDAPURL);
+@@ -2620,7 +2639,7 @@
+ 
+ static int
+ dissect_ldap_AbandonRequest(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 753 "ldap.cnf"
++#line 763 "ldap.cnf"
+ 
+    offset = dissect_ber_tagged_type(implicit_tag, actx, tree, tvb, offset,
+                                       hf_index, BER_CLASS_APP, 16, TRUE, dissect_ldap_MessageID);
+@@ -2694,7 +2713,7 @@
+ 
+ static int
+ dissect_ldap_T_requestValue(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 738 "ldap.cnf"
++#line 748 "ldap.cnf"
+ 
+ 	if((object_identifier_id != NULL) && oid_has_dissector(object_identifier_id)) {
+ 		offset = call_ber_oid_callback(object_identifier_id, tvb, offset, actx->pinfo, tree);
+@@ -2975,7 +2994,7 @@
+ 
+ static int
+ dissect_ldap_T_controlValue(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 719 "ldap.cnf"
++#line 729 "ldap.cnf"
+ 	gint8 class;
+ 	gboolean pc, ind;
+ 	gint32 tag;
+@@ -3242,7 +3261,7 @@
+ 
+ 
+ /*--- End of included file: packet-ldap-fn.c ---*/
+-#line 708 "packet-ldap-template.c"
++#line 717 "packet-ldap-template.c"
+ 
+ static void
+ dissect_ldap_payload(tvbuff_t *tvb, packet_info *pinfo,
+@@ -3637,63 +3656,19 @@
+     }
+ }
+ 
+-static int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int maxlen, gboolean prepend_dot)
++/*
++ * prepend_dot is no longer used, but is being left in place in order to
++ * maintain ABI compatibility.
++ */
++int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int max_len, gboolean prepend_dot _U_)
+ {
+-  guint8 len;
+-
+-  len=tvb_get_guint8(tvb, offset);
+-  offset+=1;
+-  *str=0;
+-
+-  while(len){
+-    /* add potential field separation dot */
+-    if(prepend_dot){
+-      if(!maxlen){
+-        *str=0;
+-        return offset;
+-      }
+-      maxlen--;
+-      *str++='.';
+-      *str=0;
+-    }
++  int compr_len;
++  const guchar *name;
+ 
+-    if(len==0xc0){
+-      int new_offset;
+-      /* ops its a mscldap compressed string */
+-
+-      new_offset=tvb_get_guint8(tvb, offset);
+-      if (new_offset == offset - 1)
+-        THROW(ReportedBoundsError);
+-      offset+=1;
+-
+-      dissect_mscldap_string(tvb, new_offset, str, maxlen, FALSE);
+-
+-      return offset;
+-    }
+-
+-    prepend_dot=TRUE;
+-
+-    if(maxlen<=len){
+-      if(maxlen>3){
+-        *str++='.';
+-        *str++='.';
+-        *str++='.';
+-      }
+-      *str=0;
+-      return offset; /* will mess up offset in caller, is unlikely */
+-    }
+-    tvb_memcpy(tvb, str, offset, len);
+-    str+=len;
+-    *str=0;
+-    maxlen-=len;
+-    offset+=len;
+-
+-
+-    len=tvb_get_guint8(tvb, offset);
+-    offset+=1;
+-  }
+-  *str=0;
+-  return offset;
++  /* The name data MUST start at offset 0 of the tvb */
++  compr_len = expand_dns_name(tvb, offset, max_len, 0, &name);
++  g_strlcpy(str, name, max_len);
++  return offset + compr_len;
+ }
+ 
+ 
+@@ -5102,7 +5077,7 @@
+         "ldap.MessageID", HFILL }},
+ 
+ /*--- End of included file: packet-ldap-hfarr.c ---*/
+-#line 2083 "packet-ldap-template.c"
++#line 2048 "packet-ldap-template.c"
+   };
+ 
+   /* List of subtrees */
+@@ -5165,7 +5140,7 @@
+     &ett_ldap_CancelRequestValue,
+ 
+ /*--- End of included file: packet-ldap-ettarr.c ---*/
+-#line 2096 "packet-ldap-template.c"
++#line 2061 "packet-ldap-template.c"
+   };
+ 
+     module_t *ldap_module;
+@@ -5287,7 +5262,7 @@
+ 
+ 
+ /*--- End of included file: packet-ldap-dis-tab.c ---*/
+-#line 2206 "packet-ldap-template.c"
++#line 2171 "packet-ldap-template.c"
+ 	
+ 
+ }
+diff -urN wireshark-1.2.14/epan/dissectors/packet-smb-common.c wireshark-1.2.15/epan/dissectors/packet-smb-common.c
+--- wireshark-1.2.14/epan/dissectors/packet-smb-common.c	2011-01-11 11:07:30.000000000 -0800
++++ wireshark-1.2.15/epan/dissectors/packet-smb-common.c	2011-03-01 09:05:38.000000000 -0800
+@@ -38,6 +38,8 @@
+ #include <epan/strutil.h>
+ #include "packet-smb-common.h"
+ 
++#include "packet-dns.h"
++
+ /*
+  * Share type values - used in LANMAN and in SRVSVC.
+  *
+@@ -126,84 +128,23 @@
+ 	return 	offset+len;
+ }
+ 
+-static int dissect_ms_compressed_string_internal(tvbuff_t *tvb, int offset, char *str, int maxlen, gboolean prepend_dot)
+-{
+-  guint8 len;
+-
+-  len=tvb_get_guint8(tvb, offset);
+-  offset+=1;
+-  *str=0;
+-
+-  /* XXX: Reserve 4 chars for "...\0" */
+-  while(len){
+-    /* add potential field separation dot */
+-    if(prepend_dot){
+-      if(maxlen<=4){
+-        *str=0;
+-        return offset;
+-      }
+-      maxlen--;
+-      *str++='.';
+-      *str=0;
+-    }
+-
+-    if(len==0xc0){
+-      int new_offset;
+-      /* ops its a mscldap compressed string */
+-
+-      new_offset=tvb_get_guint8(tvb, offset);
+-      if (new_offset == offset - 1)
+-        THROW(ReportedBoundsError);
+-      offset+=1;
+-
+-      dissect_ms_compressed_string_internal(tvb, new_offset, str, maxlen, FALSE);
+-
+-      return offset;
+-    }
+-
+-    prepend_dot=TRUE;
+-
+-    if(len>(maxlen-4)){
+-      *str++='.';
+-      *str++='.';
+-      *str++='.';
+-      *str=0;
+-      return offset; /* will mess up offset in caller, is unlikely */
+-    }
+-    tvb_memcpy(tvb, str, offset, len);
+-    str+=len;
+-    *str=0;
+-    maxlen-=len;
+-    offset+=len;
+-
+-
+-    len=tvb_get_guint8(tvb, offset);
+-    offset+=1;
+-  }
+-  *str=0;
+-  return offset;
+-}
+-
+ /* Max string length for displaying Unicode strings.  */
+ #define	MAX_UNICODE_STR_LEN	256
+ 
+ int dissect_ms_compressed_string(tvbuff_t *tvb, proto_tree *tree, int offset, int hf_index,
+-				 gboolean prepend_dot, char **data)
++				 char **data)
+ {
+-	int old_offset=offset;
+-	char *str;
+-	int len;
++	int compr_len;
++	const guchar *str = NULL;
+ 
+-	len = MAX_UNICODE_STR_LEN+3+1;
+-	str=ep_alloc(len);
+-
+-	offset=dissect_ms_compressed_string_internal(tvb, offset, str, len, prepend_dot);
+-	proto_tree_add_string(tree, hf_index, tvb, old_offset, offset-old_offset, str);
++	/* The name data MUST start at offset 0 of the tvb */
++	compr_len = expand_dns_name(tvb, offset, MAX_UNICODE_STR_LEN+3+1, 0, &str);
++	proto_tree_add_string(tree, hf_index, tvb, offset, compr_len, str);
+ 
+ 	if (data)
+-		*data = str;
++		*data = (char*) str;
+ 
+-	return offset;
++	return offset + compr_len;
+ }
+ 
+ /* Turn a little-endian Unicode '\0'-terminated string into a string we
+diff -urN wireshark-1.2.14/epan/dissectors/packet-smb-common.h wireshark-1.2.15/epan/dissectors/packet-smb-common.h
+--- wireshark-1.2.14/epan/dissectors/packet-smb-common.h	2011-01-11 11:07:30.000000000 -0800
++++ wireshark-1.2.15/epan/dissectors/packet-smb-common.h	2011-03-01 09:05:38.000000000 -0800
+@@ -37,7 +37,7 @@
+ int display_ms_string(tvbuff_t *tvb, proto_tree *tree, int offset, int hf_index, char **data);
+ 
+ int dissect_ms_compressed_string(tvbuff_t *tvb, proto_tree *tree, int offset, int hf_index,
+-				 gboolean prepend_dot, char **data);
++				 char **data);
+ 
+ const gchar *get_unicode_or_ascii_string(tvbuff_t *tvb, int *offsetp,
+     gboolean useunicode, int *len, gboolean nopad, gboolean exactlen,
+diff -urN wireshark-1.2.14/epan/dissectors/packet-smb-logon.c wireshark-1.2.15/epan/dissectors/packet-smb-logon.c
+--- wireshark-1.2.14/epan/dissectors/packet-smb-logon.c	2011-01-11 11:07:25.000000000 -0800
++++ wireshark-1.2.15/epan/dissectors/packet-smb-logon.c	2011-03-01 09:05:35.000000000 -0800
+@@ -759,28 +759,28 @@
+ 	offset += 16;
+ 
+ 	/* forest dns name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_forest_dns_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_forest_dns_name, NULL);
+ 
+ 	/* domain dns name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_domain_dns_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_domain_dns_name, NULL);
+ 
+ 	/* server dns name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_dns_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_dns_name, NULL);
+ 
+ 	/* domain name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_domain_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_domain_name, NULL);
+ 
+ 	/* server name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_name, NULL);
+ 
+ 	/* user name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_user_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_user_name, NULL);
+ 
+ 	/* server_site name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_site_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_site_name, NULL);
+ 
+ 	/* client_site name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_client_site_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_client_site_name, NULL);
+ 
+ 	/* unknown uint8 type */
+ 	proto_tree_add_item(tree, hf_unknown8, tvb, offset, 1, TRUE);
+diff -urN wireshark-1.2.14/tshark.c wireshark-1.2.15/tshark.c
+--- wireshark-1.2.14/tshark.c	2011-01-11 11:07:47.000000000 -0800
++++ wireshark-1.2.15/tshark.c	2011-03-01 09:06:08.000000000 -0800
+@@ -2185,7 +2185,7 @@
+   int          snapshot_length;
+   wtap_dumper *pdh;
+   int          err;
+-  gchar        *err_info;
++  gchar        *err_info = NULL;
+   gint64       data_offset;
+   char         *save_file_string = NULL;
+ 
+diff -urN wireshark-1.2.14/wiretap/dct3trace.c wireshark-1.2.15/wiretap/dct3trace.c
+--- wireshark-1.2.14/wiretap/dct3trace.c	2011-01-11 11:07:44.000000000 -0800
++++ wireshark-1.2.15/wiretap/dct3trace.c	2011-03-01 09:06:03.000000000 -0800
+@@ -392,6 +392,13 @@
+ 		return FALSE;
+ 	}
+ 
++	if( buf_len > MAX_PACKET_LEN)
++	{
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("dct3trace: record length %d too long", buf_len);
++		return FALSE;
++	}
++
+ 	memcpy( pd, buf, buf_len );
+ 	return TRUE;
+ }
+diff -urN wireshark-1.2.14/wiretap/k12.c wireshark-1.2.15/wiretap/k12.c
+--- wireshark-1.2.14/wiretap/k12.c	2011-01-11 11:07:44.000000000 -0800
++++ wireshark-1.2.15/wiretap/k12.c	2011-03-01 09:06:04.000000000 -0800
+@@ -207,9 +207,15 @@
+  *   This reads the next record without the eventual 0x10 bytes.
+  *   returns the length of the record + the stuffing (if any)
+  *
++ *   Returns number of bytes read on success, 0 on EOF, -1 on error;
++ *   if -1 is returned, *err is set to the error indication and, for
++ *   errors where that's appropriate, *err_info is set to an additional
++ *   error string.
++ *
+  * XXX: works at most with 0x1FFF bytes per record
+  */
+-static gint get_record(guint8** bufferp, FILE* fh, gint64 file_offset) {
++static gint get_record(guint8** bufferp, FILE* fh, gint64 file_offset,
++                       int *err, gchar **err_info) {
+     static guint8* buffer = NULL;
+     static guint buffer_len = 0x2000 ;
+     guint bytes_read;
+@@ -239,7 +245,11 @@
+             K12_DBG(1,("get_record: EOF"));
+             return 0;
+         } else if ( bytes_read < 0x14 ){
+-            K12_DBG(1,("get_record: SHORT READ"));
++            K12_DBG(1,("get_record: SHORT READ OR ERROR"));
++            *err = file_error(fh);
++            if (*err == 0) {
++                *err = WTAP_ERR_SHORT_READ;
++            }
+             return -1;
+         }
+ 
+@@ -252,7 +262,11 @@
+             K12_DBG(1,("get_record: EOF"));
+             return 0;
+         } else if ( bytes_read != 0x4 ) {
+-            K12_DBG(1,("get_record: SHORT READ"));
++            K12_DBG(1,("get_record: SHORT READ OR ERROR"));
++            *err = file_error(fh);
++            if (*err == 0) {
++                *err = WTAP_ERR_SHORT_READ;
++            }
+             return -1;
+         }
+     }
+@@ -265,7 +279,8 @@
+     /* XXX - Is WTAP_MAX_PACKET_SIZE */
+     if (left < 4 || left > WTAP_MAX_PACKET_SIZE) {
+         K12_DBG(1,("get_record: Invalid GET length=%u",left));
+-        errno = WTAP_ERR_BAD_RECORD;
++        *err = WTAP_ERR_BAD_RECORD;
++        *err_info = g_strdup_printf("get_record: Invalid GET length=%u",left);
+         return -1;
+     }
+ 
+@@ -281,7 +296,11 @@
+             bytes_read += last_read = file_read(writep,1, left, fh);
+ 
+             if ( last_read != left ) {
+-                K12_DBG(1,("get_record: SHORT READ"));
++                K12_DBG(1,("get_record: SHORT READ OR ERROR"));
++                *err = file_error(fh);
++                if (*err == 0) {
++                    *err = WTAP_ERR_SHORT_READ;
++                }
+                 return -1;
+             } else {
+                 K12_HEXDMP(5,file_offset, "GOT record", buffer, actual_len);
+@@ -291,7 +310,11 @@
+             bytes_read += last_read = file_read(writep,1, junky_offset, fh);
+ 
+             if ( last_read != junky_offset ) {
+-                K12_DBG(1,("get_record: SHORT READ, read=%d expected=%d",last_read, junky_offset));
++                K12_DBG(1,("get_record: SHORT READ OR ERROR, read=%d expected=%d",last_read, junky_offset));
++                *err = file_error(fh);
++                if (*err == 0) {
++                    *err = WTAP_ERR_SHORT_READ;
++                }
+                 return -1;
+             }
+ 
+@@ -300,7 +323,11 @@
+             bytes_read += last_read = file_read(junk,1, 0x10, fh);
+ 
+             if ( last_read != 0x10 ) {
+-                K12_DBG(1,("get_record: SHORT READ"));
++                K12_DBG(1,("get_record: SHORT READ OR ERROR"));
++                *err = file_error(fh);
++                if (*err == 0) {
++                    *err = WTAP_ERR_SHORT_READ;
++                }
+                 return -1;
+             }
+ 
+@@ -314,7 +341,7 @@
+     return bytes_read;
+ }
+ 
+-static gboolean k12_read(wtap *wth, int *err, gchar **err_info _U_, gint64 *data_offset) {
++static gboolean k12_read(wtap *wth, int *err, gchar **err_info, gint64 *data_offset) {
+     k12_src_desc_t* src_desc;
+     guint8* buffer = NULL;
+     gint64 offset;
+@@ -332,10 +359,9 @@
+ 
+         *data_offset = offset;
+ 
+-        len = get_record(&buffer, wth->fh, offset);
++        len = get_record(&buffer, wth->fh, offset, err, err_info);
+ 
+         if (len < 0) {
+-            *err = WTAP_ERR_SHORT_READ;
+             return FALSE;
+         } else if (len == 0) {
+             *err = 0;
+@@ -416,7 +442,7 @@
+ }
+ 
+ 
+-static gboolean k12_seek_read(wtap *wth, gint64 seek_off, union wtap_pseudo_header *pseudo_header, guchar *pd, int length, int *err _U_, gchar **err_info _U_) {
++static gboolean k12_seek_read(wtap *wth, gint64 seek_off, union wtap_pseudo_header *pseudo_header, guchar *pd, int length, int *err _U_, gchar **err_info) {
+     k12_src_desc_t* src_desc;
+     guint8* buffer;
+     gint len;
+@@ -430,10 +456,16 @@
+         return FALSE;
+     }
+ 
+-    if ((len = get_record(&buffer, wth->random_fh, seek_off)) < 1) {
++    len = get_record(&buffer, wth->random_fh, seek_off, err, err_info);
++    if (len < 0) {
+         K12_DBG(5,("k12_seek_read: READ ERROR"));
+         return FALSE;
+     }
++    if (len < 1) {
++        K12_DBG(5,("k12_seek_read: SHORT READ"));
++        *err = WTAP_ERR_SHORT_READ;
++        return FALSE;
++    }
+ 
+     memcpy(pd, buffer + K12_PACKET_FRAME, length);
+ 
+@@ -451,16 +483,16 @@
+     input = pntohl(buffer + K12_RECORD_SRC_ID);
+     K12_DBG(5,("k12_seek_read: input=%.8x",input));
+ 
+-	if ( ! (src_desc = g_hash_table_lookup(wth->capture.k12->src_by_id,GUINT_TO_POINTER(input))) ) {
+-		/*
+-		 * Some records from K15 files have a port ID of an undeclared
+-		 * interface which happens to be the only one with the first byte changed.
+-		 * It is still unknown how to recognize when this happens.
+-		 * If the lookup of the interface record fails we'll mask it
+-		 * and retry.
+-		 */
+-		src_desc = g_hash_table_lookup(wth->capture.k12->src_by_id,GUINT_TO_POINTER(input&K12_RECORD_SRC_ID_MASK));
+-	}
++    if ( ! (src_desc = g_hash_table_lookup(wth->capture.k12->src_by_id,GUINT_TO_POINTER(input))) ) {
++        /*
++         * Some records from K15 files have a port ID of an undeclared
++         * interface which happens to be the only one with the first byte changed.
++         * It is still unknown how to recognize when this happens.
++         * If the lookup of the interface record fails we'll mask it
++         * and retry.
++         */
++        src_desc = g_hash_table_lookup(wth->capture.k12->src_by_id,GUINT_TO_POINTER(input&K12_RECORD_SRC_ID_MASK));
++    }
+ 
+     if (src_desc) {
+         K12_DBG(5,("k12_seek_read: input_name='%s' stack_file='%s' type=%x",src_desc->input_name,src_desc->stack_file,src_desc->input_type));
+@@ -571,7 +603,7 @@
+ }
+ 
+ 
+-int k12_open(wtap *wth, int *err, gchar **err_info _U_) {
++int k12_open(wtap *wth, int *err, gchar **err_info) {
+     k12_src_desc_t* rec;
+     guint8 header_buffer[0x200];
+     guint8* read_buffer;
+@@ -595,7 +627,11 @@
+ #endif
+ 
+     if ( file_read(header_buffer,1,0x200,wth->fh) != 0x200 ) {
+-        K12_DBG(1,("k12_open: FILE HEADER TOO SHORT"));
++        K12_DBG(1,("k12_open: FILE HEADER TOO SHORT OR READ ERROR"));
++        *err = file_error(wth->fh);
++        if (*err != 0) {
++            return -1;
++        }
+         return 0;
+     } else {
+         if ( memcmp(header_buffer,k12_file_magic,8) != 0 ) {
+@@ -618,10 +654,17 @@
+ 
+     do {
+ 
+-        len = get_record(&read_buffer, wth->fh, offset);
++        len = get_record(&read_buffer, wth->fh, offset, err, err_info);
+ 
+-        if ( len <= 0 ) {
++        if ( len < 0 ) {
++            K12_DBG(1,("k12_open: BAD HEADER RECORD",len));
++            return -1;
++        }
++        if (len == 0) {
+             K12_DBG(1,("k12_open: BAD HEADER RECORD",len));
++            *err = WTAP_ERR_SHORT_READ;
++            destroy_k12_file_data(file_data);
++            g_free(file_data);
+             return -1;
+         }
+ 
+@@ -667,7 +710,7 @@
+                             rec->input_info.ds0mask |= ( *(read_buffer + K12_SRCDESC_DS0_MASK + i) == 0xff ) ? 0x1<<(31-i) : 0x0;
+                         }
+ 
+-                            break;
++                        break;
+                     case K12_PORT_ATMPVC:
+                         rec->input_info.atm.vp = pntohs( read_buffer + K12_SRCDESC_ATM_VPI );
+                         rec->input_info.atm.vc = pntohs( read_buffer + K12_SRCDESC_ATM_VCI );
+diff -urN wireshark-1.2.14/wiretap/pcapng.c wireshark-1.2.15/wiretap/pcapng.c
+--- wireshark-1.2.14/wiretap/pcapng.c	2011-01-11 11:07:44.000000000 -0800
++++ wireshark-1.2.15/wiretap/pcapng.c	2011-03-01 09:06:03.000000000 -0800
+@@ -499,7 +499,6 @@
+ 	}
+ 
+ 	if (pn->interface_data != NULL) {
+-		pcapng_debug0("pcapng_read_section_header_block: Multiple section header blocks!");
+ 		g_array_free(pn->interface_data, TRUE);
+ 		pn->interface_data = NULL;
+ 		*err = WTAP_ERR_BAD_RECORD;
+@@ -784,21 +783,27 @@
+ 	}
+ 
+ 	if (wblock->data.packet.cap_len > wblock->data.packet.packet_len) {
+-		pcapng_debug2("pcapng_read_packet_block:cap_len %d is larger than packet_len %u.",
+-		              wblock->data.packet.cap_len, wblock->data.packet.packet_len);
+ 		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("pcapng_read_packet_block: cap_len %u is larger than packet_len %u.",
++		    wblock->data.packet.cap_len, wblock->data.packet.packet_len);
+ 		return 0;
+ 	}
+ 	if (wblock->data.packet.cap_len > WTAP_MAX_PACKET_SIZE) {
+-		pcapng_debug2("pcapng_read_packet_block:cap_len %d is larger than WTAP_MAX_PACKET_SIZE %u.",
+-		              wblock->data.packet.cap_len, WTAP_MAX_PACKET_SIZE);
+ 		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("pcapng_read_packet_block: cap_len %u is larger than WTAP_MAX_PACKET_SIZE %u.",
++		    wblock->data.packet.cap_len, WTAP_MAX_PACKET_SIZE);
+ 		return 0;
+ 	}
+ 	pcapng_debug3("pcapng_read_packet_block: packet data: packet_len %u captured_len %u interface_id %u",
+ 	              wblock->data.packet.packet_len,
+ 	              wblock->data.packet.cap_len,
+ 	              wblock->data.packet.interface_id);
++	if (wblock->data.packet.packet_len > WTAP_MAX_PACKET_SIZE) {
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("pcapng_read_packet_block: packet_len %u is larger than WTAP_MAX_PACKET_SIZE %u.",
++		    wblock->data.packet.packet_len, WTAP_MAX_PACKET_SIZE);
++		return 0;
++	}
+ 
+ 	wtap_encap = pcapng_get_encap(wblock->data.packet.interface_id, pn);
+ 	pcapng_debug3("pcapng_read_packet_block: encapsulation = %d (%s), pseudo header size = %d.",
+@@ -952,13 +957,19 @@
+ 					     - (guint32)sizeof(bh->block_total_length);
+ 
+ 	if (wblock->data.simple_packet.cap_len > WTAP_MAX_PACKET_SIZE) {
+-		pcapng_debug2("pcapng_read_simple_packet_block:cap_len %d is larger than WTAP_MAX_PACKET_SIZE %u.",
+-		              wblock->data.simple_packet.cap_len, WTAP_MAX_PACKET_SIZE);
+ 		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("pcapng_read_simple_packet_block: cap_len %u is larger than WTAP_MAX_PACKET_SIZE %u.",
++		    wblock->data.simple_packet.cap_len, WTAP_MAX_PACKET_SIZE);
+ 		return 0;
+ 	}
+ 	pcapng_debug1("pcapng_read_simple_packet_block: packet data: packet_len %u",
+ 	               wblock->data.simple_packet.packet_len);
++	if (wblock->data.simple_packet.packet_len > WTAP_MAX_PACKET_SIZE) {
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("pcapng_read_simple_packet_block: packet_len %u is larger than WTAP_MAX_PACKET_SIZE %u.",
++		    wblock->data.simple_packet.packet_len, WTAP_MAX_PACKET_SIZE);
++		return 0;
++	}
+ 
+ 	encap = pcapng_get_encap(0, pn);
+ 	pcapng_debug1("pcapng_read_simple_packet_block: Need to read pseudo header of size %d",
+@@ -1377,10 +1388,10 @@
+ 		wth->phdr.ts.secs = (time_t)(ts / time_units_per_second);
+ 		wth->phdr.ts.nsecs = (int)(((ts % time_units_per_second) * 1000000000) / time_units_per_second);
+ 	} else {
+-		pcapng_debug1("pcapng_read: interface_id %d too large", wblock.data.packet.interface_id);
+ 		wth->phdr.pkt_encap = WTAP_ENCAP_UNKNOWN;
+ 		*err = WTAP_ERR_BAD_RECORD;
+-		*err_info = g_strdup_printf("pcapng: interface index %u is too large", wblock.data.packet.interface_id);
++		*err_info = g_strdup_printf("pcapng: interface index %u is not less than interface count %u.",
++		    wblock.data.packet.interface_id, wth->capture.pcapng->number_of_interfaces);
+ 		return FALSE;
+ 	}
+ 

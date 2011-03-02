@@ -1,11 +1,19 @@
 wireshark (1.2.11-6+squeeze1) stable-security; urgency=high
 
-  * pick fix for crash triggered by opening a malformed pcap-ng file
-    (CVE-2011-0538) (Closes: #613202)
-  * pick fix for potential buffer overflow in DCT3 capture file handling
-    code (CVE-2011-0713)
+  * security fixes from Wireshark 1.2.15:
+    - Huzaifa Sidhpurwala of the Red Hat Security Response Team discovered
+      that Wireshark could free an uninitialized pointer while reading a
+      malformed pcap-ng file. (CVE-2011-0538) (Closes: #613202)
+    - Huzaifa Sidhpurwala of the Red Hat Security Response Team discovered
+      that a large packet length in a pcap-ng file could crash Wireshark
+    - Wireshark could overflow a buffer while reading a Nokia DCT3 trace file. 
+      (CVE-2011-0713)
+    - joernchen of Phenoelit discovered that the LDAP and SMB dissectors
+      could overflow the stack.
+    - Xiaopeng Zhang of Fortinet's Fortiguard Labs discovered that large LDAP
+      Filter strings can consume excessive amounts of memory.
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 18 Feb 2011 18:02:41 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 01 Mar 2011 01:17:41 +0100
 
 wireshark (1.2.11-6) unstable; urgency=high
 
