@@ -1,0 +1,487 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 46_fix-SMB-LDAP-buffer-overflow.dpatch by  <balint@balintreczey.hu>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: In dissect_ms_compressed_string() dissect_mscldap_string() simply call
+## DP: expand_dns_name() instead of using duplicate (and insecure) code. This
+## DP: *might* break CLDAP and SMB dissection. If that's the case we should
+## DP: probably revert get_dns_name() and simplify expand_dns_name().
+## DP: backported from https://anonsvn.wireshark.org/wireshark/trunk@36029
+
+@DPATCH@
+diff --git a/asn1/ldap/packet-ldap-template.c b/asn1/ldap/packet-ldap-template.c
+index c288f35..0288526 100644
+--- a/asn1/ldap/packet-ldap-template.c
++++ b/asn1/ldap/packet-ldap-template.c
+@@ -97,6 +97,7 @@
+ 
+ #include "packet-ber.h"
+ #include "packet-per.h"
++#include "packet-dns.h"
+ 
+ #define PNAME  "Lightweight-Directory-Access-Protocol"
+ #define PSNAME "LDAP"
+@@ -958,63 +959,19 @@ dissect_ldap_pdu(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, gboolean i
+     }
+ }
+ 
+-static int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int maxlen, gboolean prepend_dot)
++/*
++ * prepend_dot is no longer used, but is being left in place in order to
++ * maintain ABI compatibility.
++ */
++int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int max_len, gboolean prepend_dot _U_)
+ {
+-  guint8 len;
+-
+-  len=tvb_get_guint8(tvb, offset);
+-  offset+=1;
+-  *str=0;
+-
+-  while(len){
+-    /* add potential field separation dot */
+-    if(prepend_dot){
+-      if(!maxlen){
+-        *str=0;
+-        return offset;
+-      }
+-      maxlen--;
+-      *str++='.';
+-      *str=0;
+-    }
+-
+-    if(len==0xc0){
+-      int new_offset;
+-      /* ops its a mscldap compressed string */
+-
+-      new_offset=tvb_get_guint8(tvb, offset);
+-      if (new_offset == offset - 1)
+-        THROW(ReportedBoundsError);
+-      offset+=1;
+-
+-      dissect_mscldap_string(tvb, new_offset, str, maxlen, FALSE);
+-
+-      return offset;
+-    }
+-
+-    prepend_dot=TRUE;
+-
+-    if(maxlen<=len){
+-      if(maxlen>3){
+-        *str++='.';
+-        *str++='.';
+-        *str++='.';
+-      }
+-      *str=0;
+-      return offset; /* will mess up offset in caller, is unlikely */
+-    }
+-    tvb_memcpy(tvb, str, offset, len);
+-    str+=len;
+-    *str=0;
+-    maxlen-=len;
+-    offset+=len;
+-
++  int compr_len;
++  const guchar *name;
+ 
+-    len=tvb_get_guint8(tvb, offset);
+-    offset+=1;
+-  }
+-  *str=0;
+-  return offset;
++  /* The name data MUST start at offset 0 of the tvb */
++  compr_len = expand_dns_name(tvb, offset, max_len, 0, &name);
++  g_strlcpy(str, name, max_len);
++  return offset + compr_len;
+ }
+ 
+ /* These flag bits were found to be defined in the samba sources.
+diff --git a/asn1/ldap/packet-ldap-template.h b/asn1/ldap/packet-ldap-template.h
+index 75850cf..8bf7725 100644
+--- a/asn1/ldap/packet-ldap-template.h
++++ b/asn1/ldap/packet-ldap-template.h
+@@ -91,6 +91,8 @@ typedef struct ldap_call_response {
+ void register_ldap_name_dissector_handle(const char *attr_type, dissector_handle_t dissector);
+ void register_ldap_name_dissector(const char *attr_type, dissector_t dissector, int proto);
+ 
++int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int max_len, gboolean prepend_dot _U_);
++
+ /*#include "packet-ldap-exp.h" */
+ 
+ #endif  /* PACKET_LDAP_H */
+diff --git a/epan/dissectors/packet-dns.c b/epan/dissectors/packet-dns.c
+index ea9fd85..ad8976a 100644
+--- a/epan/dissectors/packet-dns.c
++++ b/epan/dissectors/packet-dns.c
+@@ -545,8 +545,8 @@ dns_class_name(int class)
+  * it will be automatically free()d when the packet has been dissected.
+  */
+ int
+-get_dns_name(tvbuff_t *tvb, int offset, int max_len, int dns_data_offset,
+-    const char **name)
++expand_dns_name(tvbuff_t *tvb, int offset, int max_len, int dns_data_offset,
++    const guchar **name)
+ {
+   int start_offset = offset;
+   char *np;
+@@ -707,14 +707,25 @@ get_dns_name(tvbuff_t *tvb, int offset, int max_len, int dns_data_offset,
+      set the length, so set it. */
+   if (len < 0)
+     len = offset - start_offset;
+-  /* Zero-length name means "root server" */
+-  if (**name == '\0')
+-    *name="<Root>";
+   if (len < min_len)
+     THROW(ReportedBoundsError);
+   return len;
+ }
+ 
++int
++get_dns_name(tvbuff_t *tvb, int offset, int max_len, int dns_data_offset,
++    const guchar **name)
++{
++  int len;
++
++  len = expand_dns_name(tvb, offset, max_len, dns_data_offset, name);
++
++  /* Zero-length name means "root server" */
++  if (**name == '\0')
++    *name="<Root>";
++
++  return len;
++}
+ 
+ static int
+ get_dns_name_type_class(tvbuff_t *tvb, int offset, int dns_data_offset,
+diff --git a/epan/dissectors/packet-dns.h b/epan/dissectors/packet-dns.h
+index 5a23199..b6135e5 100644
+--- a/epan/dissectors/packet-dns.h
++++ b/epan/dissectors/packet-dns.h
+@@ -29,7 +29,9 @@
+ 
+ const char *dns_class_name(int class);
+ 
+-int get_dns_name(tvbuff_t *, int, int, int, const char **);
++int expand_dns_name(tvbuff_t *, int, int, int, const guchar **);
++/* Just like expand_dns_name, but pretty-prints empty names. */
++int get_dns_name(tvbuff_t *, int, int, int, const guchar **);
+ 
+ #define MAXDNAME        1025            /* maximum domain name length */
+ 
+diff --git a/epan/dissectors/packet-ldap.c b/epan/dissectors/packet-ldap.c
+index cf95cc0..12a586e 100644
+--- a/epan/dissectors/packet-ldap.c
++++ b/epan/dissectors/packet-ldap.c
+@@ -105,6 +105,7 @@
+ 
+ #include "packet-ber.h"
+ #include "packet-per.h"
++#include "packet-dns.h"
+ 
+ #define PNAME  "Lightweight-Directory-Access-Protocol"
+ #define PSNAME "LDAP"
+@@ -281,7 +282,7 @@ static int hf_ldap_genPasswd = -1;                /* OCTET_STRING */
+ static int hf_ldap_cancelID = -1;                 /* MessageID */
+ 
+ /*--- End of included file: packet-ldap-hf.c ---*/
+-#line 152 "packet-ldap-template.c"
++#line 153 "packet-ldap-template.c"
+ 
+ /* Initialize the subtree pointers */
+ static gint ett_ldap = -1;
+@@ -340,7 +341,7 @@ static gint ett_ldap_PasswdModifyResponseValue = -1;
+ static gint ett_ldap_CancelRequestValue = -1;
+ 
+ /*--- End of included file: packet-ldap-ett.c ---*/
+-#line 161 "packet-ldap-template.c"
++#line 162 "packet-ldap-template.c"
+ 
+ static dissector_table_t ldap_name_dissector_table=NULL;
+ static const char *object_identifier_id = NULL; /* LDAP OID */
+@@ -3119,7 +3120,7 @@ static void dissect_CancelRequestValue_PDU(tvbuff_t *tvb _U_, packet_info *pinfo
+ 
+ 
+ /*--- End of included file: packet-ldap-fn.c ---*/
+-#line 567 "packet-ldap-template.c"
++#line 568 "packet-ldap-template.c"
+ 
+ static void
+ dissect_ldap_payload(tvbuff_t *tvb, packet_info *pinfo,
+@@ -3514,63 +3515,19 @@ dissect_ldap_pdu(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, gboolean i
+     }
+ }
+ 
+-static int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int maxlen, gboolean prepend_dot)
++/*
++ * prepend_dot is no longer used, but is being left in place in order to
++ * maintain ABI compatibility.
++ */
++int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int max_len, gboolean prepend_dot _U_)
+ {
+-  guint8 len;
+-
+-  len=tvb_get_guint8(tvb, offset);
+-  offset+=1;
+-  *str=0;
+-
+-  while(len){
+-    /* add potential field separation dot */
+-    if(prepend_dot){
+-      if(!maxlen){
+-        *str=0;
+-        return offset;
+-      }
+-      maxlen--;
+-      *str++='.';
+-      *str=0;
+-    }
+-
+-    if(len==0xc0){
+-      int new_offset;
+-      /* ops its a mscldap compressed string */
+-
+-      new_offset=tvb_get_guint8(tvb, offset);
+-      if (new_offset == offset - 1)
+-        THROW(ReportedBoundsError);
+-      offset+=1;
+-
+-      dissect_mscldap_string(tvb, new_offset, str, maxlen, FALSE);
+-
+-      return offset;
+-    }
+-
+-    prepend_dot=TRUE;
+-
+-    if(maxlen<=len){
+-      if(maxlen>3){
+-        *str++='.';
+-        *str++='.';
+-        *str++='.';
+-      }
+-      *str=0;
+-      return offset; /* will mess up offset in caller, is unlikely */
+-    }
+-    tvb_memcpy(tvb, str, offset, len);
+-    str+=len;
+-    *str=0;
+-    maxlen-=len;
+-    offset+=len;
+-
++  int compr_len;
++  const guchar *name;
+ 
+-    len=tvb_get_guint8(tvb, offset);
+-    offset+=1;
+-  }
+-  *str=0;
+-  return offset;
++  /* The name data MUST start at offset 0 of the tvb */
++  compr_len = expand_dns_name(tvb, offset, max_len, 0, &name);
++  g_strlcpy(str, name, max_len);
++  return offset + compr_len;
+ }
+ 
+ /* These flag bits were found to be defined in the samba sources.
+@@ -4733,7 +4690,7 @@ void proto_register_ldap(void) {
+         "ldap.MessageID", HFILL }},
+ 
+ /*--- End of included file: packet-ldap-hfarr.c ---*/
+-#line 1696 "packet-ldap-template.c"
++#line 1653 "packet-ldap-template.c"
+   };
+ 
+   /* List of subtrees */
+@@ -4794,7 +4751,7 @@ void proto_register_ldap(void) {
+     &ett_ldap_CancelRequestValue,
+ 
+ /*--- End of included file: packet-ldap-ettarr.c ---*/
+-#line 1707 "packet-ldap-template.c"
++#line 1664 "packet-ldap-template.c"
+   };
+ 
+     module_t *ldap_module;
+@@ -4917,7 +4874,7 @@ proto_reg_handoff_ldap(void)
+ 
+ 
+ /*--- End of included file: packet-ldap-dis-tab.c ---*/
+-#line 1818 "packet-ldap-template.c"
++#line 1775 "packet-ldap-template.c"
+ 	
+ 
+ }
+diff --git a/epan/dissectors/packet-ldap.h b/epan/dissectors/packet-ldap.h
+index 150edd7..01050fa 100644
+--- a/epan/dissectors/packet-ldap.h
++++ b/epan/dissectors/packet-ldap.h
+@@ -99,6 +99,8 @@ typedef struct ldap_call_response {
+ void register_ldap_name_dissector_handle(const char *attr_type, dissector_handle_t dissector);
+ void register_ldap_name_dissector(const char *attr_type, dissector_t dissector, int proto);
+ 
++int dissect_mscldap_string(tvbuff_t *tvb, int offset, char *str, int max_len, gboolean prepend_dot _U_);
++
+ /*#include "packet-ldap-exp.h" */
+ 
+ #endif  /* PACKET_LDAP_H */
+diff --git a/epan/dissectors/packet-smb-common.c b/epan/dissectors/packet-smb-common.c
+index cb8194f..648d973 100644
+--- a/epan/dissectors/packet-smb-common.c
++++ b/epan/dissectors/packet-smb-common.c
+@@ -38,6 +38,8 @@
+ #include <epan/strutil.h>
+ #include "packet-smb-common.h"
+ 
++#include "packet-dns.h"
++
+ /*
+  * Share type values - used in LANMAN and in SRVSVC.
+  *
+@@ -126,84 +128,23 @@ int display_unicode_string(tvbuff_t *tvb, proto_tree *tree, int offset, int hf_i
+ 	return 	offset+len;
+ }
+ 
+-static int dissect_ms_compressed_string_internal(tvbuff_t *tvb, int offset, char *str, int maxlen, gboolean prepend_dot)
+-{
+-  guint8 len;
+-
+-  len=tvb_get_guint8(tvb, offset);
+-  offset+=1;
+-  *str=0;
+-
+-  /* XXX: Reserve 4 chars for "...\0" */
+-  while(len){
+-    /* add potential field separation dot */
+-    if(prepend_dot){
+-      if(maxlen<=4){
+-        *str=0;
+-        return offset;
+-      }
+-      maxlen--;
+-      *str++='.';
+-      *str=0;
+-    }
+-
+-    if(len==0xc0){
+-      int new_offset;
+-      /* ops its a mscldap compressed string */
+-
+-      new_offset=tvb_get_guint8(tvb, offset);
+-      if (new_offset == offset - 1)
+-        THROW(ReportedBoundsError);
+-      offset+=1;
+-
+-      dissect_ms_compressed_string_internal(tvb, new_offset, str, maxlen, FALSE);
+-
+-      return offset;
+-    }
+-
+-    prepend_dot=TRUE;
+-
+-    if(len>(maxlen-4)){
+-      *str++='.';
+-      *str++='.';
+-      *str++='.';
+-      *str=0;
+-      return offset; /* will mess up offset in caller, is unlikely */
+-    }
+-    tvb_memcpy(tvb, str, offset, len);
+-    str+=len;
+-    *str=0;
+-    maxlen-=len;
+-    offset+=len;
+-
+-
+-    len=tvb_get_guint8(tvb, offset);
+-    offset+=1;
+-  }
+-  *str=0;
+-  return offset;
+-}
+-
+ /* Max string length for displaying Unicode strings.  */
+ #define	MAX_UNICODE_STR_LEN	256
+ 
+ int dissect_ms_compressed_string(tvbuff_t *tvb, proto_tree *tree, int offset, int hf_index,
+-				 gboolean prepend_dot, char **data)
++				 char **data)
+ {
+-	int old_offset=offset;
+-	char *str;
+-	int len;
++	int compr_len;
++	const guchar *str = NULL;
+ 
+-	len = MAX_UNICODE_STR_LEN+3+1;
+-	str=ep_alloc(len);
+-
+-	offset=dissect_ms_compressed_string_internal(tvb, offset, str, len, prepend_dot);
+-	proto_tree_add_string(tree, hf_index, tvb, old_offset, offset-old_offset, str);
++	/* The name data MUST start at offset 0 of the tvb */
++	compr_len = expand_dns_name(tvb, offset, MAX_UNICODE_STR_LEN+3+1, 0, &str);
++	proto_tree_add_string(tree, hf_index, tvb, offset, compr_len, str);
+ 
+ 	if (data)
+-		*data = str;
++		*data = (char*) str;
+ 
+-	return offset;
++	return offset + compr_len;
+ }
+ 
+ /* Turn a little-endian Unicode '\0'-terminated string into a string we
+diff --git a/epan/dissectors/packet-smb-common.h b/epan/dissectors/packet-smb-common.h
+index 0188bf4..c7081c1 100644
+--- a/epan/dissectors/packet-smb-common.h
++++ b/epan/dissectors/packet-smb-common.h
+@@ -37,7 +37,7 @@ int display_unicode_string(tvbuff_t *tvb, proto_tree *tree, int offset, int hf_i
+ int display_ms_string(tvbuff_t *tvb, proto_tree *tree, int offset, int hf_index, char **data);
+ 
+ int dissect_ms_compressed_string(tvbuff_t *tvb, proto_tree *tree, int offset, int hf_index,
+-				 gboolean prepend_dot, char **data);
++				 char **data);
+ 
+ const gchar *get_unicode_or_ascii_string(tvbuff_t *tvb, int *offsetp,
+     gboolean useunicode, int *len, gboolean nopad, gboolean exactlen,
+diff --git a/epan/dissectors/packet-smb-logon.c b/epan/dissectors/packet-smb-logon.c
+index 2060e5a..0f3f7c6 100644
+--- a/epan/dissectors/packet-smb-logon.c
++++ b/epan/dissectors/packet-smb-logon.c
+@@ -759,28 +759,28 @@ dissect_smb_pdc_response_ads(tvbuff_t *tvb, packet_info *pinfo _U_,
+ 	offset += 16;
+ 
+ 	/* forest dns name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_forest_dns_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_forest_dns_name, NULL);
+ 
+ 	/* domain dns name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_domain_dns_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_domain_dns_name, NULL);
+ 
+ 	/* server dns name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_dns_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_dns_name, NULL);
+ 
+ 	/* domain name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_domain_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_domain_name, NULL);
+ 
+ 	/* server name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_name, NULL);
+ 
+ 	/* user name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_user_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_user_name, NULL);
+ 
+ 	/* server_site name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_site_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_server_site_name, NULL);
+ 
+ 	/* client_site name */
+-	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_client_site_name, FALSE, NULL);
++	offset=dissect_ms_compressed_string(tvb, tree, offset, hf_client_site_name, NULL);
+ 
+ 	/* unknown uint8 type */
+ 	proto_tree_add_item(tree, hf_unknown8, tvb, offset, 1, TRUE);
+-- 
+1.7.2.3
+

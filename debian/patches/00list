@@ -29,3 +29,6 @@
 41_security_fixes_from_1.2.12
 42_CVE-2010-4538
 43_CVE-2011-0538
+44_fix-LDAP-filter-string-DOS
+45_display-FQDN-as-text
+46_fix-SMB-LDAP-buffer-overflow
