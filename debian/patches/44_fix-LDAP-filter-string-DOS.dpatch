@@ -1,0 +1,216 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 44_fix-LDAP-filter-string-DOS.dpatch by  <balint@balintreczey.hu>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: LDAP Filter strings can consume excessive amounts of memory
+## DP: backported from https://anonsvn.wireshark.org/wireshark/trunk@36101
+
+@DPATCH@
+diff --git a/asn1/ldap/ldap.cnf b/asn1/ldap/ldap.cnf
+index 801fd57..3c2c497 100644
+--- a/asn1/ldap/ldap.cnf
++++ b/asn1/ldap/ldap.cnf
+@@ -684,6 +684,16 @@ offset = dissect_ber_boolean(implicit_tag, actx, tree, tvb, offset, hf_index, &v
+ 	proto_tree *tr=NULL;
+ 	proto_item *it=NULL;
+ 
++	if (Filter_length++ > MAX_FILTER_LEN) {
++		expert_add_info_format(actx->pinfo, tree, PI_UNDECODED, PI_ERROR, "Filter length exceeds %%u. Giving up.", MAX_FILTER_LEN);
++		THROW(ReportedBoundsError);
++	}
++
++	if (Filter_elements++ > MAX_FILTER_ELEMENTS) {
++		expert_add_info_format(actx->pinfo, tree, PI_UNDECODED, PI_ERROR, "Found more than %%u filter elements. Giving up.", MAX_FILTER_ELEMENTS);
++		THROW(ReportedBoundsError);
++	}
++
+ 	if(tree){
+ 		it=proto_tree_add_text(tree, tvb, offset, tvb_length_remaining(tvb, offset), "Filter: ");
+ 		tr=proto_item_add_subtree(it, ett_ldap_Filter);
+diff --git a/asn1/ldap/packet-ldap-template.c b/asn1/ldap/packet-ldap-template.c
+index b3536f0..c288f35 100644
+--- a/asn1/ldap/packet-ldap-template.c
++++ b/asn1/ldap/packet-ldap-template.c
+@@ -88,6 +88,7 @@
+ #include <epan/dissectors/packet-windows-common.h>
+ #include <epan/dissectors/packet-dcerpc.h>
+ #include <epan/asn1.h>
++#include <epan/expert.h>
+ 
+ #include "packet-frame.h"
+ #include "packet-ldap.h"
+@@ -399,6 +400,12 @@ static char *substring_item_final=NULL;
+ static char *matching_rule_string=NULL;
+ static gboolean matching_rule_dnattr=FALSE;
+ 
++#define MAX_FILTER_LEN 4096
++static gint Filter_length;
++
++#define MAX_FILTER_ELEMENTS 200
++static gint Filter_elements;
++
+ /* Global variables */
+ char *mechanism = NULL;
+ static gint MessageID =-1;
+diff --git a/epan/dissectors/packet-ldap.c b/epan/dissectors/packet-ldap.c
+index 967957c..cf95cc0 100644
+--- a/epan/dissectors/packet-ldap.c
++++ b/epan/dissectors/packet-ldap.c
+@@ -96,6 +96,7 @@
+ #include <epan/dissectors/packet-windows-common.h>
+ #include <epan/dissectors/packet-dcerpc.h>
+ #include <epan/asn1.h>
++#include <epan/expert.h>
+ 
+ #include "packet-frame.h"
+ #include "packet-ldap.h"
+@@ -280,7 +281,7 @@ static int hf_ldap_genPasswd = -1;                /* OCTET_STRING */
+ static int hf_ldap_cancelID = -1;                 /* MessageID */
+ 
+ /*--- End of included file: packet-ldap-hf.c ---*/
+-#line 151 "packet-ldap-template.c"
++#line 152 "packet-ldap-template.c"
+ 
+ /* Initialize the subtree pointers */
+ static gint ett_ldap = -1;
+@@ -339,7 +340,7 @@ static gint ett_ldap_PasswdModifyResponseValue = -1;
+ static gint ett_ldap_CancelRequestValue = -1;
+ 
+ /*--- End of included file: packet-ldap-ett.c ---*/
+-#line 160 "packet-ldap-template.c"
++#line 161 "packet-ldap-template.c"
+ 
+ static dissector_table_t ldap_name_dissector_table=NULL;
+ static const char *object_identifier_id = NULL; /* LDAP OID */
+@@ -582,6 +583,12 @@ static char *substring_item_final=NULL;
+ static char *matching_rule_string=NULL;
+ static gboolean matching_rule_dnattr=FALSE;
+ 
++#define MAX_FILTER_LEN 4096
++static gint Filter_length;
++
++#define MAX_FILTER_ELEMENTS 200
++static gint Filter_elements;
++
+ /* Global variables */
+ char *mechanism = NULL;
+ static gint MessageID =-1;
+@@ -1029,7 +1036,7 @@ dissect_ldap_SaslCredentials(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int o
+ 
+ static int
+ dissect_ldap_T_ntlmsspNegotiate(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 697 "ldap.cnf"
++#line 707 "ldap.cnf"
+ 	/* make sure the protocol op comes first */
+        	ldap_do_protocolop(actx->pinfo);
+ 
+@@ -1045,7 +1052,7 @@ dissect_ldap_T_ntlmsspNegotiate(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, in
+ 
+ static int
+ dissect_ldap_T_ntlmsspAuth(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 704 "ldap.cnf"
++#line 714 "ldap.cnf"
+ 	/* make sure the protocol op comes first */
+        	ldap_do_protocolop(actx->pinfo);
+ 
+@@ -1211,7 +1218,7 @@ dissect_ldap_BindResponse_resultCode(gboolean implicit_tag _U_, tvbuff_t *tvb _U
+ 
+ static int
+ dissect_ldap_T_bindResponse_matchedDN(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 711 "ldap.cnf"
++#line 721 "ldap.cnf"
+ 	tvbuff_t *new_tvb=NULL;
+ 
+ 	offset = dissect_ber_octet_string(FALSE, actx, tree, tvb, offset, hf_ldap_matchedDN, &new_tvb);
+@@ -1895,6 +1902,16 @@ dissect_ldap_Filter(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_
+ 	proto_tree *tr=NULL;
+ 	proto_item *it=NULL;
+ 
++	if (Filter_length++ > MAX_FILTER_LEN) {
++		expert_add_info_format(actx->pinfo, tree, PI_UNDECODED, PI_ERROR, "Filter length exceeds %u. Giving up.", MAX_FILTER_LEN);
++		THROW(ReportedBoundsError);
++	}
++
++	if (Filter_elements++ > MAX_FILTER_ELEMENTS) {
++		expert_add_info_format(actx->pinfo, tree, PI_UNDECODED, PI_ERROR, "Found more than %u filter elements. Giving up.", MAX_FILTER_ELEMENTS);
++		THROW(ReportedBoundsError);
++	}
++
+ 	if(tree){
+ 		it=proto_tree_add_text(tree, tvb, offset, tvb_length_remaining(tvb, offset), "Filter: ");
+ 		tr=proto_item_add_subtree(it, ett_ldap_Filter);
+@@ -2203,7 +2220,7 @@ dissect_ldap_SEQUENCE_OF_LDAPURL(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, i
+ 
+ static int
+ dissect_ldap_SearchResultReference(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 754 "ldap.cnf"
++#line 764 "ldap.cnf"
+ 
+    offset = dissect_ber_tagged_type(implicit_tag, actx, tree, tvb, offset,
+                                       hf_index, BER_CLASS_APP, 19, TRUE, dissect_ldap_SEQUENCE_OF_LDAPURL);
+@@ -2480,7 +2497,7 @@ dissect_ldap_CompareResponse(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int o
+ 
+ static int
+ dissect_ldap_AbandonRequest(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 761 "ldap.cnf"
++#line 771 "ldap.cnf"
+ 
+    offset = dissect_ber_tagged_type(implicit_tag, actx, tree, tvb, offset,
+                                       hf_index, BER_CLASS_APP, 16, TRUE, dissect_ldap_MessageID);
+@@ -2554,7 +2571,7 @@ dissect_ldap_LDAPOID(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U
+ 
+ static int
+ dissect_ldap_T_requestValue(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 746 "ldap.cnf"
++#line 756 "ldap.cnf"
+ 
+ 	if((object_identifier_id != NULL) && oid_has_dissector(object_identifier_id)) {
+ 		offset = call_ber_oid_callback(object_identifier_id, tvb, offset, actx->pinfo, tree);
+@@ -2835,7 +2852,7 @@ dissect_ldap_ControlType(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offse
+ 
+ static int
+ dissect_ldap_T_controlValue(gboolean implicit_tag _U_, tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+-#line 727 "ldap.cnf"
++#line 737 "ldap.cnf"
+ 	gint8 class;
+ 	gboolean pc, ind;
+ 	gint32 tag;
+@@ -3102,7 +3119,7 @@ static void dissect_CancelRequestValue_PDU(tvbuff_t *tvb _U_, packet_info *pinfo
+ 
+ 
+ /*--- End of included file: packet-ldap-fn.c ---*/
+-#line 560 "packet-ldap-template.c"
++#line 567 "packet-ldap-template.c"
+ 
+ static void
+ dissect_ldap_payload(tvbuff_t *tvb, packet_info *pinfo,
+@@ -4716,7 +4733,7 @@ void proto_register_ldap(void) {
+         "ldap.MessageID", HFILL }},
+ 
+ /*--- End of included file: packet-ldap-hfarr.c ---*/
+-#line 1689 "packet-ldap-template.c"
++#line 1696 "packet-ldap-template.c"
+   };
+ 
+   /* List of subtrees */
+@@ -4777,7 +4794,7 @@ void proto_register_ldap(void) {
+     &ett_ldap_CancelRequestValue,
+ 
+ /*--- End of included file: packet-ldap-ettarr.c ---*/
+-#line 1700 "packet-ldap-template.c"
++#line 1707 "packet-ldap-template.c"
+   };
+ 
+     module_t *ldap_module;
+@@ -4900,7 +4917,7 @@ proto_reg_handoff_ldap(void)
+ 
+ 
+ /*--- End of included file: packet-ldap-dis-tab.c ---*/
+-#line 1811 "packet-ldap-template.c"
++#line 1818 "packet-ldap-template.c"
+ 	
+ 
+ }
+-- 
+1.7.2.3
+

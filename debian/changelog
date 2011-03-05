@@ -1,9 +1,17 @@
 wireshark (1.0.2-3+lenny13) oldstable-security; urgency=high
 
-  * add sanity checks to pcapng file parsing code (Closes: #613202)
-    (CVE-2011-0538)
+  * security fixes from Wireshark 1.2.15:
+    - add sanity checks to pcapng file parsing code (Closes: #613202)
+      (CVE-2011-0538)
+    - joernchen of Phenoelit discovered that the dissectors
+      could overflow the stack (No assigned CVE number)
+    - Xiaopeng Zhang of Fortinet's Fortiguard Labs discovered that large
+      LDAP Filter strings can consume excessive amounts of memory
+      (No assigned CVE number)
+  * back-port 45_display-FQDN-as-text.dpatch to be able to back-port fix for
+    LDAP and SMB buffet overflow 
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 26 Feb 2011 00:41:10 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 05 Mar 2011 03:33:10 +0100
 
 wireshark (1.0.2-3+lenny12) stable-security; urgency=high
 
