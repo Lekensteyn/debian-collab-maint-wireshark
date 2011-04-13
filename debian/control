@@ -99,7 +99,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Vers
 Suggests: wireshark-doc (>= ${source:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
-Description: a network packet dissection library -- shared library
+Description: network packet dissection library -- shared library
  The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.
 
@@ -131,7 +131,7 @@ Depends: ${misc:Depends}
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
 Suggests: snmp-mibs-downloader
-Description: a network packet dissection library -- data files
+Description: network packet dissection library -- data files
  The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.
  .
@@ -143,7 +143,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, libwsutil-dev, libwireshark0 (= ${b
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
-Description: a network packet dissection library -- development files
+Description: network packet dissection library -- development files
  The "libwireshark" library provides the network packet dissection services
  developed by the Wireshark project.
  .
@@ -155,8 +155,8 @@ Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
-Description: a network packet capture library -- shared library
- Wiretap, part of the Wireshark project, is a library that allows to
+Description: network packet capture library -- shared library
+ Wiretap, part of the Wireshark project, is a library that allows one to
  read and write several packet capture file formats.
  .
  Supported formats are: 
@@ -187,8 +187,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, libwiretap0 (= ${binary:Version})
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
-Description: a network packet capture library -- development files
- Wiretap, part of the Wireshark project, is a library that allows to
+Description: network packet capture library -- development files
+ Wiretap, part of the Wireshark project, is a library that allows one to
  read and write several packet capture file formats.
  .
  Supported formats are: 
