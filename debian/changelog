@@ -1,5 +1,8 @@
-wireshark (1.5.0-2) UNRELEASED; urgency=low
+wireshark (1.5.1-1) experimental; urgency=low
 
+  * New upstream development release 1.5.1
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.5.1.html
   * update standards-version to 3.9.2
   * clarify in README.Debian that only root is able to capture packets in
     default installation (Closes: #621801)
