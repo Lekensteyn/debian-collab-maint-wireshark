@@ -1,3 +1,18 @@
+wireshark (1.4.5-1) unstable; urgency=high
+
+  * New upstream release 1.4.5
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.5.html
+    - security fixes
+      - The X.509if dissector could crash. (No assigned CVE number)
+      - Paul Makowski from SEI/CERT discovered that the DECT dissector could
+        overflow a buffer. (No assigned CVE number)
+  * update standards-version to 3.9.2
+  * clarify in README.Debian that only root is able to capture packets in
+    default installation (Closes: #621801)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 16 Apr 2011 17:05:11 +0200
+
 wireshark (1.4.4-1) unstable; urgency=high
 
   * New upstream release 1.4.4

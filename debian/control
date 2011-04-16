@@ -4,9 +4,11 @@ Priority: optional
 Maintainer: Balint Reczey <balint@balintreczey.hu>
 Uploaders: Joost Yervante Damad <andete@debian.org>
 DM-Upload-Allowed: yes
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, debhelper (>= 6), po-debconf, libtool, python, python-ply, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libxml2-utils, libpcre3-dev, libcap2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386] | libcap-dev (>= 2.17) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], bison, libgnutls-dev, python-support (>= 0.3), portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, hardening-wrapper
 Build-Conflicts: libsnmp4.2-dev, libsnmp-dev
+Vcs-Svn: svn://svn.debian.org/svn/collab-maint/ext-maint/wireshark/trunk
+Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/ext-maint/wireshark/trunk/
 XS-Python-Version: all
 Homepage: http://www.wireshark.org/
 
@@ -97,7 +99,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Vers
 Suggests: wireshark-doc (>= ${source:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
-Description: a network packet dissection library -- shared library
+Description: network packet dissection library -- shared library
  The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.
 
@@ -129,7 +131,7 @@ Depends: ${misc:Depends}
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
 Suggests: snmp-mibs-downloader
-Description: a network packet dissection library -- data files
+Description: network packet dissection library -- data files
  The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.
  .
@@ -141,7 +143,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, libwsutil-dev, libwireshark0 (= ${b
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
-Description: a network packet dissection library -- development files
+Description: network packet dissection library -- development files
  The "libwireshark" library provides the network packet dissection services
  developed by the Wireshark project.
  .
@@ -153,8 +155,8 @@ Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
-Description: a network packet capture library -- shared library
- Wiretap, part of the Wireshark project, is a library that allows to
+Description: network packet capture library -- shared library
+ Wiretap, part of the Wireshark project, is a library that allows one to
  read and write several packet capture file formats.
  .
  Supported formats are: 
@@ -185,8 +187,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, libwiretap0 (= ${binary:Version})
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
-Description: a network packet capture library -- development files
- Wiretap, part of the Wireshark project, is a library that allows to
+Description: network packet capture library -- development files
+ Wiretap, part of the Wireshark project, is a library that allows one to
  read and write several packet capture file formats.
  .
  Supported formats are: 
