@@ -1,3 +1,10 @@
+wireshark (1.2.11-6+squeeze2) stable-security; urgency=high
+
+  * security fixes from Wireshark 1.2.16:
+    - The X.509if dissector could crash. (No assigned CVE number.)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 16 Apr 2011 22:23:42 +0200
+
 wireshark (1.2.11-6+squeeze1) stable-security; urgency=high
 
   * security fixes from Wireshark 1.2.15:
