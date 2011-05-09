@@ -3,6 +3,7 @@ wireshark (1.5.1-2) UNRELEASED; urgency=low
   * depend on omniidl instead of omniidl4 transitional package
   * [Debconf translation updates]
     - Dutch (Jeroen Schot). (Closes: #626145)
+    - Hungarian (Balint Reczey). (Closes: #626145)
 
  -- Balint Reczey <balint@balintreczey.hu>  Mon, 09 May 2011 13:03:53 +0200
 
