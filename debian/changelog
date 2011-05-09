@@ -1,3 +1,14 @@
+wireshark (1.4.6-1) unstable; urgency=low
+
+  * New upstream release 1.4.6
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.4.6.html
+    - contains one fix only compared to 1.4.5:
+      - Wireshark and TShark can crash while analyzing TCP packets.
+  * depend on omniidl instead of omniidl4 transitional package
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 19 Apr 2011 09:55:10 +0200
+
 wireshark (1.4.5-1) unstable; urgency=high
 
   * New upstream release 1.4.5
