@@ -29,7 +29,7 @@ asn2deb.1: asn2deb.dbk
 	xsltproc --nonet --novalid $(DB2MAN) $<
 
 
-CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --disable-ssl --without-ucdsnmp --with-pcap-remote --enable-gtk2 --libdir=/usr/lib --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/libwireshark0/plugins --with-lua=/usr/ --docdir=/usr/share/doc/wireshark-doc/
+CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --disable-ssl --without-ucdsnmp --enable-gtk2 --libdir=/usr/lib --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/libwireshark0/plugins --with-lua=/usr/ --docdir=/usr/share/doc/wireshark-doc/
 
 configure: configure-stamp
 configure-stamp:
