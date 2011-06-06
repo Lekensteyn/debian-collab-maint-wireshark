@@ -1,60 +1,33 @@
-wireshark (1.4.6-1) unstable; urgency=low
+wireshark (1.5.1-2) UNRELEASED; urgency=low
 
-  * New upstream release 1.4.6
-    - release notes:
-      http://www.wireshark.org/docs/relnotes/wireshark-1.4.6.html
-    - contains one fix only compared to 1.4.5:
-      - Wireshark and TShark can crash while analyzing TCP packets.
   * depend on omniidl instead of omniidl4 transitional package
+  * [Debconf translation updates]
+    - Dutch (Jeroen Schot). (Closes: #626145)
+    - Hungarian (Balint Reczey). (Closes: #626145)
 
- -- Balint Reczey <balint@balintreczey.hu>  Tue, 19 Apr 2011 09:55:10 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 09 May 2011 13:03:53 +0200
 
-wireshark (1.4.5-1) unstable; urgency=high
+wireshark (1.5.1-1) experimental; urgency=low
 
-  * New upstream release 1.4.5
+  * New upstream development release 1.5.1
     - release notes:
-      http://www.wireshark.org/docs/relnotes/wireshark-1.4.5.html
-    - security fixes
-      - The X.509if dissector could crash. (No assigned CVE number)
-      - Paul Makowski from SEI/CERT discovered that the DECT dissector could
-        overflow a buffer. (No assigned CVE number)
+      http://www.wireshark.org/docs/relnotes/wireshark-1.5.1.html
   * update standards-version to 3.9.2
   * clarify in README.Debian that only root is able to capture packets in
     default installation (Closes: #621801)
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 16 Apr 2011 17:05:11 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 07 Apr 2011 19:27:08 +0200
 
-wireshark (1.4.4-1) unstable; urgency=high
+wireshark (1.5.0-1) experimental; urgency=low
 
-  * New upstream release 1.4.4
+  * New upstream development release 1.5.0
     - release notes:
-      http://www.wireshark.org/docs/relnotes/wireshark-1.4.4.html
-    - security fixes
-      - Huzaifa Sidhpurwala of the Red Hat Security Response Team discovered
-        that a large packet length in a pcap-ng file could crash Wireshark.
-        (No assigned CVE number.)
-      - Wireshark could overflow a buffer while reading a Nokia DCT3 trace
-        file. (CVE-2011-0713)
-      - Paul Makowski working for SEI/CERT discovered that Wireshark on 32
-        bit systems could crash while reading a malformed 6LoWPAN packet.
-        (No assigned CVE number.)
-      - joernchen of Phenoelit discovered that the LDAP and SMB dissectors
-        could overflow the stack.
-        (No assigned CVE number.)
-      - Xiaopeng Zhang of Fortinet's Fortiguard Labs discovered that large
-        LDAP Filter strings can consume excessive amounts of memory.
-        (No assigned CVE number.)
-   * drop 06_fix_crash_on_pcapng_file_error.patch since it is included in
-     the new release
+      http://www.wireshark.org/news/20110124.html
+    - Allow <interval> to be successfully sscanf'd no matter the locale
+      for the decimal symbol (Closes: #454621)
+    - Use more meaningful temp file name (Closes: #419710)
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 02 Mar 2011 14:07:27 +0100
-
-wireshark (1.4.3-3) unstable; urgency=high
-
-  * pick fix for crash triggered by opening a malformed pcap-ng file
-    (CVE-2011-0538) (Closes: #613202)
-
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 18 Feb 2011 18:02:41 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 08 Feb 2011 14:30:12 +0100
 
 wireshark (1.4.3-2) unstable; urgency=low
 
