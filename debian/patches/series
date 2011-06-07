@@ -2,7 +2,6 @@
 02_asn2deb.patch
 03_preferences.patch
 04_asn2wrs_ply.patch
-05_bump_so_versions.patch
 08_wireshark-desktop-menu.patch
 09_idl2wrs.patch
 16_licence_about_location.patch
