@@ -1,0 +1,524 @@
+diff -urN wireshark-1.2.16/epan/diam_dict.c wireshark-1.2.17/epan/diam_dict.c
+--- wireshark-1.2.16/epan/diam_dict.c	2011-04-15 10:46:11.000000000 -0700
++++ wireshark-1.2.17/epan/diam_dict.c	2011-05-31 10:32:21.000000000 -0700
+@@ -1510,9 +1510,6 @@
+ 		yyterminate();
+ 	}
+ 
+-	include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+-
+-
+ 	for (e = ents.next; e; e = e->next) {
+ 		if (strcmp(e->name,DiamDicttext) == 0) {
+ 			DiamDictin = ddict_open(sys_dir,e->file);
+@@ -1523,6 +1520,7 @@
+ 					yyterminate();
+ 				}
+ 			} else {
++				include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+ 				DiamDict_switch_to_buffer(DiamDict_create_buffer(DiamDictin,YY_BUF_SIZE ) );
+ 				BEGIN LOADING;
+ 			}
+@@ -1531,7 +1529,7 @@
+ 	}
+ 
+ 	if (!e) {
+-		fprintf(stderr, "Could not find entity: '%s'", e->name );
++		fprintf(stderr, "Could not find entity: '%s'\n", DiamDicttext );
+ 		yyterminate();
+ 	}
+ 
+@@ -1565,7 +1563,7 @@
+ case YY_STATE_EOF(XMLPI_GETKEY):
+ case YY_STATE_EOF(XMLPI_GETVAL):
+ case YY_STATE_EOF(XMLPI_ENDATTR):
+-#line 299 "diam_dict.l"
++#line 297 "diam_dict.l"
+ {
+ 	if (!DiamDictin) yyterminate();
+ 
+@@ -1586,7 +1584,7 @@
+ case 29:
+ /* rule 29 can match eol */
+ YY_RULE_SETUP
+-#line 317 "diam_dict.l"
++#line 315 "diam_dict.l"
+ {
+ 	*attr_str = strdup(DiamDicttext);
+ 	D(("%s\n",DiamDicttext));
+@@ -1596,7 +1594,7 @@
+ 	YY_BREAK
+ case 30:
+ YY_RULE_SETUP
+-#line 324 "diam_dict.l"
++#line 322 "diam_dict.l"
+ {
+ 	*attr_uint = strtoul(DiamDicttext,NULL,10);
+ 	D(("%s\n",DiamDicttext););
+@@ -1606,12 +1604,12 @@
+ 	YY_BREAK
+ case 31:
+ YY_RULE_SETUP
+-#line 331 "diam_dict.l"
++#line 329 "diam_dict.l"
+ {	yy_pop_state(); }
+ 	YY_BREAK
+ case 32:
+ YY_RULE_SETUP
+-#line 333 "diam_dict.l"
++#line 331 "diam_dict.l"
+ {
+ 	/* XXX: should go?*/
+ 	D(("{%s}",DiamDicttext));
+@@ -1620,7 +1618,7 @@
+ case 33:
+ /* rule 33 can match eol */
+ YY_RULE_SETUP
+-#line 338 "diam_dict.l"
++#line 336 "diam_dict.l"
+ {
+ 	D(("=>%s<=\n",DiamDicttext));
+ 	yy_pop_state();
+@@ -1628,7 +1626,7 @@
+ 	YY_BREAK
+ case 34:
+ YY_RULE_SETUP
+-#line 343 "diam_dict.l"
++#line 341 "diam_dict.l"
+ {
+ 	D(("dictionary_start\n"));
+ 
+@@ -1638,7 +1636,7 @@
+ case 35:
+ /* rule 35 can match eol */
+ YY_RULE_SETUP
+-#line 349 "diam_dict.l"
++#line 347 "diam_dict.l"
+ {
+ 	D(("base_start\n"));
+ 	BEGIN IN_APPL;
+@@ -1646,7 +1644,7 @@
+ 	YY_BREAK
+ case 36:
+ YY_RULE_SETUP
+-#line 354 "diam_dict.l"
++#line 352 "diam_dict.l"
+ {
+ 	D(("applictation_start\n"));
+ 
+@@ -1663,32 +1661,32 @@
+ 	YY_BREAK
+ case 37:
+ YY_RULE_SETUP
+-#line 368 "diam_dict.l"
++#line 366 "diam_dict.l"
+ { ATTR_STR(appl->name); }
+ 	YY_BREAK
+ case 38:
+ YY_RULE_SETUP
+-#line 369 "diam_dict.l"
++#line 367 "diam_dict.l"
+ { ATTR_UINT(appl->code); }
+ 	YY_BREAK
+ case 39:
+ YY_RULE_SETUP
+-#line 371 "diam_dict.l"
++#line 369 "diam_dict.l"
+ BEGIN IN_APPL;
+ 	YY_BREAK
+ case 40:
+ YY_RULE_SETUP
+-#line 372 "diam_dict.l"
++#line 370 "diam_dict.l"
+ BEGIN IN_DICT;
+ 	YY_BREAK
+ case 41:
+ YY_RULE_SETUP
+-#line 374 "diam_dict.l"
++#line 372 "diam_dict.l"
+ ;
+ 	YY_BREAK
+ case 42:
+ YY_RULE_SETUP
+-#line 376 "diam_dict.l"
++#line 374 "diam_dict.l"
+ {
+ 	D(("command_start\n"));
+ 
+@@ -1706,29 +1704,29 @@
+ 	YY_BREAK
+ case 43:
+ YY_RULE_SETUP
+-#line 391 "diam_dict.l"
++#line 389 "diam_dict.l"
+ { ATTR_STR(cmd->name); }
+ 	YY_BREAK
+ case 44:
+ YY_RULE_SETUP
+-#line 392 "diam_dict.l"
++#line 390 "diam_dict.l"
+ { ATTR_STR(cmd->vendor); }
+ 	YY_BREAK
+ case 45:
+ YY_RULE_SETUP
+-#line 393 "diam_dict.l"
++#line 391 "diam_dict.l"
+ { ATTR_UINT(cmd->code); }
+ 	YY_BREAK
+ case 46:
+-#line 395 "diam_dict.l"
++#line 393 "diam_dict.l"
+ case 47:
+ YY_RULE_SETUP
+-#line 395 "diam_dict.l"
++#line 393 "diam_dict.l"
+ { BEGIN IN_APPL; }
+ 	YY_BREAK
+ case 48:
+ YY_RULE_SETUP
+-#line 397 "diam_dict.l"
++#line 395 "diam_dict.l"
+ {
+ 	D(("vendor_start\n"));
+ 
+@@ -1745,29 +1743,29 @@
+ 	YY_BREAK
+ case 49:
+ YY_RULE_SETUP
+-#line 411 "diam_dict.l"
++#line 409 "diam_dict.l"
+ { ATTR_STR(vnd->desc); }
+ 	YY_BREAK
+ case 50:
+ YY_RULE_SETUP
+-#line 412 "diam_dict.l"
++#line 410 "diam_dict.l"
+ { ATTR_STR(vnd->name); }
+ 	YY_BREAK
+ case 51:
+ YY_RULE_SETUP
+-#line 413 "diam_dict.l"
++#line 411 "diam_dict.l"
+ { ATTR_UINT(vnd->code); }
+ 	YY_BREAK
+ case 52:
+-#line 415 "diam_dict.l"
++#line 413 "diam_dict.l"
+ case 53:
+ YY_RULE_SETUP
+-#line 415 "diam_dict.l"
++#line 413 "diam_dict.l"
+ { BEGIN IN_APPL; }
+ 	YY_BREAK
+ case 54:
+ YY_RULE_SETUP
+-#line 417 "diam_dict.l"
++#line 415 "diam_dict.l"
+ {
+ 	D(("typedefn_start\n"));
+ 
+@@ -1784,24 +1782,24 @@
+ 	YY_BREAK
+ case 55:
+ YY_RULE_SETUP
+-#line 431 "diam_dict.l"
++#line 429 "diam_dict.l"
+ { ATTR_STR(typedefn->name); }
+ 	YY_BREAK
+ case 56:
+ YY_RULE_SETUP
+-#line 432 "diam_dict.l"
++#line 430 "diam_dict.l"
+ { ATTR_STR(typedefn->parent); }
+ 	YY_BREAK
+ case 57:
+-#line 434 "diam_dict.l"
++#line 432 "diam_dict.l"
+ case 58:
+ YY_RULE_SETUP
+-#line 434 "diam_dict.l"
++#line 432 "diam_dict.l"
+ { BEGIN IN_APPL; }
+ 	YY_BREAK
+ case 59:
+ YY_RULE_SETUP
+-#line 437 "diam_dict.l"
++#line 435 "diam_dict.l"
+ {
+ 	D(("avp_start\n"));
+ 
+@@ -1823,57 +1821,57 @@
+ 	YY_BREAK
+ case 60:
+ YY_RULE_SETUP
+-#line 456 "diam_dict.l"
++#line 454 "diam_dict.l"
+ { ATTR_STR(avp->name); }
+ 	YY_BREAK
+ case 61:
+ YY_RULE_SETUP
+-#line 457 "diam_dict.l"
++#line 455 "diam_dict.l"
+ { ATTR_STR(avp->description); }
+ 	YY_BREAK
+ case 62:
+ YY_RULE_SETUP
+-#line 458 "diam_dict.l"
++#line 456 "diam_dict.l"
+ { ATTR_STR(avp->vendor); }
+ 	YY_BREAK
+ case 63:
+ YY_RULE_SETUP
+-#line 459 "diam_dict.l"
++#line 457 "diam_dict.l"
+ { ATTR_UINT(avp->code); }
+ 	YY_BREAK
+ case 64:
+ YY_RULE_SETUP
+-#line 460 "diam_dict.l"
++#line 458 "diam_dict.l"
+ { BEGIN IN_AVP;  }
+ 	YY_BREAK
+ case 65:
+ YY_RULE_SETUP
+-#line 461 "diam_dict.l"
++#line 459 "diam_dict.l"
+ { BEGIN IN_APPL; }
+ 	YY_BREAK
+ case 66:
+ YY_RULE_SETUP
+-#line 464 "diam_dict.l"
++#line 462 "diam_dict.l"
+ { avp->type = strdup("Grouped"); };
+ 	YY_BREAK
+ case 67:
+ YY_RULE_SETUP
+-#line 465 "diam_dict.l"
++#line 463 "diam_dict.l"
+ ;
+ 	YY_BREAK
+ case 68:
+ YY_RULE_SETUP
+-#line 467 "diam_dict.l"
++#line 465 "diam_dict.l"
+ { BEGIN TYPE_ATTRS; }
+ 	YY_BREAK
+ case 69:
+ YY_RULE_SETUP
+-#line 468 "diam_dict.l"
++#line 466 "diam_dict.l"
+ { ATTR_STR(avp->type); }
+ 	YY_BREAK
+ case 70:
+ YY_RULE_SETUP
+-#line 470 "diam_dict.l"
++#line 468 "diam_dict.l"
+ {
+ 	D(("gavp_start\n"));
+ 
+@@ -1890,12 +1888,12 @@
+ 	YY_BREAK
+ case 71:
+ YY_RULE_SETUP
+-#line 485 "diam_dict.l"
++#line 483 "diam_dict.l"
+ { ATTR_STR(gavp->name); }
+ 	YY_BREAK
+ case 72:
+ YY_RULE_SETUP
+-#line 488 "diam_dict.l"
++#line 486 "diam_dict.l"
+ {
+ 	D(("enum_start\n"));
+ 
+@@ -1912,61 +1910,61 @@
+ 	YY_BREAK
+ case 73:
+ YY_RULE_SETUP
+-#line 503 "diam_dict.l"
++#line 501 "diam_dict.l"
+ { ATTR_STR(enumitem->name); }
+ 	YY_BREAK
+ case 74:
+ YY_RULE_SETUP
+-#line 504 "diam_dict.l"
++#line 502 "diam_dict.l"
+ { ATTR_UINT(enumitem->code); }
+ 	YY_BREAK
+ case 75:
+ YY_RULE_SETUP
+-#line 506 "diam_dict.l"
++#line 504 "diam_dict.l"
+ { BEGIN IN_AVP; }
+ 	YY_BREAK
+ case 76:
+ YY_RULE_SETUP
+-#line 507 "diam_dict.l"
++#line 505 "diam_dict.l"
+ { BEGIN IN_AVP; }
+ 	YY_BREAK
+ case 77:
+ YY_RULE_SETUP
+-#line 509 "diam_dict.l"
++#line 507 "diam_dict.l"
+ { D(("avp_end")); BEGIN IN_APPL; }
+ 	YY_BREAK
+ case 78:
+-#line 512 "diam_dict.l"
++#line 510 "diam_dict.l"
+ case 79:
+ YY_RULE_SETUP
+-#line 512 "diam_dict.l"
++#line 510 "diam_dict.l"
+ {
+ 	BEGIN IN_DICT;
+ }
+ 	YY_BREAK
+ case 80:
+ YY_RULE_SETUP
+-#line 516 "diam_dict.l"
++#line 514 "diam_dict.l"
+ {
+ 	yyterminate();
+ }
+ 	YY_BREAK
+ case 81:
+ YY_RULE_SETUP
+-#line 520 "diam_dict.l"
++#line 518 "diam_dict.l"
+ IGNORE();
+ 	YY_BREAK
+ case 82:
+ YY_RULE_SETUP
+-#line 522 "diam_dict.l"
++#line 520 "diam_dict.l"
+ ;
+ 	YY_BREAK
+ case 83:
+ YY_RULE_SETUP
+-#line 529 "diam_dict.l"
++#line 527 "diam_dict.l"
+ ECHO;
+ 	YY_BREAK
+-#line 1970 "diam_dict.c"
++#line 1968 "diam_dict.c"
+ 
+ 	case YY_END_OF_BUFFER:
+ 		{
+@@ -3004,7 +3002,7 @@
+ 
+ #define YYTABLES_NAME "yytables"
+ 
+-#line 529 "diam_dict.l"
++#line 527 "diam_dict.l"
+ 
+ 
+ 
+diff -urN wireshark-1.2.16/epan/diam_dict.l wireshark-1.2.17/epan/diam_dict.l
+--- wireshark-1.2.16/epan/diam_dict.l	2011-04-15 10:33:09.000000000 -0700
++++ wireshark-1.2.17/epan/diam_dict.l	2011-05-31 10:18:57.000000000 -0700
+@@ -269,9 +269,6 @@
+ 		yyterminate();
+ 	}
+ 
+-	include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+-
+-
+ 	for (e = ents.next; e; e = e->next) {
+ 		if (strcmp(e->name,yytext) == 0) {
+ 			yyin = ddict_open(sys_dir,e->file);
+@@ -282,6 +279,7 @@
+ 					yyterminate();
+ 				}
+ 			} else {
++				include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+ 				yy_switch_to_buffer(yy_create_buffer( yyin, YY_BUF_SIZE ) );
+ 				BEGIN LOADING;
+ 			}
+@@ -290,7 +288,7 @@
+ 	}
+ 
+ 	if (!e) {
+-		fprintf(stderr, "Could not find entity: '%s'", e->name );
++		fprintf(stderr, "Could not find entity: '%s'\n", yytext );
+ 		yyterminate();
+ 	}
+ 
+diff -urN wireshark-1.2.16/epan/dissectors/packet-dcm.c wireshark-1.2.17/epan/dissectors/packet-dcm.c
+--- wireshark-1.2.16/epan/dissectors/packet-dcm.c	2011-04-15 10:33:05.000000000 -0700
++++ wireshark-1.2.17/epan/dissectors/packet-dcm.c	2011-05-31 10:18:47.000000000 -0700
+@@ -6271,6 +6271,7 @@
+ 
+      /* Process all PDUs in the buffer */
+     while (pdu_start < tlen) {
++	guint32 old_pdu_start;
+ 
+ 	if ((pdu_len+6) > (tlen-offset)) {
+ 
+@@ -6291,7 +6292,13 @@
+ 	offset=dissect_dcm_pdu(tvb, pinfo, tree, pdu_start);
+ 
+ 	/* Next PDU */
++	old_pdu_start = pdu_start;
+ 	pdu_start =  pdu_start + pdu_len + 6;
++	if (pdu_start <= old_pdu_start) {
++	    expert_add_info_format(pinfo, NULL, PI_MALFORMED, PI_ERROR,
++		"Invalid PDU length (%u)", pdu_len);
++	    THROW(ReportedBoundsError);
++	}
+ 
+ 	if (pdu_start < tlen - 6) {
+ 	    /* we got at least 6 bytes of the next PDU still in the buffer */
+diff -urN wireshark-1.2.16/epan/tvbuff.c wireshark-1.2.17/epan/tvbuff.c
+--- wireshark-1.2.16/epan/tvbuff.c	2011-04-15 10:33:09.000000000 -0700
++++ wireshark-1.2.17/epan/tvbuff.c	2011-05-31 10:18:56.000000000 -0700
+@@ -3118,9 +3118,9 @@
+ 			inflateEnd(strm);
+ 			g_free(strm);
+ 			g_free(strmbuf);
+-			g_free(compr);
+ 
+ 			if (uncompr == NULL) {
++				g_free(compr);
+ 				return NULL;
+ 			}
+ 
+diff -urN wireshark-1.2.16/wiretap/snoop.c wireshark-1.2.17/wiretap/snoop.c
+--- wireshark-1.2.16/wiretap/snoop.c	2011-04-15 10:33:14.000000000 -0700
++++ wireshark-1.2.17/wiretap/snoop.c	2011-05-31 10:19:02.000000000 -0700
+@@ -447,6 +447,16 @@
+ 	rec_size = g_ntohl(hdr.rec_len);
+ 	orig_size = g_ntohl(hdr.orig_len);
+ 	packet_size = g_ntohl(hdr.incl_len);
++	if (orig_size > WTAP_MAX_PACKET_SIZE) {
++		/*
++		 * Probably a corrupt capture file; don't blow up trying
++		 * to allocate space for an immensely-large packet.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("snoop: File has %u-byte original length, bigger than maximum of %u",
++		    orig_size, WTAP_MAX_PACKET_SIZE);
++		return FALSE;
++	}
+ 	if (packet_size > WTAP_MAX_PACKET_SIZE) {
+ 		/*
+ 		 * Probably a corrupt capture file; don't blow up trying
+diff -urN wireshark-1.2.16/wiretap/visual.c wireshark-1.2.17/wiretap/visual.c
+--- wireshark-1.2.16/wiretap/visual.c	2011-04-15 10:33:14.000000000 -0700
++++ wireshark-1.2.17/wiretap/visual.c	2011-05-31 10:19:02.000000000 -0700
+@@ -422,6 +422,15 @@
+        break;
+     }
+ 
++    if (wth->phdr.len > WTAP_MAX_PACKET_SIZE) {
++    /* Check if wth->phdr.len is sane, small values of wth.phdr.len before
++       the case loop above can cause integer underflows */ 
++        *err = WTAP_ERR_BAD_RECORD;
++        *err_info = g_strdup_printf("visual: File has %u-byte original packet, bigger than maximum of %u",
++                    wth->phdr.len, WTAP_MAX_PACKET_SIZE);
++        return FALSE;
++    }
++
+     /* Sanity check */
+     if (wth->phdr.len < wth->phdr.caplen)
+     {
