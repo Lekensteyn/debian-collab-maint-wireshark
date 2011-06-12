@@ -3,7 +3,23 @@ wireshark (1.2.11-6+squeeze2) stable-security; urgency=high
   * security fixes from Wireshark 1.2.16:
     - The X.509if dissector could crash. (No assigned CVE number.)
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 16 Apr 2011 22:23:42 +0200
+  * security fixes from Wireshark 1.2.17 (Closes: #630159):
+    - Huzaifa Sidhpurwala of the Red Hat Security Response Team discovered
+      that a corrupted Visual Networks file could crash Wireshark.
+      (CVE-2011-2175)
+    - David Maciejak of Fortinet's FortiGuard Labs discovered that
+      malformed compressed capture data could crash Wireshark.
+      (CVE-2011-2174)
+    - Huzaifa Sidhpurwala of the Red Hat Security Response Team discovered
+      that a corrupted snoop file could crash Wireshark.
+      (CVE-2011-1959)
+    - Huzaifa Sidhpurwala of the Red Hat Security Response Team discovered
+      that a corrupted Diameter dictionary file could crash Wireshark.
+      (CVE-2011-1958)
+    - Large/infinite loop in the DICOM dissector.
+      (CVE-2011-1957)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 12 Jun 2011 21:23:05 +0200
 
 wireshark (1.2.11-6+squeeze1) stable-security; urgency=high
 
