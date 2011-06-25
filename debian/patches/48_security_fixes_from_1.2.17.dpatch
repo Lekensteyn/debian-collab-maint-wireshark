@@ -1,0 +1,93 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Backport security fixes from 1.2.17 Balint Reczey <balint@balintreczey.hu>
+
+@DPATCH@
+diff --git a/epan/diam_dict.l b/epan/diam_dict.l
+index e6478d5..dbd9529 100644
+--- a/epan/diam_dict.l
++++ b/epan/diam_dict.l
+@@ -276,9 +276,6 @@ description_attr description=\042
+ 		yyterminate();
+ 	}
+ 
+-	include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+-
+-
+ 	for (e = ents.next; e; e = e->next) {
+ 		if (strcmp(e->name,yytext) == 0) {
+ 			yyin = ddict_open(sys_dir,e->file);
+@@ -289,6 +286,7 @@ description_attr description=\042
+ 					yyterminate();
+ 				}
+ 			} else {
++				include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+ 				yy_switch_to_buffer(yy_create_buffer( yyin, YY_BUF_SIZE ) );
+ 				BEGIN LOADING;
+ 			}
+@@ -297,7 +295,7 @@ description_attr description=\042
+ 	}
+ 
+ 	if (!e) {
+-		fprintf(stderr, "Could not find entity: '%s'", e->name );
++		fprintf(stderr, "Could not find entity: '%s'\n", yytext );
+ 		yyterminate();
+ 	}
+ 
+diff --git a/epan/tvbuff.c b/epan/tvbuff.c
+index 3d46d5c..ccf287a 100644
+--- a/epan/tvbuff.c
++++ b/epan/tvbuff.c
+@@ -2947,9 +2947,9 @@ tvb_uncompress(tvbuff_t *tvb, int offset, int comprlen)
+ 			inflateEnd(strm);
+ 			g_free(strm);
+ 			g_free(strmbuf);
+-			g_free(compr);
+ 
+ 			if (uncompr == NULL) {
++				g_free(compr);
+ 				return NULL;
+ 			}
+ 
+diff --git a/wiretap/snoop.c b/wiretap/snoop.c
+index 57020a1..419f04e 100644
+--- a/wiretap/snoop.c
++++ b/wiretap/snoop.c
+@@ -447,6 +447,16 @@ static gboolean snoop_read(wtap *wth, int *err, gchar **err_info,
+ 	rec_size = g_ntohl(hdr.rec_len);
+ 	orig_size = g_ntohl(hdr.orig_len);
+ 	packet_size = g_ntohl(hdr.incl_len);
++	if (orig_size > WTAP_MAX_PACKET_SIZE) {
++		/*
++		 * Probably a corrupt capture file; don't blow up trying
++		 * to allocate space for an immensely-large packet.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("snoop: File has %u-byte original length, bigger than maximum of %u",
++		    orig_size, WTAP_MAX_PACKET_SIZE);
++		return FALSE;
++	}
+ 	if (packet_size > WTAP_MAX_PACKET_SIZE) {
+ 		/*
+ 		 * Probably a corrupt capture file; don't blow up trying
+diff --git a/wiretap/visual.c b/wiretap/visual.c
+index e4b449f..e858d05 100644
+--- a/wiretap/visual.c
++++ b/wiretap/visual.c
+@@ -422,6 +422,15 @@ static gboolean visual_read(wtap *wth, int *err, gchar **err_info,
+        break;
+     }
+ 
++    if (wth->phdr.len > WTAP_MAX_PACKET_SIZE) {
++    /* Check if wth->phdr.len is sane, small values of wth.phdr.len before
++       the case loop above can cause integer underflows */ 
++        *err = WTAP_ERR_BAD_RECORD;
++        *err_info = g_strdup_printf("visual: File has %u-byte original packet, bigger than maximum of %u",
++                    wth->phdr.len, WTAP_MAX_PACKET_SIZE);
++        return FALSE;
++    }
++
+     /* Sanity check */
+     if (wth->phdr.len < wth->phdr.caplen)
+     {
