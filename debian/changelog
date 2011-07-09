@@ -5,6 +5,7 @@ wireshark (1.6.0-2) unstable; urgency=low
   * show a hint to read README.Debian when showing the warning about
     running Wireshark as root
     Thanks to Evan Huus for the suggestion.
+  * don't ship .la files for plugins, it keeps lintian happy
 
  -- Balint Reczey <balint@balintreczey.hu>  Wed, 22 Jun 2011 16:59:42 +0200
 
