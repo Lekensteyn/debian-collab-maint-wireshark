@@ -1,0 +1,20 @@
+Description: Note about README.Debian when running wireshark as root.
+Forwarded: not-needed
+Author: Balint Reczey <balint@balintreczey.hu>
+
+diff --git a/gtk/main.c b/gtk/main.c
+index df9a75f..d1e1299 100644
+--- a/gtk/main.c
++++ b/gtk/main.c
+@@ -2677,7 +2677,10 @@ main(int argc, char *argv[])
+     cur_group = get_cur_groupname();
+     priv_warning_dialog = simple_dialog(ESD_TYPE_WARN, ESD_BTN_OK,
+       "Running as user \"%s\" and group \"%s\".\n"
+-      "This could be dangerous.", cur_user, cur_group);
++      "This could be dangerous.\n\n"
++      "If you're running Wireshark this way in order to perform live capture, "
++      "you may want to be aware that there is a better way documented at\n"
++      "/usr/share/doc/wireshark-common/README.Debian", cur_user, cur_group);
+     g_free(cur_user);
+     g_free(cur_group);
+     simple_dialog_check_set(priv_warning_dialog, "Don't show this message again.");
