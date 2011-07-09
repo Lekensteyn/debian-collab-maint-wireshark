@@ -53,7 +53,7 @@ Description: network traffic analyzer - console version
 Package: wireshark-dev
 Architecture: any
 Section: devel
-Depends: ${shlibs:Depends}, ${misc:Depends}, omniidl (>= 4.0.1-2), libpcap0.8-dev, libtool, libglib2.0-dev, ${python:Depends}, python-ply, snacc, autotools-dev, debhelper, cdbs, automake1.9, autoconf, libwireshark-dev, libwiretap-dev
+Depends: ${misc:Depends}, omniidl (>= 4.0.1-2), libpcap0.8-dev, libtool, libglib2.0-dev, ${python:Depends}, python-ply, snacc, autotools-dev, debhelper, cdbs, automake1.9, autoconf, libwireshark-dev, libwiretap-dev
 Replaces: ethereal-dev (<< 1.0.0-3)
 Conflicts: ethereal-dev (<< 1.0.0-3)
 Description: network traffic analyzer - development tools
@@ -113,7 +113,7 @@ Description: network packet dissection utilities library -- shared library
 Package: libwsutil-dev
 Section: libdevel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends} , libwsutil1 (= ${binary:Version})
+Depends: ${misc:Depends} , libwsutil1 (= ${binary:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2)
 Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2)
 Description: network packet dissection utilities library -- shared library
@@ -137,7 +137,7 @@ Description: network packet dissection library -- data files
 
 Package: libwireshark-dev
 Section: libdevel
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwsutil-dev, libwireshark1 (= ${binary:Version})
+Depends: ${misc:Depends}, libwsutil-dev, libwireshark1 (= ${binary:Version})
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
@@ -181,7 +181,7 @@ Description: network packet capture library -- shared library
 
 Package: libwiretap-dev
 Section: libdevel
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwiretap1 (= ${binary:Version})
+Depends: ${misc:Depends}, libwiretap1 (= ${binary:Version})
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
