@@ -13,8 +13,6 @@ DB2MAN=/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl
 DEB_HOST_ARCH_CPU       ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU)
 DEB_BUILD_ARCH_CPU      ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH_CPU)
 
-PYTHON_VERSION=python2.4
-
 CFLAGS=-g -O2
 
 # Enable IEEE-conformant floating point math on alphas (not the default)
@@ -65,7 +63,7 @@ clean:
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	# Add here commands to install the files into debian/tmp
@@ -78,7 +76,7 @@ install: build
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/pixmaps/
 	cp image/hi48-app-wireshark.png $(CURDIR)/debian/tmp/usr/share/pixmaps/
 	cp image/wsicon32.xpm $(CURDIR)/debian/tmp/usr/share/pixmaps/
-	mkdir -p $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/pyshared
 	install -m 755 $(CURDIR)/idl2deb $(CURDIR)/debian/tmp/usr/bin/
 	install -m 755 $(CURDIR)/asn2deb $(CURDIR)/debian/tmp/usr/bin/
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
@@ -87,8 +85,8 @@ install: build
 	ln -s /etc/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/usr/share/wireshark/init.lua
 	install -m 644 $(CURDIR)/tools/wireshark_be.py $(CURDIR)/tools/wireshark_gen.py \
-		$(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
-	install	-m 755 $(CURDIR)/tools/asn2wrs.py $(CURDIR)/debian/tmp/usr/lib/$(PYTHON_VERSION)/site-packages/
+		$(CURDIR)/debian/tmp/usr/share/pyshared
+	install	-m 755 $(CURDIR)/tools/asn2wrs.py $(CURDIR)/debian/tmp/usr/share/pyshared
 	mkdir -p $(CURDIR)/debian/tmp/usr/include/wireshark/
 	for F in `cat debian/libwireshark-dev.header-files debian/libwsutil-dev.header-files debian/libwiretap-dev.header-files`; do \
 		cp --parents $$F $(CURDIR)/debian/tmp/usr/include/wireshark; \
@@ -99,7 +97,7 @@ install: build
 	dh_installman
 
 	dh_movefiles
-	dh_pysupport
+	dh_python2
 	dh_installdocs
 	dh_installmenu
 	dh_installchangelogs NEWS
