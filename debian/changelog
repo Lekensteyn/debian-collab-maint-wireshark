@@ -1,3 +1,10 @@
+wireshark (1.6.0-3) UNRELEASED; urgency=low
+
+  * use linux-any wildcard for architecture-specific dependencies
+    (Closes: #634671)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 19 Jul 2011 14:52:12 +0200
+
 wireshark (1.6.0-2) unstable; urgency=low
 
   * [Debconf translation updates]

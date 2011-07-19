@@ -5,7 +5,7 @@ Maintainer: Balint Reczey <balint@balintreczey.hu>
 Uploaders: Joost Yervante Damad <andete@debian.org>
 DM-Upload-Allowed: yes
 Standards-Version: 3.9.2
-Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, debhelper (>= 6), po-debconf, libtool, python (>= 2.6.6-3~), python-ply, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libxml2-utils, libpcre3-dev, libcap2-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386] | libcap-dev (>= 2.17) [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386], bison, libgnutls-dev, portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, hardening-wrapper
+Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, debhelper (>= 6), po-debconf, libtool, python (>= 2.6.6-3~), python-ply, automake1.9, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libxml2-utils, libpcre3-dev, libcap2-dev [linux-any] | libcap-dev (>= 2.17) [linux-any], bison, libgnutls-dev, portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, hardening-wrapper
 Build-Conflicts: libsnmp4.2-dev, libsnmp-dev
 Vcs-Svn: svn://svn.debian.org/svn/collab-maint/ext-maint/wireshark/trunk
 Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/ext-maint/wireshark/trunk/
@@ -13,7 +13,7 @@ Homepage: http://www.wireshark.org/
 
 Package: wireshark-common
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark1 (>= ${binary:Version}), libwiretap1 (>= ${binary:Version}), debconf, libcap2-bin [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386]
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark1 (>= ${binary:Version}), libwiretap1 (>= ${binary:Version}), debconf, libcap2-bin [linux-any]
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
 Replaces: ethereal-common (<< 1.0.0-3)
 Conflicts: ethereal-common (<< 1.0.0-3)
