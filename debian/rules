@@ -33,6 +33,9 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 
+	# use release version only
+	echo "" > svnversion.h
+
 	libtoolize --force --copy
 	-mkdir aclocal-missing
 	./autogen.sh
