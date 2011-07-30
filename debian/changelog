@@ -1,5 +1,13 @@
-wireshark (1.6.0-3) UNRELEASED; urgency=low
+wireshark (1.6.1-1) unstable; urgency=high
 
+  * New upstream release 1.6.1
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.6.1.html
+    - security fixes
+       - The Lucent/Ascend file parser was susceptible to an infinite loop
+         (CVE-2011-2597)
+       - The ANSI MAP dissector was susceptible to an infinite loop
+         (No assigned CVE number.)
   * use linux-any wildcard for architecture-specific dependencies
     (Closes: #634671)
 
