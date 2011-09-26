@@ -1,4 +1,4 @@
-wireshark (1.2.11-6+squeeze3) stable-security; urgency=low
+wireshark (1.2.11-6+squeeze3) stable-security; urgency=high
 
   * security fixes from Wireshark 1.4.9:
     - Wireshark could run arbitrary Lua scripts. (CVE-2011-3360)
