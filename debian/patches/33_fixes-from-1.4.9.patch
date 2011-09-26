@@ -1,0 +1,12 @@
+diff -urN wireshark-1.4.8/epan/wslua/template-init.lua wireshark-1.4.9/epan/wslua/template-init.lua
+--- wireshark-1.4.8/epan/wslua/template-init.lua        2011-07-18 12:12:13.000000000 -0700
++++ wireshark-1.4.9/epan/wslua/template-init.lua        2011-09-07 17:11:05.000000000 -0700
+@@ -73,5 +73,5 @@
+ DATA_DIR = datafile_path()
+ USER_DIR = persconffile_path()
+
+-dofile("console.lua")
+---dofile("dtd_gen.lua")
++dofile(DATA_DIR.."console.lua")
++--dofile(DATA_DIR.."dtd_gen.lua")
+
