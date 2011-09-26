@@ -1,9 +1,20 @@
-wireshark (1.6.1-2) UNRELEASED; urgency=low
+wireshark (1.6.2-1) unstable; urgency=high
 
-  * use only release version everywhere instead of showing subversion
-    revision information, too (Closes: #635116)
+  * New upstream release 1.6.2
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.6.2.html
+    - security fixes
+      - A large loop in the OpenSafety dissector could cause a crash.
+        (CVE-2011-3484)
+      - A malformed IKE packet could consume excessive resources.
+        (CVE-2011-3266)
+      - A malformed capture file could result in an invalid root tvbuff and
+        cause a crash. (CVE-2011-3483 )
+      - Wireshark could run arbitrary Lua scripts. (CVE-2011-3360)
+      - The CSN.1 dissector could crash. (CVE-2011-3482)
+    - don't show subversion revision in window title (Closes: #635116)
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 30 Jul 2011 21:21:30 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 18 Sep 2011 04:10:15 -1000
 
 wireshark (1.6.1-1) unstable; urgency=high
 
