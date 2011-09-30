@@ -1,3 +1,10 @@
+wireshark (1.0.2-3+lenny15) oldstable-security; urgency=high
+
+  * security fixes from Wireshark 1.4.9:
+    - Wireshark could run arbitrary Lua scripts. (CVE-2011-3360) 
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 30 Sep 2011 22:07:59 +0200
+
 wireshark (1.0.2-3+lenny14) oldstable-security; urgency=high
 
   * security fixes from Wireshark 1.2.16:
