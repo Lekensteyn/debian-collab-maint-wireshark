@@ -1,9 +1,14 @@
-wireshark (1.2.11-6+squeeze3) stable-security; urgency=high
+wireshark (1.2.11-6+squeeze4) stable-security; urgency=low
 
-  * security fixes from Wireshark 1.4.9:
-    - Wireshark could run arbitrary Lua scripts. (CVE-2011-3360)
+  * Rebuild to bypass dak weirdness
 
- -- Balint Reczey <balint@balintreczey.hu>  Mon, 26 Sep 2011 18:20:26 +0200
+ -- Moritz Muehlenhoff <jmm@pisco>  Sun, 16 Oct 2011 19:27:20 +0000
+
+wireshark (1.2.11-6+squeeze3) stable-security; urgency=low
+
+  * CVE-2011-3360, update by Balint
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Sun, 16 Oct 2011 19:04:35 +0000
 
 wireshark (1.2.11-6+squeeze2) stable-security; urgency=high
 
