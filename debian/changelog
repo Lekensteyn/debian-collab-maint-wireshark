@@ -1,3 +1,10 @@
+wireshark (1.6.2-2) unstable; urgency=low
+
+  * [Debconf translation updates]
+    - Slovak (Slavko). (Closes: #647082)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 30 Oct 2011 13:15:43 +0100
+
 wireshark (1.6.2-1) unstable; urgency=high
 
   * New upstream release 1.6.2
