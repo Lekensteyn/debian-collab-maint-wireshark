@@ -1,5 +1,6 @@
 wireshark (1.6.2-2) unstable; urgency=low
 
+  * add build-arch and build-indep targets to debian/rules
   * [Debconf translation updates]
     - Slovak (Slavko). (Closes: #647082)
 

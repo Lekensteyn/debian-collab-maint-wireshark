@@ -43,7 +43,9 @@ configure-stamp:
 
 	touch configure-stamp
 
-build: build-stamp idl2deb.1 asn2deb.1
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp idl2deb.1 asn2deb.1
 build-stamp: configure-stamp
 	$(MAKE)
 	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
@@ -131,4 +133,4 @@ source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
 binary: binary-indep binary-arch
-.PHONY: build clean install check binary-indep binary-arch binary
+.PHONY: build clean install check binary-indep binary-arch binary build-arch build-indep
