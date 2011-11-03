@@ -1,10 +1,22 @@
-wireshark (1.6.2-2) unstable; urgency=low
+wireshark (1.6.3-1) unstable; urgency=high
 
+  * New upstream release 1.6.3
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.6.3.html
+    - security fixes:
+      - The CSN.1 dissector could crash
+        (No assigned CVE number.)
+      - Huzaifa Sidhpurwala of Red Hat Security Response Team discovered
+        that the Infiniband dissector could dereference a NULL pointer.
+        (No assigned CVE number.)
+      - Huzaifa Sidhpurwala of Red Hat Security Response Team discovered a
+        buffer overflow in the ERF file reader. (No assigned CVE number.)
+    -  bump library versions
   * add build-arch and build-indep targets to debian/rules
   * [Debconf translation updates]
     - Slovak (Slavko). (Closes: #647082)
 
- -- Balint Reczey <balint@balintreczey.hu>  Sun, 30 Oct 2011 13:15:43 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 01 Nov 2011 21:04:31 +0100
 
 wireshark (1.6.2-1) unstable; urgency=high
 

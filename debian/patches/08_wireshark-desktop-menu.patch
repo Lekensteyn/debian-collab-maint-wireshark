@@ -13,7 +13,7 @@ Index: b/wireshark.desktop
 -Icon=wireshark.png
 +Icon=hi48-app-wireshark.png
  TryExec=wireshark
- Exec=wireshark
+ Exec=wireshark %f
  Terminal=false
  MimeType=application/vnd.tcpdump.pcap;
  # Categorie entry according to version 1.0 of
