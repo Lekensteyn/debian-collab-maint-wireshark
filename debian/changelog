@@ -1,3 +1,11 @@
+wireshark (1.0.2-3+lenny16) oldstable-security; urgency=high
+
+  * security fixes from Wireshark 1.4.10:
+    - Huzaifa Sidhpurwala of Red Hat Security Response Team discovered a
+      buffer overflow in the ERF file reader. (CVE-2011-4102)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 19 Nov 2011 01:17:15 +0100
+
 wireshark (1.0.2-3+lenny15) oldstable-security; urgency=high
 
   * security fixes from Wireshark 1.4.9:
