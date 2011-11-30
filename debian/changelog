@@ -1,3 +1,13 @@
+wireshark (1.6.4-1) unstable; urgency=low
+
+  * New upstream release 1.6.4
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.6.4.html
+  * remove Joost Yervante Damad from uploaders as he has resigned
+    Thank you Joost for taking care of Wireshark packages for many years!
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 19 Nov 2011 11:21:58 +0100
+
 wireshark (1.6.3-1) unstable; urgency=high
 
   * New upstream release 1.6.3
