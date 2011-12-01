@@ -2,7 +2,7 @@ wireshark (1.2.11-6+squeeze6) stable-security; urgency=high
 
   * security fix from Wireshark 1.4.9:
     - A malformed capture file could result in an invalid root tvbuff and
-      cause a crash. (MSVR‐11‐0076)
+      cause a crash. (MSVR-11-0076)
 
  -- Balint Reczey <balint@balintreczey.hu>  Thu, 01 Dec 2011 18:36:19 +0100
 
