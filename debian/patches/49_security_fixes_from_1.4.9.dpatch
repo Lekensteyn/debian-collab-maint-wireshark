@@ -14,3 +14,13 @@
 ---dofile("dtd_gen.lua")
 +dofile(DATA_DIR.."console.lua")
 +--dofile(DATA_DIR.."dtd_gen.lua")
+--- ./epan/packet.c.orig	2011-12-01 19:20:13.000000000 +0100
++++ ./epan/packet.c	2011-12-01 19:21:01.000000000 +0100
+@@ -318,6 +318,7 @@
+ 	edt->pi.sccp_info = NULL;
+ 	edt->pi.clnp_srcref = 0;
+ 	edt->pi.clnp_dstref = 0;
++	edt->tvb = NULL;
+ 	
+ 	TRY {
+ 		edt->tvb = tvb_new_real_data(pd, fd->cap_len, fd->pkt_len);
