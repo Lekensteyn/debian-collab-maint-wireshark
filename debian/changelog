@@ -1,6 +1,8 @@
 wireshark (1.6.4-2) unstable; urgency=low
 
   * build architecture dependent and independent packages separately
+  * [Debconf translation updates]
+    - Indonesian (Mahyuddin Susanto). (Closes: #653938)
 
  -- Balint Reczey <balint@balintreczey.hu>  Sun, 25 Dec 2011 00:28:29 +0100
 
