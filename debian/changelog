@@ -1,3 +1,11 @@
+wireshark (1.6.5-2) UNRELEASED; urgency=low
+
+  * clarify when set-user-id bit is set for dumpcap in README.Debian
+    (Closes: #649350)
+  * add notes about capturing USB frames to README.Debian
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 15 Jan 2012 11:16:10 -0800
+
 wireshark (1.6.5-1) unstable; urgency=high
 
   * New upstream release 1.6.5
