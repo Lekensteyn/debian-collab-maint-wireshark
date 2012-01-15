@@ -23,8 +23,9 @@ I. Capturing packets with Wireshark/Tshark
       system administrator has to add them manually.
 
       The additional privileges are provided using the Linux Capabilities
-      system where possible or using the set-user-id bit, where the Linux 
-      Capabilities are not present (Debian GNU/kFreeBSD, Debian GNU/Hurd).
+      system where it is available and resort to setting the set-user-id bit 
+      of the dumpcap binary as a fall-back, where the Linux Capabilities system
+      is not present (Debian GNU/kFreeBSD, Debian GNU/Hurd).
 
       Linux kernels provided by Debian support Linux Capabilities, but custom
       built kernels may lack this support. If the support for Linux
@@ -36,7 +37,11 @@ I. Capturing packets with Wireshark/Tshark
       will not be able to capture packets while running kernels not supporting
       Linux Capabilities.
 
-      
+      Note that capturing USB frames is not enabled for non-root users by using
+      Linux Capabilities. You have to capture the frames using the method
+      described in I./a., configure using the set-user-id permanently using
+      dpkg-statoverride or running Wireshark as root.
+
    The installation method can be changed any time by running:
    dpkg-reconfigure wireshark-common
 

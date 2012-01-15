@@ -11,6 +11,9 @@ if [ -e "$PROGRAM" ]; then
              ! /usr/sbin/dpkg-statoverride --list $PROGRAM >/dev/null; then
              chown root:root $PROGRAM
              chmod u=rwx,go=rx $PROGRAM
+	 else
+	     echo "Preserving owner and mode set by dpkg-statoverride:"
+             /usr/sbin/dpkg-statoverride --list $PROGRAM
          fi
     else
         if [ -x /usr/sbin/dpkg-statoverride ] && \
@@ -27,6 +30,10 @@ if [ -e "$PROGRAM" ]; then
             else
                 chmod u=rwxs,g=rx,o=r $PROGRAM
             fi
+        else
+	     echo "Preserving owner and mode set by dpkg-statoverride:"
+             /usr/sbin/dpkg-statoverride --list $PROGRAM
+  
         fi
     fi
 fi

@@ -109,7 +109,13 @@ install: build
 
 # Build architecture-independent files here.
 binary-indep: install
-# We have nothing to do by default.
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdebconf -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
 
 check: install
 	# check all necessary headers are included
@@ -118,16 +124,16 @@ check: install
 # Build architecture-dependent files here.
 binary-arch: install check
 	dh_strip --dbg-package=wireshark-dbg
-	dh_compress
-	dh_fixperms
+	dh_compress -a
+	dh_fixperms -a
 	dh_makeshlibs
 	rm -f debian/wireshark-common.shlibs
-	dh_installdebconf
-	dh_installdeb
+	dh_installdebconf -a
+	dh_installdeb -a
 	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
 
 source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
