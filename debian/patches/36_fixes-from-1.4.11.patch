@@ -1,0 +1,575 @@
+diff --git a/epan/ftypes/ftype-tvbuff.c b/epan/ftypes/ftype-tvbuff.c
+index 8494d3d..a69da90 100644
+--- a/epan/ftypes/ftype-tvbuff.c
++++ b/epan/ftypes/ftype-tvbuff.c
+@@ -189,18 +189,18 @@ value_get(fvalue_t *fv)
+ static guint
+ len(fvalue_t *fv)
+ {
++	guint length = 0;
++
+ 	TRY {
+ 	if (fv->value.tvb)
+-		return tvb_length(fv->value.tvb);
+-	else
+-		return 0;
+-}
++			length = tvb_length(fv->value.tvb);
++	}
+ 	CATCH_ALL {
+ 		/* nothing */
+ 	}
+ 	ENDTRY;
+ 
+-	return 0;
++	return length;
+ }
+ 
+ static void
+@@ -226,22 +226,20 @@ cmp_eq(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++	gboolean	eq = FALSE;
+ 
+ 	TRY {
+ 	guint		a_len = tvb_length(a);
+ 
+-	if (a_len != tvb_length(b)) {
+-		return FALSE;
++		if (a_len == tvb_length(b))
++			eq = (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) == 0);
+ 	}
+-
+-	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) == 0);
+-}
+ 	CATCH_ALL {
+ 		/* nothing */
+ 	}
+ 	ENDTRY;
+ 
+-	return FALSE;
++	return eq;
+ }
+ 
+ static gboolean
+@@ -249,22 +247,21 @@ cmp_ne(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++	gboolean	ne = TRUE;
+ 
+ 	TRY {
+ 	guint		a_len = tvb_length(a);
+ 
+-	if (a_len != tvb_length(b)) {
+-		return TRUE;
++		if (a_len == tvb_length(b)) {
++			ne = (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) != 0);
++	}
+ 	}
+-
+-	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) != 0);
+-}
+ 	CATCH_ALL {
+ 		/* nothing */
+ 	}
+ 	ENDTRY;
+ 
+-	return FALSE;
++	return ne;
+ }
+ 
+ static gboolean
+@@ -272,27 +269,24 @@ cmp_gt(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++	gboolean	gt = FALSE;
+ 
+ 	TRY {
+ 	guint		a_len = tvb_length(a);
+ 	guint		b_len = tvb_length(b);
+ 
+ 	if (a_len > b_len) {
+-		return TRUE;
++			gt = TRUE;
++		} else if (a_len == b_len) {
++			gt = (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) > 0);
+ 	}
+-
+-	if (a_len < b_len) {
+-		return FALSE;
+ 	}
+-
+-	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) > 0);
+-}
+ 	CATCH_ALL {
+ 		/* nothing */
+ 	}
+ 	ENDTRY;
+ 
+-	return FALSE;
++	return gt;
+ }
+ 
+ static gboolean
+@@ -300,27 +294,24 @@ cmp_ge(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++	gboolean	ge = FALSE;
+ 	
+ 	TRY {
+ 	guint		a_len = tvb_length(a);
+ 	guint		b_len = tvb_length(b);
+ 
+ 	if (a_len > b_len) {
+-		return TRUE;
++			ge = TRUE;
++		} else if (a_len == b_len) {
++			ge = (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) >= 0);
+ 	}
+-
+-	if (a_len < b_len) {
+-		return FALSE;
+ 	}
+-
+-	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) >= 0);
+-}
+ 	CATCH_ALL {
+ 		/* nothing */
+ 	}
+ 	ENDTRY;
+ 
+-	return FALSE;
++	return ge;
+ }
+ 
+ static gboolean
+@@ -328,27 +319,24 @@ cmp_lt(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++	gboolean	lt = FALSE;
+ 
+ 	TRY {
+ 	guint		a_len = tvb_length(a);
+ 	guint		b_len = tvb_length(b);
+ 
+ 	if (a_len < b_len) {
+-		return TRUE;
++			lt = TRUE;
++		} else if (a_len == b_len) {
++			lt = (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) < 0);
+ 	}
+-
+-	if (a_len > b_len) {
+-		return FALSE;
+ 	}
+-
+-	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) < 0);
+-}
+ 	CATCH_ALL {
+ 		/* nothing */
+ 	}
+ 	ENDTRY;
+ 
+-	return FALSE;
++	return lt;
+ }
+ 
+ static gboolean
+@@ -356,46 +344,42 @@ cmp_le(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
+ 	tvbuff_t	*a = fv_a->value.tvb;
+ 	tvbuff_t	*b = fv_b->value.tvb;
++	gboolean	le = FALSE;
+ 
+ 	TRY {
+ 	guint		a_len = tvb_length(a);
+ 	guint		b_len = tvb_length(b);
+ 
+ 	if (a_len < b_len) {
+-		return TRUE;
++			le = TRUE;
++		} else if (a_len == b_len) {
++			le = (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) <= 0);
+ 	}
+-
+-	if (a_len > b_len) {
+-		return FALSE;
+ 	}
+-
+-	return (memcmp(tvb_get_ptr(a, 0, a_len), tvb_get_ptr(b, 0, a_len), a_len) <= 0);
+-}
+ 	CATCH_ALL {
+ 		/* nothing */
+ 	}
+ 	ENDTRY;
+ 
+-	return FALSE;
++	return le;
+ }
+ 
+ static gboolean
+ cmp_contains(fvalue_t *fv_a, fvalue_t *fv_b)
+ {
++	gboolean	contains = FALSE;
++
+ 	TRY {
+ 	if (tvb_find_tvb(fv_a->value.tvb, fv_b->value.tvb, 0) > -1) {
+-		return TRUE;
++			contains = TRUE;
+ 	}
+-	else {
+-		return FALSE;
+ 	}
+-}
+ 	CATCH_ALL {
+ 		/* nothing */
+ 	}
+ 	ENDTRY;
+ 
+-	return FALSE;
++	return contains;
+ }
+ 
+ #ifdef HAVE_LIBPCRE
+diff --git a/epan/packet.c b/epan/packet.c
+index 72ca341..b4e5bd9 100644
+--- a/epan/packet.c
++++ b/epan/packet.c
+@@ -352,7 +352,31 @@ dissect_packet(epan_dissect_t *edt, union wtap_pseudo_header *pseudo_header,
+ 	EP_CHECK_CANARY(("before dissecting frame %d",fd->num));
+     
+ 	TRY {
+-		edt->tvb = tvb_new_real_data(pd, fd->cap_len, fd->pkt_len);
++		/*
++		 * XXX - currently, the length arguments to
++		 * tvb_new_real_data() are signed, but the captured
++		 * and reported length values are unsigned; this means
++		 * that length values > 2^31 - 1 will appear as
++		 * negative lengths in tvb_new_real_data().
++		 *
++		 * Captured length values that large will already
++		 * have been filtered out by the Wiretap modules
++		 * (the file will be reported as corrupted), to
++		 * avoid trying to allocate large chunks of data.
++		 *
++		 * Reported length values will not have been
++		 * filtered out, and should not be filtered out,
++		 * as those lengths are not necessarily invalid.
++		 *
++		 * For now, we clip the reported length at G_MAXINT,
++		 * so that tvb_new_real_data() doesn't fail.  It
++		 * would throw an exception, which we'd catch, but
++		 * that would mean we would have no tvbuffs
++		 * associated with edt, which would upset much of
++		 * the rest of the application.
++		 */
++		edt->tvb = tvb_new_real_data(pd, fd->cap_len,
++		    fd->pkt_len > G_MAXINT ? G_MAXINT : fd->pkt_len);
+ 		/* Add this tvbuffer into the data_src list */
+ 		packet_add_new_data_source(&edt->pi, edt->tree, edt->tvb, "Frame");
+ 
+diff --git a/epan/to_str.c b/epan/to_str.c
+index f92afe5..13b305b 100644
+--- a/epan/to_str.c
++++ b/epan/to_str.c
+@@ -64,6 +64,7 @@
+ #include <stdio.h>
+ #include <time.h>
+ #include "emem.h"
++#include "proto.h"
+ 
+ /*
+  * If a user _does_ pass in a too-small buffer, this is probably
+@@ -96,6 +97,9 @@ bytestring_to_str(const guint8 *ad, guint32 len, char punct) {
+   static const gchar hex_digits[16] =
+       { '0', '1', '2', '3', '4', '5', '6', '7',
+         '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
++  if (!ad) {
++    REPORT_DISSECTOR_BUG("Null pointer passed to bytestring_to_str()");
++  }
+ 
+   if (punct)
+     buflen=len*3;
+diff --git a/wiretap/5views.c b/wiretap/5views.c
+index f1fb49b..57a1a9a 100644
+--- a/wiretap/5views.c
++++ b/wiretap/5views.c
+@@ -240,6 +240,16 @@ _5views_read(wtap *wth, int *err, gchar **err_info _U_, gint64 *data_offset)
+ 
+ 	packet_size = TimeStamped_Header.RecSize;
+ 	orig_size = TimeStamped_Header.RecSize;
++	if (packet_size > WTAP_MAX_PACKET_SIZE) {
++		/*
++		 * Probably a corrupt capture file; don't blow up trying
++		 * to allocate space for an immensely-large packet.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("5views: File has %u-byte packet, bigger than maximum of %u",
++		    packet_size, WTAP_MAX_PACKET_SIZE);
++		return FALSE;
++	}
+ 
+ 	*data_offset = wth->data_offset;
+ 
+diff --git a/wiretap/airopeek9.c b/wiretap/airopeek9.c
+index 2f7eeb3..6db9ab0 100644
+--- a/wiretap/airopeek9.c
++++ b/wiretap/airopeek9.c
+@@ -497,10 +497,23 @@ static gboolean airopeekv9_read(wtap *wth, int *err, gchar **err_info,
+ 	return FALSE;
+     wth->data_offset += hdrlen;
+ 
+-    /* force sliceLength to be the actual length of the packet */
++    /*
++     * If sliceLength is 0, force it to be the actual length of the packet.
++     */
+     if (hdr_info.sliceLength == 0)
+ 	hdr_info.sliceLength = hdr_info.length;
+ 
++    if (hdr_info.sliceLength > WTAP_MAX_PACKET_SIZE) {
++	/*
++	 * Probably a corrupt capture file; don't blow up trying
++	 * to allocate space for an immensely-large packet.
++	 */
++	*err = WTAP_ERR_BAD_RECORD;
++	*err_info = g_strdup_printf("airopeek9: File has %u-byte packet, bigger than maximum of %u",
++	    hdr_info.sliceLength, WTAP_MAX_PACKET_SIZE);
++	return FALSE;
++    }
++
+     /* fill in packet header length values before slicelength may be
+        adjusted */
+     wth->phdr.len    = hdr_info.length;
+diff --git a/wiretap/i4btrace.c b/wiretap/i4btrace.c
+index dceeb03..0a22296 100644
+--- a/wiretap/i4btrace.c
++++ b/wiretap/i4btrace.c
+@@ -139,6 +139,16 @@ static gboolean i4btrace_read(wtap *wth, int *err, gchar **err_info,
+ 		return FALSE;
+ 	}
+ 	length = hdr.length - (guint32)sizeof(hdr);
++	if (length > WTAP_MAX_PACKET_SIZE) {
++		/*
++		 * Probably a corrupt capture file; don't blow up trying
++		 * to allocate space for an immensely-large packet.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("i4btrace: File has %u-byte packet, bigger than maximum of %u",
++		    length, WTAP_MAX_PACKET_SIZE);
++		return FALSE;
++	}
+ 
+ 	wth->phdr.len = length;
+ 	wth->phdr.caplen = length;
+diff --git a/wiretap/iptrace.c b/wiretap/iptrace.c
+index adc69ad..afc79fd 100644
+--- a/wiretap/iptrace.c
++++ b/wiretap/iptrace.c
+@@ -152,7 +152,18 @@ static gboolean iptrace_read_1_0(wtap *wth, int *err, gchar **err_info _U_,
+ 	wth->phdr.pkt_encap = wtap_encap_ift(pkt_hdr.if_type);
+ 
+ 	/* Read the packet data */
+-	packet_size = pntohl(&header[0]) - IPTRACE_1_0_PDATA_SIZE;
++	packet_size = pntohl(&header[0]);
++	if (packet_size < IPTRACE_1_0_PDATA_SIZE) {
++		/*
++		 * Uh-oh, the record isn't big enough to even have a
++		 * packet meta-data header.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("iptrace: file has a %u-byte record, too small to have even a packet meta-data header",
++		    packet_size);
++		return FALSE;
++	}
++	packet_size -= IPTRACE_1_0_PDATA_SIZE;
+ 
+ 	/*
+ 	 * AIX appears to put 3 bytes of padding in front of FDDI
+@@ -163,6 +174,16 @@ static gboolean iptrace_read_1_0(wtap *wth, int *err, gchar **err_info _U_,
+ 		 * The packet size is really a record size and includes
+ 		 * the padding.
+ 		 */
++		if (packet_size < 3) {
++			/*
++			 * Uh-oh, the record isn't big enough to even have
++			 * the padding.
++			 */
++			*err = WTAP_ERR_BAD_RECORD;
++			*err_info = g_strdup_printf("iptrace: file has a %u-byte record, too small to have even a packet meta-data header",
++			    packet_size + IPTRACE_1_0_PDATA_SIZE);
++			return FALSE;
++		}
+ 		packet_size -= 3;
+ 		wth->data_offset += 3;
+ 
+@@ -172,6 +193,16 @@ static gboolean iptrace_read_1_0(wtap *wth, int *err, gchar **err_info _U_,
+ 		if (!iptrace_read_rec_data(wth->fh, fddi_padding, 3, err))
+ 			return FALSE;	/* Read error */
+ 	}
++	if (packet_size > WTAP_MAX_PACKET_SIZE) {
++		/*
++		 * Probably a corrupt capture file; don't blow up trying
++		 * to allocate space for an immensely-large packet.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("iptrace: File has %u-byte packet, bigger than maximum of %u",
++		    packet_size, WTAP_MAX_PACKET_SIZE);
++		return FALSE;
++	}
+ 
+ 	buffer_assure_space( wth->frame_buffer, packet_size );
+ 	data_ptr = buffer_start_ptr( wth->frame_buffer );
+@@ -331,7 +362,18 @@ static gboolean iptrace_read_2_0(wtap *wth, int *err, gchar **err_info _U_,
+ 	wth->phdr.pkt_encap = wtap_encap_ift(pkt_hdr.if_type);
+ 
+ 	/* Read the packet data */
+-	packet_size = pntohl(&header[0]) - IPTRACE_2_0_PDATA_SIZE;
++	packet_size = pntohl(&header[0]);
++	if (packet_size < IPTRACE_2_0_PDATA_SIZE) {
++		/*
++		 * Uh-oh, the record isn't big enough to even have a
++		 * packet meta-data header.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("iptrace: file has a %u-byte record, too small to have even a packet meta-data header",
++		    packet_size);
++		return FALSE;
++	}
++	packet_size -= IPTRACE_2_0_PDATA_SIZE;
+ 
+ 	/*
+ 	 * AIX appears to put 3 bytes of padding in front of FDDI
+@@ -342,6 +384,16 @@ static gboolean iptrace_read_2_0(wtap *wth, int *err, gchar **err_info _U_,
+ 		 * The packet size is really a record size and includes
+ 		 * the padding.
+ 		 */
++		if (packet_size < 3) {
++			/*
++			 * Uh-oh, the record isn't big enough to even have
++			 * the padding.
++			 */
++			*err = WTAP_ERR_BAD_RECORD;
++			*err_info = g_strdup_printf("iptrace: file has a %u-byte record, too small to have even a packet meta-data header",
++			    packet_size + IPTRACE_2_0_PDATA_SIZE);
++			return FALSE;
++		}
+ 		packet_size -= 3;
+ 		wth->data_offset += 3;
+ 
+@@ -351,6 +403,16 @@ static gboolean iptrace_read_2_0(wtap *wth, int *err, gchar **err_info _U_,
+ 		if (!iptrace_read_rec_data(wth->fh, fddi_padding, 3, err))
+ 			return FALSE;	/* Read error */
+ 	}
++	if (packet_size > WTAP_MAX_PACKET_SIZE) {
++		/*
++		 * Probably a corrupt capture file; don't blow up trying
++		 * to allocate space for an immensely-large packet.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("iptrace: File has %u-byte packet, bigger than maximum of %u",
++		    packet_size, WTAP_MAX_PACKET_SIZE);
++		return FALSE;
++	}
+ 
+ 	buffer_assure_space( wth->frame_buffer, packet_size );
+ 	data_ptr = buffer_start_ptr( wth->frame_buffer );
+diff --git a/wiretap/lanalyzer.c b/wiretap/lanalyzer.c
+index 6cca77d..cb60a61 100644
+--- a/wiretap/lanalyzer.c
++++ b/wiretap/lanalyzer.c
+@@ -319,6 +319,16 @@ static gboolean lanalyzer_read(wtap *wth, int *err, gchar **err_info,
+ 		return FALSE;
+ 	}
+ 	else {
++		if (record_length < DESCRIPTOR_LEN) {
++			/*
++			 * Uh-oh, the record isn't big enough to even have a
++			 * descriptor.
++			 */
++			*err = WTAP_ERR_BAD_RECORD;
++			*err_info = g_strdup_printf("lanalyzer: file has a %u-byte record, too small to have even a packet descriptor",
++			    record_length);
++			return FALSE;
++		}
+ 		packet_size = record_length - DESCRIPTOR_LEN;
+ 	}
+ 
+diff --git a/wiretap/netmon.c b/wiretap/netmon.c
+index 90921d5..c82ff9f 100644
+--- a/wiretap/netmon.c
++++ b/wiretap/netmon.c
+@@ -271,6 +271,26 @@ int netmon_open(wtap *wth, int *err, gchar **err_info)
+ 		g_free(wth->capture.netmon);
+ 		return -1;
+ 	}
++	/*
++	 * XXX - clamp the size of the frame table, so that we don't
++	 * attempt to allocate a huge frame table and fail.
++	 *
++	 * Given that file offsets in the frame table are 32-bit,
++	 * a NetMon file cannot be bigger than 2^32 bytes.
++	 * Given that a NetMon 1.x-format packet header is 8 bytes,
++	 * that means a NetMon file cannot have more than
++	 * 512*2^20 packets.  We'll pick that as the limit for
++	 * now; it's 1/8th of a 32-bit address space, which is
++	 * probably not going to exhaust the address space all by
++	 * itself, and probably won't exhaust the backing store.
++	 */
++	if (frame_table_size > 512*1024*1024) {
++		*err = WTAP_ERR_UNSUPPORTED;
++		*err_info = g_strdup_printf("netmon: frame table length is %u, which is larger than we support",
++		    frame_table_length);
++		g_free(wth->capture.netmon);
++		return -1;
++	}
+ 	if (file_seek(wth->fh, frame_table_offset, SEEK_SET, err) == -1) {
+ 		g_free(wth->capture.netmon);
+ 		return -1;
+diff --git a/wiretap/nettl.c b/wiretap/nettl.c
+index 5e2dbec..da8ca72 100644
+--- a/wiretap/nettl.c
++++ b/wiretap/nettl.c
+@@ -306,6 +306,17 @@ static gboolean nettl_read(wtap *wth, int *err, gchar **err_info,
+     }
+     wth->data_offset += ret;
+ 
++    if (wth->phdr.caplen > WTAP_MAX_PACKET_SIZE) {
++	/*
++	 * Probably a corrupt capture file; don't blow up trying
++	 * to allocate space for an immensely-large packet.
++	 */
++	*err = WTAP_ERR_BAD_RECORD;
++	*err_info = g_strdup_printf("nettl: File has %u-byte packet, bigger than maximum of %u",
++	    wth->phdr.caplen, WTAP_MAX_PACKET_SIZE);
++	return FALSE;
++    }
++
+     /*
+      * If the per-file encapsulation isn't known, set it to this
+      * packet's encapsulation.
+diff --git a/wiretap/packetlogger.c b/wiretap/packetlogger.c
+index e993564..fdc8cce 100644
+--- a/wiretap/packetlogger.c
++++ b/wiretap/packetlogger.c
+@@ -106,6 +106,16 @@ packetlogger_read(wtap *wth, int *err, gchar **err_info, gint64 *data_offset)
+ 		*err = WTAP_ERR_BAD_RECORD;
+ 		return FALSE;
+ 	}
++	if (pl_hdr.len - 8 > WTAP_MAX_PACKET_SIZE) {
++		/*
++		 * Probably a corrupt capture file; don't blow up trying
++		 * to allocate space for an immensely-large packet.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("packetlogger: File has %u-byte packet, bigger than maximum of %u",
++		    pl_hdr.len - 8, WTAP_MAX_PACKET_SIZE);
++		return FALSE;
++	}
+ 	
+ 	buffer_assure_space(wth->frame_buffer, pl_hdr.len - 8);
+ 	bytes_read = file_read(buffer_start_ptr(wth->frame_buffer), 1,
