@@ -11,7 +11,7 @@ Index: b/wireshark.desktop
  Comment[fr]=Analyseur de trafic réseau
  Comment[sv]=Nätverkstrafikanalysator
 -Icon=wireshark.png
-+Icon=hi48-app-wireshark.png
++Icon=wireshark
  TryExec=wireshark
  Exec=wireshark %f
  Terminal=false
