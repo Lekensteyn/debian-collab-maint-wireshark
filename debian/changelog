@@ -1,3 +1,9 @@
+wireshark (1.6.5-3) UNRELEASED; urgency=low
+
+  * depend on automake instead of automake1.9
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 03 Mar 2012 22:52:23 +0100
+
 wireshark (1.6.5-2) unstable; urgency=low
 
   * clarify when set-user-id bit is set for dumpcap in README.Debian
