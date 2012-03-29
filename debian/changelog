@@ -1,9 +1,17 @@
-wireshark (1.6.5-3) UNRELEASED; urgency=low
+wireshark (1.6.6-1) unstable; urgency=high
 
+  * New upstream release 1.6.6
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.6.6.html
+    - security fixes (Closes: #666058):
+      - The ANSI A dissector could dereference a NULL pointer and crash
+      - The IEEE 802.11 dissector could go into an infinite loop
+      - The pcap and pcap-ng file parsers could crash trying to read ERF data
+      - The MP2T dissector could try to allocate too much memory and crash
   * depend on automake instead of automake1.9
   * update watch file to watch bzip2 compressed archives
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 03 Mar 2012 22:52:23 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 28 Mar 2012 12:34:10 +0200
 
 wireshark (1.6.5-2) unstable; urgency=low
 
