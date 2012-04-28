@@ -1,3 +1,9 @@
+wireshark (1.6.7-2) UNRELEASED; urgency=low
+
+  * update standards-version to 3.9.3
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 28 Apr 2012 09:08:10 +0200
+
 wireshark (1.6.7-1) unstable; urgency=low
 
   * New upstream release 1.6.7
