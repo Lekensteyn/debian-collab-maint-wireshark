@@ -1,0 +1,41 @@
+From 98a5209852842705883d0b89da1565648320488a Mon Sep 17 00:00:00 2001
+From: Jeff Morriss <jeff.morriss@ulticom.com>
+Date: Mon, 13 Feb 2012 03:03:03 +0000
+Subject: [PATCH 2/2] Fix the crash reported in https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=6804
+
+For WTAP_ENCAP_ERF files if we find an Extension and/or Multi-Channel header,
+ensure that the size of the full pseudoheader is smaller than the packet size
+to avoid an underflow and subsequent attempt to allocate a rather large amount
+of memory.
+
+svn path=/trunk/; revision=41008
+---
+ wiretap/pcap-common.c |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
+
+diff --git a/wiretap/pcap-common.c b/wiretap/pcap-common.c
+index 492fe99..4f826e3 100644
+--- a/wiretap/pcap-common.c
++++ b/wiretap/pcap-common.c
+@@ -1336,6 +1336,18 @@ pcap_process_pseudo_header(FILE_T fh, int file_type, int wtap_encap, gboolean by
+ 			return -1;	/* Read error */
+ 
+ 		phdr_len += size;
++
++		if (check_packet_size &&
++		    packet_size < (guint)phdr_len) {
++			/*
++			 * Uh-oh, the packet isn't big enough for the pseudo-
++			 * header.
++			 */
++			*err = WTAP_ERR_BAD_RECORD;
++			*err_info = g_strdup_printf("pcap: ERF file has a %u-byte packet, too small for a pseudo-header with ex- and sub-headers (%d)",
++			    packet_size, phdr_len);
++			return -1;
++		}
+ 		break;
+ 
+ 	case WTAP_ENCAP_I2C:
+-- 
+1.7.2.5
+

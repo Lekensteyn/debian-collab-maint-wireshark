@@ -28,3 +28,5 @@
 34_fixes-from-1.4.10.patch
 35_MSVR‐11‐0076.patch
 36_fixes-from-1.4.11.patch
+37_fix-from-1.4.12-Global-variables-considered-harmful.patch
+38_fix-from-1.4.12-ERF-crash.patch
