@@ -1,4 +1,4 @@
-wireshark (1.2.11-6+squeeze7) stable-security; urgency=high
+wireshark (1.2.11-6+squeeze7) stable-proposed-updates; urgency=low
 
   * security fixes from Wireshark 1.4.12:
     - The ANSI A dissector could dereference a NULL pointer and crash
