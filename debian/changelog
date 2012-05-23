@@ -13,6 +13,8 @@ wireshark (1.6.8-1) unstable; urgency=medium
         memory. Discovered by Klaus Heckelmann (No assigned CVE number)
     - NEWS file is empty, stop shipping it in Debian package
   * update standards-version to 3.9.3
+  * use dpkg-buildflags for hardening
+  * depend on dpkg-dev (>= 1.16.1~) for dpkg-buildflags
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 22 May 2012 23:50:21 +0200
 
