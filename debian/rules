@@ -105,6 +105,7 @@ install: build
 	#cp $(CURDIR)/wiretap/libwiretap.a $(CURDIR)/debian/tmp/usr/lib/
 	-rm -rf $(CURDIR)/debian/tmp/usr/man
 	dh_installman
+	dh_lintian
 
 	dh_movefiles
 	dh_python2
