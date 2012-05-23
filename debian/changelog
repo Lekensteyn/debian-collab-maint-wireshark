@@ -1,8 +1,19 @@
-wireshark (1.6.7-2) UNRELEASED; urgency=low
+wireshark (1.6.8-1) unstable; urgency=medium
 
+  * New upstream release 1.6.8
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.6.8.html
+    - security fixes:
+      - Infinite and large loops in the ANSI MAP, ASF, BACapp, Bluetooth
+        HCI, IEEE 802.11, IEEE 802.3, LTP, and R3 dissectors have been
+        fixed (No assigned CVE number)
+      - The DIAMETER dissector could try to allocate memory improperly
+        and crash (No assigned CVE number)
+      - Wireshark could crash on SPARC processors due to misaligned
+        memory. Discovered by Klaus Heckelmann (No assigned CVE number)
   * update standards-version to 3.9.3
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 28 Apr 2012 09:08:10 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 22 May 2012 23:50:21 +0200
 
 wireshark (1.6.7-1) unstable; urgency=low
 
