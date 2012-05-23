@@ -110,7 +110,7 @@ install: build
 	dh_python2
 	dh_installdocs
 	dh_installmenu
-	dh_installchangelogs NEWS
+	dh_installchangelogs
 
 # Build architecture-independent files here.
 binary-indep: install

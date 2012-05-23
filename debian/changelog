@@ -11,6 +11,7 @@ wireshark (1.6.8-1) unstable; urgency=medium
         and crash (No assigned CVE number)
       - Wireshark could crash on SPARC processors due to misaligned
         memory. Discovered by Klaus Heckelmann (No assigned CVE number)
+    - NEWS file is empty, stop shipping it in Debian package
   * update standards-version to 3.9.3
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 22 May 2012 23:50:21 +0200
