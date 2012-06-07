@@ -1,3 +1,14 @@
+wireshark (1.8.0~rc1-1) unstable; urgency=low
+
+  * New upstream release 1.8.0 release candidate 1
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.8.0.html
+    - drop 07_use-theme-icon.patch as it has been integrated upstream
+    - bump library versions to 2.0.0 and rename library packages to
+      libwsutil2, libwiretap2 and libwireshark2
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 07 Jun 2012 01:04:16 +0200
+
 wireshark (1.6.8-1) unstable; urgency=medium
 
   * New upstream release 1.6.8
@@ -159,7 +170,7 @@ wireshark (1.6.0-1) unstable; urgency=low
   * [Debconf translation updates]
     - Dutch (Jeroen Schot). (Closes: #626145)
     - Hungarian (Balint Reczey).
-  * start shipping libwireshark1, libwiretap1 and libwsutil1 instead of
+  * start shipping libwireshark2, libwiretap2 and libwsutil2 instead of
     libwireshark0, libwiretap0 and libwsutil0, respectively
   * drop 05_bump_so_versions.patch as upstream started library versioning
 

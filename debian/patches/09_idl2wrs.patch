@@ -2,10 +2,10 @@ Description: Do not try to locate wireshark_be.py and wireshark_gen.py in
  non-standard places.
 Author: Frederic Peters <fpeters@debian.org>
 
-Index: b/tools/idl2wrs.sh.in
+Index: b/tools/idl2wrs
 ===================================================================
---- a/tools/idl2wrs.sh.in	2010-02-15 17:23:17.000000000 +0100
-+++ b/tools/idl2wrs.sh.in	2010-02-15 17:24:59.000000000 +0100
+--- a/tools/idl2wrs	2010-02-15 17:23:17.000000000 +0100
++++ b/tools/idl2wrs	2010-02-15 17:24:59.000000000 +0100
 @@ -48,40 +48,6 @@
      exit 1;
  fi

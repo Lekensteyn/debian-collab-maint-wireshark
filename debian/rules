@@ -27,7 +27,7 @@ asn2deb.1: asn2deb.dbk
 	xsltproc --nonet --novalid $(DB2MAN) $<
 
 
-CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --disable-ssl --without-ucdsnmp --enable-gtk2 --libdir=/usr/lib --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/libwireshark1/plugins --with-lua=/usr/ --docdir=/usr/share/doc/wireshark-doc/
+CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/libwireshark2/plugins --with-lua=/usr/ --docdir=/usr/share/doc/wireshark-doc/
 
 configure: configure-stamp
 configure-stamp:
@@ -48,6 +48,9 @@ build-arch: build-stamp
 build-indep: build-stamp idl2deb.1 asn2deb.1
 build-stamp: configure-stamp
 	$(MAKE)
+	# fix missing file in 1.8.0 RC1
+	mkdir docbook/wsdg_graphics/toolbar
+	touch docbook/wsdg_graphics/toolbar/dummy.dummy
 	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
 
 	touch build-stamp
@@ -77,7 +80,7 @@ install: build
 	cp debian/license-text-about-dialog $(CURDIR)/debian/tmp/usr/share/wireshark/ABOUT.GPL
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/applications/
 	cp wireshark.desktop $(CURDIR)/debian/tmp/usr/share/applications/
-	cp tools/idl2wrs.sh $(CURDIR)/debian/tmp/usr/bin/
+	cp tools/idl2wrs $(CURDIR)/debian/tmp/usr/bin/
 	# icon for menu system
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/pixmaps/
 	install -m 644 image/wsicon32.xpm $(CURDIR)/debian/tmp/usr/share/pixmaps/
