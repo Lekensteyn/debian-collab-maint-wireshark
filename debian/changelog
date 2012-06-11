@@ -1,3 +1,13 @@
+wireshark (1.8.0~rc1-2) UNRELEASED; urgency=low
+
+  * fix lintian pedantic mode warnings
+    - use set -e in maintainer scripts
+    - refer to GPLv2 via symlink
+    - fix spacing in debian/control
+    - depend on debhelper (>= 9)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 11 Jun 2012 10:21:29 +0200
+
 wireshark (1.8.0~rc1-1) unstable; urgency=low
 
   * New upstream release 1.8.0 release candidate 1
