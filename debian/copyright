@@ -27,7 +27,7 @@ Wireshark is copyright (c) 1998-2006 Gerald Combs.
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301,  USA.
 
-On Debian systems the GNU GPL may be viewed in /usr/share/common-licenses/GPL.
+On Debian systems the GNU GPL (v2) may be viewed in /usr/share/common-licenses/GPL-2.
 
 Wireshark and the "fin" logo are trademarks of Gerald Combs.
 
