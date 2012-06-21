@@ -48,9 +48,6 @@ build-arch: build-stamp
 build-indep: build-stamp idl2deb.1 asn2deb.1
 build-stamp: configure-stamp
 	$(MAKE)
-	# fix missing file in 1.8.0 RC1
-	mkdir docbook/wsdg_graphics/toolbar
-	touch docbook/wsdg_graphics/toolbar/dummy.dummy
 	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
 
 	touch build-stamp

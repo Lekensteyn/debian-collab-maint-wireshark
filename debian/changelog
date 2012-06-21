@@ -1,5 +1,8 @@
-wireshark (1.8.0~rc1-2) UNRELEASED; urgency=low
+wireshark (1.8.0~rc2-1) UNRELEASED; urgency=low
 
+  * New upstream release 1.8.0 release candidate 2
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.8.0.html
   * fix lintian pedantic mode warnings
     - use set -e in maintainer scripts
     - refer to GPLv2 via symlink
