@@ -49,6 +49,7 @@ build-indep: build-stamp idl2deb.1 asn2deb.1
 build-stamp: configure-stamp
 	$(MAKE)
 	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
+	$(MAKE) -C doc idl2wrs.1 idl2wrs.html
 
 	touch build-stamp
 
@@ -89,6 +90,7 @@ install: build
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/pyshared
 	install -m 755 $(CURDIR)/idl2deb $(CURDIR)/debian/tmp/usr/bin/
 	install -m 755 $(CURDIR)/asn2deb $(CURDIR)/debian/tmp/usr/bin/
+	install -m 755 $(CURDIR)/tools/idl2wrs $(CURDIR)/debian/tmp/usr/bin/
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
 	mv $(CURDIR)/debian/tmp/usr/share/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/etc/wireshark/

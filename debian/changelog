@@ -1,6 +1,6 @@
-wireshark (1.8.0~rc2-1) UNRELEASED; urgency=low
+wireshark (1.8.0-1) unstable; urgency=low
 
-  * New upstream release 1.8.0 release candidate 2
+  * New upstream release 1.8.0
     - release notes:
       http://www.wireshark.org/docs/relnotes/wireshark-1.8.0.html
   * fix lintian pedantic mode warnings
@@ -9,7 +9,7 @@ wireshark (1.8.0~rc2-1) UNRELEASED; urgency=low
     - fix spacing in debian/control
     - depend on debhelper (>= 9)
 
- -- Balint Reczey <balint@balintreczey.hu>  Mon, 11 Jun 2012 10:21:29 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 22 Jun 2012 19:25:19 +0200
 
 wireshark (1.8.0~rc1-1) unstable; urgency=low
 
