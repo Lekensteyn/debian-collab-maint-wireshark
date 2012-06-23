@@ -1,6 +1,6 @@
 wireshark (1.8.0-1) unstable; urgency=low
 
-  * New upstream release 1.8.0
+  * New upstream release 1.8.0 (Closes: #678585)
     - release notes:
       http://www.wireshark.org/docs/relnotes/wireshark-1.8.0.html
   * fix lintian pedantic mode warnings
