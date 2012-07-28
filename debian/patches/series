@@ -30,3 +30,4 @@
 36_fixes-from-1.4.11.patch
 37_fix-from-1.4.12-Global-variables-considered-harmful.patch
 38_fix-from-1.4.12-ERF-crash.patch
+39_fix-from-1.6.9-crash-in-PPP-dissector.patch
