@@ -1,3 +1,39 @@
+wireshark (1.8.2-1) unstable; urgency=high
+
+  * New upstream release 1.8.2 (skipping 1.8.1 in Debian)
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.8.2.html
+    - security fixes:
+      - The PPP dissector could crash (Closes: #680056)(CVE-2012-4048)
+      - The NFS dissector could use excessive amounts of CPU (CVE-2012-4049)
+      - The DCP ETSI dissector could trigger a zero division. Reported by
+         Laurent Butti. (CVE-2012-4285)
+      - The MongoDB dissector could go into a large loop. Reported by
+	 Ben Schmidt. (CVE-2012-4287)
+      - The XTP dissector could go into an infinite loop. Reported by
+	 Ben Schmidt. (CVE-2012-4288)
+      - The ERF dissector could overflow a buffer. Reported by
+	 Laurent Butti. (CVE-2012-4294 CVE-2012-4295)
+      - The AFP dissector could go into a large loop. Reported by
+	 Stefan Cornelius. (CVE-2012-4289)
+      - The RTPS2 dissector could overflow a buffer. Reported by
+	 Laurent Butti. (CVE-2012-4296)
+      - The GSM RLC MAC dissector could overflow a buffer. Reported by
+	 Laurent Butti. (CVE-2012-4297)
+      - The CIP dissector could exhaust system memory. Reported by
+	 Ben Schmidt. (CVE-2012-4291)
+      - The STUN dissector could crash. Reported by Laurent Butti.
+	 (CVE-2012-4292)
+      - The EtherCAT Mailbox dissector could abort. Reported by
+	 Laurent Butti. (CVE-2012-4293)
+      - The CTDB dissector could go into a large loop. Reported by
+	 Ben Schmidt. (CVE-2012-4290)
+      - The pcap-ng file parser could trigger a zero division (CVE-2012-4286)
+      - The Ixia IxVeriWave file parser could overflow a buffer
+	 (CVE-2012-4298)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 19 Aug 2012 14:30:56 +0200
+
 wireshark (1.8.0-1) unstable; urgency=low
 
   * New upstream release 1.8.0 (Closes: #678585)
