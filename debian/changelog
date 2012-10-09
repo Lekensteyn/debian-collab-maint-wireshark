@@ -1,3 +1,15 @@
+wireshark (1.8.2-2) unstable; urgency=high
+
+  * security fixes from Wireshark 1.8.3 (Closes: #689972):
+    - The HSRP dissector could go into an infinite loop (CVE-2012-5237)
+    - The PPP dissector could abort (CVE-2012-5238)
+    - Martin Wilck discovered an infinite loop in the DRDA dissector
+      (CVE-2012-5239)
+    - Laurent Butti discovered a buffer overflow in the LDP dissector
+      (CVE-2012-5240)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 09 Oct 2012 11:39:42 +0200
+
 wireshark (1.8.2-1) unstable; urgency=high
 
   * New upstream release 1.8.2 (skipping 1.8.1 in Debian)
