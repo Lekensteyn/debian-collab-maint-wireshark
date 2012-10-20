@@ -4,7 +4,9 @@ wireshark (1.2.11-6+squeeze8) stable-security; urgency=high
     - The PPP dissector could crash (CVE-2012-4048) (Closes: #680056)
     - The RTPS2 dissector could overflow a buffer. Reported by
       Laurent Butti. (CVE-2012-4296)
-  * fix dash character in 35_MSVR-11-0076.patch's name
+  * drop obsolete patches:
+    - debian-changes-1.2.11-6+squeeze3
+    - 03_preferences.dpatch
 
  -- Balint Reczey <balint@balintreczey.hu>  Sat, 20 Oct 2012 20:46:34 +0200
 
@@ -18,19 +20,12 @@ wireshark (1.2.11-6+squeeze7) stable-proposed-updates; urgency=low
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 04 May 2012 23:47:43 +0200
 
-wireshark (1.2.11-6+squeeze6) stable-security; urgency=high
+wireshark (1.2.11-6+squeeze6) stable-security; urgency=low
 
-  * security fix from Wireshark 1.4.9:
-    - A malformed capture file could result in an invalid root tvbuff and
-      cause a crash. (MSVR-11-0076)
-  * security fixes from Wireshark 1.4.11:
-    - No return within a TRY/CATCH/ENDTRY
-    - Laurent Butti discovered that Wireshark failed to properly check
-      record sizes for many packet capture file formats.
-      (CVE-2012-0068, CVE-2012-0066)
-    - Wireshark could dereference a NULL pointer and crash
+  * Fix CVE-2011-3483, CVE-2011-0042, CVE-2012-0068, CVE-2012-0067,
+    CVE-2012-0066, CVE-2011-0041 (Patches provided by Balint)
 
- -- Balint Reczey <balint@balintreczey.hu>  Thu, 01 Dec 2011 18:36:19 +0100
+ -- Moritz Muehlenhoff <jmm@debian.org>  Wed, 25 Jan 2012 16:11:58 +0000
 
 wireshark (1.2.11-6+squeeze5) stable-security; urgency=high
 
