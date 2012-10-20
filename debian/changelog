@@ -4,6 +4,7 @@ wireshark (1.2.11-6+squeeze8) stable-security; urgency=high
     - The PPP dissector could crash (CVE-2012-4048) (Closes: #680056)
     - The RTPS2 dissector could overflow a buffer. Reported by
       Laurent Butti. (CVE-2012-4296)
+  * fix dash character in 35_MSVR-11-0076.patch's name
 
  -- Balint Reczey <balint@balintreczey.hu>  Sat, 20 Oct 2012 20:46:34 +0200
 
