@@ -11,3 +11,14 @@
 17_fix_from_1.8.3_fix_infinite_loop_in_DRDA_dissector.patch
 17_fix_from_1.8.3_fix_LDP_crash.patch
 17_fix_from_1.8.3_fix_PPP_crash.patch
+18_fix_from_1.8.5_fix_CNLP_crash.patch
+19_fix_from_1.8.5_fix_DTN_crash.patch
+20_fix_from_1.8.5_fix_DTN_crash-2.patch
+21_fix_from_1.8.5_fix_MS-MMC_crash.patch
+22_fix_from_1.8.5_fix_MS-MMC_crash-2.patch
+23_fix_from_1.8.5_fix_DTLS_crash.patch
+24_fix_from_1.8.5_fix_ROHC_crash.patch
+25_fix_from_1.8.5_fix_DCP-ETSI_crash.patch
+25_fix_from_1.8.5_fix_dissector_crash.patch
+26_fix_from_1.8.5_fix_dissector_crash-2.patch
+27_fix_from_1.8.5_fix_NTLMSSP_crash.patch

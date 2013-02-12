@@ -1,3 +1,21 @@
+wireshark (1.8.2-3) unstable; urgency=high
+
+  * security fixes from Wireshark 1.8.5:
+    - The CLNP dissector could crash. Discovered independently by
+      Laurent Butti and the Wireshark development team (CVE-2013-1582)
+    - The DTN dissector could crash (CVE-2013-1583, CVE-2013-1584)
+    - The MS-MMC dissector (and possibly others) could crash (CVE-2013-1585)
+    - The DTLS dissector could crash. Discovered by Laurent Butti.
+      (CVE-2013-1586)
+    - The ROHC dissector could crash (CVE-2013-1587)
+    - The DCP-ETSI dissector could corrupt memory. Discovered by Laurent Butti.
+      (CVE-2013-1588)
+    - The Wireshark dissection engine could crash. Discovered by Laurent Butti.
+    - The NTLMSSP dissector could overflow a buffer. Discovered by
+      Ulf Härnhammar. (CVE-2013-1590)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 12 Feb 2013 13:09:46 +0100
+
 wireshark (1.8.2-2) unstable; urgency=high
 
   * security fixes from Wireshark 1.8.3 (Closes: #689972):

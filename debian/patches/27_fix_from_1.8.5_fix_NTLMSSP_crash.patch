@@ -1,0 +1,26 @@
+From 2be1fbb529a2cb9549df77a9ad2310a1d416ab80 Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Thu, 24 Jan 2013 09:34:54 +0000
+Subject: [PATCH 16/16] Prevent copying longer than expected NTLM SSP key
+
+svn path=/trunk/; revision=47248
+---
+ epan/dissectors/packet-ntlmssp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-ntlmssp.c b/epan/dissectors/packet-ntlmssp.c
+index 40565c3..a33cebb 100644
+--- a/epan/dissectors/packet-ntlmssp.c
++++ b/epan/dissectors/packet-ntlmssp.c
+@@ -2300,7 +2300,7 @@ decrypt_verifier(tvbuff_t *tvb, int offset, guint32 encrypted_block_length,
+ 
+       /* Setup the buffer to decrypt to */
+       tvb_memcpy(tvb, packet_ntlmssp_info->verifier,
+-                 offset, encrypted_block_length);
++                 offset, MIN(encrypted_block_length, sizeof(packet_ntlmssp_info->verifier)));
+ 
+       /*if( !(NTLMSSP_NEGOTIATE_KEY_EXCH & packet_ntlmssp_info->flags)) {*/
+       if( conv_ntlmssp_info->flags & NTLMSSP_NEGOTIATE_EXTENDED_SECURITY ) {
+-- 
+1.7.10.4
+
