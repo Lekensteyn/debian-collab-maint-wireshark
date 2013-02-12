@@ -1,0 +1,66 @@
+From 2d4487e9754bd7990f2ca67d5ed7fb9f8a075ff8 Mon Sep 17 00:00:00 2001
+From: Jeff Morriss <jeff.morriss.ws@gmail.com>
+Date: Tue, 18 Dec 2012 02:02:28 +0000
+Subject: [PATCH 07/16] Fix the fuzz failure reported in
+ https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=7945
+ (or at least the complaints from Valgrind; I couldn't
+ reproduce the crash).
+
+What part of:
+
+~~~
+ * If you're thinking of using tvb_get_ptr, STOP WHAT YOU ARE DOING
+ * IMMEDIATELY. Go take a break. Consider that tvb_get_ptr hands you
+ * a raw, unprotected pointer that you can easily use to create a
+ * security vulnerability or otherwise crash Wireshark. Then consider
+ * that you can probably find a function elsewhere in this file that
+ * does exactly what you want in a much more safe and robust manner.
+~~~
+
+did someone not read?
+
+Use tvb_get_ephemeral_stringz() instead of adding (apparently not sufficiently
+checked!) offsets to the result of tvb_get_ptr() and assuming that the result
+is a) in bounds and b) a NULL-terminated string.
+
+svn path=/trunk/; revision=46577
+---
+ epan/dissectors/packet-dtn.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/epan/dissectors/packet-dtn.c b/epan/dissectors/packet-dtn.c
+index 262de95..ac732d0 100644
+--- a/epan/dissectors/packet-dtn.c
++++ b/epan/dissectors/packet-dtn.c
+@@ -729,7 +729,6 @@ static int
+ dissect_version_4_primary_header(packet_info *pinfo, proto_tree *primary_tree, tvbuff_t *tvb)
+ {
+     guint8        cosflags;
+-    const guint8 *dict_ptr;
+     int           bundle_header_length;
+     int           bundle_header_dict_length;
+     int           offset;     /*Total offset into frame (frame_offset + convergence layer size)*/
+@@ -1030,13 +1029,15 @@ dissect_version_4_primary_header(packet_info *pinfo, proto_tree *primary_tree, t
+          * Add Source/Destination to INFO Field
+          */
+ 
+-        /* Note: If we get this far, the offsets (and the strings) are at least within the TVB */
+-        dict_ptr = tvb_get_ptr(tvb, offset, bundle_header_dict_length);
+         col_add_fstr(pinfo->cinfo, COL_INFO, "%s:%s > %s:%s",
+-                     dict_ptr + source_scheme_offset, dict_ptr + source_ssp_offset,
+-                     dict_ptr + dest_scheme_offset, dict_ptr + dest_ssp_offset);
++                     tvb_get_ephemeral_stringz(tvb, offset + source_scheme_offset, NULL),
++                     tvb_get_ephemeral_stringz(tvb, offset + source_ssp_offset, NULL),
++                     tvb_get_ephemeral_stringz(tvb, offset + dest_scheme_offset, NULL),
++                     tvb_get_ephemeral_stringz(tvb, offset + dest_ssp_offset, NULL));
++
+         /* remember custodian, for use in checking cteb validity */
+-        bundle_custodian = ep_strdup_printf("%s:%s", dict_ptr + cust_scheme_offset, dict_ptr + cust_ssp_offset);
++        bundle_custodian = ep_strdup_printf("%s:%s", tvb_get_ephemeral_stringz(tvb, offset + cust_scheme_offset, NULL),
++                                            tvb_get_ephemeral_stringz(tvb, offset + cust_ssp_offset, NULL));
+     }
+     offset += bundle_header_dict_length;        /*Skip over dictionary*/
+ 
+-- 
+1.7.10.4
+

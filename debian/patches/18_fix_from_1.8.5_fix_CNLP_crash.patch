@@ -1,0 +1,167 @@
+From c9b377ef4a23233f53796ce428bf8f9ba733c6a7 Mon Sep 17 00:00:00 2001
+From: Anders Broman <anders.broman@ericsson.com>
+Date: Fri, 21 Dec 2012 09:12:09 +0000
+Subject: [PATCH 06/16] Copy over: Revision 46646 - Clean up white space.
+
+Add a return where I presume it was intended to be - a 4-octet address
+is completely handled in that if clause, so there's no reason to fall
+through.
+
+Fix a comment.
+--------------------------------------------------------------------------------
+Revision 46645 - Fix some valgrind warnings from the capture attached to
+https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8110
+
+I can't reproduce the actual reported crash on trunk.
+
+--------------------------------------------------------------------------------
+Revision 45646 - (try to) fix https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=7871
+
+increment offset to point to the first byte after the options
+(the code used to set an absolute position, if that was 0, we were stuck
+ in an endless loop)
+--------------------------------------------------------------------------------
+Revision 45059 - replaced decode_boolean_bitfield calls with itemized filters
+
+svn path=/trunk-1.8/; revision=46659
+---
+ epan/dissectors/packet-clnp.c |   39 ++++++++++++++++++++++-----------------
+ epan/osi-utils.c              |   35 ++++++++++++++++-------------------
+ 2 files changed, 38 insertions(+), 36 deletions(-)
+
+diff --git a/epan/dissectors/packet-clnp.c b/epan/dissectors/packet-clnp.c
+index 93e08d4..33fcef7 100644
+--- a/epan/dissectors/packet-clnp.c
++++ b/epan/dissectors/packet-clnp.c
+@@ -21,7 +21,7 @@
+  *
+  * You should have received a copy of the GNU General Public License
+  * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  */
+ 
+ #ifdef HAVE_CONFIG_H
+@@ -54,6 +54,10 @@ static int hf_clnp_length      = -1;
+ static int hf_clnp_version     = -1;
+ static int hf_clnp_ttl         = -1;
+ static int hf_clnp_type        = -1;
++static int hf_clnp_cnf_segmentation         = -1;
++static int hf_clnp_cnf_more_segments        = -1;
++static int hf_clnp_cnf_report_error         = -1;
++static int hf_clnp_cnf_type    = -1;
+ static int hf_clnp_pdu_length  = -1;
+ static int hf_clnp_checksum    = -1;
+ static int hf_clnp_dest_length = -1;
+@@ -281,21 +285,10 @@ dissect_clnp(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+                                     flag_string,
+                                     pdu_type_string);
+     type_tree = proto_item_add_subtree(ti, ett_clnp_type);
+-    proto_tree_add_text(type_tree, tvb, P_CLNP_TYPE, 1, "%s",
+-                        decode_boolean_bitfield(cnf_type, CNF_SEG_OK, 8,
+-                                                "Segmentation permitted",
+-                                                "Segmentation not permitted"));
+-    proto_tree_add_text(type_tree, tvb, P_CLNP_TYPE, 1, "%s",
+-                        decode_boolean_bitfield(cnf_type, CNF_MORE_SEGS, 8,
+-                                                "More segments",
+-                                                "Last segment"));
+-    proto_tree_add_text(type_tree, tvb, P_CLNP_TYPE, 1, "%s",
+-                        decode_boolean_bitfield(cnf_type, CNF_ERR_OK, 8,
+-                                                "Report error if PDU discarded",
+-                                                "Don't report error if PDU discarded"));
+-    proto_tree_add_text(type_tree, tvb, P_CLNP_TYPE, 1, "%s",
+-                        decode_enumerated_bitfield(cnf_type, CNF_TYPE, 8,
+-                                                   npdu_type_vals, "%s"));
++    proto_tree_add_item(type_tree, hf_clnp_cnf_segmentation, tvb, P_CLNP_TYPE, 1, ENC_NA);
++    proto_tree_add_item(type_tree, hf_clnp_cnf_more_segments, tvb, P_CLNP_TYPE, 1, ENC_NA);
++    proto_tree_add_item(type_tree, hf_clnp_cnf_report_error, tvb, P_CLNP_TYPE, 1, ENC_NA);
++    proto_tree_add_item(type_tree, hf_clnp_cnf_type, tvb, P_CLNP_TYPE, 1, ENC_NA);
+   }
+ 
+   /* If we don't have the full header - i.e., not enough to see the
+@@ -425,7 +418,7 @@ dissect_clnp(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+                          tvb, offset, clnp_tree );
+   }
+ 
+-  offset = cnf_hdr_len;
++  offset += opt_len;
+ 
+   /* If clnp_reassemble is on, this is a segment, we have all the
+    * data in the segment, and the checksum is valid, then just add the
+@@ -572,6 +565,18 @@ proto_register_clnp(void)
+     { &hf_clnp_type,
+       { "PDU Type", "clnp.type",     FT_UINT8, BASE_DEC, NULL, 0x0, NULL, HFILL }},
+ 
++    { &hf_clnp_cnf_segmentation,
++      { "Segmentation permitted", "clnp.cnf.segmentation", FT_BOOLEAN, 8, TFS(&tfs_yes_no), CNF_SEG_OK, NULL, HFILL }},
++
++    { &hf_clnp_cnf_more_segments,
++      { "More segments", "clnp.cnf.more_segments", FT_BOOLEAN, 8, TFS(&tfs_yes_no), CNF_MORE_SEGS, NULL, HFILL }},
++
++    { &hf_clnp_cnf_report_error,
++      { "Report error if PDU discarded", "clnp.cnf.report_error", FT_BOOLEAN, 8, TFS(&tfs_yes_no), CNF_ERR_OK, NULL, HFILL }},
++
++    { &hf_clnp_cnf_type,
++      { "Type", "clnp.cnf.type", FT_UINT8, BASE_DEC, VALS(npdu_type_vals), CNF_TYPE, NULL, HFILL }},
++
+     { &hf_clnp_pdu_length,
+       { "PDU length", "clnp.pdu.len",  FT_UINT16, BASE_DEC, NULL, 0x0, NULL, HFILL }},
+ 
+diff --git a/epan/osi-utils.c b/epan/osi-utils.c
+index b7d16ca..0cb05c7 100644
+--- a/epan/osi-utils.c
++++ b/epan/osi-utils.c
+@@ -22,7 +22,7 @@
+  *
+  * You should have received a copy of the GNU General Public License
+  * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  */
+ 
+ #ifdef HAVE_CONFIG_H
+@@ -188,26 +188,23 @@ print_area_buf(const guint8 *ad, int length, gchar *buf, int buf_len)
+       g_snprintf(buf, buf_len, "%02x.%02x%02x", ad[0], ad[1], ad[2] );
+       return;
+     }
+-	if(length == 4)
+-	{
++    if ( length == 4 ) {
+       g_snprintf(buf, buf_len, "%02x%02x%02x%02x", ad[0], ad[1], ad[2], ad[3] );
+-	}
+-    if ( 4 < length ) 
+-	{
+-      while ( tmp < length / 4 ) {      /* 16/4==4 > four Octets left to print */
+-        cur += g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "%02x", ad[tmp++] );
+-        cur += g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "%02x", ad[tmp++] );
++      return;
++    }
++    while ( tmp < length / 4 ) {      /* 16/4==4 > four Octets left to print */
++      cur += g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "%02x", ad[tmp++] );
++      cur += g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "%02x", ad[tmp++] );
++      cur += g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "%02x", ad[tmp++] );
++      cur += g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "%02x.", ad[tmp++] );
++    }
++    if ( 1 == tmp ) {                     /* Special case for Designated IS */
++      cur--;
++      g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "-%02x", ad[tmp] );
++    }
++    else {
++      for ( ; tmp < length; ) {  /* print the rest without dot or dash */
+         cur += g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "%02x", ad[tmp++] );
+-        cur += g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "%02x.", ad[tmp++] );
+-      }
+-      if ( 1 == tmp ) {                     /* Special case for Designated IS */
+-        cur--;
+-        g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "-%02x", ad[tmp] );
+-      }
+-      else {
+-        for ( ; tmp < length; ) {  /* print the rest without dot */
+-          cur += g_snprintf(cur, (gulong) (buf_len-(cur-buf)), "%02x", ad[tmp++] );
+-        }
+       }
+     }
+   }
+-- 
+1.7.10.4
+
