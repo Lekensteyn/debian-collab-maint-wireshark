@@ -1,0 +1,58 @@
+From cb9a288e788974ebacddcc393dd46613c602b465 Mon Sep 17 00:00:00 2001
+From: Anders Broman <anders.broman@ericsson.com>
+Date: Thu, 8 Nov 2012 13:10:07 +0000
+Subject: [PATCH 4/8] gdk_cairo_set_source_color() needs to be set inside the
+ loop.
+
+svn path=/trunk/; revision=45970
+---
+ ui/gtk/io_stat.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/ui/gtk/io_stat.c b/ui/gtk/io_stat.c
+index 96da597..8140ed1 100644
+--- a/ui/gtk/io_stat.c
++++ b/ui/gtk/io_stat.c
+@@ -1073,7 +1073,6 @@ io_stat_draw(io_stat_t *io)
+ #else
+     cr = gdk_cairo_create (io->pixmap);
+ #endif
+-    gdk_cairo_set_source_color (cr, &io->graphs[i].color);
+     cairo_set_line_width (cr, 1.0);
+ 
+ 	for(i=MAX_GRAPHS-1; i>=0; i--){
+@@ -1202,6 +1201,7 @@ io_stat_draw(io_stat_t *io)
+                     if( (prev_y_pos!=0) || (y_pos!=0) ){
+                         cairo_move_to(cr, prev_x_pos+0.5, prev_y_pos+0.5);
+                         cairo_line_to(cr, x_pos+0.5, y_pos+0.5);
++						gdk_cairo_set_source_color (cr, &io->graphs[i].color);
+                         cairo_stroke(cr);
+                     }
+                     break;
+@@ -1209,6 +1209,7 @@ io_stat_draw(io_stat_t *io)
+                     if(val){
+                         cairo_move_to(cr, x_pos+0.5, draw_height-1+top_y_border+0.5);
+                         cairo_line_to(cr, x_pos+0.5, y_pos+0.5);
++						gdk_cairo_set_source_color (cr, &io->graphs[i].color);
+                         cairo_stroke(cr);
+                     }
+                     break;
+@@ -1219,6 +1220,7 @@ io_stat_draw(io_stat_t *io)
+                             y_pos+0.5,
+                             io->pixels_per_tick,
+                             draw_height-1+top_y_border-y_pos);
++						gdk_cairo_set_source_color (cr, &io->graphs[i].color);
+                         cairo_fill (cr);
+                     }
+                     break;
+@@ -1230,6 +1232,7 @@ io_stat_draw(io_stat_t *io)
+                             (gdouble)io->pixels_per_tick/2,
+                             0,
+                             2 * G_PI);
++						gdk_cairo_set_source_color (cr, &io->graphs[i].color);
+                         cairo_fill (cr);
+                     }
+                     break;
+-- 
+1.7.10.4
+
