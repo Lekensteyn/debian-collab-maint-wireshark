@@ -32,3 +32,9 @@
 38_fix-from-1.4.12-ERF-crash.patch
 39_fix-from-1.6.9-crash-in-PPP-dissector.patch
 40_fix_from_1.6.10_fix_RTPS2_crash.patch
+41_fix_from_1.8.5_fix_CNLP_crash.patch
+42_fix_from_1.8.5_fix_DTLS_crash.patch
+43_fix_from_1.8.5_fix_DCP-ETSI_crash.patch
+44_fix_from_1.8.5_fix_dissector_crash.patch
+45_fix_from_1.8.5_fix_dissector_crash-2.patch
+46_fix_from_1.8.5_fix_NTLMSSP_crash.patch

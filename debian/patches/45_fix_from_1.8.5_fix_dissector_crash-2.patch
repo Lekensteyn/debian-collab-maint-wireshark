@@ -1,0 +1,28 @@
+From a30733d6d459faa8f8a8ff125aa721817c02963a Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Mon, 14 Jan 2013 22:29:23 +0000
+Subject: [PATCH 5/6] Take a wild guess at what might be causing
+ https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8197
+
+It can't hurt, in any case.
+
+svn path=/trunk/; revision=47084
+---
+ epan/proto.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/epan/proto.c b/epan/proto.c
+index 1925969..5faa00e 100644
+--- a/epan/proto.c
++++ b/epan/proto.c
+@@ -3175,6 +3175,7 @@ proto_item_set_text(proto_item *pi, const char *format, ...)
+ 
+ 	if(fi->rep){
+ 		ITEM_LABEL_FREE(fi->rep);
++		fi->rep = NULL;
+ 	}
+ 
+ 	va_start(ap, format);
+-- 
+1.7.10.4
+
