@@ -1,4 +1,4 @@
-wireshark (1.8.2-3) unstable; urgency=high
+wireshark (1.8.2-4) unstable; urgency=high
 
   * security fixes from Wireshark 1.8.5:
     - The CLNP dissector could crash. Discovered independently by
