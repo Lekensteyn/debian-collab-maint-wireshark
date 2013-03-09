@@ -1,0 +1,27 @@
+From 3ad165df08f57c8fdcbf32d75e62f03444ffe9bb Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Thu, 31 Jan 2013 00:40:59 +0000
+Subject: [PATCH 01/10] Manually rediscover r43185 to fix
+ https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8274
+
+svn path=/trunk-1.8/; revision=47381
+---
+ epan/dissectors/packet-tcp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-tcp.c b/epan/dissectors/packet-tcp.c
+index 88a6402..5cc21a4 100644
+--- a/epan/dissectors/packet-tcp.c
++++ b/epan/dissectors/packet-tcp.c
+@@ -3865,7 +3865,7 @@ decode_tcp_ports(tvbuff_t *tvb, int offset, packet_info *pinfo,
+         low_port = src_port;
+         high_port = dst_port;
+     }
+-    if (tcp_no_subdissector_on_error && tcpd->ta && tcpd->ta->flags & (TCP_A_RETRANSMISSION | TCP_A_OUT_OF_ORDER)) {
++    if (tcp_no_subdissector_on_error && tcpd && tcpd->ta && tcpd->ta->flags & (TCP_A_RETRANSMISSION | TCP_A_OUT_OF_ORDER)) {
+         /* Don't try to dissect a retransmission high chance that it will mess
+          * subdissectors for protocols that require in-order delivery of the
+ 	 * PDUs. (i.e. DCE/RPCoverHTTP and encryption)
+-- 
+1.7.10.4
+

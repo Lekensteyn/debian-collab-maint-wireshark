@@ -1,0 +1,64 @@
+From 4fbe50dfc52d10210bcb4716a0c9aa693a9bb501 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Thu, 14 Feb 2013 19:42:58 +0000
+Subject: [PATCH 04/10] Fix potential buffer overflow in RTPS and RTPS2
+ dissectors by allocating enough memory to fit the
+ "indentation space".
+
+Bug 8332 (https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8332)
+
+svn path=/trunk/; revision=47658
+---
+ epan/dissectors/packet-rtps.c  |    5 +++--
+ epan/dissectors/packet-rtps2.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/epan/dissectors/packet-rtps.c b/epan/dissectors/packet-rtps.c
+index e093c02..f4e8a1a 100644
+--- a/epan/dissectors/packet-rtps.c
++++ b/epan/dissectors/packet-rtps.c
+@@ -2017,7 +2017,7 @@ static gint rtps_util_add_typecode(proto_tree *tree,
+   guint32 tk_id;
+   guint16 tk_size;
+   unsigned int i;
+-  char    indent_string[40];
++  char*   indent_string;
+   gint    retVal;
+   char    type_name[40];
+ 
+@@ -2030,7 +2030,8 @@ static gint rtps_util_add_typecode(proto_tree *tree,
+      */
+ 
+   /* Calc indent string */
+-  memset(indent_string, ' ', 40);
++  indent_string = ep_alloc((indent_level*2)+1);
++  memset(indent_string, ' ', indent_level*2);
+   indent_string[indent_level*2] = '\0';
+ 
+   /* Gets TK ID */
+diff --git a/epan/dissectors/packet-rtps2.c b/epan/dissectors/packet-rtps2.c
+index f07cce8..3732e5f 100644
+--- a/epan/dissectors/packet-rtps2.c
++++ b/epan/dissectors/packet-rtps2.c
+@@ -2315,7 +2315,7 @@ static gint rtps_util_add_typecode(proto_tree *tree,
+   guint32 tk_id;
+   guint16 tk_size;
+   unsigned int i;
+-  char    indent_string[40];
++  char*   indent_string;
+   gint    retVal;
+   char    type_name[40];
+ 
+@@ -2328,7 +2328,8 @@ static gint rtps_util_add_typecode(proto_tree *tree,
+      */
+ 
+   /* Calc indent string */
+-  memset(indent_string, ' ', 40);
++  indent_string = ep_alloc((indent_level*2)+1);
++  memset(indent_string, ' ', indent_level*2);
+   indent_string[indent_level*2] = '\0';
+ 
+   /* Gets TK ID */
+-- 
+1.7.10.4
+

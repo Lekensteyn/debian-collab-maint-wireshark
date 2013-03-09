@@ -22,3 +22,12 @@
 26_fix_from_1.8.5_fix_dissector_crash.patch
 27_fix_from_1.8.5_fix_dissector_crash-2.patch
 28_fix_from_1.8.5_fix_NTLMSSP_crash.patch
+29_fix_from_1.8.6_fix_TCP_crash.patch
+30_fix_from_1.8.6_fix_CSN.1_crash.patch
+31_fix_from_1.8.6_fix_MS-MMS_crash.patch
+32_fix_from_1.8.6_fix_RTPS_RTPS2_crash.patch
+33_fix_from_1.8.6_fix_Mount_crash.patch
+34_fix_from_1.8.6_fix_ACN_crash.patch
+35_fix_from_1.8.6_fix_CIMD_crash.patch
+36_fix_from_1.8.6_fix_DTLS_crash.patch
+37_fix_from_1.8.6_fix_DTLS_crash-2.patch

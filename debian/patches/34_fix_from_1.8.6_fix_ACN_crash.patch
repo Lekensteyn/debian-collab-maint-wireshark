@@ -1,0 +1,32 @@
+From d99624d6280cf45b6fbea57b095190086ad63ebe Mon Sep 17 00:00:00 2001
+From: Jaap Keuter <jaap.keuter@xs4all.nl>
+Date: Sat, 16 Feb 2013 13:49:42 +0000
+Subject: [PATCH 06/10] From Alyssa Milburn: This patch adds a check for a
+ zero count to the existing sanity check code.
+
+From me:
+In addition drop superfluous sanity check.
+
+svn path=/trunk/; revision=47692
+---
+ epan/dissectors/packet-acn.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-acn.c b/epan/dissectors/packet-acn.c
+index b274ed8..4d2224f 100644
+--- a/epan/dissectors/packet-acn.c
++++ b/epan/dissectors/packet-acn.c
+@@ -913,8 +913,8 @@ acn_add_dmp_data(tvbuff_t *tvb, packet_info *pinfo _U_, proto_tree *tree, int of
+       }
+       break;
+     case ACN_DMP_ADT_D_RE:
+-      if (adt->data_length == adt->count) {
+-        ok_to_process = TRUE;
++      if (adt->count == 0) {
++        break;
+       }
+       if (adt->data_length <= adt->count + 4) {
+         ok_to_process = TRUE;
+-- 
+1.7.10.4
+

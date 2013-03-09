@@ -1,0 +1,45 @@
+From 908f8e6d12d20f544d8980ac55520f3061db9cd8 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Sun, 17 Feb 2013 19:07:14 +0000
+Subject: [PATCH 07/10] Bugfix DoS in CIMD dissector.  Bug 8346
+ (https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8346)
+
+svn path=/trunk/; revision=47708
+---
+ epan/dissectors/packet-cimd.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/epan/dissectors/packet-cimd.c b/epan/dissectors/packet-cimd.c
+index aedfefd..3307869 100644
+--- a/epan/dissectors/packet-cimd.c
++++ b/epan/dissectors/packet-cimd.c
+@@ -376,9 +376,7 @@ static void dissect_cimd_ud(tvbuff_t *tvb, proto_tree *tree, gint pindex, gint s
+   proto_item *param_item;
+   proto_tree *param_tree;
+ 
+-  gchar* payloadText;
+-  gchar* tmpBuffer          = (gchar*)ep_alloc(1024);
+-  gchar* tmpBuffer1         = (gchar*)ep_alloc(1024);
++  gchar *payloadText, *tmpBuffer, *tmpBuffer1;
+   int    loop,i,poz, bufPoz = 0, bufPoz1 = 0, size, size1, resch;
+   gint   g_offset, g_size;
+   gchar  token[4];
+@@ -410,6 +408,7 @@ static void dissect_cimd_ud(tvbuff_t *tvb, proto_tree *tree, gint pindex, gint s
+ 
+   payloadText = tvb_format_text(tvb, g_offset, g_size);
+   size = (int)strlen(payloadText);
++  tmpBuffer = (gchar*)ep_alloc(size+1);
+   for (loop = 0; loop < size; loop++)
+   {
+     if (payloadText[loop] == '_')
+@@ -455,6 +454,7 @@ static void dissect_cimd_ud(tvbuff_t *tvb, proto_tree *tree, gint pindex, gint s
+   tmpBuffer[bufPoz] = '\0';
+ 
+   size1 = (int)strlen(tmpBuffer);
++  tmpBuffer1 = (gchar*)ep_alloc(size1+1);
+   for (loop=0; loop<size1; loop++)
+   {
+     ch = tmpBuffer[loop];
+-- 
+1.7.10.4
+
