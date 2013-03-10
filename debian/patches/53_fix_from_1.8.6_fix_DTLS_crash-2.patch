@@ -1,0 +1,43 @@
+From f35260c5c8749615a80bacd48a307ee14cae6d84 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Wed, 6 Mar 2013 12:33:43 +0000
+Subject: [PATCH 7/7] Manually backport more of r48011.
+
+Fixes https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8441 for 1.6 branch
+
+svn path=/trunk-1.6/; revision=48131
+---
+ epan/dissectors/packet-frame.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/epan/dissectors/packet-frame.c b/epan/dissectors/packet-frame.c
+index 4804a14..2d0b926 100644
+--- a/epan/dissectors/packet-frame.c
++++ b/epan/dissectors/packet-frame.c
+@@ -488,6 +488,23 @@ show_exception(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree,
+ 		        dissector_error_nomsg : exception_message);
+ 		break;
+ 
++	case ReassemblyError:
++		col_append_fstr(pinfo->cinfo, COL_INFO,
++		    "[Reassembly error, protocol %s: %s]",
++		    pinfo->current_proto,
++		    exception_message == NULL ?
++		        dissector_error_nomsg : exception_message);
++		item = proto_tree_add_protocol_format(tree, proto_malformed, tvb, 0, 0,
++		    "[Reassembly error, protocol %s: %s]",
++		    pinfo->current_proto,
++		    exception_message == NULL ?
++		        dissector_error_nomsg : exception_message);
++		expert_add_info_format(pinfo, item, PI_MALFORMED, PI_ERROR,
++		    "%s",
++		    exception_message == NULL ?
++		        dissector_error_nomsg : exception_message);
++		break;
++
+ 	default:
+ 		/* XXX - we want to know, if an unknown exception passed until here, don't we? */
+ 		g_assert_not_reached();
+-- 
+1.7.10.4
+
