@@ -38,3 +38,10 @@
 44_fix_from_1.8.5_fix_dissector_crash.patch
 45_fix_from_1.8.5_fix_dissector_crash-2.patch
 46_fix_from_1.8.5_fix_NTLMSSP_crash.patch
+47_fix_from_1.8.6_fix_MS-MMS_crash.patch
+48_fix_from_1.8.6_fix_RTPS_RTPS2_crash.patch
+49_fix_from_1.8.6_fix_Mount_crash.patch
+50_fix_from_1.8.6_fix_ACN_crash.patch
+51_fix_from_1.8.6_fix_CIMD_crash.patch
+52_fix_from_1.8.6_fix_DTLS_crash.patch
+53_fix_from_1.8.6_fix_DTLS_crash-2.patch

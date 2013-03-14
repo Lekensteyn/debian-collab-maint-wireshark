@@ -1,3 +1,21 @@
+wireshark (1.2.11-6+squeeze10) stable-security; urgency=high
+
+  * security fixes from Wireshark 1.8.6:
+    - MMS dissector could crash. Discovered by Laurent Butti.
+      (CVE-2013-2478)
+    - The RTPS and RTPS2 dissectors could crash. Discovered by Alyssa Milburn.
+      (CVE-2013-2480)
+    - The Mount dissector could crash. Discovered by Alyssa Milburn.
+      (CVE-2013-2481)
+    - The ACN dissector could attempt to divide by zero.
+      Discovered by Alyssa Milburn. (CVE-2013-2483)
+    - The CIMD dissector could crash. Discovered by Moshe Kaplan.
+      (CVE-2013-2484)
+    - The DTLS dissector could crash. Discovered by Laurent Butti.
+      (CVE-2013-2488)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 09 Mar 2013 16:19:52 +0100
+
 wireshark (1.2.11-6+squeeze9) stable-security; urgency=high
 
   * security fixes from Wireshark 1.8.5:
