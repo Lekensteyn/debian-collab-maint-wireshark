@@ -4,12 +4,7 @@
 04_asn2wrs_ply.patch
 05_note-README-when-running-as-root.patch
 06_release-version.patch
+07_library-versions.patch
 08_wireshark-desktop-menu.patch
 09_idl2wrs.patch
 16_licence_about_location.patch
-10_0001-Align-structs-and-code-a-bit-ultimatly-code-should-b.patch
-10_0002-Make-the-button-box-the-last-row-in-gtk3-too.patch
-10_0003-Create-cr-once-when-drawing-the-graphs.patch
-10_0004-gdk_cairo_set_source_color-needs-to-be-set-inside-th.patch
-10_0005-Create-cr-once-per-axis-when-drawing-x-y-axels.patch
-10_0006-Remove-one-more-instance-of-destroy-create-cr.patch

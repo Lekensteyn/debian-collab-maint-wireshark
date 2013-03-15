@@ -12,7 +12,7 @@ Homepage: http://www.wireshark.org/
 
 Package: wireshark-common
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark2 (>= ${binary:Version}), libwiretap2 (>= ${binary:Version}), debconf, libcap2-bin [linux-any]
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark3 (>= ${binary:Version}), libwiretap3 (>= ${binary:Version}), debconf, libcap2-bin [linux-any]
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
 Replaces: ethereal-common (<< 1.0.0-3)
 Conflicts: ethereal-common (<< 1.0.0-3)
@@ -89,7 +89,7 @@ Description: network traffic analyzer - documentation
  This package contains Wireshark User's guide, Wireshark Developer's Guide
  and the Lua Reference.
 
-Package: libwireshark2
+Package: libwireshark3
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version}), libwsutil2 (>= ${source:Version})
@@ -136,7 +136,7 @@ Description: network packet dissection library -- data files
 
 Package: libwireshark-dev
 Section: libdevel
-Depends: ${misc:Depends}, libwsutil-dev, libwireshark2 (= ${binary:Version})
+Depends: ${misc:Depends}, libwsutil-dev, libwireshark3 (= ${binary:Version})
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
@@ -147,7 +147,7 @@ Description: network packet dissection library -- development files
  This package contains the static library and the C header files that are
  needed for applications to use libwireshark services.
 
-Package: libwiretap2
+Package: libwiretap3
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -180,7 +180,7 @@ Description: network packet capture library -- shared library
 
 Package: libwiretap-dev
 Section: libdevel
-Depends: ${misc:Depends}, libwiretap2 (= ${binary:Version})
+Depends: ${misc:Depends}, libwiretap3 (= ${binary:Version})
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any

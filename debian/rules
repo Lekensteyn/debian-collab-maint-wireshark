@@ -9,9 +9,6 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/buildflags.mk
 
-DB2MAN=/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl
-
-
 DEB_HOST_ARCH_CPU       ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU)
 DEB_BUILD_ARCH_CPU      ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH_CPU)
 
@@ -20,14 +17,7 @@ ifeq (alpha,$(DEB_HOST_ARCH_CPU))
   CFLAGS += -mieee
 endif
 
-idl2deb.1: idl2deb.dbk
-	xsltproc --nonet --novalid $(DB2MAN) $<
-
-asn2deb.1: asn2deb.dbk
-	xsltproc --nonet --novalid $(DB2MAN) $<
-
-
-CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/libwireshark2/plugins --with-lua=/usr/ --docdir=/usr/share/doc/wireshark-doc/ --with-gtk3
+CONFIGURE_FLAGS=--prefix=/usr --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/libwireshark3/plugins --with-lua=/usr/ --docdir=/usr/share/doc/wireshark-doc/ --with-gtk3
 
 configure: configure-stamp
 configure-stamp:
@@ -45,11 +35,10 @@ configure-stamp:
 
 build: build-arch build-indep
 build-arch: build-stamp
-build-indep: build-stamp idl2deb.1 asn2deb.1
+build-indep: build-stamp
 build-stamp: configure-stamp
 	$(MAKE)
 	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
-	$(MAKE) -C doc idl2wrs.1 idl2wrs.html
 
 	touch build-stamp
 
@@ -59,7 +48,7 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	[ ! -f Makefile ] || $(MAKE) distclean 
-	rm -f rdps wireshark.1 tshark.1 idl2deb.1 wireshark-filter.4 asn2deb.1 dumpcap.1 rawshark.1
+	rm -f rdps wireshark.1 tshark.1 wireshark-filter.4 dumpcap.1 rawshark.1
 	rm -f conftest conftest.c
 	rm -f config.guess config.sub config.log
 	rm -f config.h.in config.h configure
@@ -88,8 +77,8 @@ install: build
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/icons/hicolor/48x48/apps/
 	install -m 644 image/wsicon48.png $(CURDIR)/debian/tmp/usr/share/icons/hicolor/48x48/apps/wireshark.png
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/pyshared
-	install -m 755 $(CURDIR)/idl2deb $(CURDIR)/debian/tmp/usr/bin/
-	install -m 755 $(CURDIR)/asn2deb $(CURDIR)/debian/tmp/usr/bin/
+	install -m 755 $(CURDIR)/tools/idl2deb $(CURDIR)/debian/tmp/usr/bin/
+	install -m 755 $(CURDIR)/tools/asn2deb $(CURDIR)/debian/tmp/usr/bin/
 	install -m 755 $(CURDIR)/tools/idl2wrs $(CURDIR)/debian/tmp/usr/bin/
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
 	mv $(CURDIR)/debian/tmp/usr/share/wireshark/init.lua \
