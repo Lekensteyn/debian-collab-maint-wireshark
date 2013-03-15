@@ -1,8 +1,8 @@
 wireshark (1.9.1-1) experimental; urgency=low
 
   * New upstream development snapshot 1.9.1
-  * drop obsolete patches for adding asn2deb and idl2deb since they are
-    integrated upstream
+  * drop obsolete man pages from asn2deb and idl2deb patches since they are
+    shipped now by upstream
   * drop obsolete patches back-ported to improve GTK+ 3 support
   * bump library versions due to ABI changes
     Note that this development snapshot is uploaded to experimental and is
