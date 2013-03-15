@@ -67,7 +67,6 @@ install: build
 	cp debian/license-text-about-dialog $(CURDIR)/debian/tmp/usr/share/wireshark/ABOUT.GPL
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/applications/
 	cp wireshark.desktop $(CURDIR)/debian/tmp/usr/share/applications/
-	cp tools/idl2wrs $(CURDIR)/debian/tmp/usr/bin/
 	# icon for menu system
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/pixmaps/
 	install -m 644 image/wsicon32.xpm $(CURDIR)/debian/tmp/usr/share/pixmaps/
