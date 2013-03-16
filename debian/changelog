@@ -1,3 +1,9 @@
+wireshark (1.8.2-5wheezy1) wheezy-security; urgency=high
+
+  * re-upload to Wheezy security without changes in the content
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 16 Mar 2013 12:02:44 +0100
+
 wireshark (1.8.2-5) unstable; urgency=high
 
   * security fixes from Wireshark 1.8.6:
