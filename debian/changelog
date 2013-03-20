@@ -1,3 +1,9 @@
+wireshark (1.9.1-2) UNRELEASED; urgency=low
+
+  * rewrite packaging to use dh
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 17 Mar 2013 20:33:35 +0100
+
 wireshark (1.9.1-1) experimental; urgency=low
 
   * New upstream development snapshot 1.9.1
