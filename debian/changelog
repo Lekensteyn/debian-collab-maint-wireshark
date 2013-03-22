@@ -2,6 +2,7 @@ wireshark (1.9.1-2) UNRELEASED; urgency=low
 
   * rewrite packaging to use dh
   * drop obsolete DM-Upload-Allowed control file field
+  * fix lintian overrides for libwireshark3
 
  -- Balint Reczey <balint@balintreczey.hu>  Sun, 17 Mar 2013 20:33:35 +0100
 
