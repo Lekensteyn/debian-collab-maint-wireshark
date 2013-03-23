@@ -22,7 +22,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib --enable-warnings-as-errors=no --with-plugins=/usr/lib/wireshark/libwireshark3/plugins --with-lua=/usr/ --docdir=/usr/share/doc/wireshark-doc/ --with-gtk3
 
 override_dh_auto_build:
-	$(MAKE) V=1
+	$(MAKE)
 	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
 
 override_dh_strip:
