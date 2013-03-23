@@ -1,2 +1,3 @@
 usr/lib/libwsutil.so
-usr/include/wireshark/wsutil/*
+ws_symbol_export.h usr/include/wireshark
+wsutil/*.h usr/include/wireshark/wsutil

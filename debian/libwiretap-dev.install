@@ -1,2 +1,2 @@
 usr/lib/libwiretap.so
-usr/include/wireshark/wiretap/*
+wiretap/*.h usr/include/wireshark/wiretap
