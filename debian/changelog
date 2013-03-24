@@ -1,25 +1,15 @@
-wireshark (1.8.2-5) unstable; urgency=high
+wireshark (1.8.6-1) experimental; urgency=low
 
-  * security fixes from Wireshark 1.8.6:
-    - The TCP dissector could crash (CVE-2013-2475)
-    - The CSN.1 dissector could crash. Discovered by Laurent Butti.
-      (CVE-2013-2477)
-    - MMS dissector could crash. Discovered by Laurent Butti.
-      (CVE-2013-2478)
-    - The RTPS and RTPS2 dissectors could crash. Discovered by Alyssa Milburn.
-      (CVE-2013-2480)
-    - The Mount dissector could crash. Discovered by Alyssa Milburn.
-      (CVE-2013-2481)
-    - The ACN dissector could attempt to divide by zero.
-      Discovered by Alyssa Milburn. (CVE-2013-2483)
-    - The CIMD dissector could crash. Discovered by Moshe Kaplan.
-      (CVE-2013-2484)
-    - The DTLS dissector could crash. Discovered by Laurent Butti.
-      (CVE-2013-2488)
+  * New upstream release 1.8.6:
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.8.6.html
+  * drop obsolete patches back-ported from 1.8.3 and 1.8.5
+  * switch to GTK+ 3
+  * back-port a few fixes from upstream's trunk related to GTK 3
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 09 Mar 2013 12:59:06 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 14 Mar 2013 17:51:02 +0100
 
-wireshark (1.8.2-4) unstable; urgency=high
+wireshark (1.8.2-3) unstable; urgency=high
 
   * security fixes from Wireshark 1.8.5:
     - The CLNP dissector could crash. Discovered independently by
