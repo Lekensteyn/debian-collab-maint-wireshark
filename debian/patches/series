@@ -13,3 +13,6 @@
 10_0004-gdk_cairo_set_source_color-needs-to-be-set-inside-th.patch
 10_0005-Create-cr-once-per-axis-when-drawing-x-y-axels.patch
 10_0006-Remove-one-more-instance-of-destroy-create-cr.patch
+11_0001-Get-rid-of-a-GTK-warning-showing-up-when-wireshark-i.patch
+11_0002-Clear-GtkTreeStore-before-freeing-edt.patch
+11_0003-Custom-model-for-packet-details.patch
