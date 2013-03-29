@@ -24,6 +24,8 @@ override_dh_auto_configure:
 override_dh_auto_build:
 	$(MAKE)
 	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
+	# create menu icon
+	convert image/wsicon32.png image/wsicon32.xpm
 
 override_dh_strip:
 	dh_strip --dbg-package=wireshark-dbg
