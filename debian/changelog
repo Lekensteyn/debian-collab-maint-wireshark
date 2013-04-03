@@ -1,3 +1,10 @@
+wireshark (1.8.2-5wheezy2) wheezy-proposed-updates; urgency=low
+
+  * make libwsutil-dev confict with and replace wireshark-dev (<< 1.4.0~rc2-1)
+    (Closes: #704561)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 03 Apr 2013 03:22:46 +0200
+
 wireshark (1.8.2-5wheezy1) wheezy-security; urgency=high
 
   * re-upload to Wheezy security without changes in the content
