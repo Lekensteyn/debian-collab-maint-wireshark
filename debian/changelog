@@ -1,3 +1,10 @@
+wireshark (1.8.6-3) unstable; urgency=low
+
+  * make libwsutil-dev confict with and replace wireshark-dev (<< 1.4.0~rc2-1)
+    (Closes: #704561)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 03 Apr 2013 01:50:49 +0200
+
 wireshark (1.8.6-2) unstable; urgency=low
 
   * back-port GTK+ related changes from upstream (Closes: #703764)
