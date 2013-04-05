@@ -1,3 +1,10 @@
+wireshark (1.9.2-2) UNRELEASED; urgency=low
+
+  * make libwsutil-dev confict with and replace wireshark-dev (<< 1.4.0~rc2-1)
+    (Closes: #704561)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 04 Apr 2013 22:19:40 -0400
+
 wireshark (1.9.2-1) experimental; urgency=low
 
   * New upstream development snapshot 1.9.2

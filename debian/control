@@ -112,8 +112,8 @@ Package: libwsutil-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends} , libwsutil2 (= ${binary:Version})
-Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2)
-Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2)
+Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2), wireshark-dev (<< 1.4.0~rc2-1)
+Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2), wireshark-dev (<< 1.4.0~rc2-1)
 Description: network packet dissection utilities library -- shared library
  The libwsutil library provides utility functions for libwireshark2.
  .
