@@ -6,7 +6,7 @@ index 5eafa53..71a8ec7 100644
  noinst_LTLIBRARIES = libwireshark_generated.la libwireshark_asmopt.la
  lib_LTLIBRARIES = libwireshark.la
  # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
--libwireshark_la_LDFLAGS = -version-info 0:2:0 @LDFLAGS_SHAREDLIB@
+-libwireshark_la_LDFLAGS = -version-info 0:0:0 @LDFLAGS_SHAREDLIB@
 +libwireshark_la_LDFLAGS = -version-info 3:0:0 @LDFLAGS_SHAREDLIB@
  
  include Makefile.common
@@ -19,7 +19,7 @@ index fc430dc..c472a6d 100644
  noinst_LTLIBRARIES = libwiretap_generated.la
  lib_LTLIBRARIES = libwiretap.la
  # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
--libwiretap_la_LDFLAGS = -version-info 0:2:0 @LDFLAGS_SHAREDLIB@
+-libwiretap_la_LDFLAGS = -version-info 0:0:0 @LDFLAGS_SHAREDLIB@
 +libwiretap_la_LDFLAGS = -version-info 3:0:0 @LDFLAGS_SHAREDLIB@
  
  AM_NON_GENERATED_CFLAGS =-DWS_BUILD_DLL

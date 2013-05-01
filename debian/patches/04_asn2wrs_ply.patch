@@ -15,4 +15,4 @@ Author: Jakub Wilk <ubanus@users.sf.net>
 +from ply import yacc
  
  from string import maketrans
- 
+ from functools import partial
