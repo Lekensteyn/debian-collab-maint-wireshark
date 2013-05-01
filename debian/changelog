@@ -1,3 +1,12 @@
+wireshark (1.10.0~rc1-1) experimental; urgency=low
+
+  * New upstream release candidate (RC1) for 1.10.0
+  * make libwsutil-dev confict with and replace wireshark-dev (<< 1.4.0~rc2-1)
+    (Closes: #704561)
+  * use multiarch
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 28 Apr 2013 00:26:05 -0500
+
 wireshark (1.9.2-1) experimental; urgency=low
 
   * New upstream development snapshot 1.9.2

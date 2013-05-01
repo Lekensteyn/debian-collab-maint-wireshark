@@ -78,6 +78,7 @@ Description: network traffic analyzer - debug symbols
 Package: wireshark-doc
 Priority: extra
 Architecture: all
+Multi-Arch: foreign
 Section: doc
 Depends: ${misc:Depends}
 Description: network traffic analyzer - documentation
@@ -91,6 +92,8 @@ Description: network traffic analyzer - documentation
 Package: libwireshark3
 Section: libs
 Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version}), libwsutil2 (>= ${source:Version})
 Suggests: wireshark-doc (>= ${source:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
@@ -102,6 +105,8 @@ Description: network packet dissection library -- shared library
 Package: libwsutil2
 Section: libs
 Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark1 (<< 1.4.2-2)
 Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark1 (<< 1.4.2-2)
@@ -112,8 +117,8 @@ Package: libwsutil-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends} , libwsutil2 (= ${binary:Version})
-Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2)
-Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2)
+Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2), wireshark-dev (<< 1.4.0~rc2-1)
+Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2), wireshark-dev (<< 1.4.0~rc2-1)
 Description: network packet dissection utilities library -- shared library
  The libwsutil library provides utility functions for libwireshark2.
  .
@@ -123,6 +128,7 @@ Description: network packet dissection utilities library -- shared library
 Package: libwireshark-data
 Section: libs
 Architecture: all
+Multi-Arch: foreign
 Depends: ${misc:Depends}
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
@@ -149,6 +155,8 @@ Description: network packet dissection library -- development files
 Package: libwiretap3
 Section: libs
 Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Description: network packet capture library -- shared library
