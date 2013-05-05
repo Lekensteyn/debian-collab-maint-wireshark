@@ -1,6 +1,8 @@
 wireshark (1.10.0~rc1-2) UNRELEASED; urgency=low
 
   * set proper library versions for CMake builds, too
+  * update standards-version to 3.9.4
+    - shlibs files are kept, this may change in the future
 
  -- Balint Reczey <balint@balintreczey.hu>  Wed, 01 May 2013 00:03:17 -0500
 
