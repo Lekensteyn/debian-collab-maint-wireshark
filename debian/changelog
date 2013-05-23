@@ -1,3 +1,25 @@
+wireshark (1.8.7-1) unstable; urgency=high
+
+  * New upstream release 1.8.7:
+    - release notes:
+      http://www.wireshark.org/docs/relnotes/wireshark-1.8.7.html
+    - security fixes (Closes: #709167):
+      - The RELOAD dissector could go into an infinite loop.
+        Discovered by Evan Jensen. (CVE-2013-2486 CVE-2013-2487)
+      - The GTPv2 dissector could crash (CVE-2013-3555)
+      - The ASN.1 BER dissector could crash (CVE-2013-3556)
+      - The PPP CCP dissector could crash (CVE-2013-3558)
+      - The DCP ETSI dissector could crash. Discovered by Evan Jensen.
+        (CVE-2013-3559)
+      - The MPEG DSM-CC dissector could crash (CVE-2013-3560)
+      - The Websocket dissector could crash. Discovered by Moshe Kaplan.
+        (CVE-2013-3561 CVE-2013-3562)
+      - The MySQL dissector could go into an infinite loop.
+        Discovered by Moshe Kaplan.
+      - The ETCH dissector could go into a large loop. Discovered by Moshe Kaplan.
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 22 May 2013 19:31:12 -0500
+
 wireshark (1.8.6-3) unstable; urgency=low
 
   * make libwsutil-dev confict with and replace wireshark-dev (<< 1.4.0~rc2-1)
