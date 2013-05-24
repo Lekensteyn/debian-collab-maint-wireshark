@@ -1,10 +1,11 @@
-wireshark (1.10.0~rc1-2) UNRELEASED; urgency=low
+wireshark (1.10.0~rc2-1) experimental; urgency=low
 
+  * New upstream release candidate (RC2) for 1.10.0
   * set proper library versions for CMake builds, too
   * update standards-version to 3.9.4
     - shlibs files are kept, this may change in the future
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 01 May 2013 00:03:17 -0500
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 23 May 2013 14:16:18 -0500
 
 wireshark (1.10.0~rc1-1) experimental; urgency=low
 
