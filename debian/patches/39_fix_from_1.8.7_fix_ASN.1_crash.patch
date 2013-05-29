@@ -1,0 +1,54 @@
+From a098faf9d7d8073dd1e428d01d4751049ff637f7 Mon Sep 17 00:00:00 2001
+From: Gerald Combs <gerald@wireshark.org>
+Date: Mon, 13 May 2013 16:37:22 +0000
+Subject: [PATCH 2/7] Copy over with manual intervention:
+
+  ------------------------------------------------------------------------
+  r48944 | eapache | 2013-04-20 14:20:00 -0700 (Sat, 20 Apr 2013) | 5 lines
+  Changed paths:
+     M /trunk/epan/dissectors/packet-ber.c
+
+  Initialize branch_taken right at the top of dissect_ber_choice so that the
+  caller can depend on it being initialized even in peculiar error conditions.
+
+  Fixes the other half of https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8599
+  ------------------------------------------------------------------------
+
+Update the release notes.
+
+svn path=/trunk-1.8/; revision=49265
+
+Conflicts:
+	docbook/release-notes.xml
+---
+ epan/dissectors/packet-ber.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/epan/dissectors/packet-ber.c b/epan/dissectors/packet-ber.c
+index a29c931..b79b369 100644
+--- a/epan/dissectors/packet-ber.c
++++ b/epan/dissectors/packet-ber.c
+@@ -3231,6 +3231,10 @@ printf("CHOICE dissect_ber_old_choice(%s) entered len:%d\n",name,tvb_length_rema
+ #endif
+     start_offset=offset;
+ 
++    if (branch_taken) {
++        *branch_taken = -1;
++    }
++
+     if(tvb_length_remaining(tvb,offset) == 0) {
+         item = proto_tree_add_string_format(parent_tree, hf_ber_error, tvb, offset, 0, "empty_choice", "BER Error: Empty choice was found");
+         expert_add_info_format(actx->pinfo, item, PI_MALFORMED, PI_WARN, "BER Error: Empty choice was found");
+@@ -3265,9 +3269,6 @@ printf("CHOICE dissect_ber_old_choice(%s) entered len:%d\n",name,tvb_length_rema
+     /* loop over all entries until we find the right choice or
+        run out of entries */
+     ch = choice;
+-    if(branch_taken){
+-        *branch_taken=-1;
+-    }
+     first_pass = TRUE;
+     while(ch->func || first_pass){
+         if(branch_taken){
+-- 
+1.7.10.4
+

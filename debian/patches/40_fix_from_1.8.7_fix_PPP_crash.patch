@@ -1,0 +1,28 @@
+From edf6776b075828c0d6f295d8b0cd182aedcbbe1c Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Thu, 9 May 2013 12:49:31 +0000
+Subject: [PATCH 3/7] NULL terminate bit field list.  Bug 8638
+ (https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8638)
+
+svn path=/trunk/; revision=49214
+---
+ epan/dissectors/packet-ppp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-ppp.c b/epan/dissectors/packet-ppp.c
+index 6109313..7298db9 100644
+--- a/epan/dissectors/packet-ppp.c
++++ b/epan/dissectors/packet-ppp.c
+@@ -3139,7 +3139,8 @@ dissect_ccp_bsdcomp_opt(const ip_tcp_opt *optp, tvbuff_t *tvb, int offset,
+     proto_tree *field_tree;
+     static const int *vd_fields[] = {
+         &hf_ccp_opt_vd_vers,
+-        &hf_ccp_opt_vd_dict
++        &hf_ccp_opt_vd_dict,
++        NULL
+     };
+ 
+     tf = proto_tree_add_text(tree, tvb, offset, length, "%s", optp->name);
+-- 
+1.7.10.4
+

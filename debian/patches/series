@@ -31,3 +31,10 @@
 35_fix_from_1.8.6_fix_CIMD_crash.patch
 36_fix_from_1.8.6_fix_DTLS_crash.patch
 37_fix_from_1.8.6_fix_DTLS_crash-2.patch
+38_fix_from_1.8.7_fix_GTPv2_crash.patch
+39_fix_from_1.8.7_fix_ASN.1_crash.patch
+40_fix_from_1.8.7_fix_PPP_crash.patch
+41_fix_from_1.8.7_fix_DCP-ETSI_crash.patch
+42_fix_from_1.8.7_fix_DCP-ETSI_crash-2.patch
+43_fix_from_1.8.7_fix_MPEG-DSM-CC_crash.patch
+44_fix_from_1.8.7_fix_Websocket_crash.patch

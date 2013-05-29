@@ -1,3 +1,17 @@
+wireshark (1.8.2-5wheezy3) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.8.7 (Closes: #709167):
+    - The GTPv2 dissector could crash (CVE-2013-3555)
+    - The ASN.1 BER dissector could crash (CVE-2013-3557)
+    - The PPP CCP dissector could crash (CVE-2013-3558)
+    - The DCP ETSI dissector could crash. Discovered by Evan Jensen.
+      (CVE-2013-3559)
+    - The MPEG DSM-CC dissector could crash. (CVE-2013-3560)
+    - The Websocket dissector could crash. Discovered by Moshe Kaplan.
+      (CVE-2013-3562)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 28 May 2013 19:39:33 -0500
+
 wireshark (1.8.2-5wheezy2) wheezy-proposed-updates; urgency=low
 
   * make libwsutil-dev confict with and replace wireshark-dev (<< 1.4.0~rc2-1)
