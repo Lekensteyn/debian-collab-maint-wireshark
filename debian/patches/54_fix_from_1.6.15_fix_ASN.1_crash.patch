@@ -1,0 +1,54 @@
+From 63d0e63e517487da4af83f01800f8a8b6a5884ce Mon Sep 17 00:00:00 2001
+From: Gerald Combs <gerald@wireshark.org>
+Date: Tue, 14 May 2013 16:48:31 +0000
+Subject: [PATCH] Copy over r48944 by hand:
+
+  ------------------------------------------------------------------------
+  r48944 | eapache | 2013-04-20 14:20:00 -0700 (Sat, 20 Apr 2013) | 5 lines
+  Changed paths:
+     M /trunk/epan/dissectors/packet-ber.c
+
+  Initialize branch_taken right at the top of dissect_ber_choice so that the
+  caller can depend on it being initialized even in peculiar error conditions.
+
+  Fixes the other half of https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8599
+  ------------------------------------------------------------------------
+
+Update the release notes.
+
+svn path=/trunk-1.6/; revision=49288
+
+Conflicts:
+	docbook/release-notes.xml
+---
+ epan/dissectors/packet-ber.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/epan/dissectors/packet-ber.c b/epan/dissectors/packet-ber.c
+index a579af1..6ee5a0f 100644
+--- a/epan/dissectors/packet-ber.c
++++ b/epan/dissectors/packet-ber.c
+@@ -2575,6 +2575,10 @@ printf("CHOICE dissect_ber_choice(%s) entered len:%d\n",name,tvb_length_remainin
+ #endif
+ 	start_offset=offset;
+ 
++	if(branch_taken){
++		*branch_taken=-1;
++	}
++
+         if(tvb_length_remaining(tvb,offset) == 0) {
+                 item = proto_tree_add_text(parent_tree, tvb, offset, 0, "BER Error: Empty choice was found");
+                 proto_item_set_expert_flags(item, PI_MALFORMED, PI_WARN);
+@@ -2610,9 +2614,6 @@ printf("CHOICE dissect_ber_choice(%s) entered len:%d\n",name,tvb_length_remainin
+ 	/* loop over all entries until we find the right choice or
+ 	   run out of entries */
+ 	ch = choice;
+-	if(branch_taken){
+-		*branch_taken=-1;
+-	}
+ 	first_pass = TRUE;
+ 	while(ch->func || first_pass){
+ 		if(branch_taken){
+-- 
+1.7.10.4
+

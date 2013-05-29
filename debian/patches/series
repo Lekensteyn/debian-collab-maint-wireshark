@@ -45,3 +45,4 @@
 51_fix_from_1.8.6_fix_CIMD_crash.patch
 52_fix_from_1.8.6_fix_DTLS_crash.patch
 53_fix_from_1.8.6_fix_DTLS_crash-2.patch
+54_fix_from_1.6.15_fix_ASN.1_crash.patch
