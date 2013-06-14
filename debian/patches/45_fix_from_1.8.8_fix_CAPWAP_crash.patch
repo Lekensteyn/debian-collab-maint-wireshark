@@ -1,0 +1,38 @@
+From 73ca1cb1847eb15b70e901f2143f78c1fb0f5524 Mon Sep 17 00:00:00 2001
+From: Chris Maynard <Christopher.Maynard@GTECH.COM>
+Date: Sat, 14 Jul 2012 19:52:18 +0000
+Subject: [PATCH 2/8] Don't pass the return value of tvb_length_remaining() to
+ fragment_add_check(), as it might have been -1. Fixes
+ Coverity CID 280510: Improper use of negative value.
+
+svn path=/trunk/; revision=43716
+---
+ epan/dissectors/packet-capwap.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-capwap.c b/epan/dissectors/packet-capwap.c
+index f4ce143..ad05a55 100644
+--- a/epan/dissectors/packet-capwap.c
++++ b/epan/dissectors/packet-capwap.c
+@@ -1462,13 +1462,17 @@ dissect_capwap_data(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+ 
+ 	if (global_capwap_reassemble && fragment_is)
+ 	{
++		gint len_rem = tvb_length_remaining(tvb, offset);
++		if (len_rem <= 0)
++			return;
++
+ 		pinfo->fragmented = TRUE;
+ 
+ 		frag_msg = fragment_add_check(tvb, offset, pinfo,fragment_id,
+ 		                              capwap_fragment_table,
+ 		                              capwap_reassembled_table,
+ 		                              fragment_offset,
+-		                              tvb_length_remaining(tvb, offset),
++		                              len_rem,
+ 		                              fragment_more);
+ 
+ 		next_tvb = process_reassembled_data(tvb, offset, pinfo,
+-- 
+1.7.10.4
+

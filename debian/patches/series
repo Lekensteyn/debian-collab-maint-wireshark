@@ -38,3 +38,11 @@
 42_fix_from_1.8.7_fix_DCP-ETSI_crash-2.patch
 43_fix_from_1.8.7_fix_MPEG-DSM-CC_crash.patch
 44_fix_from_1.8.7_fix_Websocket_crash.patch
+45_fix_from_1.8.8_fix_CAPWAP_crash.patch
+46_fix_from_1.8.8_fix_GMR-1-BCCH_crash.patch
+47_fix_from_1.8.8_fix_PPP_crash.patch
+48_fix_from_1.8.8_fix_NBAP_crash.patch
+49_fix_from_1.8.8_fix_RDP_crash.patch
+50_fix_from_1.8.8_fix_HTTP_crash.patch
+51_fix_from_1.8.8_fix_Ixia-IxVeriWave_crash.patch
+52_fix_from_1.8.8_fix_DCP-ETSI_crash.patch

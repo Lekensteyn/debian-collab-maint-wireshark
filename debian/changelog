@@ -1,3 +1,22 @@
+wireshark (1.8.2-5wheezy4) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.8.8 (Closes: #711918):
+      - The CAPWAP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4074)
+      - The GMR-1 BCCH dissector could crash.
+        Discovered by Sylvain Munaut and Laurent Butti. (CVE-2013-4075)
+      - The PPP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4076)
+      - The NBAP dissector could crash. (CVE-2013-4077)
+      - The RDP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4078)
+      - The HTTP dissector could overrun the stack. (CVE-2013-4081)
+      - The Ixia IxVeriWave file parser could overflow the heap.
+        Discovered by Sachin Shinde. (CVE-2013-4082)
+      - The DCP ETSI dissector could crash. (CVE-2013-4083)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 13 Jun 2013 12:12:21 -0600
+
 wireshark (1.8.2-5wheezy3) wheezy-security; urgency=high
 
   * security fixes from Wireshark 1.8.7 (Closes: #709167):
