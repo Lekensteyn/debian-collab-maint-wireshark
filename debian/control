@@ -94,7 +94,7 @@ Section: libs
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version}), libwsutil2 (>= ${source:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version}), libwsutil3 (>= ${source:Version})
 Suggests: wireshark-doc (>= ${source:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
@@ -102,7 +102,7 @@ Description: network packet dissection library -- shared library
  The libwireshark library provides the network packet dissection services 
  developed by the Wireshark project.
 
-Package: libwsutil2
+Package: libwsutil3
 Section: libs
 Architecture: any
 Multi-Arch: same
@@ -116,7 +116,7 @@ Description: network packet dissection utilities library -- shared library
 Package: libwsutil-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends} , libwsutil2 (= ${binary:Version})
+Depends: ${misc:Depends} , libwsutil3 (= ${binary:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2), wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2), wireshark-dev (<< 1.4.0~rc2-1)
 Description: network packet dissection utilities library -- shared library
