@@ -1,37 +1,81 @@
-wireshark (1.8.7-1) unstable; urgency=high
+wireshark (1.10.0-2) unstable; urgency=high
 
-  * New upstream release 1.8.7:
+  * re-upload to unstable without changes
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 23 Jun 2013 23:43:35 +0100
+
+wireshark (1.10.0-1) unstable; urgency=high
+
+  * New upstream release 1.10.0
     - release notes:
-      http://www.wireshark.org/docs/relnotes/wireshark-1.8.7.html
-    - security fixes (Closes: #709167):
-      - The RELOAD dissector could go into an infinite loop.
-        Discovered by Evan Jensen. (CVE-2013-2486 CVE-2013-2487)
-      - The GTPv2 dissector could crash (CVE-2013-3555)
-      - The ASN.1 BER dissector could crash (CVE-2013-3556)
-      - The PPP CCP dissector could crash (CVE-2013-3558)
-      - The DCP ETSI dissector could crash. Discovered by Evan Jensen.
-        (CVE-2013-3559)
-      - The MPEG DSM-CC dissector could crash (CVE-2013-3560)
-      - The Websocket dissector could crash. Discovered by Moshe Kaplan.
-        (CVE-2013-3561 CVE-2013-3562)
-      - The MySQL dissector could go into an infinite loop.
-        Discovered by Moshe Kaplan.
-      - The ETCH dissector could go into a large loop. Discovered by Moshe Kaplan.
+      https://wireshark.org/docs/relnotes/wireshark-1.10.0.html
+    - security fixes (compared to 1.8.7-1) (Closes: #711918):
+      - The CAPWAP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4074)
+      - The GMR-1 BCCH dissector could crash.
+        Discovered by Sylvain Munaut and Laurent Butti. (CVE-2013-4075)
+      - The PPP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4076)
+      - The NBAP dissector could crash. (CVE-2013-4077)
+      - The RDP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4078)
+      - The GSM CBCH dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4079)
+      - The HTTP dissector could overrun the stack. (CVE-2013-4081)
+      - The Ixia IxVeriWave file parser could overflow the heap.
+        Discovered by Sachin Shinde. (CVE-2013-4082)
+      - The DCP ETSI dissector could crash. (CVE-2013-4083)
+  * 07_library-versions.patch: adjust only CMake built libraries
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 22 May 2013 19:31:12 -0500
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 12 Jun 2013 20:17:11 -0600
 
-wireshark (1.8.6-3) unstable; urgency=low
+wireshark (1.10.0~rc2-1) experimental; urgency=low
 
+  * New upstream release candidate (RC2) for 1.10.0
+  * set proper library versions for CMake builds, too
+  * update standards-version to 3.9.4
+    - shlibs files are kept, this may change in the future
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 23 May 2013 14:16:18 -0500
+
+wireshark (1.10.0~rc1-1) experimental; urgency=low
+
+  * New upstream release candidate (RC1) for 1.10.0
   * make libwsutil-dev confict with and replace wireshark-dev (<< 1.4.0~rc2-1)
     (Closes: #704561)
+  * use multiarch
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 03 Apr 2013 01:50:49 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 28 Apr 2013 00:26:05 -0500
 
-wireshark (1.8.6-2) unstable; urgency=low
+wireshark (1.9.2-1) experimental; urgency=low
 
-  * back-port GTK+ related changes from upstream (Closes: #703764)
+  * New upstream development snapshot 1.9.2
+  * drop obsolete asn2deb and idl2deb patches since they are shipped now by
+    upstream
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 23 Mar 2013 18:51:36 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 28 Mar 2013 23:46:19 +0100
+
+wireshark (1.9.1-2) experimental; urgency=low
+
+  * rewrite packaging to use dh
+  * drop obsolete DM-Upload-Allowed control file field
+  * drop obsolete lintian overrides
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 23 Mar 2013 13:06:46 +0100
+
+wireshark (1.9.1-1) experimental; urgency=low
+
+  * New upstream development snapshot 1.9.1
+  * drop obsolete man pages from asn2deb and idl2deb patches since they are
+    shipped now by upstream
+  * drop obsolete patches back-ported to improve GTK+ 3 support
+  * bump library versions due to ABI changes
+    Note that this development snapshot is uploaded to experimental and is
+    not considered to be stable.
+    The ABI may change before the final official 1.10 release without any
+    change in the shared library versions.
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 15 Mar 2013 16:46:15 +0100
 
 wireshark (1.8.6-1) experimental; urgency=low
 
