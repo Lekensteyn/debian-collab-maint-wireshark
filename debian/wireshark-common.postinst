@@ -13,7 +13,12 @@ if ! dpkg-statoverride --list $PROGRAM > /dev/null; then
 	    chown root:root $PROGRAM
 	    chmod u=rwx,go=rx $PROGRAM
 	else
-	    addgroup --quiet --system $GROUP
+	    if ! addgroup --quiet --system $GROUP; then
+		echo "Executing \"addgroup --quiet --system $GROUP\" failed."
+		echo "Most probably the $GROUP group exists, but is not a system group."
+		echo "Please delete the existing group or re-create it as a system group and try configuring wireshark-common again."
+		exit 1
+	    fi
 	    chown root:$GROUP $PROGRAM
 	    if which setcap > /dev/null ; then
                 chmod u=rwx,g=rx,o=r $PROGRAM
