@@ -111,7 +111,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark1 (<< 1.4.2-2)
 Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark1 (<< 1.4.2-2)
 Description: network packet dissection utilities library -- shared library
- The libwsutil library provides utility functions for libwireshark2.
+ The libwsutil library provides utility functions for libwireshark3.
 
 Package: libwsutil-dev
 Section: libdevel
@@ -120,7 +120,7 @@ Depends: ${misc:Depends} , libwsutil3 (= ${binary:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2), wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2), wireshark-dev (<< 1.4.0~rc2-1)
 Description: network packet dissection utilities library -- shared library
- The libwsutil library provides utility functions for libwireshark2.
+ The libwsutil library provides utility functions for libwireshark3.
  .
  This package contains the static library and the C header files that are
  needed for applications to use the libwsutil library.
