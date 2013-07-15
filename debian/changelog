@@ -4,8 +4,9 @@ wireshark (1.10.0-3) UNRELEASED; urgency=low
   * warn administrator during configuring dumpcap to allow non-root users
     to capture packets if creating the wireshark system group fails
   * refer to libwireshark3 in libwsutil-dev's description
+  * use xdg-open instead of sensible-browser
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 12 Jul 2013 13:52:28 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 15 Jul 2013 16:55:49 +0200
 
 wireshark (1.10.0-2) unstable; urgency=high
 
