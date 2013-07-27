@@ -1,54 +1,39 @@
+From 32d744be86c3b48666257f80cbdac5c8d1bf4231 Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Sat, 27 Jul 2013 10:02:36 +0200
+Subject: [PATCH] Use proper shared library versions
+
+---
+ epan/CMakeLists.txt            |    2 +-
+ epan/Makefile.am               |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
 diff --git a/epan/CMakeLists.txt b/epan/CMakeLists.txt
-index 2d022f3..43f591a 100644
+index 9b8d4d9..a3e6fe6 100644
 --- a/epan/CMakeLists.txt
 +++ b/epan/CMakeLists.txt
-@@ -1550,11 +1550,11 @@ add_library(epan ${LINK_MODE_LIB}
+@@ -1551,7 +1551,7 @@ add_library(epan ${LINK_MODE_LIB}
  
  add_dependencies(epan svnversion)
  
--set(FULL_SO_VERSION "0.0.0")
-+set(FULL_SO_VERSION "3.0.0")
+-set(FULL_SO_VERSION "3.0.1")
++set(FULL_SO_VERSION "3.1.0")
  
  set_target_properties(epan PROPERTIES COMPILE_DEFINITIONS "WS_BUILD_DLL")
  set_target_properties(epan PROPERTIES LINK_FLAGS "${WS_LINK_FLAGS}")
--set_target_properties(epan PROPERTIES VERSION ${FULL_SO_VERSION} SOVERSION 0)
-+set_target_properties(epan PROPERTIES VERSION ${FULL_SO_VERSION} SOVERSION 3)
+diff --git a/epan/Makefile.am b/epan/Makefile.am
+index a090281..d405cc9 100644
+--- a/epan/Makefile.am
++++ b/epan/Makefile.am
+@@ -56,7 +56,7 @@ ACLOCAL_AMFLAGS = `../aclocal-flags`
+ noinst_LTLIBRARIES = libwireshark_generated.la libwireshark_asmopt.la
+ lib_LTLIBRARIES = libwireshark.la
+ # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+-libwireshark_la_LDFLAGS = -version-info 3:1:1 @LDFLAGS_SHAREDLIB@
++libwireshark_la_LDFLAGS = -version-info 4:0:1 @LDFLAGS_SHAREDLIB@
  
- # discover and substitute list of include directories for ABI compatibility
- # checks
-diff --git a/wiretap/CMakeLists.txt b/wiretap/CMakeLists.txt
-index 5435482..ed99545 100644
---- a/wiretap/CMakeLists.txt
-+++ b/wiretap/CMakeLists.txt
-@@ -108,11 +108,11 @@ add_library(wiretap ${LINK_MODE_LIB}
- 	${WIRETAP_FILES}
- )
+ include Makefile.common
  
--set(FULL_SO_VERSION "0.0.0")
-+set(FULL_SO_VERSION "3.0.0")
- 
- set_target_properties(wiretap PROPERTIES COMPILE_DEFINITIONS "WS_BUILD_DLL")
- set_target_properties(wiretap PROPERTIES LINK_FLAGS "${WS_LINK_FLAGS}")
--set_target_properties(wiretap PROPERTIES VERSION ${FULL_SO_VERSION} SOVERSION 0)
-+set_target_properties(wiretap PROPERTIES VERSION ${FULL_SO_VERSION} SOVERSION 3)
- 
- # discover and substitute list of include directories for ABI compatibility
- # checks
-diff --git a/wsutil/CMakeLists.txt b/wsutil/CMakeLists.txt
-index df689bf..e91f8cb 100644
---- a/wsutil/CMakeLists.txt
-+++ b/wsutil/CMakeLists.txt
-@@ -61,11 +61,11 @@ add_library(wsutil ${LINK_MODE_LIB}
-   ${WSUTIL_FILES}
- )
- 
--set(FULL_SO_VERSION "0.0.0")
-+set(FULL_SO_VERSION "3.0.0")
- 
- set_target_properties(wsutil PROPERTIES COMPILE_DEFINITIONS "WS_BUILD_DLL")
- set_target_properties(wsutil PROPERTIES LINK_FLAGS "${WS_LINK_FLAGS}")
--set_target_properties(wsutil PROPERTIES VERSION ${FULL_SO_VERSION} SOVERSION 0)
-+set_target_properties(wsutil PROPERTIES VERSION ${FULL_SO_VERSION} SOVERSION 3)
- 
- # discover and substitute list of include directories for ABI compatibility
- # checks
+-- 
+1.7.10.4
+
