@@ -1,12 +1,42 @@
-wireshark (1.10.0-3) UNRELEASED; urgency=low
+wireshark (1.10.1-1) unstable; urgency=high
 
-  * NOT RELEASED YET
+  * New upstream release 1.10.1
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.1.html
+    - security fixes:
+      - The DCP ETSI dissector could crash (CVE-2013-4083)
+      - The P1 dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4920)
+      - The Radiotap dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4921)
+      - The DCOM ISystemActivator dissector could crash.
+        Discovered by Laurent Butti. (CVE-2013-4922, CVE-2013-4923,
+        CVE-2013-4924, CVE-2013-4925 and CVE-2013-4926)
+      - The Bluetooth SDP dissector could go into a large loop.
+        Discovered by Laurent Butti. (CVE-2013-4927)
+      - The Bluetooth OBEX dissector could go into an infinite loop.
+        (CVE-2013-4928)
+      - The DIS dissector could go into a large loop.
+        (CVE-2013-4929)
+      - The DVB-CI dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4930)
+      - The GSM RR dissector (and possibly others) could go into a large loop.
+        (CVE-2013-4931)
+      - The GSM A Common dissector could crash.
+        (CVE-2013-4932)
+      - The Netmon file parser could crash. Discovered by G. Geshev.
+        (CVE-2013-4933 and CVE-2013-4934)
+      - The ASN.1 PER dissector could crash.
+        Discovered by Oliver-Tobias Ripka. (CVE-2013-4935)
+      - The PROFINET Real-Time dissector could crash.
+        (CVE-2013-4936)
+  * fix upstream's libwireshark library's version number
   * warn administrator during configuring dumpcap to allow non-root users
     to capture packets if creating the wireshark system group fails
   * refer to libwireshark3 in libwsutil-dev's description
   * use xdg-open instead of sensible-browser
 
- -- Balint Reczey <balint@balintreczey.hu>  Mon, 15 Jul 2013 16:55:49 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 27 Jul 2013 00:20:12 +0200
 
 wireshark (1.10.0-2) unstable; urgency=high
 
