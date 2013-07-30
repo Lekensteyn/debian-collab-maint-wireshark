@@ -1,0 +1,45 @@
+From 62f94b8d034a52c0707a952ead22a774ec61e98e Mon Sep 17 00:00:00 2001
+From: Martin Kaiser <wireshark@kaiser.cx>
+Date: Tue, 9 Jul 2013 20:51:48 +0000
+Subject: [PATCH 1/4] fix
+ https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8916
+ reported by Laurent Butti
+
+a TPDU's length field must never be 0
+this length field was decremented without prior checking,
+allocating length-1 bytes of memory caused a dissector assert
+
+svn path=/trunk/; revision=50474
+---
+ epan/dissectors/packet-dvbci.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/epan/dissectors/packet-dvbci.c b/epan/dissectors/packet-dvbci.c
+index aa8379b..e495878 100644
+--- a/epan/dissectors/packet-dvbci.c
++++ b/epan/dissectors/packet-dvbci.c
+@@ -4011,13 +4011,17 @@ dissect_dvbci_tpdu_hdr(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree,
+     }
+ 
+     offset = dissect_ber_length(pinfo, tree, tvb, 1, &len_field, NULL);
+-    if (((direction==DATA_HOST_TO_CAM) && ((offset+len_field)!=tpdu_len)) ||
++    /* len_field must be at least 1 for the following t_c_id
++       c_tpdu's len_field must match tvbuff exactly
++       r_tpdu's len_field does not include the status part after the body */
++    if (len_field==0 ||
++        ((direction==DATA_HOST_TO_CAM) && ((offset+len_field)!=tpdu_len)) ||
+         ((direction==DATA_CAM_TO_HOST) && ((offset+len_field)>tpdu_len))) {
+         /* offset points to 1st byte after the length field */
+-        pi = proto_tree_add_text(
+-                tree, tvb, 1, offset-1, "Length field mismatch");
++        pi = proto_tree_add_text(tree, tvb, 1, offset-1, "Invalid length field");
+         expert_add_info_format(pinfo, pi, PI_MALFORMED, PI_ERROR,
+-                "Length field mismatch");
++                len_field==0 ? "Length field must be at least 1" :
++                               "Length field mismatch");
+         return -1;
+     }
+ 
+-- 
+1.7.10.4
+
