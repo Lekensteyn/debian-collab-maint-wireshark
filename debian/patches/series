@@ -46,3 +46,7 @@
 50_fix_from_1.8.8_fix_HTTP_crash.patch
 51_fix_from_1.8.8_fix_Ixia-IxVeriWave_crash.patch
 52_fix_from_1.8.8_fix_DCP-ETSI_crash.patch
+53_fix_from_1.8.9_fix_DVB-CI_crash.patch
+54_fix_from_1.8.9_fix_GSM-A_crash.patch
+55_fix_from_1.8.9_fix_Netmon_crash.patch
+56_fix_from_1.8.9_fix_PER_crash.patch
