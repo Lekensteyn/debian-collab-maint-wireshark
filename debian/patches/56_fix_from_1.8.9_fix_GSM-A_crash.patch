@@ -1,0 +1,195 @@
+From d19fbb52f8cb222e3f554c19b87d4d10c32a884c Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Thu, 1 Aug 2013 20:04:23 +0200
+Subject: [PATCH 2/4] Copy over with manual intervention:
+
+  ------------------------------------------------------------------------
+  r50672 | morriss | 2013-07-16 13:59:26 -0400 (Tue, 16 Jul 2013) | 8 lines
+  Changed paths:
+     M /trunk/epan/dissectors/packet-gsm_a_common.c
+
+  Fix the fuzz failure reported in https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8940 :
+
+  Test whether idx is in range or not (by seeing if it was found in the
+  value_string) before using it as an index into any of the elem_var arrays.
+
+  This fuzz failure was in elem_telv() but apply the fix to all the elem_*()
+  functions.
+  ------------------------------------------------------------------------
+
+svn path=/trunk-1.8/; revision=50675
+
+Conflicts:
+	epan/dissectors/packet-gsm_a_common.c
+---
+ epan/dissectors/packet-gsm_a_common.c |   50 ++++++++++++++++++++++++++++-----
+ 1 file changed, 43 insertions(+), 7 deletions(-)
+
+diff --git a/epan/dissectors/packet-gsm_a_common.c b/epan/dissectors/packet-gsm_a_common.c
+index 3d646ac..a9f21a5 100644
+--- a/epan/dissectors/packet-gsm_a_common.c
++++ b/epan/dissectors/packet-gsm_a_common.c
+@@ -657,6 +657,7 @@ guint16 elem_tlv(tvbuff_t *tvb, proto_tree *tree, guint8 iei, gint pdu_type, int
+ 	proto_item		*item;
+ 	const value_string	*elem_names;
+ 	gint		*elem_ett;
++	const gchar        *elem_name;
+ 	guint16 (**elem_funcs)(tvbuff_t *tvb, proto_tree *tree, guint32 offset, guint len, gchar *add_string, int string_len);
+ 
+ 	curr_offset = offset;
+@@ -669,13 +670,19 @@ guint16 elem_tlv(tvbuff_t *tvb, proto_tree *tree, guint8 iei, gint pdu_type, int
+ 	if (oct == iei){
+ 		parm_len = tvb_get_guint8(tvb, curr_offset + 1);
+ 
++	elem_name = match_strval(idx, elem_names);
++
+ 		item =
+ 		proto_tree_add_text(tree,
+ 			tvb, curr_offset, parm_len + 1 + lengt_length,
+ 			"%s%s",
+-			elem_names[idx].strptr,
++			elem_name ? elem_name : "Unknown - aborting dissection",
+ 			(name_add == NULL) || (name_add[0] == '\0') ? "" : name_add);
+ 
++        /* idx is out of range */
++        if (elem_name == NULL)
++            return(consumed);
++
+ 		subtree = proto_item_add_subtree(item, elem_ett[idx]);
+ 
+ 		proto_tree_add_uint(subtree,
+@@ -734,6 +741,7 @@ guint16 elem_tlv_e(tvbuff_t *tvb, proto_tree *tree, guint8 iei, gint pdu_type, i
+ 	proto_item		*item;
+ 	const value_string	*elem_names;
+ 	gint		*elem_ett;
++	const gchar        *elem_name;
+ 	guint16 (**elem_funcs)(tvbuff_t *tvb, proto_tree *tree, guint32 offset, guint len, gchar *add_string, int string_len);
+ 
+ 	curr_offset = offset;
+@@ -746,11 +754,17 @@ guint16 elem_tlv_e(tvbuff_t *tvb, proto_tree *tree, guint8 iei, gint pdu_type, i
+ 	if (oct == iei){
+ 		parm_len = tvb_get_ntohs(tvb, curr_offset + 1);
+ 
++		elem_name = match_strval(idx, elem_names);
++
+ 		item = proto_tree_add_text(tree, tvb, curr_offset, parm_len + 1 + 2,
+ 			"%s%s",
+-			elem_names[idx].strptr,
++			elem_name ? elem_name : "Unknown - aborting dissection",
+ 			(name_add == NULL) || (name_add[0] == '\0') ? "" : name_add);
+ 
++        /* idx is out of range */
++        if (elem_name == NULL)
++            return(consumed);
++
+ 		subtree = proto_item_add_subtree(item, elem_ett[idx]);
+ 
+ 		proto_tree_add_uint(subtree,
+@@ -808,6 +822,7 @@ guint16 elem_tv(tvbuff_t *tvb, proto_tree *tree, guint8 iei, gint pdu_type, int
+ 	proto_item		*item;
+ 	const value_string	*elem_names;
+ 	gint		*elem_ett;
++    const gchar        *elem_name;
+ 	guint16 (**elem_funcs)(tvbuff_t *tvb, proto_tree *tree, guint32 offset, guint len, gchar *add_string, int string_len);
+ 
+ 	curr_offset = offset;
+@@ -823,9 +838,13 @@ guint16 elem_tv(tvbuff_t *tvb, proto_tree *tree, guint8 iei, gint pdu_type, int
+ 			proto_tree_add_text(tree,
+ 			tvb, curr_offset, -1,
+ 			"%s%s",
+-			elem_names[idx].strptr,
++             elem_name ? elem_name : "Unknown - aborting dissection",
+ 				(name_add == NULL) || (name_add[0] == '\0') ? "" : name_add);
+ 
++        /* idx is out of range */
++        if (elem_name == NULL)
++            return(consumed);
++
+ 		subtree = proto_item_add_subtree(item, elem_ett[idx]);
+ 
+ 		proto_tree_add_uint(subtree,
+@@ -880,6 +899,7 @@ guint16 elem_tv_short(tvbuff_t *tvb, proto_tree *tree, guint8 iei, gint pdu_type
+ 	proto_item		*item;
+ 	const value_string	*elem_names;
+ 	gint		*elem_ett;
++	const gchar        *elem_name;
+ 	guint16 (**elem_funcs)(tvbuff_t *tvb, proto_tree *tree, guint32 offset, guint len, gchar *add_string, int string_len);
+ 	char buf[10+1];
+ 
+@@ -896,9 +916,13 @@ guint16 elem_tv_short(tvbuff_t *tvb, proto_tree *tree, guint8 iei, gint pdu_type
+ 			proto_tree_add_text(tree,
+ 				tvb, curr_offset, -1,
+ 				"%s%s",
+-				elem_names[idx].strptr,
++                 elem_name ? elem_name : "Unknown - aborting dissection",
+ 				(name_add == NULL) || (name_add[0] == '\0') ? "" : name_add);
+ 
++        /* idx is out of range */
++        if (elem_name == NULL)
++            return(consumed);
++
+ 		subtree = proto_item_add_subtree(item, elem_ett[idx]);
+ 
+ 		other_decode_bitfield_value(buf, oct, 0xf0, 8);
+@@ -962,7 +986,7 @@ guint16 elem_t(tvbuff_t *tvb, proto_tree *tree, guint8 iei, gint pdu_type, int i
+ 			get_hf_elem_id(pdu_type), tvb,
+ 			curr_offset, 1, oct,
+ 			"%s%s",
+-			elem_names[idx].strptr,
++            val_to_str(idx, elem_names, "Unknown (%u)"),
+ 			(name_add == NULL) || (name_add[0] == '\0') ? "" : name_add);
+ 
+ 		consumed = 1;
+@@ -984,6 +1008,7 @@ elem_lv(tvbuff_t *tvb, proto_tree *tree, gint pdu_type, int idx, guint32 offset,
+ 	proto_item		*item;
+ 	const value_string	*elem_names;
+ 	gint		*elem_ett;
++    const gchar        *elem_name;
+ 	guint16 (**elem_funcs)(tvbuff_t *tvb, proto_tree *tree, guint32 offset, guint len, gchar *add_string, int string_len);
+ 
+ 	curr_offset = offset;
+@@ -997,9 +1022,13 @@ elem_lv(tvbuff_t *tvb, proto_tree *tree, gint pdu_type, int idx, guint32 offset,
+ 		proto_tree_add_text(tree,
+ 			tvb, curr_offset, parm_len + 1,
+ 			"%s%s",
+-			elem_names[idx].strptr,
++             elem_name ? elem_name : "Unknown - aborting dissection",
+ 			(name_add == NULL) || (name_add[0] == '\0') ? "" : name_add);
+ 
++    /* idx is out of range */
++    if (elem_name == NULL)
++        return(consumed);
++
+ 	subtree = proto_item_add_subtree(item, elem_ett[idx]);
+ 
+ 	proto_tree_add_uint(subtree, hf_gsm_a_length, tvb,
+@@ -1047,6 +1076,7 @@ guint16 elem_lv_e(tvbuff_t *tvb, proto_tree *tree, gint pdu_type, int idx, guint
+ 	proto_item		*item;
+ 	const value_string	*elem_names;
+ 	gint		*elem_ett;
++    const gchar        *elem_name;
+ 	guint16 (**elem_funcs)(tvbuff_t *tvb, proto_tree *tree, guint32 offset, guint len, gchar *add_string, int string_len);
+ 
+ 	curr_offset = offset;
+@@ -1056,11 +1086,17 @@ guint16 elem_lv_e(tvbuff_t *tvb, proto_tree *tree, gint pdu_type, int idx, guint
+ 
+ 	parm_len = tvb_get_ntohs(tvb, curr_offset);
+ 
++    elem_name = match_strval(idx, elem_names);
++
+ 	item = proto_tree_add_text(tree, tvb, curr_offset, parm_len + 2,
+ 			"%s%s",
+-			elem_names[idx].strptr,
++            elem_name ? elem_name : "Unknown - aborting dissection",
+ 			(name_add == NULL) || (name_add[0] == '\0') ? "" : name_add);
+ 
++    /* idx is out of range */
++    if (elem_name == NULL)
++        return(consumed);
++
+ 	subtree = proto_item_add_subtree(item, elem_ett[idx]);
+ 
+ 	proto_tree_add_uint(subtree, hf_gsm_a_length, tvb,
+-- 
+1.7.10.4
+

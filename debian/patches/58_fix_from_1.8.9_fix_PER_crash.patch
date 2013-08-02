@@ -1,0 +1,47 @@
+From c5de700e84c5f06a1c6ebaa956f85381f70d5fe2 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Mon, 17 Jun 2013 19:25:45 +0000
+Subject: [PATCH 4/4] Ensure that the length parameter to
+ dissect_per_length_determinant is initialized even in
+ cases where we error or otherwise fail to dissect.
+
+Fixes https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8722
+
+Thanks to Pascal for his help digging through this one.
+
+svn path=/trunk/; revision=49985
+---
+ epan/dissectors/packet-per.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/epan/dissectors/packet-per.c b/epan/dissectors/packet-per.c
+index 7bb8c22..479ac6d 100644
+--- a/epan/dissectors/packet-per.c
++++ b/epan/dissectors/packet-per.c
+@@ -426,6 +426,7 @@ dissect_per_length_determinant(tvbuff_t *tvb, guint32 offset, asn1_ctx_t *actx _
+ 					num_bits = 16;
+ 				}
+ 				else if (i==1 && val==3) { /* bits 8 and 7 both 1, so unconstrained */
++					*length = 0;
+ 					PER_NOT_DECODED_YET("10.9 Unconstrained");
+ 					return offset;
+ 				}
+@@ -457,6 +458,7 @@ dissect_per_length_determinant(tvbuff_t *tvb, guint32 offset, asn1_ctx_t *actx _
+ 
+ 			return offset;
+ 		}
++		*length = 0;
+ 		PER_NOT_DECODED_YET("10.9 Unaligned");
+ 		return offset;
+ 
+@@ -483,6 +485,7 @@ dissect_per_length_determinant(tvbuff_t *tvb, guint32 offset, asn1_ctx_t *actx _
+ 		}
+ 		return offset;
+ 	}
++	*length = 0;
+ 	PER_NOT_DECODED_YET("10.9.3.8.1");
+ 	return offset;
+ }
+-- 
+1.7.10.4
+

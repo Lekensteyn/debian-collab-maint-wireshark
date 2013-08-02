@@ -2,8 +2,15 @@ wireshark (1.2.11-6+squeeze11) oldstable-security; urgency=high
 
   * security fixes from Wireshark 1.6.15 (Closes: #709167):
     - The ASN.1 BER dissector could crash (CVE-2013-3557)
+  * security fixes from Wireshark 1.8.9:
+    - The DCP ETSI dissector could crash. (CVE-2013-4083)
+    - The GSM A Common dissector could crash. (CVE-2013-4932)
+    - The Netmon file parser could crash. Discovered by G. Geshev.
+      (CVE-2013-4933 and CVE-2013-4934)
+    - The ASN.1 PER dissector could crash.
+      Discovered by Oliver-Tobias Ripka. (CVE-2013-4935)
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 29 May 2013 12:02:47 -0500
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 01 Aug 2013 21:05:36 +0200
 
 wireshark (1.2.11-6+squeeze10) stable-security; urgency=high
 

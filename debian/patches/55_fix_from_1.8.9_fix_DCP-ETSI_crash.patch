@@ -1,0 +1,49 @@
+From 941fd723b5dd7a2668526affedbd58e88b0dfba8 Mon Sep 17 00:00:00 2001
+From: Gerald Combs <gerald@wireshark.org>
+Date: Thu, 6 Jun 2013 21:04:41 +0000
+Subject: [PATCH 1/4] Copy over r49802 from the trunk:
+
+  ------------------------------------------------------------------------
+  r49802 | eapache | 2013-06-05 19:53:36 -0700 (Wed, 05 Jun 2013) | 6 lines
+  Changed paths:
+     M /trunk/epan/dissectors/packet-dcp-etsi.c
+
+  From myself and Julian Cable via (and fixing)
+  https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=8717
+
+  Don't add a DCP-ETSI fragment for reassembly if the length is wrong.
+  ------------------------------------------------------------------------
+
+Update the release notes.
+
+svn path=/trunk-1.6/; revision=49822
+
+Conflicts:
+	docbook/release-notes.xml
+	epan/dissectors/packet-dcp-etsi.c
+---
+ epan/dissectors/packet-dcp-etsi.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/epan/dissectors/packet-dcp-etsi.c b/epan/dissectors/packet-dcp-etsi.c
+index 9f9263c..dfb52d0 100644
+--- a/epan/dissectors/packet-dcp-etsi.c
++++ b/epan/dissectors/packet-dcp-etsi.c
+@@ -527,10 +527,10 @@ dissect_pft(tvbuff_t * tvb, packet_info * pinfo, proto_tree * tree)
+       if(li)
+         proto_item_append_text(li, " (length error (%d))", real_len);
+     }
+-    next_tvb = dissect_pft_fragmented(tvb, pinfo, pft_tree,
+-                                      findex, fcount, seq, offset, real_len,
+-                                      fec, rsk, rsz
+-                                      );
++    else {
++      next_tvb = dissect_pft_fragmented(tvb, pinfo, pft_tree, findex, fcount,
++                                        seq, offset, real_len, fec, rsk, rsz);
++    }
+     pinfo->fragmented = save_fragmented;
+   } else {
+     next_tvb = tvb_new_subset (tvb, offset, -1, -1);
+-- 
+1.7.10.4
+
