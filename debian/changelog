@@ -1,3 +1,15 @@
+wireshark (1.8.2-5wheezy6) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.8.10:
+    - NBAP dissector could crash. Discovered by Laurent Butti.
+      (No assigned CVE number)
+    - The RTPS dissector could overflow a buffer. Discovered by
+      Ben Schmidt. (No assigned CVE number)
+    - The LDAP dissector could crash. (No assigned CVE number)
+    - The Netmon file parser could crash. Discovered by G. Geshev.
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 10 Sep 2013 20:48:24 +0200
+
 wireshark (1.8.2-5wheezy5) wheezy-security; urgency=high
 
   * security fixes from Wireshark 1.8.9:

@@ -1,0 +1,104 @@
+From 4c1a6b6d71be65da260b6f912f65e002309df130 Mon Sep 17 00:00:00 2001
+From: Gerald Combs <gerald@wireshark.org>
+Date: Tue, 10 Sep 2013 00:07:27 +0000
+Subject: [PATCH 2/4] Copy over r49673 from the trunk:
+
+  ------------------------------------------------------------------------
+  r49673 | guy | 2013-05-31 23:48:37 -0700 (Fri, 31 May 2013) | 7 lines
+  Changed paths:
+     M /trunk/epan/filesystem.c
+     M /trunk/wiretap/netmon.c
+
+  When allocating the frame table for a NetMon file, use g_try_malloc(),
+  and fail with ENOMEM if that fails (and the frame table is not empty -
+  g_try_malloc() will return NULL if you ask it to allocate zero bytes).
+
+  Have an error message for ENOMEM on an open that attempts to tell the
+  user what the problem is without making their head explode.
+  ------------------------------------------------------------------------
+
+Update the release notes.
+
+svn path=/trunk-1.8/; revision=51911
+
+Conflicts:
+	docbook/release-notes.xml
+---
+ epan/filesystem.c |   43 +++++++++++++++++++++++++++++++++++++++++++
+ wiretap/netmon.c  |    6 +++++-
+ 2 files changed, 48 insertions(+), 1 deletion(-)
+
+diff --git a/epan/filesystem.c b/epan/filesystem.c
+index ff0c9df..5c0c1af 100644
+--- a/epan/filesystem.c
++++ b/epan/filesystem.c
+@@ -1655,6 +1655,49 @@ file_open_error_message(int err, gboolean for_writing)
+         errmsg = "The file \"%s\" could not be created because an invalid filename was specified.";
+         break;
+ 
++    case ENOMEM:
++        /*
++         * The problem probably has nothing to do with how much RAM the
++         * user has on their machine, so don't confuse them by saying
++         * "memory".  The problem is probably either virtual address
++         * space or swap space.
++         */
++#if GLIB_SIZEOF_VOID_P == 4
++        /*
++         * ILP32; we probably ran out of virtual address space.
++         */
++#define ENOMEM_REASON "it can't be handled by a 32-bit application"
++#else
++        /*
++         * LP64 or LLP64; we probably ran out of swap space.
++         */
++#if defined(_WIN32)
++        /*
++         * You need to make the pagefile bigger.
++         */
++#define ENOMEM_REASON "the pagefile is too small"
++#elif defined(__APPLE__)
++        /*
++         * dynamic_pager couldn't, or wouldn't, create more swap files.
++         */
++#define ENOMEM_REASON "your system ran out of swap file space"
++#else
++        /*
++         * Either you have a fixed swap partition or a fixed swap file,
++         * and it needs to be made bigger.
++         *
++         * This is UN*X, but it's not OS X, so we assume the user is
++         * *somewhat* nerdy.
++         */
++#define ENOMEM_REASON "your system is out of swap space"
++#endif
++#endif /* GLIB_SIZEOF_VOID_P == 4 */
++        if (for_writing)
++            errmsg = "The file \"%s\" could not be created because" ENOMEM_REASON ".";
++        else
++            errmsg = "The file \"%s\" could not be opened because" ENOMEM_REASON ".";
++        break;
++
+     default:
+         g_snprintf(errmsg_errno, sizeof(errmsg_errno),
+                "The file \"%%s\" could not be %s: %s.",
+diff --git a/wiretap/netmon.c b/wiretap/netmon.c
+index 58b8865..8ec8c08 100644
+--- a/wiretap/netmon.c
++++ b/wiretap/netmon.c
+@@ -367,7 +367,11 @@ int netmon_open(wtap *wth, int *err, gchar **err_info)
+ 	if (file_seek(wth->fh, frame_table_offset, SEEK_SET, err) == -1) {
+ 		return -1;
+ 	}
+-	frame_table = (guint32 *)g_malloc(frame_table_length);
++	frame_table = (guint32 *)g_try_malloc(frame_table_length);
++	if (frame_table_length != 0 && frame_table == NULL) {
++		*err = ENOMEM;	/* we assume we're out of memory */
++		return -1;
++	}
+ 	errno = WTAP_ERR_CANT_READ;
+ 	bytes_read = file_read(frame_table, frame_table_length, wth->fh);
+ 	if ((guint32)bytes_read != frame_table_length) {
+-- 
+1.7.10.4
+
