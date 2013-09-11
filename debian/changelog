@@ -1,3 +1,15 @@
+wireshark (1.2.11-6+squeeze12) oldstable-security; urgency=high
+
+  * security fixes from Wireshark 1.8.10:
+    - The RTPS dissector could overflow a buffer. Discovered by Ben Schmidt.
+      (No assiged CVE number)
+    - The LDAP dissector could crash.
+      (No assiged CVE number)
+    - The Netmon file parser could crash. Discovered by G. Geshev.
+      (No assiged CVE number)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 11 Sep 2013 10:31:19 +0200
+
 wireshark (1.2.11-6+squeeze11) oldstable-security; urgency=high
 
   * security fixes from Wireshark 1.6.15 (Closes: #709167):

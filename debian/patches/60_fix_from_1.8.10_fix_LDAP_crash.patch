@@ -1,0 +1,47 @@
+From 4911ee743974a309b7feeeae6af6c42b4cc9859a Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Sun, 25 Aug 2013 17:31:15 +0000
+Subject: [PATCH 1/2] Make sure our ldap_call_response_t struct is always
+ completely initialized, fixing a "Conditional jump or
+ move depends on uninitialised value" error found by
+ valgrind fuzzing.
+
+svn path=/trunk/; revision=51516
+
+Conflicts:
+	asn1/ldap/packet-ldap-template.c
+	epan/dissectors/packet-ldap.c
+---
+ asn1/ldap/packet-ldap-template.c |    2 ++
+ epan/dissectors/packet-ldap.c    |    2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/asn1/ldap/packet-ldap-template.c b/asn1/ldap/packet-ldap-template.c
+index c467a96..d40ad1b 100644
+--- a/asn1/ldap/packet-ldap-template.c
++++ b/asn1/ldap/packet-ldap-template.c
+@@ -618,6 +618,8 @@ ldap_match_call_response(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, gu
+           lcr.req_frame=0;
+           lcr.rep_frame=pinfo->fd->num;
+           break;
++        default:
++          return NULL;
+       }
+       lcrp=g_hash_table_lookup(ldap_info->matched, &lcr);
+ 
+diff --git a/epan/dissectors/packet-ldap.c b/epan/dissectors/packet-ldap.c
+index b92c089..6eefe9a 100644
+--- a/epan/dissectors/packet-ldap.c
++++ b/epan/dissectors/packet-ldap.c
+@@ -801,6 +801,8 @@ ldap_match_call_response(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, gu
+           lcr.req_frame=0;
+           lcr.rep_frame=pinfo->fd->num;
+           break;
++        default:
++          return NULL;
+       }
+       lcrp=g_hash_table_lookup(ldap_info->matched, &lcr);
+ 
+-- 
+1.7.10.4
+
