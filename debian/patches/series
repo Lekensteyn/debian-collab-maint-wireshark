@@ -46,3 +46,10 @@
 52_fix_from_1.8.6_fix_DTLS_crash.patch
 53_fix_from_1.8.6_fix_DTLS_crash-2.patch
 54_fix_from_1.6.15_fix_ASN.1_crash.patch
+55_fix_from_1.8.9_fix_DCP-ETSI_crash.patch
+56_fix_from_1.8.9_fix_GSM-A_crash.patch
+57_fix_from_1.8.9_fix_Netmon_crash.patch
+58_fix_from_1.8.9_fix_PER_crash.patch
+59_fix_from_1.8.10_fix_RTPS_crash.patch
+60_fix_from_1.8.10_fix_LDAP_crash.patch
+61_fix_from_1.8.10_fix_Netmon_crash.patch

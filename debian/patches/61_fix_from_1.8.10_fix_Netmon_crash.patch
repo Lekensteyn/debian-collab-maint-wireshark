@@ -1,0 +1,51 @@
+From d11d38620ef953e839d4b0a918e236b4e38578b0 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Thu, 5 Sep 2013 12:45:42 +0000
+Subject: [PATCH 2/2] From Peter Hatina via
+ https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9104
+
+Fix double-free on corrupt netmon file. Wiretap frees the struct for us, we
+don't need to free it as well.
+
+svn path=/trunk-1.8/; revision=51781
+
+Conflicts:
+	wiretap/netmon.c
+---
+ wiretap/netmon.c |    4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/wiretap/netmon.c b/wiretap/netmon.c
+index 7dcf93e..bcb589d 100644
+--- a/wiretap/netmon.c
++++ b/wiretap/netmon.c
+@@ -270,14 +270,12 @@ int netmon_open(wtap *wth, int *err, gchar **err_info)
+ 		*err = WTAP_ERR_UNSUPPORTED;
+ 		*err_info = g_strdup_printf("netmon: frame table length is %u, which is not a multiple of the size of an entry",
+ 		    frame_table_length);
+-		g_free(wth->capture.netmon);
+ 		return -1;
+ 	}
+ 	if (frame_table_size == 0) {
+ 		*err = WTAP_ERR_UNSUPPORTED;
+ 		*err_info = g_strdup_printf("netmon: frame table length is %u, which means it's less than one entry in size",
+ 		    frame_table_length);
+-		g_free(wth->capture.netmon);
+ 		return -1;
+ 	}
+ 	/*
+@@ -297,11 +295,9 @@ int netmon_open(wtap *wth, int *err, gchar **err_info)
+ 		*err = WTAP_ERR_UNSUPPORTED;
+ 		*err_info = g_strdup_printf("netmon: frame table length is %u, which is larger than we support",
+ 		    frame_table_length);
+-		g_free(wth->capture.netmon);
+ 		return -1;
+ 	}
+ 	if (file_seek(wth->fh, frame_table_offset, SEEK_SET, err) == -1) {
+-		g_free(wth->capture.netmon);
+ 		return -1;
+ 	}
+ 	frame_table = g_malloc(frame_table_length);
+-- 
+1.7.10.4
+

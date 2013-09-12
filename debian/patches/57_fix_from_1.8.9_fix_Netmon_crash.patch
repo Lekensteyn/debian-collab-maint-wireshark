@@ -1,0 +1,53 @@
+From 75be23c4372fdad0c5e1d74ebb81c7130623a773 Mon Sep 17 00:00:00 2001
+From: Gerald Combs <gerald@wireshark.org>
+Date: Tue, 16 Jul 2013 23:19:54 +0000
+Subject: [PATCH 3/4] Copy over r49697 with manual intervention:
+
+  ------------------------------------------------------------------------
+  r49697 | guy | 2013-06-02 11:09:13 -0700 (Sun, 02 Jun 2013) | 6 lines
+  Changed paths:
+     M /trunk/wiretap/netmon.c
+
+  Initialize the frame_table_size field of the private data to 0 and the
+  frame_table field to NULL before trying to allocate the frame table, so
+  that if we fail before we allocate the frame table, the attempt to free
+  the private data doesn't crash due to the frame_table field containing a
+  bogus pointer.
+  ------------------------------------------------------------------------
+
+Update the release notes.
+
+svn path=/trunk-1.8/; revision=50684
+
+Conflicts:
+	docbook/release-notes.xml
+
+Conflicts:
+	wiretap/netmon.c
+---
+ wiretap/netmon.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/wiretap/netmon.c b/wiretap/netmon.c
+index c82ff9f..7dcf93e 100644
+--- a/wiretap/netmon.c
++++ b/wiretap/netmon.c
+@@ -240,6 +240,15 @@ int netmon_open(wtap *wth, int *err, gchar **err_info)
+ 	wth->capture.netmon->version_major = hdr.ver_major;
+ 
+ 	/*
++	 * No frame table allocated yet; initialize these in case we
++	 * get an error before allocating it or when trying to allocate
++	 * it, so that the attempt to release the private data on failure
++	 * doesn't crash.
++	 */
++	wth->capture.netmon->frame_table_size = 0;
++	wth->capture.netmon->frame_table = NULL;
++
++	/*
+ 	 * Get the offset of the frame index table.
+ 	 */
+ 	frame_table_offset = pletohl(&hdr.frametableoffset);
+-- 
+1.7.10.4
+
