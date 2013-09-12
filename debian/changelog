@@ -1,8 +1,23 @@
-wireshark (1.10.1-1~bpo70+1) wheezy-backports; urgency=low
+wireshark (1.10.2-1) unstable; urgency=high
 
-  * Rebuild for wheezy-backports.
+  * New upstream release 1.10.2
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.2.html
+    - security fixes:
+      - The Bluetooth HCI ACL dissector could crash. Discovered by
+        Laurent Butti. (No assigned CVE number)
+      - The NBAP dissector could crash. Discovered by Laurent Butti.
+        (No assigned CVE number)
+      - The ASSA R3 dissector could go into an infinite loop.
+        Discovered by Ben Schmidt. (No assigned CVE number)
+      - The RTPS dissector could overflow a buffer. Discovered by
+        Ben Schmidt. (No assigned CVE number)
+      - The MQ dissector could crash. (No assigned CVE number)
+      - The LDAP dissector could crash. (No assigned CVE number)
+      - The Netmon file parser could crash. Discovered by G. Geshev.
+        (No assigned CVE number)
 
- -- Balint Reczey <balint@balintreczey.hu>  Tue, 30 Jul 2013 18:37:34 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 10 Sep 2013 18:25:15 +0200
 
 wireshark (1.10.1-1) unstable; urgency=high
 
