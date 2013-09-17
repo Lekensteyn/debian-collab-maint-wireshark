@@ -1,3 +1,13 @@
+wireshark (1.10.2-2) UNRELEASED; urgency=low
+
+  [ Yukio Shiiya ]
+  * install supported file types to shared MIME database (Closes: #723133)
+
+  [ Balint Reczey]
+  * ship all scaled icons
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 17 Sep 2013 09:11:31 +0200
+
 wireshark (1.10.2-1) unstable; urgency=high
 
   * New upstream release 1.10.2
