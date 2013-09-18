@@ -1,0 +1,26 @@
+From 3db47e653e20c16a24c4a27b188c0b9d3c05b160 Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Wed, 18 Sep 2013 21:13:36 +0000
+Subject: [PATCH] Prefer newer Lua versions
+
+svn path=/trunk/; revision=52140
+---
+ acinclude.m4 |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/acinclude.m4 b/acinclude.m4
+index 9743c07..4a8b80b 100644
+--- a/acinclude.m4
++++ b/acinclude.m4
+@@ -801,7 +801,7 @@ AC_DEFUN([AC_WIRESHARK_LIBLUA_CHECK],[
+ 		# and we just add "-llua -lliblua" to the used libs.
+ 		#
+ 		AC_MSG_CHECKING(Lua version)
+-		for i in 5.0 5.1 5.2
++		for i in 5.2 5.1 5.0
+ 		do
+ 			[[ -d "/usr/include/lua$i" ]] && lua_ver=$i
+ 		done
+-- 
+1.7.10.4
+
