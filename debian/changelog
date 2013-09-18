@@ -1,4 +1,4 @@
-wireshark (1.10.2-3) UNRELEASED; urgency=low
+wireshark (1.10.2-2) UNRELEASED; urgency=low
 
   [ Yukio Shiiya ]
   * install supported file types to shared MIME database (Closes: #723133)
