@@ -1,4 +1,4 @@
-wireshark (1.10.2-2) UNRELEASED; urgency=low
+wireshark (1.10.2-2) unstable; urgency=low
 
   [ Yukio Shiiya ]
   * install supported file types to shared MIME database (Closes: #723133)
@@ -7,7 +7,7 @@ wireshark (1.10.2-2) UNRELEASED; urgency=low
   * ship all scaled icons
   * switch to Lua 5.2 (Closes: #723683)
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 18 Sep 2013 22:52:37 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 30 Sep 2013 11:13:15 +0200
 
 wireshark (1.10.2-1) unstable; urgency=high
 
