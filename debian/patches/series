@@ -54,3 +54,7 @@
 58_fix_from_1.8.10_fix_Netmon_crash-2.patch
 59_fix_from_1.8.10_fix_LDAP_and_RTPS_crash.patch
 60_fix_from_1.8.10_fix_NBAP_crash.patch
+61_fix_from_1.8.11_fix_IEEE-802.15.4_crash.patch
+62_fix_from_1.8.11_fix_NBAP_crash.patch
+63_fix_from_1.8.11_fix_SIP_crash.patch
+64_fix_from_1.8.11_fix_TCP_crash.patch

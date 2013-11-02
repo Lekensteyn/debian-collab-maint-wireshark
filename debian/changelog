@@ -1,3 +1,15 @@
+wireshark (1.8.2-5wheezy7) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.8.11:
+    - The IEEE 802.15.4 dissector could crash. (CVE-2013-6336)
+    - The NBAP dissector could crash. Discovered by Laurent Butti.
+      (CVE-2013-6337)
+    - The SIP dissector could crash.
+      (CVE-2013-6338)
+    - The TCP dissector could crash. (CVE-2013-6340)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 02 Nov 2013 16:20:36 +0100
+
 wireshark (1.8.2-5wheezy6) wheezy-security; urgency=high
 
   * security fixes from Wireshark 1.8.10:
