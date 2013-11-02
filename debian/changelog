@@ -1,3 +1,19 @@
+wireshark (1.10.3-1) unstable; urgency=high
+
+  * New upstream release 1.10.3
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.3.html
+    - security fixes:
+      - The IEEE 802.15.4 dissector could crash. (CVE-2013-6336)
+      - The NBAP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-6337)
+      - The SIP dissector could crash. (CVE-2013-6338)
+      - The OpenWire dissector could go into a large loop.
+        Discovered by Murali. (CVE-2013-6339)
+      - The TCP dissector could crash. (CVE-2013-6340)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 01 Nov 2013 21:55:04 +0100
+
 wireshark (1.10.2-2) unstable; urgency=low
 
   [ Yukio Shiiya ]
