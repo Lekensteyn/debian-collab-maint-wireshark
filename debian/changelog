@@ -1,3 +1,10 @@
+wireshark (1.2.11-6+squeeze13) oldstable-security; urgency=high
+
+  * security fixes from Wireshark 1.8.11:
+    - The TCP dissector could crash. (CVE-2013-6340)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 03 Nov 2013 13:08:01 +0100
+
 wireshark (1.2.11-6+squeeze12) oldstable-security; urgency=high
 
   * security fixes from Wireshark 1.8.10:
