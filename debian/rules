@@ -8,13 +8,7 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/buildflags.mk
 
-DEB_HOST_ARCH_CPU       ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU)
 DEB_HOST_MULTIARCH      ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
-
-# Enable IEEE-conformant floating point math on alphas (not the default)
-ifeq (alpha,$(DEB_HOST_ARCH_CPU))
-  CFLAGS += -mieee
-endif
 
 %:
 	dh $@ --with autoreconf --with python2 --buildsystem autoconf

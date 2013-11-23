@@ -1,3 +1,10 @@
+wireshark (1.10.3-2) UNRELEASED; urgency=low
+
+  * drop adding -mieee flag to CFLAGS on Alpha, since it is already added
+    by default
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 23 Nov 2013 14:53:37 +0100
+
 wireshark (1.10.3-1) unstable; urgency=high
 
   * New upstream release 1.10.3
