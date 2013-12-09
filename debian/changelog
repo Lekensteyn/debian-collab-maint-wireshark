@@ -3,6 +3,7 @@ wireshark (1.10.3-2) UNRELEASED; urgency=low
   * drop adding -mieee flag to CFLAGS on Alpha, since it is already added
     by default
   * don't enable hardening in debian/rules explicitly, let dh govern it
+  * ship stat_menu.h in libwireshark-dev (Closes: #731765)
 
  -- Balint Reczey <balint@balintreczey.hu>  Sat, 23 Nov 2013 14:53:37 +0100
 
