@@ -58,3 +58,4 @@
 62_fix_from_1.8.11_fix_NBAP_crash.patch
 63_fix_from_1.8.11_fix_SIP_crash.patch
 64_fix_from_1.8.11_fix_TCP_crash.patch
+65_fix_from_1.8.12_fix_NTLMSSPv2_crash.patch
