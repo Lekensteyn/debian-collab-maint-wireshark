@@ -1,3 +1,34 @@
+wireshark (1.8.2-5wheezy9) wheezy-security; urgency=high
+
+  * security fixes from (not yet released) Wireshark 1.8.13:
+    -  The BSSGP dissector could crash. Discovered by Laurent Butti.
+       (CVE-2013-7113)
+       The exploit provided for CVE-2013-7113 does not crash 1.8.2-5wheezy8
+       and earlier versions, but a modified exploit could. The fix is
+       back-ported from Wireshark's 1.8.x branch.
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 19 Dec 2013 19:25:08 +0100
+
+wireshark (1.8.2-5wheezy8) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.8.12:
+    - The NTLMSSP v2 dissector could crash. Discovered by Garming Sam.
+      (CVE-2013-7114)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 18 Dec 2013 16:24:01 +0100
+
+wireshark (1.8.2-5wheezy7) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.8.11:
+    - The IEEE 802.15.4 dissector could crash. (CVE-2013-6336)
+    - The NBAP dissector could crash. Discovered by Laurent Butti.
+      (CVE-2013-6337)
+    - The SIP dissector could crash.
+      (CVE-2013-6338)
+    - The TCP dissector could crash. (CVE-2013-6340)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 02 Nov 2013 16:20:36 +0100
+
 wireshark (1.8.2-5wheezy6) wheezy-security; urgency=high
 
   * security fixes from Wireshark 1.8.10:

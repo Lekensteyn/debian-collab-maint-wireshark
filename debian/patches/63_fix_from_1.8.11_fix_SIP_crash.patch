@@ -1,0 +1,46 @@
+From 7038c64e7bdd0cd7216f5055cba5c9a9d4a92d08 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Fri, 4 Oct 2013 10:29:57 +0000
+Subject: [PATCH 3/4] Fix
+ https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9228
+ : Ensure that decompressed tvb exists before trying to
+ add it to the tree
+
+svn path=/trunk/; revision=52354
+---
+ epan/dissectors/packet-sip.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/epan/dissectors/packet-sip.c b/epan/dissectors/packet-sip.c
+index 164db76..e208766 100644
+--- a/epan/dissectors/packet-sip.c
++++ b/epan/dissectors/packet-sip.c
+@@ -3061,11 +3061,20 @@ dissect_sip_common(tvbuff_t *tvb, int offset, packet_info *pinfo, proto_tree *tr
+ 			!strncmp(content_encoding_parameter_str, "gzip", 4)){
+ 			/* The body is gzip:ed */
+ 			next_tvb = tvb_uncompress(tvb, offset,  datalen);
+-			add_new_data_source(pinfo, next_tvb, "gunziped data");
+-			if(sip_tree) {
+-				ti_a = proto_tree_add_item(sip_tree, hf_sip_msg_body, next_tvb, 0, -1,
+-			                         ENC_NA);
+-				message_body_tree = proto_item_add_subtree(ti_a, ett_sip_message_body);
++			if (next_tvb) {
++				add_new_data_source(pinfo, next_tvb, "gunziped data");
++				if(sip_tree) {
++					ti_a = proto_tree_add_item(sip_tree, hf_sip_msg_body, next_tvb, 0, -1,
++				                         ENC_NA);
++					message_body_tree = proto_item_add_subtree(ti_a, ett_sip_message_body);
++				}
++			} else {
++				next_tvb = tvb_new_subset(tvb, offset, datalen, reported_datalen);
++				if(sip_tree) {
++					ti_a = proto_tree_add_item(sip_tree, hf_sip_msg_body, next_tvb, 0, -1,
++				                         ENC_NA);
++					message_body_tree = proto_item_add_subtree(ti_a, ett_sip_message_body);
++				}
+ 			}
+ 		}else{
+ 			next_tvb = tvb_new_subset(tvb, offset, datalen, reported_datalen);
+-- 
+1.7.10.4
+

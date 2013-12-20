@@ -1,0 +1,44 @@
+From 0e5e3ad8b390f82e0a4bf3412f9e3f658d543843 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Sat, 14 Sep 2013 13:15:31 +0000
+Subject: [PATCH 1/4] _lookup_extended takes a pointer to the key-pointer
+ since it has to set the old key pointer value. _insert
+ just takes the key-pointer, not a pointer to it.
+ Passing a pointer-to-a-pointer causes the outer pointer
+ to be dereferenced as a struct (when it in fact points
+ to a pointer to struct) and leads to incorrect
+ behaviour and uninitialized/out-of-bounds memory
+ accesses.
+
+Fixes https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9139
+
+svn path=/trunk/; revision=52036
+---
+ epan/dissectors/packet-ieee802154.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-ieee802154.c b/epan/dissectors/packet-ieee802154.c
+index fb6a33b..ded9e8a 100644
+--- a/epan/dissectors/packet-ieee802154.c
++++ b/epan/dissectors/packet-ieee802154.c
+@@ -2262,7 +2262,7 @@ ieee802154_map_rec *ieee802154_addr_update(ieee802154_map_tab_t *au_ieee802154_m
+     /* link new mapping record to addr hash tables */
+     if ( g_hash_table_lookup_extended(au_ieee802154_map->short_table, &addr16, &old_key, NULL) ) {
+         /* update short addr hash table, reusing pointer to old key */
+-        g_hash_table_insert(au_ieee802154_map->short_table, &old_key, p_map_rec);
++        g_hash_table_insert(au_ieee802154_map->short_table, old_key, p_map_rec);
+     } else {
+         /* create new hash entry */
+         g_hash_table_insert(au_ieee802154_map->short_table, se_memdup(&addr16, sizeof(addr16)), p_map_rec);
+@@ -2270,7 +2270,7 @@ ieee802154_map_rec *ieee802154_addr_update(ieee802154_map_tab_t *au_ieee802154_m
+ 
+     if ( g_hash_table_lookup_extended(au_ieee802154_map->long_table, &long_addr, &old_key, NULL) ) {
+         /* update long addr hash table, reusing pointer to old key */
+-        g_hash_table_insert(au_ieee802154_map->long_table, &old_key, p_map_rec);
++        g_hash_table_insert(au_ieee802154_map->long_table, old_key, p_map_rec);
+     } else {
+         /* create new hash entry */
+         g_hash_table_insert(au_ieee802154_map->long_table, se_memdup(&long_addr, sizeof(long_addr)), p_map_rec);
+-- 
+1.7.10.4
+
