@@ -1,3 +1,9 @@
+wireshark (1.10.5-1~bpo70+1) wheezy-backports; urgency=low
+
+  * Rebuild for wheezy-backports.
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 22 Dec 2013 19:17:45 +0100
+
 wireshark (1.10.5-1) unstable; urgency=low
 
   * New upstream release 1.10.5
