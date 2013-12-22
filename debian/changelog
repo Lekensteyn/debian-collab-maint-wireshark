@@ -1,8 +1,29 @@
-wireshark (1.10.3-1~bpo70+1) wheezy-backports; urgency=high
+wireshark (1.10.5-1) unstable; urgency=low
 
-  * Rebuild for wheezy-backports.
+  * New upstream release 1.10.5
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.5.html
 
- -- Balint Reczey <balint@balintreczey.hu>  Tue, 05 Nov 2013 17:49:35 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 20 Dec 2013 00:28:21 +0100
+
+wireshark (1.10.4-1) unstable; urgency=high
+
+  * New upstream release 1.10.4
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.4.html
+    - security fixes:
+      - The SIP dissector could go into an infinite loop.
+        Discovered by Alain Botti. (CVE-2013-7112)
+      - The BSSGP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-7113)
+      - The NTLMSSP v2 dissector could crash. Discovered by Garming Sam.
+        (CVE-2013-7114)
+  * drop adding -mieee flag to CFLAGS on Alpha, since it is already added
+    by default
+  * don't enable hardening in debian/rules explicitly, let dh govern it
+  * ship stat_menu.h in libwireshark-dev (Closes: #731765)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 18 Dec 2013 01:15:16 +0100
 
 wireshark (1.10.3-1) unstable; urgency=high
 
