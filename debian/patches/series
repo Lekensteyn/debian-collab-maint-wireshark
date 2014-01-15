@@ -3,4 +3,6 @@
 06_release-version.patch
 08_wireshark-desktop-menu.patch
 09_idl2wrs.patch
+10_allow-deprecated-gtk-functions.patch
+11_fix-g_memmove-ftbfs-issues.patch
 16_licence_about_location.patch
