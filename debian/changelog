@@ -9,6 +9,9 @@ wireshark (1.10.5-2) unstable; urgency=low
       - Replace instances of C99 `g_memmove()` with C90 `memmove()` to fix
         additional FTBFS issues.
 
+  [Balint Reczey]
+  * debian/control: updated policy to 3.9.5 (no changes needed)
+
  -- Balint Reczey <balint@balintreczey.hu>  Wed, 15 Jan 2014 18:03:39 +0100
 
 wireshark (1.10.5-1) unstable; urgency=low
