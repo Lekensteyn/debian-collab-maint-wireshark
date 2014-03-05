@@ -1,6 +1,7 @@
 wireshark (1.10.5-3) UNRELEASED; urgency=low
 
   * Generate symbols files
+  * Ship wireshark.pc for pkg-config (Closes: #740716)
 
  -- Balint Reczey <balint@balintreczey.hu>  Wed, 15 Jan 2014 22:11:26 +0100
 
