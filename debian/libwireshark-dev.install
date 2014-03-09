@@ -1,4 +1,5 @@
 usr/lib/*/libwireshark.so
+usr/lib/*/pkgconfig/wireshark.pc
 color.h usr/include/wireshark
 config.h usr/include/wireshark
 register.h usr/include/wireshark 

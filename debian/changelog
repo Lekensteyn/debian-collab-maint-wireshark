@@ -1,8 +1,22 @@
-wireshark (1.10.5-3) UNRELEASED; urgency=low
+wireshark (1.10.6-1) unstable; urgency=high
 
+  * New upstream release 1.10.6
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.6.html
+    - security fixes:
+      - The NFS dissector could crash. Discovered by Moshe Kaplan
+        (CVE-2014-2281)
+      - The M3UA dissector could crash. Discovered by Laurent Butti.
+        (CVE-2014-2282)
+      - The RLC dissector could crash. (CVE-2014-2283)
+      - The MPEG file parser could overflow a buffer.
+        Discovered by Wesley Neelen. (CVE-2014-2299)
+  * Drop 10_allow-deprecated-gtk-functions.patch and
+    11_fix-g_memmove-ftbfs-issues.patch since they are integrated upstream.
   * Generate symbols files
+  * Ship wireshark.pc for pkg-config (Closes: #740716)
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 15 Jan 2014 22:11:26 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 08 Mar 2014 18:26:41 +0100
 
 wireshark (1.10.5-2) unstable; urgency=low
 
