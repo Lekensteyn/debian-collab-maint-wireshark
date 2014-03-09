@@ -1,0 +1,49 @@
+From 570f2b3db525c05e579ae478bfd071d055114cb6 Mon Sep 17 00:00:00 2001
+From: Gerald Combs <gerald@wireshark.org>
+Date: Thu, 6 Mar 2014 11:27:45 -0800
+Subject: [PATCH] Add a check for an oversized record.
+
+For now we declare the file corrupt and give up. We may want to handle
+this more gracefully. Fixes a vulnerability discovered by Wesley Neelen
+(bug 9843).
+
+Remove the RCS ID and add modelines.
+
+Change-Id: I418938d7d6485b27cc51cf1dde50bc42dabf8c85
+Reviewed-on: https://code.wireshark.org/review/533
+Reviewed-by: Gerald Combs <gerald@wireshark.org>
+(cherry picked from commit 34144b8d4da141e8aa9b99221855edc9f4c73ad8)
+Reviewed-on: https://code.wireshark.org/review/534
+
+Conflicts:
+	wiretap/mpeg.c
+---
+ wiretap/mpeg.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/wiretap/mpeg.c b/wiretap/mpeg.c
+index e392172..fd365d2 100644
+--- a/wiretap/mpeg.c
++++ b/wiretap/mpeg.c
+@@ -221,6 +221,18 @@ mpeg_read(wtap *wth, int *err, gchar **err_info _U_,
+ 	}
+ 	*data_offset = wth->data_offset;
+ 
++	if (packet_size > WTAP_MAX_PACKET_SIZE) {
++		/*
++		 * Larger than we can handle. Don't blow up trying
++		 * to allocate space for an immensely-large packet
++		 * or clobber the stack.
++		 */
++		*err = WTAP_ERR_BAD_RECORD;
++		*err_info = g_strdup_printf("mpeg: File has %u-byte packet, bigger than maximum of %u",
++				packet_size, WTAP_MAX_PACKET_SIZE);
++		return FALSE;
++	}
++
+ 	buffer_assure_space(wth->frame_buffer, packet_size);
+ 	if (!mpeg_read_rec_data(wth->fh, buffer_start_ptr(wth->frame_buffer),
+ 				packet_size, err))
+-- 
+1.7.10.4
+
