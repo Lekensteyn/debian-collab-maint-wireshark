@@ -1,3 +1,11 @@
+wireshark (1.2.11-6+squeeze14) oldstable-security; urgency=high
+
+  * security fixes from Wireshark 1.8.11:
+    - The MPEG file parser could overflow a buffer.
+      Discovered by Wesley Neelen. (CVE-2014-2299)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 09 Mar 2014 16:13:49 +0100
+
 wireshark (1.2.11-6+squeeze13) oldstable-security; urgency=high
 
   * security fixes from Wireshark 1.8.11:
