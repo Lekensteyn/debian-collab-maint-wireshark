@@ -60,3 +60,6 @@
 64_fix_from_1.8.11_fix_TCP_crash.patch
 65_fix_from_1.8.12_fix_NTLMSSPv2_crash.patch
 66_fix_from_1.8.13_fix_BSSGP_crash.patch
+67_fix_from_1.8.13_fix_NFS_crash.patch
+68_fix_from_1.8.13_fix_RLC_crash.patch
+69_fix_from_1.8.13_fix_MPEG_crash.patch

@@ -1,0 +1,56 @@
+From df827e4396f8e200664b63f6e1439d738b63dc9d Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Tue, 21 Jan 2014 18:48:01 +0000
+Subject: [PATCH 1/3] Harden nfs_name_snoop_add_name against various malformed
+ inputs. Thanks to Moshe Kaplan for the report.
+
+Fixes https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9672 and some
+other cases in the same vein.
+
+svn path=/trunk/; revision=54875
+
+Conflicts:
+	epan/dissectors/packet-nfs.c
+
+Change-Id: I7b64ad4475ef7701dd064cad98d5567ae3847735
+---
+ epan/dissectors/packet-nfs.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/epan/dissectors/packet-nfs.c b/epan/dissectors/packet-nfs.c
+index cfca65e..30e18b5 100644
+--- a/epan/dissectors/packet-nfs.c
++++ b/epan/dissectors/packet-nfs.c
+@@ -970,18 +970,25 @@ nfs_name_snoop_add_name(int xid, tvbuff_t *tvb, int name_offset, int name_len, i
+ 	nfs_name_snoop_t *nns, *old_nns;
+ 	const char *ptr=NULL;
+ 
++	if (name_len <= 0) {
++		/* Do we need some way to signal an error here? This could be
++		 * programmatic or just a corrupt packet, depending on the
++		 * caller... */
++		return;
++	}
++
+ 	/* filter out all '.' and '..' names */
+ 	if(!name){
+ 		ptr=(const char *)tvb_get_ptr(tvb, name_offset, name_len);
+ 	} else {
+ 		ptr=name;
+ 	}
+-	if(ptr[0]=='.'){
+-		if(ptr[1]==0){
++	if (ptr[0] == '.') {
++		if (name_len <= 1 || ptr[1] == 0) {
+ 			return;
+ 		}
+-		if(ptr[1]=='.'){
+-			if(ptr[2]==0){
++		if (ptr[1] == '.') {
++			if (name_len <= 2 || ptr[2] == 0) {
+ 				return;
+ 			}
+ 		}
+-- 
+1.7.10.4
+

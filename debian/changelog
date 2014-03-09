@@ -1,3 +1,14 @@
+wireshark (1.8.2-5wheezy10) wheezy-security; urgency=low
+
+  * security fixes from Wireshark 1.8.13:
+     - The NFS dissector could crash. Discovered by Moshe Kaplan
+       (CVE-2014-2281)
+     - The RLC dissector could crash. (CVE-2014-2283)
+     - The MPEG file parser could overflow a buffer.
+       Discovered by Wesley Neelen. (CVE-2014-2299)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 09 Mar 2014 12:48:21 +0100
+
 wireshark (1.8.2-5wheezy9) wheezy-security; urgency=high
 
   * security fixes from (not yet released) Wireshark 1.8.13:
