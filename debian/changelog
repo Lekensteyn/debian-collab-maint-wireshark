@@ -1,8 +1,38 @@
-wireshark (1.10.5-1~bpo70+1) wheezy-backports; urgency=low
+wireshark (1.10.6-1) unstable; urgency=high
 
-  * Rebuild for wheezy-backports.
+  * New upstream release 1.10.6
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.6.html
+    - security fixes:
+      - The NFS dissector could crash. Discovered by Moshe Kaplan
+        (CVE-2014-2281)
+      - The M3UA dissector could crash. Discovered by Laurent Butti.
+        (CVE-2014-2282)
+      - The RLC dissector could crash. (CVE-2014-2283)
+      - The MPEG file parser could overflow a buffer.
+        Discovered by Wesley Neelen. (CVE-2014-2299)
+  * Drop 10_allow-deprecated-gtk-functions.patch and
+    11_fix-g_memmove-ftbfs-issues.patch since they are integrated upstream.
+  * Generate symbols files
+  * Ship wireshark.pc for pkg-config (Closes: #740716)
 
- -- Balint Reczey <balint@balintreczey.hu>  Sun, 22 Dec 2013 19:17:45 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 08 Mar 2014 18:26:41 +0100
+
+wireshark (1.10.5-2) unstable; urgency=low
+
+  [Thomas Ward]
+  * Include new patches to fix FTBFS issues: (LP: #1269197)
+    + debian/patches/allow-deprecated-gtk-functions.patch:
+      - Incorporate upstream changes to fix the FTBFS caused by functions
+        deprecated in GTK 3.10 and newer.
+    + debian/patches/fix-g_memmove-ftbfs-issues.patch:
+      - Replace instances of C99 `g_memmove()` with C90 `memmove()` to fix
+        additional FTBFS issues.
+
+  [Balint Reczey]
+  * debian/control: updated policy to 3.9.5 (no changes needed)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 15 Jan 2014 18:03:39 +0100
 
 wireshark (1.10.5-1) unstable; urgency=low
 

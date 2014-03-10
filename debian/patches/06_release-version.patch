@@ -6,12 +6,12 @@ Index: ./Makefile.am
 ===================================================================
 --- ./Makefile.am	(revision 37943)
 +++ ./Makefile.am	(working copy)
-@@ -547,7 +547,7 @@
+@@ -555,7 +555,7 @@
  am__v_PERL_0 = @echo "  PERL    " $@;
  am__v_PERL_1 =
  
--svnversion.h: FORCE
-+svnversion.h:
+-version.h: FORCE
++version.h:
  	$(AM_V_PERL)$(PERL) $(srcdir)/make-version.pl $(srcdir)
  
  #
