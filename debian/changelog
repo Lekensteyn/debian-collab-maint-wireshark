@@ -1,3 +1,9 @@
+wireshark (1.10.6-2) UNRELEASED; urgency=low
+
+  * Fix package names in libwiretap and libwsutil symbols files
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 12 Mar 2014 18:11:11 +0100
+
 wireshark (1.10.6-1) unstable; urgency=high
 
   * New upstream release 1.10.6
