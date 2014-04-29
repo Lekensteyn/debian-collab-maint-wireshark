@@ -1,8 +1,13 @@
-wireshark (1.10.6-2) UNRELEASED; urgency=low
+wireshark (1.10.7-1) unstable; urgency=high
 
+  * New upstream release 1.10.7
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.7.html
+    - security fixes:
+      - The RTP dissector could crash. (Closes: #745595)
   * Fix package names in libwiretap and libwsutil symbols files
 
- -- Balint Reczey <balint@balintreczey.hu>  Wed, 12 Mar 2014 18:11:11 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 29 Apr 2014 16:21:35 +0200
 
 wireshark (1.10.6-1) unstable; urgency=high
 
