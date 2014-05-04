@@ -1,4 +1,4 @@
-libwiretap.so.3 libwireshark3 #MINVER#
+libwiretap.so.3 libwiretap3 #MINVER#
  buffer_append@Base 1.9.1
  buffer_assure_space@Base 1.9.1
  buffer_free@Base 1.9.1

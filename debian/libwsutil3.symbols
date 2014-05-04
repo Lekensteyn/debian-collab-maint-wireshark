@@ -1,4 +1,4 @@
-libwsutil.so.3 libwireshark3 #MINVER#
+libwsutil.so.3 libwsutil3 #MINVER#
  AirPDcapWepDecrypt@Base 1.10.0
  ascii_strdown_inplace@Base 1.10.0
  ascii_strup_inplace@Base 1.10.0
