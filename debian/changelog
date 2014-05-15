@@ -1,3 +1,12 @@
+wireshark (1.10.7-3) UNRELEASED; urgency=low
+
+  * Build-depend on GnuTLS 3 (>= 3.2.14-1) which enforces a dual-licensed
+    (GPLv2+/LGPLv2.1+) version of GMP thus allows linking with Wireshark
+    (Closes: #747578)
+  * Build-depend directly on libgcrypt-dev since Wireshark uses Libgcrypt API
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 15 May 2014 10:18:27 +0200
+
 wireshark (1.10.7-2) unstable; urgency=medium
 
   * Back-port fix for crashing when showing flow graph (Closes: #741470)
