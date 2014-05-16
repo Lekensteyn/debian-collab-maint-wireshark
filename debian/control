@@ -3,7 +3,7 @@ Section: net
 Priority: optional
 Maintainer: Balint Reczey <balint@balintreczey.hu>
 Standards-Version: 3.9.5
-Build-Depends: libgtk-3-dev, libpcap0.8-dev, flex, libz-dev, debhelper (>= 9), po-debconf, libtool, python (>= 2.6.6-3~), python-ply, automake, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libxml2-utils, libpcre3-dev, libcap2-dev [linux-any] | libcap-dev (>= 2.17) [linux-any], bison, libgnutls28-dev (>= 3.2.14-1), libgcrypt-dev, portaudio19-dev, libkrb5-dev, liblua5.2-dev, libsmi2-dev, libgeoip-dev, dpkg-dev (>= 1.16.1~), dh-autoreconf, imagemagick, xdg-utils
+Build-Depends: libgtk-3-dev, libpcap0.8-dev, flex, libz-dev, debhelper (>= 9), po-debconf, libtool, python (>= 2.6.6-3~), python-ply, automake, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libxml2-utils, libpcre3-dev, libcap2-dev [linux-any] | libcap-dev (>= 2.17) [linux-any], bison, libgnutls28-dev (>= 3.2.14-1), libgcrypt-dev, portaudio19-dev, libkrb5-dev, liblua5.2-dev, libsmi2-dev, libgeoip-dev, dpkg-dev (>= 1.16.1~), dh-autoreconf, imagemagick, xdg-utils, libnl-genl-3-dev, libnl-route-3-dev
 Build-Conflicts: libsnmp4.2-dev, libsnmp-dev
 Vcs-Svn: svn://svn.debian.org/svn/collab-maint/ext-maint/wireshark/trunk
 Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/ext-maint/wireshark/trunk/

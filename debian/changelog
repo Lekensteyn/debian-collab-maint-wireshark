@@ -4,6 +4,9 @@ wireshark (1.10.7-3) UNRELEASED; urgency=low
     (GPLv2+/LGPLv2.1+) version of GMP thus allows linking with Wireshark
     (Closes: #747578)
   * Build-depend directly on libgcrypt-dev since Wireshark uses Libgcrypt API
+  * Build-depend on libnl-genl-3-dev libnl-route-3-dev to enable Netlink
+    features like wireless toolbar and device list updating on hot-plugging
+    of network a adapters (Thanks to Pontus Fuchs.)
 
  -- Balint Reczey <balint@balintreczey.hu>  Thu, 15 May 2014 10:18:27 +0200
 
