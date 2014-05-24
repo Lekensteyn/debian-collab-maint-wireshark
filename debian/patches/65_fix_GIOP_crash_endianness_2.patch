@@ -1,0 +1,28 @@
+From eb184f0b35d3c5d0b18e797cf78e64848e4264eb Mon Sep 17 00:00:00 2001
+From: Chris Maynard <Christopher.Maynard@GTECH.COM>
+Date: Mon, 11 Jul 2011 00:17:08 +0000
+Subject: [PATCH 2/2] As noted by Jaap Keuter on -dev, be sure to use
+ message_size instead of header->message_size for a correct host endianness
+ comparison.
+
+svn path=/trunk/; revision=37957
+---
+ epan/dissectors/packet-giop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-giop.c b/epan/dissectors/packet-giop.c
+index 7598392..ee57a41 100644
+--- a/epan/dissectors/packet-giop.c
++++ b/epan/dissectors/packet-giop.c
+@@ -1737,7 +1737,7 @@ static gboolean try_heuristic_giop_dissector(tvbuff_t *tvb, packet_info *pinfo,
+     else
+       message_size = pletohl (header->message_size);
+ 
+-    if (*offset > header->message_size)
++    if (*offset > message_size)
+       return FALSE;
+   }
+ 
+-- 
+1.9.1
+

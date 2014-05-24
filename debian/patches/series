@@ -55,3 +55,5 @@
 61_fix_from_1.8.10_fix_Netmon_crash.patch
 62_fix_from_1.8.11_fix_TCP_crash.patch
 63_fix_from_1.8.13_fix_MPEG_crash.patch
+64_fix_GIOP_crash_endianness_1.patch
+65_fix_GIOP_crash_endianness_2.patch
