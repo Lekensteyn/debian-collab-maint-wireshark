@@ -14,13 +14,13 @@ DEB_HOST_MULTIARCH      ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 VERSION := $(shell dpkg-parsechangelog | sed -n 's/^Version: \(.*\)-.*/\1/p')
 
 %:
-	dh $@ --with autoreconf --with python2 --buildsystem autoconf
+	dh $@ --with autoreconf --with python2 --buildsystem autoconf --parallel
 
 override_dh_auto_configure:
 	dh_auto_configure -- --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --enable-warnings-as-errors=no --with-plugins=/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark3/plugins --with-lua --docdir=/usr/share/doc/wireshark-doc/ --with-gtk3
 
 override_dh_auto_build:
-	$(MAKE)
+	dh_auto_build
 	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
 	# create menu icon
 	convert image/wsicon32.png image/wsicon32.xpm
