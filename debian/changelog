@@ -1,4 +1,11 @@
-wireshark (1.10.7-3) UNRELEASED; urgency=low
+wireshark (1.10.7-4) unstable; urgency=low
+
+  * Build-depend on libnl-genl-3-dev and libnl-route-3-dev only on Linux
+  * Enable parallel builds
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 May 2014 22:09:56 +0700
+
+wireshark (1.10.7-3) unstable; urgency=medium
 
   * Build-depend on GnuTLS 3 (>= 3.2.14-1) which enforces a dual-licensed
     (GPLv2+/LGPLv2.1+) version of GMP thus allows linking with Wireshark
