@@ -1,3 +1,9 @@
+wireshark (1.10.7-4) UNRELEASED; urgency=low
+
+  * Build-depend on libnl-genl-3-dev and libnl-route-3-dev only on Linux
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 May 2014 17:47:42 +0700
+
 wireshark (1.10.7-3) unstable; urgency=medium
 
   * Build-depend on GnuTLS 3 (>= 3.2.14-1) which enforces a dual-licensed
