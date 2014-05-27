@@ -1,3 +1,192 @@
+wireshark (1.10.7-4) unstable; urgency=low
+
+  * Build-depend on libnl-genl-3-dev and libnl-route-3-dev only on Linux
+  * Enable parallel builds
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 May 2014 22:09:56 +0700
+
+wireshark (1.10.7-3) unstable; urgency=medium
+
+  * Build-depend on GnuTLS 3 (>= 3.2.14-1) which enforces a dual-licensed
+    (GPLv2+/LGPLv2.1+) version of GMP thus allows linking with Wireshark
+    (Closes: #747578)
+  * Build-depend directly on libgcrypt-dev since Wireshark uses Libgcrypt API
+  * Build-depend on libnl-genl-3-dev libnl-route-3-dev to enable Netlink
+    features like wireless toolbar and device list updating on hot-plugging
+    of network a adapters (Thanks to Pontus Fuchs.)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 15 May 2014 10:18:27 +0200
+
+wireshark (1.10.7-2) unstable; urgency=medium
+
+  * Back-port fix for crashing when showing flow graph (Closes: #741470)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 11 May 2014 13:01:21 +0200
+
+wireshark (1.10.7-1) unstable; urgency=high
+
+  * New upstream release 1.10.7
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.7.html
+    - security fixes:
+      - The RTP dissector could crash. (Closes: #745595)
+  * Fix package names in libwiretap and libwsutil symbols files
+  * Drop 01-Use-GitVersion-to-fix-guide-creation.patch since it has been
+    integrated upstream
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 29 Apr 2014 16:21:35 +0200
+
+wireshark (1.10.6-1) unstable; urgency=high
+
+  * New upstream release 1.10.6
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.6.html
+    - security fixes:
+      - The NFS dissector could crash. Discovered by Moshe Kaplan
+        (CVE-2014-2281)
+      - The M3UA dissector could crash. Discovered by Laurent Butti.
+        (CVE-2014-2282)
+      - The RLC dissector could crash. (CVE-2014-2283)
+      - The MPEG file parser could overflow a buffer.
+        Discovered by Wesley Neelen. (CVE-2014-2299)
+  * Drop 10_allow-deprecated-gtk-functions.patch and
+    11_fix-g_memmove-ftbfs-issues.patch since they are integrated upstream.
+  * Generate symbols files
+  * Ship wireshark.pc for pkg-config (Closes: #740716)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 08 Mar 2014 18:26:41 +0100
+
+wireshark (1.10.5-2) unstable; urgency=low
+
+  [Thomas Ward]
+  * Include new patches to fix FTBFS issues: (LP: #1269197)
+    + debian/patches/allow-deprecated-gtk-functions.patch:
+      - Incorporate upstream changes to fix the FTBFS caused by functions
+        deprecated in GTK 3.10 and newer.
+    + debian/patches/fix-g_memmove-ftbfs-issues.patch:
+      - Replace instances of C99 `g_memmove()` with C90 `memmove()` to fix
+        additional FTBFS issues.
+
+  [Balint Reczey]
+  * debian/control: updated policy to 3.9.5 (no changes needed)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 15 Jan 2014 18:03:39 +0100
+
+wireshark (1.10.5-1) unstable; urgency=low
+
+  * New upstream release 1.10.5
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.5.html
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 20 Dec 2013 00:28:21 +0100
+
+wireshark (1.10.4-1) unstable; urgency=high
+
+  * New upstream release 1.10.4
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.4.html
+    - security fixes:
+      - The SIP dissector could go into an infinite loop.
+        Discovered by Alain Botti. (CVE-2013-7112)
+      - The BSSGP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-7113)
+      - The NTLMSSP v2 dissector could crash. Discovered by Garming Sam.
+        (CVE-2013-7114)
+  * drop adding -mieee flag to CFLAGS on Alpha, since it is already added
+    by default
+  * don't enable hardening in debian/rules explicitly, let dh govern it
+  * ship stat_menu.h in libwireshark-dev (Closes: #731765)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 18 Dec 2013 01:15:16 +0100
+
+wireshark (1.10.3-1) unstable; urgency=high
+
+  * New upstream release 1.10.3
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.3.html
+    - security fixes:
+      - The IEEE 802.15.4 dissector could crash. (CVE-2013-6336)
+      - The NBAP dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-6337)
+      - The SIP dissector could crash. (CVE-2013-6338)
+      - The OpenWire dissector could go into a large loop.
+        Discovered by Murali. (CVE-2013-6339)
+      - The TCP dissector could crash. (CVE-2013-6340)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 01 Nov 2013 21:55:04 +0100
+
+wireshark (1.10.2-2) unstable; urgency=low
+
+  [ Yukio Shiiya ]
+  * install supported file types to shared MIME database (Closes: #723133)
+
+  [ Balint Reczey]
+  * ship all scaled icons
+  * switch to Lua 5.2 (Closes: #723683)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 30 Sep 2013 11:13:15 +0200
+
+wireshark (1.10.2-1) unstable; urgency=high
+
+  * New upstream release 1.10.2
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.2.html
+    - security fixes:
+      - The Bluetooth HCI ACL dissector could crash. Discovered by
+        Laurent Butti. (No assigned CVE number)
+      - The NBAP dissector could crash. Discovered by Laurent Butti.
+        (No assigned CVE number)
+      - The ASSA R3 dissector could go into an infinite loop.
+        Discovered by Ben Schmidt. (No assigned CVE number)
+      - The RTPS dissector could overflow a buffer. Discovered by
+        Ben Schmidt. (No assigned CVE number)
+      - The MQ dissector could crash. (No assigned CVE number)
+      - The LDAP dissector could crash. (No assigned CVE number)
+      - The Netmon file parser could crash. Discovered by G. Geshev.
+        (No assigned CVE number)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 10 Sep 2013 18:25:15 +0200
+
+wireshark (1.10.1-1) unstable; urgency=high
+
+  * New upstream release 1.10.1
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.1.html
+    - security fixes:
+      - The DCP ETSI dissector could crash (CVE-2013-4083)
+      - The P1 dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4920)
+      - The Radiotap dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4921)
+      - The DCOM ISystemActivator dissector could crash.
+        Discovered by Laurent Butti. (CVE-2013-4922, CVE-2013-4923,
+        CVE-2013-4924, CVE-2013-4925 and CVE-2013-4926)
+      - The Bluetooth SDP dissector could go into a large loop.
+        Discovered by Laurent Butti. (CVE-2013-4927)
+      - The Bluetooth OBEX dissector could go into an infinite loop.
+        (CVE-2013-4928)
+      - The DIS dissector could go into a large loop.
+        (CVE-2013-4929)
+      - The DVB-CI dissector could crash. Discovered by Laurent Butti.
+        (CVE-2013-4930)
+      - The GSM RR dissector (and possibly others) could go into a large loop.
+        (CVE-2013-4931)
+      - The GSM A Common dissector could crash.
+        (CVE-2013-4932)
+      - The Netmon file parser could crash. Discovered by G. Geshev.
+        (CVE-2013-4933 and CVE-2013-4934)
+      - The ASN.1 PER dissector could crash.
+        Discovered by Oliver-Tobias Ripka. (CVE-2013-4935)
+      - The PROFINET Real-Time dissector could crash.
+        (CVE-2013-4936)
+  * fix upstream's libwireshark library's version number
+  * warn administrator during configuring dumpcap to allow non-root users
+    to capture packets if creating the wireshark system group fails
+  * refer to libwireshark3 in libwsutil-dev's description
+  * use xdg-open instead of sensible-browser
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 27 Jul 2013 00:20:12 +0200
+
 wireshark (1.10.0-2) unstable; urgency=high
 
   * re-upload to unstable without changes

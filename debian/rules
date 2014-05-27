@@ -4,26 +4,23 @@
 # Some lines taken from debmake, by Cristoph Lameter.
 # Rewritten to use dh, by Balint Reczey
 
-export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-DPKG_EXPORT_BUILDFLAGS = 1
-include /usr/share/dpkg/buildflags.mk
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
 
-DEB_HOST_ARCH_CPU       ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU)
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
 DEB_HOST_MULTIARCH      ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
-
-# Enable IEEE-conformant floating point math on alphas (not the default)
-ifeq (alpha,$(DEB_HOST_ARCH_CPU))
-  CFLAGS += -mieee
-endif
+VERSION := $(shell dpkg-parsechangelog | sed -n 's/^Version: \(.*\)-.*/\1/p')
 
 %:
-	dh $@ --with autoreconf --with python2 --buildsystem autoconf
+	dh $@ --with autoreconf --with python2 --buildsystem autoconf --parallel
 
 override_dh_auto_configure:
-	dh_auto_configure -- --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --enable-warnings-as-errors=no --with-plugins=/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark3/plugins --with-lua=/usr/ --docdir=/usr/share/doc/wireshark-doc/ --with-gtk3
+	dh_auto_configure -- --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --enable-warnings-as-errors=no --with-plugins=/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark3/plugins --with-lua --docdir=/usr/share/doc/wireshark-doc/ --with-gtk3
 
 override_dh_auto_build:
-	$(MAKE)
+	dh_auto_build
 	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
 	# create menu icon
 	convert image/wsicon32.png image/wsicon32.xpm
@@ -33,25 +30,28 @@ override_dh_strip:
 
 override_dh_auto_install:
 	dh_auto_install
+	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp/ install_desktop_files
 	rm -f debian/wireshark-common.shlibs
 	rm -rf $(CURDIR)/debian/tmp/usr/share/wireshark/COPYING
 	cp debian/license-text-about-dialog $(CURDIR)/debian/tmp/usr/share/wireshark/ABOUT.GPL
 	# icons conforming to freedesktop.org standards
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/icons/hicolor/scalable/apps/
 	install -m 644 image/wsicon.svg $(CURDIR)/debian/tmp/usr/share/icons/hicolor/scalable/apps/wireshark.svg
-	mkdir -p $(CURDIR)/debian/tmp/usr/share/icons/hicolor/48x48/apps/
-	install -m 644 image/wsicon48.png $(CURDIR)/debian/tmp/usr/share/icons/hicolor/48x48/apps/wireshark.png
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
 	mv $(CURDIR)/debian/tmp/usr/share/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/etc/wireshark/
 	ln -s /etc/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/usr/share/wireshark/init.lua
+	mkdir -p $(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig
+	sed "s|@PROJECT_VERSION@|$(VERSION)|;s|@CMAKE_INSTALL_PREFIX@|/usr|;s|@CMAKE_INSTALL_LIBDIR@|lib/$(DEB_HOST_MULTIARCH)|;s|@PLUGIN_INSTALL_DIR@|/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark3/plugins|" \
+		$(CURDIR)/debian/wireshark.pc.in > \
+		$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/wireshark.pc
 
 override_dh_install:
 	dh_install
 	# check all necessary headers are included
 	$(CC) -c debian/headers-check.c `pkg-config --cflags glib-2.0` -Idebian/libwireshark-dev/usr/include -Idebian/libwireshark-dev/usr/include/wireshark -Idebian/libwiretap-dev/usr/include/wireshark -Idebian/libwsutil-dev/usr/include/wireshark -o /dev/null
-	
+
 override_dh_fixperms:
 	dh_fixperms
 	chmod 644 debian/wireshark-dev/usr/share/pyshared/wireshark_be.py \

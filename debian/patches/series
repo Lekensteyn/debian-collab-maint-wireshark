@@ -1,8 +1,8 @@
-03_preferences.patch
+0001-Get-rid-of-the-background-pixmap-set-the-background-.patch
+0002-Deleted-one-line-to-much-in-previous-chgange.patch
 04_asn2wrs_ply.patch
 05_note-README-when-running-as-root.patch
 06_release-version.patch
-07_library-versions.patch
 08_wireshark-desktop-menu.patch
 09_idl2wrs.patch
 16_licence_about_location.patch
