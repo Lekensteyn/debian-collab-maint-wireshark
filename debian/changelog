@@ -1,4 +1,4 @@
-wireshark (1.10.7-3) UNRELEASED; urgency=low
+wireshark (1.10.7-3) unstable; urgency=medium
 
   * Build-depend on GnuTLS 3 (>= 3.2.14-1) which enforces a dual-licensed
     (GPLv2+/LGPLv2.1+) version of GMP thus allows linking with Wireshark
