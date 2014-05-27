@@ -1,9 +1,9 @@
-wireshark (1.10.7-4) UNRELEASED; urgency=low
+wireshark (1.10.7-4) unstable; urgency=low
 
   * Build-depend on libnl-genl-3-dev and libnl-route-3-dev only on Linux
   * Enable parallel builds
 
- -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 May 2014 17:47:42 +0700
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 May 2014 22:09:56 +0700
 
 wireshark (1.10.7-3) unstable; urgency=medium
 
