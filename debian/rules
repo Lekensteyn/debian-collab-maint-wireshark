@@ -17,7 +17,7 @@ VERSION := $(shell dpkg-parsechangelog | sed -n 's/^Version: \(.*\)-.*/\1/p')
 	dh $@ --with autoreconf --with python2 --buildsystem autoconf --parallel
 
 override_dh_auto_configure:
-	dh_auto_configure -- --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --enable-warnings-as-errors=no --with-plugins=/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark3/plugins --with-lua --docdir=/usr/share/doc/wireshark-doc/ --with-gtk3
+	dh_auto_configure -- --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --enable-warnings-as-errors=no --with-plugins=/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark5/plugins --with-lua --docdir=/usr/share/doc/wireshark-doc/ --with-gtk3
 
 override_dh_auto_build:
 	dh_auto_build
@@ -43,7 +43,7 @@ override_dh_auto_install:
 	ln -s /etc/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/usr/share/wireshark/init.lua
 	mkdir -p $(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig
-	sed "s|@PROJECT_VERSION@|$(VERSION)|;s|@CMAKE_INSTALL_PREFIX@|/usr|;s|@CMAKE_INSTALL_LIBDIR@|lib/$(DEB_HOST_MULTIARCH)|;s|@PLUGIN_INSTALL_DIR@|/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark3/plugins|" \
+	sed "s|@PROJECT_VERSION@|$(VERSION)|;s|@CMAKE_INSTALL_PREFIX@|/usr|;s|@CMAKE_INSTALL_LIBDIR@|lib/$(DEB_HOST_MULTIARCH)|;s|@PLUGIN_INSTALL_DIR@|/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark5/plugins|" \
 		$(CURDIR)/debian/wireshark.pc.in > \
 		$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/wireshark.pc
 

@@ -1,3 +1,11 @@
+wireshark (1.12.0~rc1-1) UNRELEASED; urgency=low
+
+  * New upstream release candidate 1.12.0 RC1
+  * Drop obsolete patches and refresh the rest
+  * Bump library versions due to ABI changes
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 May 2014 22:28:27 +0700
+
 wireshark (1.10.7-4) unstable; urgency=low
 
   * Build-depend on libnl-genl-3-dev and libnl-route-3-dev only on Linux
