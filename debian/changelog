@@ -1,6 +1,7 @@
-wireshark (1.12.0~rc1-1) UNRELEASED; urgency=low
+wireshark (1.12.0~rc1-1) experimental; urgency=low
 
   * New upstream release candidate 1.12.0 RC1
+    (Closes: #729520, #729524, #703563, #712591, #726972)
   * Drop obsolete patches and refresh the rest
   * Bump library versions due to ABI changes
   * Drop shlib control files
