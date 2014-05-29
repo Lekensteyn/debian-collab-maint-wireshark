@@ -4,6 +4,11 @@ wireshark (1.12.0~rc1-1) UNRELEASED; urgency=low
   * Drop obsolete patches and refresh the rest
   * Bump library versions due to ABI changes
   * Drop shlib control files
+  * Switch build system to CMake
+    - New build-dependencies: asciidoc, fop, cmake, w3m
+    - Dropped build-dependencies: automake, autoconf, autotools-dev,
+      dh-autoreconf
+    - Disable parallel builds, they break :-(
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 May 2014 22:28:27 +0700
 

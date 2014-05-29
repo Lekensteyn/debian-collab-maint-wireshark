@@ -1,3 +1,8 @@
+0001-Honor-confugured-CMAKE_INSTALL_LIBDIR-when-installin.patch
+0002-Set-PLUGIN_INSTALL_DIR-properly-for-wireshark.pc.patch
+0003-Bump-.so-versions-for-1.12-in-CMake-builds-too.patch
+0004-Fix-wireshark.pc-install-destination.patch
+0005-Disable-xmllint-for-release-notes.patch
 04_asn2wrs_ply.patch
 05_note-README-when-running-as-root.patch
 06_release-version.patch

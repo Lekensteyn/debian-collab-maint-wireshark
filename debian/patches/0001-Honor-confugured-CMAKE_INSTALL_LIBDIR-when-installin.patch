@@ -1,0 +1,85 @@
+From 5fa1c818372d488415b276aa5067bb99e2df167f Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Thu, 29 May 2014 10:58:05 +0700
+Subject: [PATCH] Honor confugured CMAKE_INSTALL_LIBDIR when installing
+ libraries
+
+Change-Id: I860c9408ed01e9567992b0dcf5c6c6421344c13e
+---
+ epan/CMakeLists.txt    | 6 +++---
+ filetap/CMakeLists.txt | 6 +++---
+ wiretap/CMakeLists.txt | 6 +++---
+ wsutil/CMakeLists.txt  | 6 +++---
+ 4 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/epan/CMakeLists.txt b/epan/CMakeLists.txt
+index 1c2814c..a350343 100644
+--- a/epan/CMakeLists.txt
++++ b/epan/CMakeLists.txt
+@@ -1722,9 +1722,9 @@ add_dependencies(epan lemon)
+ 
+ if(NOT ${ENABLE_STATIC})
+ 	install(TARGETS epan
+-		LIBRARY DESTINATION lib
+-		RUNTIME DESTINATION lib
+-		ARCHIVE DESTINATION lib
++		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++		RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
++		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ 	)
+ endif()
+ 
+diff --git a/filetap/CMakeLists.txt b/filetap/CMakeLists.txt
+index 82001b0..f78bc7d 100644
+--- a/filetap/CMakeLists.txt
++++ b/filetap/CMakeLists.txt
+@@ -75,9 +75,9 @@ target_link_libraries(filetap ${filetap_LIBS})
+ 
+ if(NOT ${ENABLE_STATIC})
+ 	install(TARGETS filetap
+-		LIBRARY DESTINATION lib
+-		RUNTIME DESTINATION lib
+-		ARCHIVE DESTINATION lib
++		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++		RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
++		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ 	)
+ endif()
+ 
+diff --git a/wiretap/CMakeLists.txt b/wiretap/CMakeLists.txt
+index 37432cb..38010ed 100644
+--- a/wiretap/CMakeLists.txt
++++ b/wiretap/CMakeLists.txt
+@@ -134,9 +134,9 @@ target_link_libraries(wiretap ${wiretap_LIBS})
+ 
+ if(NOT ${ENABLE_STATIC})
+ 	install(TARGETS wiretap
+-		LIBRARY DESTINATION lib
+-		RUNTIME DESTINATION lib
+-		ARCHIVE DESTINATION lib
++		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++		RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
++		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ 	)
+ endif()
+ 
+diff --git a/wsutil/CMakeLists.txt b/wsutil/CMakeLists.txt
+index d544dc8..1e57b39 100644
+--- a/wsutil/CMakeLists.txt
++++ b/wsutil/CMakeLists.txt
+@@ -117,9 +117,9 @@ target_link_libraries(wsutil ${wsutil_LIBS})
+ 
+ if(NOT ${ENABLE_STATIC})
+ 	install(TARGETS wsutil
+-		LIBRARY DESTINATION lib
+-		RUNTIME DESTINATION lib
+-		ARCHIVE DESTINATION lib
++		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++		RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
++		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ 	)
+ endif()
+ 
+-- 
+1.9.1
+

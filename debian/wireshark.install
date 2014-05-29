@@ -1,5 +1,6 @@
 usr/bin/wireshark
-usr/share/applications/
+wireshark.desktop usr/share/applications/
 image/wsicon32.xpm usr/share/pixmaps/
-usr/share/icons/
-usr/share/mime/packages/
+image/wsicon.svg usr/share/icons/hicolor/scalable/apps/wireshark.svg
+wireshark-mime-package.xml usr/share/mime/packages/wireshark.xml
+debian/license-text-about-dialog usr/share/wireshark/ABOUT.GPL

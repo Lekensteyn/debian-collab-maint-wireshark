@@ -10,18 +10,17 @@
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
-DEB_HOST_MULTIARCH      ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 VERSION := $(shell dpkg-parsechangelog | sed -n 's/^Version: \(.*\)-.*/\1/p')
-
+export docdir = /usr/share/doc/wireshark-doc
 %:
-	dh $@ --with autoreconf --with python2 --buildsystem autoconf --parallel
+	dh $@ --with python2 --buildsystem cmake # --parallel
 
 override_dh_auto_configure:
-	dh_auto_configure -- --sysconfdir=/usr/share --datadir=/usr/share --disable-static --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --enable-warnings-as-errors=no --with-plugins=/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark5/plugins --with-lua --docdir=/usr/share/doc/wireshark-doc/ --with-gtk3
+	dh_auto_configure -- -DENABLE_GUIDES=ON -DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH)
 
 override_dh_auto_build:
 	dh_auto_build
-	$(MAKE) -C docbook wsug_html_chunked wsdg_html_chunked
 	# create menu icon
 	convert image/wsicon32.png image/wsicon32.xpm
 
@@ -30,22 +29,13 @@ override_dh_strip:
 
 override_dh_auto_install:
 	dh_auto_install
-	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp/ install_desktop_files
-	rm -f debian/wireshark-common.shlibs
+	rm -f debian/*.shlibs
 	rm -rf $(CURDIR)/debian/tmp/usr/share/wireshark/COPYING
-	cp debian/license-text-about-dialog $(CURDIR)/debian/tmp/usr/share/wireshark/ABOUT.GPL
-	# icons conforming to freedesktop.org standards
-	mkdir -p $(CURDIR)/debian/tmp/usr/share/icons/hicolor/scalable/apps/
-	install -m 644 image/wsicon.svg $(CURDIR)/debian/tmp/usr/share/icons/hicolor/scalable/apps/wireshark.svg
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
 	mv $(CURDIR)/debian/tmp/usr/share/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/etc/wireshark/
 	ln -s /etc/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/usr/share/wireshark/init.lua
-	mkdir -p $(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig
-	sed "s|@PROJECT_VERSION@|$(VERSION)|;s|@CMAKE_INSTALL_PREFIX@|/usr|;s|@CMAKE_INSTALL_LIBDIR@|lib/$(DEB_HOST_MULTIARCH)|;s|@PLUGIN_INSTALL_DIR@|/usr/lib/$(DEB_HOST_MULTIARCH)/wireshark/libwireshark5/plugins|" \
-		$(CURDIR)/debian/wireshark.pc.in > \
-		$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/wireshark.pc
 
 override_dh_install:
 	dh_install
