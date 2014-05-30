@@ -3,6 +3,7 @@
 0003-Bump-.so-versions-for-1.12-in-CMake-builds-too.patch
 0004-Fix-wireshark.pc-install-destination.patch
 0005-Disable-xmllint-for-release-notes.patch
+01_Disable-building-documentation-in-PDF-and-release-no.patch
 04_asn2wrs_ply.patch
 05_note-README-when-running-as-root.patch
 06_release-version.patch
