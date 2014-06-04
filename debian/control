@@ -40,7 +40,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, wireshark-common (= ${binary:Version}), xdg-utils
 Replaces: ethereal (<< 1.0.0-3)
 Conflicts: ethereal (<< 1.0.0-3)
-Description: network traffic analyzer - GTK+ version
+Description: network traffic analyzer - Qt version
  Wireshark is a network "sniffer" - a tool that captures and analyzes
  packets off the wire. Wireshark can decode too many protocols to list
  here.
