@@ -1,4 +1,2 @@
-usr/lib/*/libwiretap.so.4
-usr/lib/*/libwiretap.so.4.*
-usr/lib/*/libfiletap.so.0
-usr/lib/*/libfiletap.so.0.*
+usr/lib/*/libwiretap.so.*
+usr/lib/*/libfiletap.so.*
