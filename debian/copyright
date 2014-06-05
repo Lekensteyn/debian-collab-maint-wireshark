@@ -376,3 +376,26 @@ wiretap/i4b_trace.h:
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
+
+GLPv3+ (Note that those are interface definitions thus are not copyrightable
+in FSF's view http://lkml.iu.edu//hypermail/linux/kernel/0301.1/0362.html)
+------
+
+epan/dissectors/pidl/rfr/rfr.idl:
+epan/dissectors/pidl/mapi/mapi.idl:
+   OpenChange Project
+
+   Copyright (C) Julien Kerihuel 2008.
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
