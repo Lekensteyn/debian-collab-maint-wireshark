@@ -4,6 +4,7 @@ wireshark (1.12.0~rc1-2) UNRELEASED; urgency=low
   * Drop obsoleted debian/wireshark.pc.in
   * Stop matching single .so versions in library install files
   * Reformat debian/control
+  * Make it easier to switch to QT 4 in packaging
 
  -- Balint Reczey <balint@balintreczey.hu>  Sat, 31 May 2014 01:02:30 +0700
 
