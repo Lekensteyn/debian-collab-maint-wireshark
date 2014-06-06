@@ -1,3 +1,2 @@
-usr/lib/*/libwireshark.so.5
-usr/lib/*/libwireshark.so.5.*
+usr/lib/*/libwireshark.so.*
 usr/lib/*/wireshark/plugins/*/*.so
