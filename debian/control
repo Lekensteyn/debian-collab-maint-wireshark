@@ -131,7 +131,7 @@ Suggests: wireshark-doc (>= ${source:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
 Description: network packet dissection library -- shared library
- The libwireshark library provides the network packet dissection services 
+ The libwireshark library provides the network packet dissection services
  developed by the Wireshark project.
 
 Package: libwsutil4
@@ -168,7 +168,7 @@ Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
 Suggests: snmp-mibs-downloader
 Description: network packet dissection library -- data files
- The libwireshark library provides the network packet dissection services 
+ The libwireshark library provides the network packet dissection services
  developed by the Wireshark project.
  .
  This package contains the platform independent files.
@@ -197,7 +197,7 @@ Description: network packet capture library -- shared library
  Wiretap, part of the Wireshark project, is a library that allows one to
  read and write several packet capture file formats.
  .
- Supported formats are: 
+ Supported formats are:
   * Libpcap
   * Sniffer
   * LANalyzer
@@ -229,7 +229,7 @@ Description: network packet capture library -- development files
  Wiretap, part of the Wireshark project, is a library that allows one to
  read and write several packet capture file formats.
  .
- Supported formats are: 
+ Supported formats are:
   * Libpcap
   * Sniffer
   * LANalyzer
@@ -252,4 +252,3 @@ Description: network packet capture library -- development files
  capture.
  .
  This package contains the static library and the C header files.
-
