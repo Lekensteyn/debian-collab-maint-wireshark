@@ -1,6 +1,7 @@
 wireshark (1.12.0~rc1-3) UNRELEASED; urgency=low
 
   * Fix Wireshark's name in Vietnamese translation
+  * Add copyright information to debian/headers-check.c
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 06 Jun 2014 23:50:15 +0700
 
