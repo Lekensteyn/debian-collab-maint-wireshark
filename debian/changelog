@@ -1,3 +1,14 @@
+wireshark (1.10.8-1) unstable; urgency=low
+
+  * New upstream release 1.10.8
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.8.html
+    - security fixes:
+      - The frame metadissector could crash (CVE-2014-4020)
+  * Drop flow graph related patches since they are integrated upstream
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 17 Jun 2014 11:45:29 -0700
+
 wireshark (1.10.7-4) unstable; urgency=low
 
   * Build-depend on libnl-genl-3-dev and libnl-route-3-dev only on Linux
