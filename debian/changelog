@@ -1,3 +1,10 @@
+wireshark (1.10.8-1~bpo70+1) wheezy-backports; urgency=medium
+
+  * Rebuild for wheezy-backports.
+  * Build-depend on libgnutls-dev instead of libgnutls28-dev
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 29 Jun 2014 20:44:56 +0200
+
 wireshark (1.10.8-1) unstable; urgency=low
 
   * New upstream release 1.10.8
