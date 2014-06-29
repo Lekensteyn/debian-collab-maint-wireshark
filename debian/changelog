@@ -1,8 +1,38 @@
-wireshark (1.10.7-1~bpo70+1) wheezy-backports; urgency=low
+wireshark (1.10.8-1) unstable; urgency=low
 
-  * Rebuild for wheezy-backports.
+  * New upstream release 1.10.8
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.10.8.html
+    - security fixes:
+      - The frame metadissector could crash (CVE-2014-4020)
+  * Drop flow graph related patches since they are integrated upstream
 
- -- Balint Reczey <balint@balintreczey.hu>  Sun, 04 May 2014 18:01:11 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 17 Jun 2014 11:45:29 -0700
+
+wireshark (1.10.7-4) unstable; urgency=low
+
+  * Build-depend on libnl-genl-3-dev and libnl-route-3-dev only on Linux
+  * Enable parallel builds
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 May 2014 22:09:56 +0700
+
+wireshark (1.10.7-3) unstable; urgency=medium
+
+  * Build-depend on GnuTLS 3 (>= 3.2.14-1) which enforces a dual-licensed
+    (GPLv2+/LGPLv2.1+) version of GMP thus allows linking with Wireshark
+    (Closes: #747578)
+  * Build-depend directly on libgcrypt-dev since Wireshark uses Libgcrypt API
+  * Build-depend on libnl-genl-3-dev libnl-route-3-dev to enable Netlink
+    features like wireless toolbar and device list updating on hot-plugging
+    of network a adapters (Thanks to Pontus Fuchs.)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 15 May 2014 10:18:27 +0200
+
+wireshark (1.10.7-2) unstable; urgency=medium
+
+  * Back-port fix for crashing when showing flow graph (Closes: #741470)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 11 May 2014 13:01:21 +0200
 
 wireshark (1.10.7-1) unstable; urgency=high
 
