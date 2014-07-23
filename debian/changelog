@@ -1,3 +1,13 @@
+wireshark (1.12.0~rc3+git+e14d5b6eaa+dfsg1-1) experimental; urgency=medium
+
+  * New upstream release candidate 1.12.0 RC3, from git snapshot
+    - Makes the RTP Player graphs work with GTK3 (Closes: #744945)
+    - Guarantee that open routines are initialized (Closes: #751872)
+    - Fix changing filter expression's bg color based on validity
+      (Closes: #705621)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 23 Jul 2014 11:24:50 +0200
+
 wireshark (1.12.0~rc2+git+fd017ee+dfsg1-1) experimental; urgency=low
 
   * New upstream release candidate 1.12.0 RC2
