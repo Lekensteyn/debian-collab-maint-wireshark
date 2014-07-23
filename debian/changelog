@@ -1,6 +1,8 @@
-wireshark (1.12.0~rc2-1) UNRELEASED; urgency=low
+wireshark (1.12.0~rc2+git+fd017ee+dfsg1-1) experimental; urgency=low
 
   * New upstream release candidate 1.12.0 RC2
+    - Since the release tarball had some files missing orig.tar.xz has
+      been generated from a git snapshot with tests omitted
   * Drop obsoleted 00.* patches
   * Fix Wireshark's name in Vietnamese translation
   * Add copyright information to debian/headers-check.c
@@ -8,7 +10,7 @@ wireshark (1.12.0~rc2-1) UNRELEASED; urgency=low
     build time
     - Drop obsoleted 0005-Disable-xmllint-for-release-notes.patch
 
- -- Balint Reczey <balint@balintreczey.hu>  Sun, 15 Jun 2014 14:04:12 -0700
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 19 Jun 2014 11:19:02 -0700
 
 wireshark (1.12.0~rc1-2) experimental; urgency=low
 
