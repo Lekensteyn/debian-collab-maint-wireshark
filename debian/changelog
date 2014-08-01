@@ -1,13 +1,62 @@
-wireshark (1.10.8-1) unstable; urgency=low
+wireshark (1.12.0+git+4fab41a1-1) UNRELEASED; urgency=medium
 
-  * New upstream release 1.10.8
+  * New upstream release 1.12.0 from git snapshot:
     - release notes:
-      https://wireshark.org/docs/relnotes/wireshark-1.10.8.html
-    - security fixes:
-      - The frame metadissector could crash (CVE-2014-4020)
-  * Drop flow graph related patches since they are integrated upstream
+      https://wireshark.org/docs/relnotes/wireshark-1.12.0.html
 
- -- Balint Reczey <balint@balintreczey.hu>  Tue, 17 Jun 2014 11:45:29 -0700
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 01 Aug 2014 10:25:34 +0200
+
+wireshark (1.12.0~rc3+git+e14d5b6eaa+dfsg1-1) experimental; urgency=medium
+
+  * New upstream release candidate 1.12.0 RC3, from git snapshot
+    - Makes the RTP Player graphs work with GTK3 (Closes: #744945)
+    - Guarantee that open routines are initialized (Closes: #751872)
+    - Fix changing filter expression's bg color based on validity
+      (Closes: #705621)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 23 Jul 2014 11:24:50 +0200
+
+wireshark (1.12.0~rc2+git+fd017ee+dfsg1-1) experimental; urgency=low
+
+  * New upstream release candidate 1.12.0 RC2
+    - Since the release tarball had some files missing orig.tar.xz has
+      been generated from a git snapshot with tests omitted
+  * Drop obsoleted 00.* patches
+  * Fix Wireshark's name in Vietnamese translation
+  * Add copyright information to debian/headers-check.c
+  * Add docbook-xml to build-depends to have schemas installed locally at
+    build time
+    - Drop obsoleted 0005-Disable-xmllint-for-release-notes.patch
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 19 Jun 2014 11:19:02 -0700
+
+wireshark (1.12.0~rc1-2) experimental; urgency=low
+
+  * Fix wireshark-qt's package description (Closes: #750472)
+  * Drop obsoleted debian/wireshark.pc.in
+  * Stop matching single .so versions in library install files
+  * Reformat debian/control
+  * Make it easier to switch to QT 4 in packaging
+  * Add missing files to debian/copyright (Closes: #750441)
+  * Don't ship libfiletap library, it is not production-ready yet
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 31 May 2014 01:02:30 +0700
+
+wireshark (1.12.0~rc1-1) experimental; urgency=low
+
+  * New upstream release candidate 1.12.0 RC1
+    (Closes: #729520, #729524, #703563, #712591, #726972)
+  * Drop obsolete patches and refresh the rest
+  * Bump library versions due to ABI changes
+  * Drop shlib control files
+  * Switch build system to CMake
+    - New build-dependencies: asciidoc, cmake, w3m
+    - Dropped build-dependencies: automake, autoconf, autotools-dev,
+      dh-autoreconf
+    - Disable parallel builds, they break :-(
+  * Ship Qt GUI of Wireshark as wireshark-qt
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 27 May 2014 22:28:27 +0700
 
 wireshark (1.10.7-4) unstable; urgency=low
 
