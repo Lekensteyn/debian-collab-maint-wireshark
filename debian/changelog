@@ -1,3 +1,11 @@
+wireshark (1.12.0+git+4fab41a1-1) UNRELEASED; urgency=medium
+
+  * New upstream release 1.12.0 from git snapshot:
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.12.0.html
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 01 Aug 2014 10:25:34 +0200
+
 wireshark (1.12.0~rc3+git+e14d5b6eaa+dfsg1-1) experimental; urgency=medium
 
   * New upstream release candidate 1.12.0 RC3, from git snapshot
