@@ -1,3 +1,14 @@
+wireshark (1.8.2-5wheezy11) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.10.9:
+    - The Catapult DCT2000 and IrDA dissectors could underrun a buffer
+      (CVE-2014-5161, CVE-2014-5162)
+    - The GSM Management dissector could crash (CVE-2014-5163)
+    - The RLC dissector could crash (CVE-2014-5164)
+    - The ASN.1 BER dissector could crash (CVE-2014-5165)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 05 Aug 2014 10:07:10 +0200
+
 wireshark (1.8.2-5wheezy10) wheezy-security; urgency=low
 
   * security fixes from Wireshark 1.8.13:

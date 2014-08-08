@@ -63,3 +63,7 @@
 67_fix_from_1.8.13_fix_NFS_crash.patch
 68_fix_from_1.8.13_fix_RLC_crash.patch
 69_fix_from_1.8.13_fix_MPEG_crash.patch
+70_fix_from_1.10.9_fix_Catapult_IrDA_crash.patch
+71_fix_from_1.10.9_fix_BER_crash.patch
+72_fix_from_1.10.9_fix_RLC_crash.patch
+73_fix_from_1.10.9_fix_GSM_crash.patch
