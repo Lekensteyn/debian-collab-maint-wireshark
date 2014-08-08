@@ -57,3 +57,5 @@
 63_fix_from_1.8.13_fix_MPEG_crash.patch
 64_fix_GIOP_crash_endianness_1.patch
 65_fix_GIOP_crash_endianness_2.patch
+66_fix_from_1.10.9_fix_Catapult_IrDA_crash.patch
+67_fix_from_1.10.9_fix_GSM_crash.patch

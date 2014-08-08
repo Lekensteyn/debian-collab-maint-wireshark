@@ -1,8 +1,12 @@
-wireshark (1.2.11-6+squeeze15) UNRELEASED; urgency=low
+wireshark (1.2.11-6+squeeze15) squeeze-lts; urgency=low
 
   * Make GIOP crash fix endianness-aware
+  * security fixes from Wireshark 1.10.9:
+    - The Catapult DCT2000 and IrDA dissectors could underrun a buffer
+      (CVE-2014-5161, CVE-2014-5162)
+    - The GSM Management dissector could crash (CVE-2014-5163)
 
- -- Balint Reczey <balint@balintreczey.hu>  Sun, 25 May 2014 01:05:18 +0700
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 08 Aug 2014 11:03:25 +0200
 
 wireshark (1.2.11-6+squeeze14) oldstable-security; urgency=high
 

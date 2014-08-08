@@ -1,0 +1,37 @@
+From a82d4408f9c0704ef610077ed54c94b8334cc4bc Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Mon, 23 Jun 2014 22:06:05 +0200
+Subject: [PATCH 2/2] Initialize whole buffer in GPRS Mobility and Session
+ Management dissector
+
+Conflicts:
+	epan/dissectors/packet-gsm_a_gm.c
+
+Bug: 10216
+Change-Id: I572a7a6ce0f816063f02397b667dd46c990cf73e
+Reviewed-on: https://code.wireshark.org/review/2583
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit dd7134d907350ccc574cdec596f4162860912bb9)
+Reviewed-on: https://code.wireshark.org/review/2585
+Reviewed-on: https://code.wireshark.org/review/3502
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-gsm_a_gm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-gsm_a_gm.c b/epan/dissectors/packet-gsm_a_gm.c
+index 51b7c60..326a08a 100644
+--- a/epan/dissectors/packet-gsm_a_gm.c
++++ b/epan/dissectors/packet-gsm_a_gm.c
+@@ -3202,7 +3202,7 @@ de_sm_apn(tvbuff_t *tvb, proto_tree *tree, guint32 offset, guint len, gchar *add
+ 	curr_offset = offset;
+ 
+ 	/* init buffer and copy it */
+-	memset ( str , 0 , MAX_APN_LENGTH );
++	memset ( str , 0 , MAX_APN_LENGTH+1 );
+ 	memcpy ( str , cptr , len<MAX_APN_LENGTH?len:MAX_APN_LENGTH );
+ 
+ 	curr_len = 0;
+-- 
+2.0.1
+
