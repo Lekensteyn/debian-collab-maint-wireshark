@@ -1,9 +1,21 @@
-wireshark (1.12.0+git+4fab41a1-2) UNRELEASED; urgency=medium
+wireshark (1.12.1+g01b65bf-1) unstable; urgency=high
 
   * Increase priority of debconf question about capturing rights to high
     to help first-time users in setting up capturing
+  * New upstream release 1.12.1 from git snapshot:
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.12.1.html
+    - security fixes:
+      - MEGACO dissector infinite loop (CVE-2014-6423)
+      - Netflow dissector crash (CVE-2014-6424)
+      - CUPS dissector crash (CVE-2014-6425)
+      - HIP dissector infinite loop. (CVE-2014-6426)
+      - RTSP dissector crash (CVE-2014-6427)
+      - SES dissector crash (CVE-2014-6428)
+      - Sniffer file parser crash.
+        (CVE-2014-6429, CVE-2014-6430, CVE-2014-6431, CVE-2014-6432)
 
- -- Balint Reczey <balint@balintreczey.hu>  Mon, 25 Aug 2014 11:44:10 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 18 Sep 2014 22:01:15 +0200
 
 wireshark (1.12.0+git+4fab41a1-1) unstable; urgency=medium
 
