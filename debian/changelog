@@ -14,6 +14,7 @@ wireshark (1.12.1+g01b65bf-1) unstable; urgency=high
       - SES dissector crash (CVE-2014-6428)
       - Sniffer file parser crash.
         (CVE-2014-6429, CVE-2014-6430, CVE-2014-6431, CVE-2014-6432)
+  * Back-port patch from upstream to set proper .so versions
 
  -- Balint Reczey <balint@balintreczey.hu>  Thu, 18 Sep 2014 22:01:15 +0200
 

@@ -1,3 +1,4 @@
+0001-Set-library-.so-versions-to-their-proper-value.patch
 01_Disable-building-documentation-in-PDF-and-release-no.patch
 04_asn2wrs_ply.patch
 05_note-README-when-running-as-root.patch
