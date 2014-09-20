@@ -1,0 +1,74 @@
+From a61ce89bd3d87c2ae30157a0084519e39d53116d Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Fri, 19 Sep 2014 19:53:15 +0200
+Subject: [PATCH] Set library .so versions to their proper value
+
+The versions should be bumped right before each final/RC release.
+
+Change-Id: I3ae1f117b25ad715db3ffc9f8c3b0a3979c847e7
+Reviewed-on: https://code.wireshark.org/review/4195
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+---
+ epan/CMakeLists.txt    | 2 +-
+ epan/Makefile.am       | 2 +-
+ wiretap/CMakeLists.txt | 2 +-
+ wiretap/Makefile.am    | 2 +-
+ wsutil/CMakeLists.txt  | 2 +-
+ wsutil/Makefile.am     | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/epan/CMakeLists.txt b/epan/CMakeLists.txt
+index 39eddf5..054d75a 100644
+--- a/epan/CMakeLists.txt
++++ b/epan/CMakeLists.txt
+@@ -1680,7 +1680,7 @@ add_library(epan ${LINK_MODE_LIB}
+ 
+ add_dependencies(epan gitversion)
+ 
+-set(FULL_SO_VERSION "5.0.0")
++set(FULL_SO_VERSION "5.0.1")
+ 
+ set_target_properties(epan PROPERTIES COMPILE_DEFINITIONS "WS_BUILD_DLL")
+ set_target_properties(epan PROPERTIES LINK_FLAGS "${WS_LINK_FLAGS}")
+diff --git a/wiretap/CMakeLists.txt b/wiretap/CMakeLists.txt
+index 1ba0321..71cd852 100644
+--- a/wiretap/CMakeLists.txt
++++ b/wiretap/CMakeLists.txt
+@@ -113,7 +113,7 @@ add_library(wiretap ${LINK_MODE_LIB}
+ 	${WIRETAP_FILES}
+ )
+ 
+-set(FULL_SO_VERSION "4.0.0")
++set(FULL_SO_VERSION "4.0.1")
+ 
+ set_target_properties(wiretap PROPERTIES COMPILE_DEFINITIONS "WS_BUILD_DLL")
+ set_target_properties(wiretap PROPERTIES LINK_FLAGS "${WS_LINK_FLAGS}")
+diff --git a/wsutil/CMakeLists.txt b/wsutil/CMakeLists.txt
+index e4bd718..4de975e 100644
+--- a/wsutil/CMakeLists.txt
++++ b/wsutil/CMakeLists.txt
+@@ -98,7 +98,7 @@ add_library(wsutil ${LINK_MODE_LIB}
+   ${WSUTIL_FILES}
+ )
+ 
+-set(FULL_SO_VERSION "4.0.0")
++set(FULL_SO_VERSION "4.1.0")
+ 
+ set_target_properties(wsutil PROPERTIES COMPILE_DEFINITIONS "WS_BUILD_DLL")
+ set_target_properties(wsutil PROPERTIES LINK_FLAGS "${WS_LINK_FLAGS}")
+diff --git a/wsutil/Makefile.am b/wsutil/Makefile.am
+index 0b5f3ee..8cd00d1 100644
+--- a/wsutil/Makefile.am
++++ b/wsutil/Makefile.am
+@@ -60,7 +60,7 @@ endif
+ 
+ lib_LTLIBRARIES = libwsutil.la
+ # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+-libwsutil_la_LDFLAGS = -version-info 4:0:0 @LDFLAGS_SHAREDLIB@
++libwsutil_la_LDFLAGS = -version-info 5:0:1 @LDFLAGS_SHAREDLIB@
+ 
+ AM_CPPFLAGS = -I$(srcdir)/.. \
+ 	$(LIBGCRYPT_CFLAGS) \
+-- 
+2.1.0
+
