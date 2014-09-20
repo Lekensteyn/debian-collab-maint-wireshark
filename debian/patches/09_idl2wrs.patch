@@ -2,11 +2,9 @@ Description: Do not try to locate wireshark_be.py and wireshark_gen.py in
  non-standard places.
 Author: Frederic Peters <fpeters@debian.org>
 
-Index: b/tools/idl2wrs
-===================================================================
---- a/tools/idl2wrs	2010-02-15 17:23:17.000000000 +0100
-+++ b/tools/idl2wrs	2010-02-15 17:24:59.000000000 +0100
-@@ -48,40 +48,6 @@
+--- a/tools/idl2wrs
++++ b/tools/idl2wrs
+@@ -65,41 +65,8 @@
      exit 1;
  fi
  
@@ -31,7 +29,7 @@ Index: b/tools/idl2wrs
 -# Could not find both wireshark_be.py AND wireshark_gen.py
 -# So let's just try to run it without -p, hoping that the installation
 -# set up a valid path.
- 
+-
  exec omniidl -b wireshark_be $@
  
 -old code: not reached
@@ -45,5 +43,6 @@ Index: b/tools/idl2wrs
 -
 -exit 2
 -
--
--
+ 
+ #
+ # Editor modelines  -  http://www.wireshark.org/tools/modelines.html
