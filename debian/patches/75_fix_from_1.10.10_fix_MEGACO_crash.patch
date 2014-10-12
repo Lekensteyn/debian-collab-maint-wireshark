@@ -1,0 +1,32 @@
+From 49633a28ae2a28d9514e2eaa472752e511801d44 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Fri, 1 Aug 2014 22:05:32 -0400
+Subject: [PATCH 2/6] Fix an infinite loop when the line has no length
+
+Bug:10333
+Change-Id: Ia2dae94095dddf57e4c75792b5477b0eb37c29c9
+Reviewed-on: https://code.wireshark.org/review/3345
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+Reviewed-on: https://code.wireshark.org/review/4423
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+Tested-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-megaco.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-megaco.c b/epan/dissectors/packet-megaco.c
+index 8a7d985..def3e0d 100644
+--- a/epan/dissectors/packet-megaco.c
++++ b/epan/dissectors/packet-megaco.c
+@@ -3296,7 +3296,7 @@ static void tvb_raw_text_add(tvbuff_t *tvb, proto_tree *tree){
+                             "%s", tvb_format_text_wsp(tvb,tvb_linebegin,
+                                                       linelen));
+         tvb_linebegin = tvb_lineend;
+-    } while ( tvb_lineend < tvb_len );
++    } while ( tvb_lineend < tvb_len && linelen > 0);
+ }
+ 
+ /*
+-- 
+2.1.1
+

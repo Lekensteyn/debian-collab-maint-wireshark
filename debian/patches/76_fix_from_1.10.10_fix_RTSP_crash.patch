@@ -1,0 +1,60 @@
+From 441cf84b51466919e755e9d30ea5cc9e78ecdfc7 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Sat, 16 Aug 2014 13:58:26 -0400
+Subject: [PATCH 3/6] rtsp: parse the correct token for the status code
+
+Don't call get_token_len on next_token *and* pass in next_token to store the
+subsequent pointer - the token we want to parse is the *current* value of
+next_token, not the next next token (which may be beyond the end of the buffer,
+if next_token happens to be the *last* token).
+
+Conflicts:
+	epan/dissectors/packet-rtsp.c
+
+Bug: 10381
+Change-Id: I9fb27e8bdaf2f9556f61841de30cec04b98ffb96
+Reviewed-on: https://code.wireshark.org/review/3663
+Reviewed-by: Evan Huus <eapache@gmail.com>
+(cherry picked from commit 73959159dbf34b4a0b50fbd19e05cb1b470be9b0)
+Reviewed-on: https://code.wireshark.org/review/3664
+(cherry picked from commit 949cca0810f7ed2f92adc16c57d2e4badb10a6a4)
+Reviewed-on: https://code.wireshark.org/review/3665
+Reviewed-on: https://code.wireshark.org/review/4424
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+Tested-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-rtsp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/epan/dissectors/packet-rtsp.c b/epan/dissectors/packet-rtsp.c
+index 7b7c2a4..3bef809 100644
+--- a/epan/dissectors/packet-rtsp.c
++++ b/epan/dissectors/packet-rtsp.c
+@@ -446,7 +446,7 @@ static gboolean
+ is_rtsp_request_or_reply(const guchar *line, size_t linelen, rtsp_type_t *type)
+ {
+ 	unsigned	ii;
+-	const guchar *next_token;
++	const guchar *token, *next_token;
+ 	int tokenlen;
+ 	gchar response_chars[4];
+ 
+@@ -457,12 +457,12 @@ is_rtsp_request_or_reply(const guchar *line, size_t linelen, rtsp_type_t *type)
+ 		 */
+ 		*type = RTSP_REPLY;
+ 		/* The first token is the version. */
+-		tokenlen = get_token_len(line, line+5, &next_token);
++		tokenlen = get_token_len(line, line+5, &token);
+ 		if (tokenlen != 0) {
+ 			/* The next token is the status code. */
+-			tokenlen = get_token_len(next_token, line+linelen, &next_token);
++			tokenlen = get_token_len(token, line+linelen, &next_token);
+ 			if (tokenlen >= 3) {
+-				memcpy(response_chars, next_token, 3);
++				memcpy(response_chars, token, 3);
+ 				response_chars[3] = '\0';
+ 				rtsp_stat_info->response_code = strtoul(response_chars, NULL, 10);
+ 			}
+-- 
+2.1.1
+

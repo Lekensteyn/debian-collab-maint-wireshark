@@ -67,3 +67,9 @@
 71_fix_from_1.10.9_fix_BER_crash.patch
 72_fix_from_1.10.9_fix_RLC_crash.patch
 73_fix_from_1.10.9_fix_GSM_crash.patch
+74_fix_from_1.10.10_fix_RTP_crash.patch
+75_fix_from_1.10.10_fix_MEGACO_crash.patch
+76_fix_from_1.10.10_fix_RTSP_crash.patch
+77_fix_from_1.10.10_fix_Netflow_crash.patch
+78_fix_from_1.10.10_fix_SES_crash.patch
+79_fix_from_1.10.10_fix_Sniffer_crash.patch
