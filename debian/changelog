@@ -1,3 +1,13 @@
+wireshark (1.8.2-5wheezy13) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.10.11 (Closes: #769410):
+    - SigComp UDVM buffer overflow (CVE-2014-8710)
+    - AMQP crash (CVE-2014-8711)
+    - NCP crashes (CVE-2014-8712, CVE-2014-8713)
+    - TN5250 infinite loops (CVE-2014-8714)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 23 Nov 2014 12:51:10 +0100
+
 wireshark (1.8.2-5wheezy12) wheezy-security; urgency=high
 
   * security fixes from Wireshark 1.10.9:

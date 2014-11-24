@@ -73,3 +73,8 @@
 77_fix_from_1.10.10_fix_Netflow_crash.patch
 78_fix_from_1.10.10_fix_SES_crash.patch
 79_fix_from_1.10.10_fix_Sniffer_crash.patch
+80_1.12.2_fix_TN5250_loop.patch
+81_1.12.2_fix_NCP_crash_1.patch
+82_1.12.2_fix_NCP_crash_2.patch
+83_1.12.2_fix_SigComp_crash.patch
+84_1.12.2_fix_AMQP_crash.patch
