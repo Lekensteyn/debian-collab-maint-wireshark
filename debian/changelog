@@ -1,9 +1,17 @@
-wireshark (1.12.1+g01b65bf-1~bpo70+1) wheezy-backports; urgency=medium
+wireshark (1.12.1+g01b65bf-2) unstable; urgency=medium
 
-  * Rebuild for wheezy-backports.
-  * Use QT4 and GnuTLS available in wheezy
+  [Mert Dirik]
+  * Add Turkish translation (Closes: #757499)
 
- -- Balint Reczey <balint@balintreczey.hu>  Sat, 20 Sep 2014 10:41:42 +0200
+  [Balint Reczey]
+  * Fix typo in libwiretap4 description (Closes: #757469)
+  * security fixes from Wireshark 1.12.2 (Closes: #769410):
+    - SigComp UDVM buffer overflow (CVE-2014-8710)
+    - AMQP crash (CVE-2014-8711)
+    - NCP crashes (CVE-2014-8712, CVE-2014-8713)
+    - TN5250 infinite loops (CVE-2014-8714)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 02 Nov 2014 20:31:06 +0100
 
 wireshark (1.12.1+g01b65bf-1) unstable; urgency=high
 
