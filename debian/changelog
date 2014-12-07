@@ -1,3 +1,10 @@
+wireshark (1.12.1+g01b65bf-2~bpo70+1) wheezy-backports; urgency=medium
+
+  * Rebuild for wheezy-backports.
+  * Use QT4 and GnuTLS available in wheezy
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 29 Nov 2014 11:10:30 +0100
+
 wireshark (1.12.1+g01b65bf-2) unstable; urgency=medium
 
   [Mert Dirik]
