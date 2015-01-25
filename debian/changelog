@@ -1,4 +1,17 @@
-wireshark (1.12.1+g01b65bf-2) unstable; urgency=medium
+wireshark (1.12.1+g01b65bf-3) unstable; urgency=high
+
+  * security fixes from Wireshark 1.12.3 (Closes: #776135):
+    - The WCCP dissector could crash (CVE-2015-0559, CVE-2015-0560)
+    - The LPP dissector could crash (CVE-2015-0561)
+    - The DEC DNA Routing Protocol dissector could crash (CVE-2015-0562)
+    - The SMTP dissector could crash (CVE-2015-0563)
+    - Wireshark could crash while decypting TLS/SSL sessions.
+      Discovered by Noam Rathaus. (CVE-2015-0564)
+  * Fix GTK Broadway crash (Closes: #776136)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 24 Jan 2015 16:01:19 +0100
+
+wireshark (1.12.1+g01b65bf-2) unstable; urgency=high
 
   [Mert Dirik]
   * Add Turkish translation (Closes: #757499)
