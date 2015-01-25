@@ -78,3 +78,5 @@
 82_1.12.2_fix_NCP_crash_2.patch
 83_1.12.2_fix_SigComp_crash.patch
 84_1.12.2_fix_AMQP_crash.patch
+85_1.10.12_fix_TLS_crash.patch
+86_1.10.12_fix_DEC_DNA_crash.patch

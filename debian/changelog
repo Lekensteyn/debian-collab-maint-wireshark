@@ -1,3 +1,12 @@
+wireshark (1.8.2-5wheezy14) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.10.12 (Closes: #776135):
+    - The DEC DNA Routing Protocol dissector could crash (CVE-2015-0562)
+    - Wireshark could crash while decypting TLS/SSL sessions.
+      Discovered by Noam Rathaus. (CVE-2015-0564)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 25 Jan 2015 15:42:19 +0100
+
 wireshark (1.8.2-5wheezy13) wheezy-security; urgency=high
 
   * security fixes from Wireshark 1.10.11 (Closes: #769410):

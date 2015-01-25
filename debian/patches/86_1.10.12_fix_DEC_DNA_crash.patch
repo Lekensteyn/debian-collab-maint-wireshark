@@ -1,0 +1,36 @@
+From acd589f115d77b9156975d4f1552c3b14e4fcaf0 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Tue, 25 Nov 2014 20:27:07 -0500
+Subject: [PATCH 2/2] dec-dnart: use pinfo-scoped memory for addresses
+
+They may be accessed during the print phase, at which point packet-scope memory
+has already been freed.
+
+In the back-ported fix we use capture-lifetime memory.
+
+Bug: 10724
+Change-Id: Ifcf5fc0c0857614edf85349b12dfe605abf6fef7
+Reviewed-on: https://code.wireshark.org/review/5499
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+Reviewed-on: https://code.wireshark.org/review/6432
+---
+ epan/dissectors/packet-dec-dnart.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-dec-dnart.c b/epan/dissectors/packet-dec-dnart.c
+index abbe1ed..d6e2917 100644
+--- a/epan/dissectors/packet-dec-dnart.c
++++ b/epan/dissectors/packet-dec-dnart.c
+@@ -356,7 +356,8 @@ set_dnet_address(address *paddr_src, address *paddr_tgt)
+     if (paddr_tgt->type != AT_STRINGZ && paddr_src->type == AT_ETHER) {
+         char *addr = dnet_ntoa(paddr_src->data);
+         if (addr != NULL)
+-            SET_ADDRESS(paddr_tgt, AT_STRINGZ, 1, addr);
++            SET_ADDRESS(paddr_tgt, AT_STRINGZ, 1,
++                    se_strdup(addr));
+     }
+ }
+ 
+-- 
+2.1.4
+
