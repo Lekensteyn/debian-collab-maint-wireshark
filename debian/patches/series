@@ -11,3 +11,11 @@
 19_1.12.2_fix_NCP_crash_2.patch
 20_1.12.2_fix_SigComp_crash.patch
 21_1.12.2_fix_AMQP_crash.patch
+22_1.12.3_fix_LPP_crash.patch
+23_1.12.3_fix_WCCP_crash_1.patch
+24_1.12.3_fix_WCCP_crash_2.patch
+25_1.12.3_fix_DEC_DNA_crash.patch
+26_1.12.3_fix_SMTP_crash_1.patch
+27_1.12.3_fix_Broadway_crash.patch
+27_1.12.3_fix_SMTP_crash_2.patch
+28_1.12.3_fix_TLS_crash.patch
