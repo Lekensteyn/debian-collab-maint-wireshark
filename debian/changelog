@@ -1,3 +1,19 @@
+wireshark (1.12.1+g01b65bf-4) unstable; urgency=high
+
+  * security fixes from Wireshark 1.12.4 (Closes: #780372):
+    - The ATN-CPDLC dissector could crash (CVE-2015-2187)
+    - The WCP dissector could crash (CVE-2015-2188)
+    - The pcapng file parser could crash (CVE-2015-2189)
+    - The LLDP dissector could crash (CVE-2015-2190)
+    - The TNEF dissector could go into an infinite loop.
+      Discovered by Vlad Tsyrklevich. (CVE-2015-2191)
+    - The SCSI OSD dissector could go into an infinite loop.
+      Discovered by Vlad Tsyrklevich. (CVE-2015-2192)
+  * Fix control combos such as ctrl-a, ctrl-c in filter textbox
+    (Closes: #780596)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 26 Mar 2015 19:15:54 +0100
+
 wireshark (1.12.1+g01b65bf-3) unstable; urgency=high
 
   * security fixes from Wireshark 1.12.3 (Closes: #776135):
