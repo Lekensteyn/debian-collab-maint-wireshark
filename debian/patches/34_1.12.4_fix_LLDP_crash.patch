@@ -1,0 +1,188 @@
+From 5b715e72143792faf43782f9df01dbdc8ae3676a Mon Sep 17 00:00:00 2001
+From: Guy Harris <guy@alum.mit.edu>
+Date: Sat, 21 Feb 2015 18:48:21 -0800
+Subject: [PATCH 5/6] FT_{U}INT64 doesn't work with BASE_CUSTOM.
+
+This is the 1.12 branch, so we do a quick fix:
+
+Get rid of the one place we're using it.
+
+Reject it in tmp_fld_check_assert(), so using it will blow up early in
+the initialization process rather than blowing up when dissecting.
+
+In cases that, with the tmp_fld_check_assert() change, "should not
+happen", and where we might *not* be executing in the context of a
+dissector (filling in the field label can be done lazily, being deferred
+to "print" time, and that doesn't happen in the context of a dissector),
+use g_assert_not_reached() rather than DISSECTOR_ASSERT_NOT_REACHED() -
+the latter throws an assertion that's not caught if we're not doing
+dissection, so we crash anyway.
+
+Bug: 10983
+Change-Id: Id4cb1b8ed17cab976b8151e41ec6b6b79478214d
+Reviewed-on: https://code.wireshark.org/review/7304
+Reviewed-by: Guy Harris <guy@alum.mit.edu>
+Reviewed-on: https://code.wireshark.org/review/7705
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+Tested-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-lldp.c | 42 +++++++++++++++++++++---------------------
+ epan/proto.c                  | 18 ++++++++++++------
+ 2 files changed, 33 insertions(+), 27 deletions(-)
+
+diff --git a/epan/dissectors/packet-lldp.c b/epan/dissectors/packet-lldp.c
+index b0c6efc..0d1bbbf 100644
+--- a/epan/dissectors/packet-lldp.c
++++ b/epan/dissectors/packet-lldp.c
+@@ -876,10 +876,9 @@ media_power_base(gchar *buf, guint32 value) {
+ 		option = 0 -> Latitude
+ 		option = 1 -> Longitude
+ */
+-static void
+-get_latitude_or_longitude(gchar *buf, int option, guint64 unmasked_value)
++static gchar *
++get_latitude_or_longitude(int option, guint64 value)
+ {
+-	guint64 value = (unmasked_value & G_GINT64_CONSTANT(0x03FFFFFFFF000000)) >> 24;
+ 	guint64 tempValue = value;
+ 	gboolean negativeNum = FALSE;
+ 	guint32 integerPortion = 0;
+@@ -925,18 +924,8 @@ get_latitude_or_longitude(gchar *buf, int option, guint64 unmasked_value)
+ 			direction = "East";
+ 	}
+ 
+-	g_snprintf(buf, ITEM_LABEL_LENGTH, "%u.%04" G_GINT64_MODIFIER "u degrees %s (0x%16" G_GINT64_MODIFIER "X))",
+-	    integerPortion, tempValue, direction, value);
+-}
+-
+-static void
+-latitude_base(gchar *buf, guint64 value) {
+-	get_latitude_or_longitude(buf, 0, value);
+-}
+-
+-static void
+-longitude_base(gchar *buf, guint64 value) {
+-	get_latitude_or_longitude(buf, 1, value);
++	return wmem_strdup_printf(wmem_packet_scope(), "%u.%04" G_GINT64_MODIFIER "u degrees %s",
++	    integerPortion, tempValue, direction);
+ }
+ 
+ /* Dissect Chassis Id TLV (Mandatory) */
+@@ -2363,6 +2352,7 @@ dissect_media_tlv(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, guint32 o
+ 	guint8 subType;
+ 	guint8 tempByte;
+ 	guint32 LCI_Length;
++	guint64 temp64bit = 0;
+ 
+ 	proto_tree	*media_flags = NULL;
+ 	proto_item	*tf = NULL;
+@@ -2492,7 +2482,12 @@ dissect_media_tlv(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, guint32 o
+ 			proto_tree_add_item(tree, hf_media_loc_lat_resolution, tvb, offset, 1, ENC_BIG_ENDIAN);
+ 
+ 			/* Get latitude */
+-			proto_tree_add_item(tree, hf_media_loc_lat, tvb, offset, 5, ENC_BIG_ENDIAN);
++			temp64bit = tvb_get_ntoh40(tvb, offset);
++			temp64bit = temp64bit & G_GINT64_CONSTANT(0x03FFFFFFFF);
++			if (tree)
++				proto_tree_add_string_format_value(tree, hf_media_loc_lat, tvb, offset, 5, "", "%s (0x%" G_GINT64_MODIFIER "X)",
++				    get_latitude_or_longitude(0, temp64bit),
++				    temp64bit);
+ 
+ 			offset += 5;
+ 
+@@ -2500,7 +2495,12 @@ dissect_media_tlv(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, guint32 o
+ 			proto_tree_add_item(tree, hf_media_loc_long_resolution, tvb, offset, 1, ENC_BIG_ENDIAN);
+ 
+ 			/* Get longitude */
+-			proto_tree_add_item(tree, hf_media_loc_long, tvb, offset, 5, ENC_BIG_ENDIAN);
++			temp64bit = tvb_get_ntoh40(tvb, offset);
++			temp64bit = temp64bit & G_GINT64_CONSTANT(0x03FFFFFFFF);
++			if (tree)
++				proto_tree_add_string_format_value(tree, hf_media_loc_long, tvb, offset, 5, "", "%s (0x%" G_GINT64_MODIFIER "X)",
++				    get_latitude_or_longitude(1, temp64bit),
++				    temp64bit);
+ 
+ 			offset += 5;
+ 
+@@ -4143,16 +4143,16 @@ proto_register_lldp(void)
+ 			NULL, 0xFC, NULL, HFILL }
+ 		},
+ 		{ &hf_media_loc_lat,
+-			{ "Latitude", "lldp.media.loc.latitude", FT_UINT64, BASE_CUSTOM,
+-			latitude_base, 0x0, NULL, HFILL }
++			{ "Latitude", "lldp.media.loc.latitude", FT_STRING, BASE_NONE,
++			NULL, 0x0, NULL, HFILL }
+ 		},
+ 		{ &hf_media_loc_long_resolution,
+ 			{ "Longitude Resolution", "lldp.media.loc.long_resolution", FT_UINT8, BASE_DEC,
+ 			NULL, 0xFC, NULL, HFILL }
+ 		},
+ 		{ &hf_media_loc_long,
+-			{ "Longitude", "lldp.media.loc.longitude", FT_UINT64, BASE_CUSTOM,
+-			longitude_base, 0x0, NULL, HFILL }
++			{ "Longitude", "lldp.media.loc.longitude", FT_STRING, BASE_NONE,
++			NULL, 0x0, NULL, HFILL }
+ 		},
+ 		{ &hf_media_loc_alt_type,
+ 			{ "Altitude Type", "lldp.media.loc.alt_type", FT_UINT8, BASE_DEC,
+diff --git a/epan/proto.c b/epan/proto.c
+index ac5ecf9..fc7c5a1 100644
+--- a/epan/proto.c
++++ b/epan/proto.c
+@@ -5401,7 +5401,15 @@ tmp_fld_check_assert(header_field_info *hfinfo)
+ 				case BASE_OCT:
+ 				case BASE_DEC_HEX:
+ 				case BASE_HEX_DEC:
++					break;
+ 				case BASE_CUSTOM: /* hfinfo_numeric_value_format() treats this as decimal */
++					if (hfinfo->type == FT_INT64 ||
++					    hfinfo->type == FT_UINT64) {
++						/* BASE_CUSTOM not supported yet */
++						g_error("Field '%s' (%s) is a 64-bit field (%s) but is being displayed with BASE_CUSTOM\n",
++							hfinfo->name, hfinfo->abbrev,
++							ftype_name(hfinfo->type));
++					}
+ 					break;
+ 				default:
+ 					g_error("Field '%s' (%s) is an integral value (%s)"
+@@ -6133,6 +6141,7 @@ fill_label_number64(field_info *fi, gchar *label_str, gboolean is_signed)
+ 	guint64            value;
+ 	char               tmp[ITEM_LABEL_LENGTH+1];
+ 
++	/* DOES NOT HANDLE BASE_CUSTOM */
+ 	/* Pick the proper format string */
+ 	if (is_signed)
+ 		format = hfinfo_int64_format(hfinfo);
+@@ -6266,8 +6275,7 @@ hfinfo_number_value_format_display(const header_field_info *hfinfo, int display,
+ 				return ptr;
+ 
+ 			default:
+-				DISSECTOR_ASSERT_NOT_REACHED();
+-				;
++				g_assert_not_reached();
+ 		}
+ 	return ptr;
+ }
+@@ -6358,8 +6366,7 @@ hfinfo_uint64_format(const header_field_info *hfinfo)
+ 			format = "0x%016" G_GINT64_MODIFIER "x (%" G_GINT64_MODIFIER "u)";
+ 			break;
+ 		default:
+-			DISSECTOR_ASSERT_NOT_REACHED();
+-			;
++			g_assert_not_reached();
+ 	}
+ 	return format;
+ }
+@@ -6387,8 +6394,7 @@ hfinfo_int64_format(const header_field_info *hfinfo)
+ 			format = "0x%016" G_GINT64_MODIFIER "x (%" G_GINT64_MODIFIER "d)";
+ 			break;
+ 		default:
+-			DISSECTOR_ASSERT_NOT_REACHED();
+-			;
++			g_assert_not_reached();
+ 	}
+ 	return format;
+ }
+-- 
+2.1.4
+
