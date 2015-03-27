@@ -80,3 +80,6 @@
 84_1.12.2_fix_AMQP_crash.patch
 85_1.10.12_fix_TLS_crash.patch
 86_1.10.12_fix_DEC_DNA_crash.patch
+87_1.10.13_fix_TNEF_crash.patch
+88_1.10.13_fix_pcapng_crash.patch
+89_1.10.13_fix_WCP_crash.patch

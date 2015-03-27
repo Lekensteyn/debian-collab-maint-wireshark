@@ -1,0 +1,44 @@
+From e3f1da462523008228d9f662b91774e07eb8c118 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Sun, 1 Mar 2015 18:33:10 -0500
+Subject: [PATCH 1/3] tnef: fix overflow leading to infinite loop
+
+Thanks to Vlad Tsyrklevich for the report, and Fabian Yamaguchi for the "joern"
+tool which found the bug.
+
+Bug: 11023
+Change-Id: I53bc998c9934736698e7db5eba09a14e79a7c633
+Reviewed-on: https://code.wireshark.org/review/7461
+Petri-Dish: Evan Huus <eapache@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Evan Huus <eapache@gmail.com>
+(cherry picked from commit 608cf324b3962877e9699f3e81e8f82ac9f1ea14)
+Reviewed-on: https://code.wireshark.org/review/7486
+Reviewed-by: Gerald Combs <gerald@wireshark.org>
+(cherry picked from commit c6544502431e916d15a368c9ee588863da189432)
+Reviewed-on: https://code.wireshark.org/review/7711
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+Tested-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-tnef.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-tnef.c b/epan/dissectors/packet-tnef.c
+index 6f474f4..761d5f3 100644
+--- a/epan/dissectors/packet-tnef.c
++++ b/epan/dissectors/packet-tnef.c
+@@ -621,7 +621,10 @@ static void dissect_tnef(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+ 	    }
+     }
+ 
+-    offset += length;
++    /* check for overflow */
++    if (offset + length > (guint32)offset) {
++      offset += length;
++    }
+ 
+     proto_tree_add_item(attr_tree, hf_tnef_attribute_checksum, tvb, offset, 2, ENC_LITTLE_ENDIAN);
+     offset += 2;
+-- 
+2.1.4
+
