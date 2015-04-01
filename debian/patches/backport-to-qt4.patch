@@ -17,3 +17,16 @@ Index: debian/control
   libpcap0.8-dev, flex, libz-dev, debhelper (>= 9), po-debconf, libtool,
   python (>= 2.6.6-3~), python-ply, libc-ares-dev, xsltproc,
   docbook-xsl (>= 1.64.1.0-0), docbook-xml, libxml2-utils, libpcre3-dev,
+Index: debian/rules
+===================================================================
+--- ./debian/rules	(revision 26097)
++++ ./debian/rules	(working copy)
+@@ -19,7 +19,7 @@
+ override_dh_auto_configure:
+ 	dh_auto_configure -- -DENABLE_GUIDES=ON \
+ 		-DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
+-	# -DENABLE_QT5=OFF
++	-DENABLE_QT5=OFF
+ 
+ override_dh_auto_build:
+ 	dh_auto_build
