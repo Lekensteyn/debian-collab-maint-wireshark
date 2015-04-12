@@ -1,0 +1,34 @@
+Author: Balint Reczey <balint@balintreczey.hu>
+Description: Change d/control and d/rules to use build on Squeeze
+ This is useful for back-porting.
+
+--- ./debian/compat	(revision 26101)
++++ ./debian/compat	(working copy)
+@@ -1 +1 @@
+-9
++8
+--- ./debian/control	(revision 26101)
++++ ./debian/control	(working copy)
+@@ -4,7 +4,7 @@
+ Maintainer: Balint Reczey <balint@balintreczey.hu>
+ DM-Upload-Allowed: yes
+ Standards-Version: 3.9.3
+-Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, debhelper (>= 9), po-debconf, libtool, python (>= 2.6.6-3~), python-ply, automake, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libxml2-utils, libpcre3-dev, libcap2-dev [linux-any] | libcap-dev (>= 2.17) [linux-any], bison, libgnutls-dev, portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, dpkg-dev (>= 1.16.1~)
++Build-Depends: libgtk2.0-dev (>=2.4.0-0), libpcap0.8-dev, flex, libz-dev, debhelper (>= 8), po-debconf, libtool, python (>= 2.6.6-3~), python-ply, automake, autoconf, autotools-dev, libc-ares-dev, xsltproc, docbook-xsl (>= 1.64.1.0-0), libxml2-utils, libpcre3-dev, libcap2-dev [linux-any] | libcap-dev (>= 2.17) [linux-any], bison, libgnutls-dev, portaudio19-dev, libkrb5-dev, liblua5.1-0-dev, libsmi2-dev, libgeoip-dev, hardening-wrapper
+ Build-Conflicts: libsnmp4.2-dev, libsnmp-dev
+ Vcs-Svn: svn://svn.debian.org/svn/collab-maint/ext-maint/wireshark/trunk
+ Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/ext-maint/wireshark/trunk/
+--- ./debian/rules	(revision 26101)
++++ ./debian/rules	(working copy)
+@@ -5,10 +5,10 @@
+ 
+ # Uncomment this to turn on verbose mode.
+ #export DH_VERBOSE=1
+-export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+-DPKG_EXPORT_BUILDFLAGS = 1
+-include /usr/share/dpkg/buildflags.mk
+ 
++# Use hardening wrapper
++export DEB_BUILD_HARDENING=1
++
+ DB2MAN=/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl
