@@ -1,3 +1,25 @@
+wireshark (1.12.4+gb4861da-1) unstable; urgency=medium
+
+  [Arnd Hannemann]
+  * Fix German debconf translation (Closes: #779826)
+
+  [Balint Reczey]
+  * Fix pkg-config file (Closes: #779788)
+  * New upstream release 1.12.4 from git snapshot:
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.12.4.html
+  * Drop obsolete patches
+  * Bump standards version
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 30 Apr 2015 07:42:35 +0200
+
+wireshark (1.12.1+g01b65bf-5) unstable; urgency=medium
+
+  * Finish postinst of wireshark-common even when wireshark group is a
+    user group (LP: #1447893)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 26 Apr 2015 02:14:49 +0200
+
 wireshark (1.12.1+g01b65bf-4) unstable; urgency=high
 
   * security fixes from Wireshark 1.12.4 (Closes: #780372):
