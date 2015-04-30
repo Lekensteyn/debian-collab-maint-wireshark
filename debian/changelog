@@ -1,9 +1,12 @@
-wireshark (1.12.1+g01b65bf-6) UNRELEASED; urgency=medium
+wireshark (1.12.1+g01b65bf-7) UNRELEASED; urgency=medium
 
   [Arnd Hannemann]
   * Fix German debconf translation (Closes: #779826)
 
- -- Balint Reczey <balint@balintreczey.hu>  Thu, 30 Apr 2015 07:30:30 +0200
+  [Balint Reczey]
+  *  Fix pkg-config file (Closes: #779788)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 30 Apr 2015 07:42:35 +0200
 
 wireshark (1.12.1+g01b65bf-5) unstable; urgency=medium
 

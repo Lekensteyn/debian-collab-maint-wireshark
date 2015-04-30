@@ -1,0 +1,43 @@
+From 2d79f56df1bb779cf5628359c778adbc98dfbf6a Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Fri, 10 Apr 2015 01:58:42 +0200
+Subject: [PATCH] Fix wireshark.pc when CMAKE_INSTALL_LIBDIR is absolute
+
+Change-Id: I9667660329c0888f35e1ac332537eda995509a85
+Reviewed-on: https://code.wireshark.org/review/8010
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ CMakeLists.txt  | 11 ++++++-----
+ wireshark.pc.in |  2 +-
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -691,10 +691,16 @@
+ 
+ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+ 
++if(IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
++  set(ABSOLUTE_CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
++else()
++  set(ABSOLUTE_CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
++endif()
++
+ if(ENABLE_PLUGINS)
+ 	set(HAVE_PLUGINS 1)
+ 	set(PLUGIN_DIR "${DATAFILE_DIR}/plugins/${CPACK_PACKAGE_VERSION}")
+-	set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/@CPACK_PACKAGE_NAME@/plugins/${CPACK_PACKAGE_VERSION}")
++	set(PLUGIN_INSTALL_DIR "${ABSOLUTE_CMAKE_INSTALL_LIBDIR}/@CPACK_PACKAGE_NAME@/plugins/${CPACK_PACKAGE_VERSION}")
+ 	set(PLUGIN_SRC_DIRS
+ 		plugins/docsis
+ 		plugins/ethercat
+--- a/wireshark.pc.in
++++ b/wireshark.pc.in
+@@ -1,6 +1,6 @@
+ prefix=@CMAKE_INSTALL_PREFIX@
+ exec_prefix=${prefix}
+-libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
++libdir=@ABSOLUTE_CMAKE_INSTALL_LIBDIR@
+ sharedlibdir=${libdir}
+ includedir=${prefix}/include/wireshark
+ plugindir=@PLUGIN_INSTALL_DIR@
