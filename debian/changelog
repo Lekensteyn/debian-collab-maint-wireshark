@@ -1,3 +1,45 @@
+wireshark (1.12.5+g5819e5b-1) unstable; urgency=high
+
+  * Ship reordercap in wireshark-common
+  * New upstream release 1.12.5
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.12.5.html
+    - security fixes:
+      - The LBMR dissector could go into an infinite loop (CVE-2015-3809)
+      - The WebSocket dissector could recurse excessively (CVE-2015-3810)
+      - The WCP dissector could crash while decompressing data (CVE-2015-3811)
+      - The X11 dissector could leak memory (CVE-2015-3812)
+      - The packet reassembly code could leak memory (CVE-2015-3813)
+      - The IEEE 802.11 dissector could go into an infinite loop (CVE-2015-3814)
+      - The Android Logcat file parser could crash. Discovered by Hanno Böck.
+        (CVE-2015-3815)
+   * Update symbols files
+   * Build-depend on dh-python
+
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 13 May 2015 11:17:15 +0200
+
+wireshark (1.12.4+gb4861da-1) unstable; urgency=medium
+
+  [Arnd Hannemann]
+  * Fix German debconf translation (Closes: #779826)
+
+  [Balint Reczey]
+  * Fix pkg-config file (Closes: #779788)
+  * New upstream release 1.12.4 from git snapshot:
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.12.4.html
+  * Drop obsolete patches
+  * Bump standards version
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 30 Apr 2015 07:42:35 +0200
+
+wireshark (1.12.1+g01b65bf-5) unstable; urgency=medium
+
+  * Finish postinst of wireshark-common even when wireshark group is a
+    user group (LP: #1447893)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 26 Apr 2015 02:14:49 +0200
+
 wireshark (1.12.1+g01b65bf-4) unstable; urgency=high
 
   * security fixes from Wireshark 1.12.4 (Closes: #780372):
