@@ -1,3 +1,10 @@
+wireshark (1.8.2-5wheezy16) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.10.14:
+    - The WCP dissector could crash while decompressing data (CVE-2015-3811)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 23 May 2015 19:29:24 +0200
+
 wireshark (1.8.2-5wheezy15) wheezy-security; urgency=high
 
   * security fixes from Wireshark 1.12.4 (Closes: #780372):
