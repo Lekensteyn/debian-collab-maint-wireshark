@@ -26,3 +26,13 @@
 33_1.12.4_fix_SCSI_OSD_crash.patch
 34_1.12.4_fix_LLDP_crash.patch
 35_1.12.4_fix_WCP_crash.patch
+36_1.12.5_fix_LBMR_crash.patch
+37_1.12.5_fix_WebSocket_looping.patch
+38_1.12.5_fix_WCP_crash.patch
+39_1.12.5_fix_X11_leak.patch
+40_1.12.5_fix_reassembly_leak.patch
+41_1.12.5_fix_IEEE-802.11_dos.patch
+42_1.12.5_fix_logcat_crash1.patch
+43_1.12.5_fix_logcat_crash2.patch
+44_1.12.5_fix_logcat_crash3.patch
+45_1.12.5_fix_logcat_crash4.patch

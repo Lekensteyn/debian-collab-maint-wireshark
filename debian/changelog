@@ -1,3 +1,17 @@
+wireshark (1.12.1+g01b65bf-4+deb8u1) jessie-security; urgency=high
+
+  * security fixes from Wireshark 1.12.5:
+    - The LBMR dissector could go into an infinite loop (CVE-2015-3809)
+    - The WebSocket dissector could recurse excessively (CVE-2015-3810)
+    - The WCP dissector could crash while decompressing data (CVE-2015-3811)
+    - The X11 dissector could leak memory (CVE-2015-3812)
+    - The packet reassembly code could leak memory (CVE-2015-3813)
+    - The IEEE 802.11 dissector could go into an infinite loop (CVE-2015-3814)
+    - The Android Logcat file parser could crash. Discovered by Hanno Böck.
+      (CVE-2015-3815)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 25 May 2015 21:48:45 +0200
+
 wireshark (1.12.1+g01b65bf-4) unstable; urgency=high
 
   * security fixes from Wireshark 1.12.4 (Closes: #780372):

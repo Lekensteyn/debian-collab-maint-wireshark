@@ -1,0 +1,39 @@
+From f69930acda21301961c50421a73981854ef30068 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Sat, 28 Mar 2015 08:38:25 -0400
+Subject: [PATCH 06/10] x11: destroy two more hash tables in convo data
+
+Fixes a memory leak.
+
+Bug: 11088
+Change-Id: Ie5532507c6e2963af8056d41abf1c7a398e08cfd
+Reviewed-on: https://code.wireshark.org/review/7835
+Petri-Dish: Evan Huus <eapache@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Evan Huus <eapache@gmail.com>
+(cherry picked from commit b8ccc2a6add29823a0ff0492fc50372449007e7b)
+Reviewed-on: https://code.wireshark.org/review/7838
+(cherry picked from commit 7b58f023276d33686273ec71eb3ba8a3e1093c3e)
+Reviewed-on: https://code.wireshark.org/review/8637
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-x11.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/epan/dissectors/packet-x11.c b/epan/dissectors/packet-x11.c
+index cbb0fd7..2e751c8 100644
+--- a/epan/dissectors/packet-x11.c
++++ b/epan/dissectors/packet-x11.c
+@@ -2558,6 +2558,9 @@ static void x11_init_protocol(void)
+       for (state = x11_conv_data_list; state != NULL; ) {
+             x11_conv_data_t *last;
+ 
++            g_hash_table_destroy(state->eventcode_funcs);
++            g_hash_table_destroy(state->reply_funcs);
++
+             g_hash_table_destroy(state->seqtable);
+             g_hash_table_destroy(state->valtable);
+ 
+-- 
+2.1.4
+

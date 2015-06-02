@@ -1,0 +1,57 @@
+From 8c6929254e6b30bc64b6f7e29699085ee2611b93 Mon Sep 17 00:00:00 2001
+From: Evan Huus <eapache@gmail.com>
+Date: Sat, 7 Mar 2015 22:25:28 -0500
+Subject: [PATCH 09/10] lbmr: fix possible infinite loop
+
+Ensure that we handle when option_len is zero so we don't go into an infinite
+loop. Reported by Vlad Tsyrklevich and found by the "joern" tool. Also fix what
+appears to be two misplaced "curr_offset" values which would have resulted in a
+bad loop anyways.
+
+Bug: 11036
+Change-Id: I79e70fcf79015cb0add1744aff695143e11312aa
+Reviewed-on: https://code.wireshark.org/review/7593
+Reviewed-by: David Ameiss <netshark@ameissnet.com>
+Reviewed-by: Evan Huus <eapache@gmail.com>
+(cherry picked from commit c19860dba8d158c42865c3d9051b6f318cb41169)
+Reviewed-on: https://code.wireshark.org/review/7644
+(cherry picked from commit 524d58583bfadf44df1455ee104234da384c8c7e)
+Reviewed-on: https://code.wireshark.org/review/8634
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-lbmr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-lbmr.c b/epan/dissectors/packet-lbmr.c
+index 398c3c0..b560d0a 100644
+--- a/epan/dissectors/packet-lbmr.c
++++ b/epan/dissectors/packet-lbmr.c
+@@ -4576,13 +4576,13 @@ static int dissect_lbmr_pser(tvbuff_t * tvb, int offset, packet_info * pinfo, pr
+             proto_tree * ctxinst_tree = NULL;
+             proto_item * ctxinst_item = NULL;
+             guint8 opt_type = tvb_get_guint8(tvb, curr_offset + O_LBMR_PSER_OPT_HDR_T_TYPE);
+-            guint8 option_len = tvb_get_guint8(tvb, O_LBMR_PSER_OPT_HDR_T_LEN);
++            guint8 option_len = tvb_get_guint8(tvb, curr_offset + O_LBMR_PSER_OPT_HDR_T_LEN);
+ 
+             switch (opt_type)
+             {
+                 case LBMR_PSER_OPT_SRC_CTXINST_TYPE:
+                 case LBMR_PSER_OPT_STORE_CTXINST_TYPE:
+-                    ctxinst_item = proto_tree_add_item(opts_tree, hf_lbmr_pser_opt_ctxinst, tvb, offset, L_LBMR_PSER_OPT_CTXINST_T, ENC_NA);
++                    ctxinst_item = proto_tree_add_item(opts_tree, hf_lbmr_pser_opt_ctxinst, tvb, curr_offset, L_LBMR_PSER_OPT_CTXINST_T, ENC_NA);
+                     ctxinst_tree = proto_item_add_subtree(ctxinst_item, ett_lbmr_pser_opt_ctxinst);
+                     proto_tree_add_item(ctxinst_tree, hf_lbmr_pser_opt_ctxinst_len, tvb, curr_offset + O_LBMR_PSER_OPT_CTXINST_T_LEN, L_LBMR_PSER_OPT_CTXINST_T_LEN, ENC_BIG_ENDIAN);
+                     proto_tree_add_item(ctxinst_tree, hf_lbmr_pser_opt_ctxinst_type, tvb, curr_offset + O_LBMR_PSER_OPT_CTXINST_T_TYPE, L_LBMR_PSER_OPT_CTXINST_T_TYPE, ENC_BIG_ENDIAN);
+@@ -4596,6 +4596,9 @@ static int dissect_lbmr_pser(tvbuff_t * tvb, int offset, packet_info * pinfo, pr
+                     curr_offset += option_len;
+                     opt_len -= option_len;
+                     expert_add_info_format(pinfo, NULL, &ei_lbmr_analysis_invalid_value, "Unknown LBMR PSER option 0x%02x", opt_type);
++                    if (option_len == 0) {
++                        return (len);
++                    }
+                     break;
+             }
+         }
+-- 
+2.1.4
+

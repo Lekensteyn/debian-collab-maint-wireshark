@@ -1,0 +1,48 @@
+From 5c9e65849137ec812318b9d42fac4aa7d1a89fe1 Mon Sep 17 00:00:00 2001
+From: Martin Kaiser <wireshark@kaiser.cx>
+Date: Wed, 8 Apr 2015 22:46:30 +0200
+Subject: [PATCH 07/10] [IEEE 802.11] fix two potential endless loops
+
+add_tagged_field() may return 0 if the tag length is not what is
+expected for this particular tag
+
+Bug: 11110
+
+Change-Id: Ia2fd6635613fb6d8e1264147d2ddd44162484887
+Reviewed-on: https://code.wireshark.org/review/7989
+Reviewed-by: Martin Kaiser <wireshark@kaiser.cx>
+(cherry picked from commit e243b0041328980a9bbd43bb8a8166d7422f9096)
+Reviewed-on: https://code.wireshark.org/review/7991
+Reviewed-by: Alexis La Goutte <alexis.lagoutte@gmail.com>
+(cherry picked from commit c3bee6101770e79b7b08d9c27aefbfa154ee4ba9)
+Reviewed-on: https://code.wireshark.org/review/8639
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-ieee80211.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/epan/dissectors/packet-ieee80211.c b/epan/dissectors/packet-ieee80211.c
+index 9f4e297..dba471cb 100644
+--- a/epan/dissectors/packet-ieee80211.c
++++ b/epan/dissectors/packet-ieee80211.c
+@@ -11604,6 +11604,8 @@ static int dissect_tfs_request(packet_info *pinfo, proto_tree *tree,
+       s_end = offset + len;
+       while (s_offset < s_end) {
+         int tlen = add_tagged_field(pinfo, tree, tvb, s_offset, ftype);
++        if (tlen==0)
++          break;
+         s_offset += tlen;
+       }
+       break;
+@@ -11673,6 +11675,8 @@ static int dissect_tfs_response(packet_info *pinfo, proto_tree *tree,
+       s_end = offset + len;
+       while (s_offset < s_end) {
+         int tlen = add_tagged_field(pinfo, tree, tvb, s_offset, ftype);
++        if (tlen==0)
++          break;
+         s_offset += tlen;
+       }
+       break;
+-- 
+2.1.4
+

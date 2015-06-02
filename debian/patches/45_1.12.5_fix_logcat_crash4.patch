@@ -1,0 +1,59 @@
+From 479c1f53ec732fb710f3e431aa294f8149efb4a3 Mon Sep 17 00:00:00 2001
+From: Guy Harris <guy@alum.mit.edu>
+Date: Tue, 12 May 2015 12:49:06 -0700
+Subject: [PATCH 04/10] Don't assume file_read() won't itself return
+ WTAP_ERR_SHORT_READ.
+
+There are some paths where it will.
+
+Change-Id: Ic086fc8160a69b433f8acafd4e387cf9a0c8b38c
+Reviewed-on: https://code.wireshark.org/review/8434
+Reviewed-by: Guy Harris <guy@alum.mit.edu>
+Reviewed-on: https://code.wireshark.org/review/8645
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ wiretap/logcat.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/wiretap/logcat.c b/wiretap/logcat.c
+index e8340ec..d7cc5e5 100644
+--- a/wiretap/logcat.c
++++ b/wiretap/logcat.c
+@@ -165,9 +165,10 @@ static gint detect_version(FILE_T fh, int *err, gchar **err_info)
+                 return -2;
+             }
+             *err = WTAP_ERR_SHORT_READ;
+-            return 0;
+         }
+-        return -1;
++        if (*err != WTAP_ERR_SHORT_READ)
++            return -1;
++        return 0;
+     }
+     payload_length = pletoh16(&tmp);
+ 
+@@ -182,7 +183,9 @@ static gint detect_version(FILE_T fh, int *err, gchar **err_info)
+     bytes_read = file_read(&tmp, 2, fh);
+     if (bytes_read != 2) {
+         *err = file_error(fh, err_info);
+-        if (*err != 0)
++        if (*err == 0)
++            *err = WTAP_ERR_SHORT_READ;
++        if (*err != WTAP_ERR_SHORT_READ)
+             return -1;
+         return 0;
+     }
+@@ -213,7 +216,9 @@ static gint detect_version(FILE_T fh, int *err, gchar **err_info)
+         if (bytes_read != entry_len - read_sofar) {
+             *err = file_error(fh, err_info);
+             g_free(buffer);
+-            if (*err != 0)
++            if (*err == 0)
++                *err = WTAP_ERR_SHORT_READ;
++            if (*err != WTAP_ERR_SHORT_READ)
+                 return -1;
+             return 0;
+         }
+-- 
+2.1.4
+
