@@ -1,3 +1,14 @@
+wireshark (1.12.6+gee1fce6-1) unstable; urgency=high
+
+  * New upstream release 1.12.6
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.12.6.html
+    - security fixes:
+      - WCCP dissector crash
+      - GSM DTAP dissector crash
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 18 Jun 2015 23:58:21 +0200
+
 wireshark (1.12.5+g5819e5b-1) unstable; urgency=high
 
   * Ship reordercap in wireshark-common
