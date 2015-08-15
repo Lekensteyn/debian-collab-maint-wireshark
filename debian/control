@@ -166,6 +166,7 @@ Multi-Arch: foreign
 Depends: ${misc:Depends}, libjs-openlayers
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
+Recommends: geoip-database, geoip-database-extra
 Suggests: snmp-mibs-downloader
 Description: network packet dissection library -- data files
  The libwireshark library provides the network packet dissection services
