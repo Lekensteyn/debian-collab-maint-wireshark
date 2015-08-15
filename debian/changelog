@@ -15,6 +15,8 @@ wireshark (1.12.7+g7fc8978-1) unstable; urgency=high
       - WCCP crash
    * Use system's OpenLayers.js to avoid privacy breach
    * Recommend geoip-database and geoip-database-extra
+   * Set location of system's GeoIP database as default. This makes GeoIP
+     features work out of the box.
 
  -- Balint Reczey <balint@balintreczey.hu>  Sat, 15 Aug 2015 08:49:24 +0200
 
