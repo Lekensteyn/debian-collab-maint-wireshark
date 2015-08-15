@@ -1,3 +1,11 @@
+wireshark (1.12.1+g01b65bf-4+deb8u2) jessie-security; urgency=high
+
+  * security fixes from Wireshark 1.12.6:
+    - WCCP dissector crash (CVE-2015-4651)
+    - GSM DTAP dissector crash (CVE-2015-4652)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 22 Jun 2015 20:52:02 -0700
+
 wireshark (1.12.1+g01b65bf-4+deb8u1) jessie-security; urgency=high
 
   * security fixes from Wireshark 1.12.5:

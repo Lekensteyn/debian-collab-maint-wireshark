@@ -36,3 +36,5 @@
 43_1.12.5_fix_logcat_crash2.patch
 44_1.12.5_fix_logcat_crash3.patch
 45_1.12.5_fix_logcat_crash4.patch
+46_1.12.6_fix_GSM_DTAP_crash.patch
+47_1.12.6_fix_WCCP_crash.patch
