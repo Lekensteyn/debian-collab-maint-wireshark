@@ -1,3 +1,9 @@
+wireshark (1.12.7+g7fc8978-2) UNRELEASED; urgency=medium
+
+  * Enable all hardening flags
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 22 Sep 2015 23:10:57 +0200
+
 wireshark (1.12.7+g7fc8978-1) unstable; urgency=high
 
   * New upstream release 1.12.7
