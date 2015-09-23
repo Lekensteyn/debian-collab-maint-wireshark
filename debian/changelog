@@ -1,4 +1,4 @@
-wireshark (1.12.1+g01b65bf-4+deb8u3) jessie-security; urgency=medium
+wireshark (1.12.1+g01b65bf-4+deb8u3) jessie-security; urgency=high
 
   * security fixes from Wireshark 1.12.7:
     - Protocol tree crash (CVE-2015-6241)
