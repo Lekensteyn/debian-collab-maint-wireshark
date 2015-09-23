@@ -11,7 +11,6 @@ wireshark (1.12.1+g01b65bf-4+deb8u3) jessie-security; urgency=medium
     - The OpenFlow dissector could crash (CVE-2015-6247)
     - The WCCP dissector could crash (CVE-2015-6249)
 
-
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 22 Sep 2015 23:12:12 +0200
 
 wireshark (1.12.1+g01b65bf-4+deb8u2) jessie-security; urgency=high
