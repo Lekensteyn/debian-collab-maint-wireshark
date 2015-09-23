@@ -38,3 +38,15 @@
 45_1.12.5_fix_logcat_crash4.patch
 46_1.12.6_fix_GSM_DTAP_crash.patch
 47_1.12.6_fix_WCCP_crash.patch
+48_1.12.7_fix_proto-tree_crash.patch
+49_1.12.7_fix_wmem_crash.patch
+50_1.12.7_fix_dissector-table_crash.patch
+51_1.12.7_fix_ZigBee_crash1.patch
+52_1.12.7_fix_ZigBee_crash2.patch
+53_1.12.7_fix_ZigBee_crash3.patch
+54_1.12.7_fix_GSM_RLC_crash.patch
+55_1.12.7_fix_WaveAgent_crash.patch
+56_1.12.7_fix_OpenFlow_crash.patch
+57_1.12.7_fix_ptvcursor_crash1.patch
+58_1.12.7_fix_ptvcursor_crash2.patch
+59_1.12.7_fix_WCCP_crash.patch

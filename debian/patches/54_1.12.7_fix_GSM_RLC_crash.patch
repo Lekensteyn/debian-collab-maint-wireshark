@@ -1,0 +1,99 @@
+From 725310e96a9c7df8878d8ebb07b9bd20c485cca6 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Wed, 15 Jul 2015 23:13:57 +0200
+Subject: [PATCH 09/12] GSM RLC/MAC: fix an infinite loop when analyzing
+ (E)GPRS header
+
+Change-Id: Ibba32a2860f80979ee9df3caeeaeda14fde7e7d0
+Ping-Bug: 11358
+Reviewed-on: https://code.wireshark.org/review/9649
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit 78bc3dd93a562ca1b1c5dbc8f71d2967008be7ed)
+Conflicts:
+	epan/dissectors/packet-gsm_rlcmac.c
+Reviewed-on: https://code.wireshark.org/review/9656
+(cherry picked from commit 6be36c11d0553d8fe63b663ae539a9910bebfc68)
+Reviewed-on: https://code.wireshark.org/review/10585
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-gsm_rlcmac.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/epan/dissectors/packet-gsm_rlcmac.c b/epan/dissectors/packet-gsm_rlcmac.c
+index e72930b..48fac2b 100644
+--- a/epan/dissectors/packet-gsm_rlcmac.c
++++ b/epan/dissectors/packet-gsm_rlcmac.c
+@@ -64,7 +64,7 @@ void proto_reg_handoff_gsm_rlcmac(void);
+ /* private typedefs */
+ typedef struct
+ {
+-  guint8 offset;
++  gint   offset;
+   guint8 li;
+ } length_indicator_t;
+ 
+@@ -6906,9 +6906,10 @@ static const value_string gsm_rlcmac_t3192_vals[] = {
+   { 0, NULL}
+ };
+ 
+-static guint8 construct_gprs_data_segment_li_array(tvbuff_t *tvb, proto_tree *tree, packet_info *pinfo, guint8 initial_offset, guint8 *li_count, length_indicator_t *li_array, guint64 *e)
++static gint construct_gprs_data_segment_li_array(tvbuff_t *tvb, proto_tree *tree, packet_info *pinfo, guint8 initial_offset, guint8 *li_count, length_indicator_t *li_array, guint64 *e)
+ {
+-  guint8      offset = initial_offset, li_array_size = *li_count;
++  gint        offset = initial_offset;
++  guint8      li_array_size = *li_count;
+   proto_item *item;
+ 
+   *li_count = 0;
+@@ -6932,15 +6933,15 @@ static guint8 construct_gprs_data_segment_li_array(tvbuff_t *tvb, proto_tree *tr
+   return (offset - initial_offset);
+ }
+ 
+-static guint8 construct_egprs_data_segment_li_array(tvbuff_t *tvb, proto_tree *tree, packet_info *pinfo, guint8 initial_offset, guint8 *li_count, length_indicator_t *li_array, guint64 *e)
++static gint construct_egprs_data_segment_li_array(tvbuff_t *tvb, proto_tree *tree, packet_info *pinfo, guint8 initial_offset, guint8 *li_count, length_indicator_t *li_array, guint64 *e)
+ {
+-  guint8      offset = initial_offset, li_array_size = *li_count;
++  gint        offset = initial_offset;
++  guint8      li_array_size = *li_count;
+   proto_item *item;
+ 
+   *li_count = 0;
+   while (*e == 0)
+   {
+-    DISSECTOR_ASSERT(*li_count < li_array_size);
+     item = proto_tree_add_bits_item(tree, hf_li, tvb, offset * 8, 7, ENC_BIG_ENDIAN);
+     proto_tree_add_bits_ret_val(tree, hf_e, tvb, (offset * 8) + 7, 1, e, ENC_BIG_ENDIAN);
+     if (*li_count < li_array_size)
+@@ -7633,7 +7634,7 @@ dissect_ul_gprs_block(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, RlcMa
+   csnStream_t ar;
+   guint8      payload_type = tvb_get_bits8(tvb, 0, 2);
+   guint16     bit_length   = tvb_length(tvb) * 8;
+-  guint16     bit_offset   = 0;
++  gint        bit_offset   = 0;
+ 
+   col_set_str(pinfo->cinfo, COL_PROTOCOL, "GSM RLC/MAC");
+   col_append_sep_str(pinfo->cinfo, COL_INFO, ":", "GPRS UL");
+@@ -7763,7 +7764,7 @@ dissect_egprs_ul_data_block(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree,
+ {
+   proto_item         *ti;
+   proto_tree         *data_tree;
+-  guint8              offset   = 0;
++  gint                offset   = 0;
+   length_indicator_t  li_array[20];
+   guint8              li_count = array_length(li_array);
+   guint64             e, tlli_i;
+@@ -7823,7 +7824,7 @@ dissect_egprs_dl_data_block(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree,
+ {
+   proto_item         *ti;
+   proto_tree         *data_tree;
+-  guint16             offset   = 0;
++  gint                offset   = 0;
+   guint16             block_number;
+   length_indicator_t  li_array[20];
+   guint8              li_count = array_length(li_array);
+-- 
+2.1.4
+

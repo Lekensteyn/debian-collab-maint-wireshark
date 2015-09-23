@@ -1,0 +1,70 @@
+From f3dede8ad41932e48688559ceecf6a50584966e1 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Wed, 15 Jul 2015 17:11:36 -0400
+Subject: [PATCH 12/12] WCCP - Only populate address table once and presume
+ first address table type is the one that should populate it.
+
+Ping-Bug: 11358
+Change-Id: Ieed093b4aa263026772450f95dd5fa18280f9b76
+Reviewed-on: https://code.wireshark.org/review/9648
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit b1eaf29d4056f05d1bd6a7f3d692553ec069a228)
+Reviewed-on: https://code.wireshark.org/review/9685
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit bc26f2e721a3ac3ae96b5d73848d2bd590375ae0)
+Reviewed-on: https://code.wireshark.org/review/10614
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-wccp.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/epan/dissectors/packet-wccp.c b/epan/dissectors/packet-wccp.c
+index 2b7d278..e472578 100644
+--- a/epan/dissectors/packet-wccp.c
++++ b/epan/dissectors/packet-wccp.c
+@@ -1906,7 +1906,6 @@ dissect_wccp2r1_address_table_info(tvbuff_t *tvb, int offset, int length,
+   EAT(4);
+ 
+   if (wccp_wccp_address_table.in_use == FALSE) {
+-    wccp_wccp_address_table.in_use = TRUE;
+     wccp_wccp_address_table.family = family;
+     wccp_wccp_address_table.table_length =  table_length;
+ 
+@@ -1949,13 +1948,17 @@ dissect_wccp2r1_address_table_info(tvbuff_t *tvb, int offset, int length,
+     case 1:
+       /* IPv4 */
+       addr  =  tvb_ip_to_str(tvb, offset);
+-      if ((wccp_wccp_address_table.table_ipv4 != NULL) && ((address_length * i) < wccp_wccp_address_table.table_length))
++      if ((wccp_wccp_address_table.in_use == FALSE) &&
++          (wccp_wccp_address_table.table_ipv4 != NULL) &&
++          ((address_length * i) < wccp_wccp_address_table.table_length))
+         wccp_wccp_address_table.table_ipv4[i] = tvb_get_ntohl(tvb, offset);
+       break;
+     case 2:
+       /* IPv6 */
+       addr = tvb_ip6_to_str(tvb, offset);
+-      if ((wccp_wccp_address_table.table_ipv6 != NULL) && ((address_length * i) < wccp_wccp_address_table.table_length))
++      if ((wccp_wccp_address_table.in_use == FALSE) &&
++          (wccp_wccp_address_table.table_ipv6 != NULL) &&
++          (i < wccp_wccp_address_table.table_length))
+         tvb_get_ipv6(tvb, offset, &(wccp_wccp_address_table.table_ipv6[i]));
+       break;
+     default:
+@@ -1968,12 +1971,13 @@ dissect_wccp2r1_address_table_info(tvbuff_t *tvb, int offset, int length,
+       pi = proto_tree_add_string_format_value(element_tree, hf_address_table_element, tvb,
+                                               offset, address_length, addr,
+                                               "%d: %s", i+1, addr);
+-      if ((address_length * i) > wccp_wccp_address_table.table_length)
++      if (i > wccp_wccp_address_table.table_length)
+         expert_add_info_format(pinfo, pi, &ei_wccp_length_bad, "Ran out of space to store address");
+     }
+     EAT(address_length);
+   }
+ 
++  wccp_wccp_address_table.in_use = TRUE;
+   return length;
+ }
+ 
+-- 
+2.1.4
+

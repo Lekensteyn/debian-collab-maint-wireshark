@@ -1,0 +1,53 @@
+From fb35776294988941c0f304d6a9bc3a86a996201b Mon Sep 17 00:00:00 2001
+From: Martin Kaiser <wireshark@kaiser.cx>
+Date: Mon, 10 Aug 2015 00:00:21 +0200
+Subject: [PATCH 06/12] use the captured length as payload length for zigbee
+ decryption
+
+this length is used for allocating a buffer and for crypto calculations
+we should use the bytes that were actually captured, not the reported
+length
+
+the capture in https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=11389
+has one packet with a stupidly large reported length and a reasonable
+capture length (and one completely bogus packet) - this fix ensures that
+the decryption does not break for the former packet
+
+also, tvb_reported_length_remaining() does not return values < 0 any
+more, remove the check for this
+
+Bug: 11389
+Change-Id: I42cb4526483160416b51e3cb72442148b5fac4f3
+Reviewed-on: https://code.wireshark.org/review/9950
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 655b0dc623e29da212be3e205314624fe3182562)
+Reviewed-on: https://code.wireshark.org/review/9955
+Reviewed-by: Guy Harris <guy@alum.mit.edu>
+(cherry picked from commit 84a3493c074ba0d59927593e58175521fee07069)
+Reviewed-on: https://code.wireshark.org/review/10615
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-zbee-security.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/epan/dissectors/packet-zbee-security.c b/epan/dissectors/packet-zbee-security.c
+index bb363b4..7f9bc79 100644
+--- a/epan/dissectors/packet-zbee-security.c
++++ b/epan/dissectors/packet-zbee-security.c
+@@ -603,11 +603,9 @@ dissect_zbee_secure(tvbuff_t *tvb, packet_info *pinfo, proto_tree* tree, guint o
+     }
+ 
+     /* Check for null payload. */
+-    if ( !(payload_len = tvb_reported_length_remaining(tvb, offset+mic_len)) ) {
++    payload_len = tvb_captured_length_remaining(tvb, offset+mic_len);
++    if (payload_len == 0)
+         return NULL;
+-    } else if ( payload_len < 0 ) {
+-        THROW(ReportedBoundsError);
+-    }
+ 
+     /**********************************************
+      *  Perform Security Operations on the Frame  *
+-- 
+2.1.4
+

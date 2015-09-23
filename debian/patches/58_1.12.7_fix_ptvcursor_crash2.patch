@@ -1,0 +1,37 @@
+From 870b8892d40ef89946be6eff6d078eb750d4944d Mon Sep 17 00:00:00 2001
+From: Jeff Morriss <jeff.morriss.ws@gmail.com>
+Date: Fri, 24 Jul 2015 14:51:37 -0400
+Subject: [PATCH 02/12] Fix ptvcursor_add() so it can dissect the last bytes in
+ a TVB again.
+
+ptvc->offset has already been incremented by the item length so don't use it as
+the offset to test_length(); we need to use the original offset.
+
+Problem introduced by Idfd258c734e7a946300b2564bebf6e4cb374c8d1 .
+
+Change-Id: I0421539bde6e8eb7b5aa3e22dbb0ca8098e88d6f
+Reviewed-on: https://code.wireshark.org/review/9783
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 9831d16cb06a08b4de1857ba35935edd0a8996af)
+Reviewed-on: https://code.wireshark.org/review/10589
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/proto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/proto.c b/epan/proto.c
+index 1e342a3..1169025 100644
+--- a/epan/proto.c
++++ b/epan/proto.c
+@@ -1950,7 +1950,7 @@ ptvcursor_add(ptvcursor_t *ptvc, int hfindex, gint length,
+ 		ptvc->offset += n;
+ 	}
+ 
+-	test_length(hfinfo, ptvc->tvb, ptvc->offset, item_length);
++	test_length(hfinfo, ptvc->tvb, offset, item_length);
+ 
+ 	/* Coast clear. Try and fake it */
+ 	TRY_TO_FAKE_THIS_ITEM(ptvc->tree, hfindex, hfinfo);
+-- 
+2.1.4
+

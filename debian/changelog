@@ -1,3 +1,19 @@
+wireshark (1.12.1+g01b65bf-4+deb8u3) jessie-security; urgency=medium
+
+  * security fixes from Wireshark 1.12.7:
+    - Protocol tree crash (CVE-2015-6241)
+    - Crash in wmem block allocator in the memory manager (CVE-2015-6242)
+    - Crash in the dissector table implementation (CVE-2015-6243)
+    - The ZigBee dissector could crash (CVE-2015-6244)
+    - The GSM RLC/MAC dissector could go into an infinite loop (CVE-2015-6245)
+    - The WaveAgent dissector could crash (CVE-2015-6246)
+    - The ptvcursor implementation could crash (CVE-2015-6248)
+    - The OpenFlow dissector could crash (CVE-2015-6247)
+    - The WCCP dissector could crash (CVE-2015-6249)
+
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 22 Sep 2015 23:12:12 +0200
+
 wireshark (1.12.1+g01b65bf-4+deb8u2) jessie-security; urgency=high
 
   * security fixes from Wireshark 1.12.6:

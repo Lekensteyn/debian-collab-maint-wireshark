@@ -1,0 +1,57 @@
+From 1c7952b62352c74e48dde9ce506b7163a80dbbbf Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Wed, 15 Jul 2015 18:04:02 -0400
+Subject: [PATCH 10/12] WaveAgent - Use tvb_get_guint8 instead of tvb_get_ptr
+ to walk a packet and protect against a really big tag value
+
+Ping-Bug: 11358
+Change-Id: I9ecb5fe6bcd7f25c763d968bf56fb2d9bce2180c
+Reviewed-on: https://code.wireshark.org/review/9639
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 5523726e6960fe9d7e301376fd7a94599f65fd42)
+Reviewed-on: https://code.wireshark.org/review/9653
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 1c1733e4be25c1e125e02f9eae2c7dc2e0206bf4)
+Reviewed-on: https://code.wireshark.org/review/10586
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-waveagent.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/epan/dissectors/packet-waveagent.c b/epan/dissectors/packet-waveagent.c
+index a90ec93..13057d9 100644
+--- a/epan/dissectors/packet-waveagent.c
++++ b/epan/dissectors/packet-waveagent.c
+@@ -528,21 +528,20 @@ static void dissect_wa_payload(guint32 starting_offset, proto_item *parent_tree,
+                 tag_len = tvb_get_ntohl(tvb, current_offset + 52);
+ 
+                 if (tag_len != 0) {
+-                    const guint8  *tag_data_ptr;
+-                    guint32        isr;
+-
+-                    tag_data_ptr = tvb_get_ptr (tvb, offset + 36, tag_len);
++                    guint32       isr;
++                    guint8        isr_value;
+ 
+                     for (isr = 0; isr < tag_len; isr++) {
+-                        if (tag_data_ptr[isr] == 0xFF){
++                        isr_value = tvb_get_guint8(tvb, offset + 36 + isr);
++                        if (isr_value == 0xFF){
+                             proto_tree_add_string (bss_tree, hf_waveagent_ifwlansupprates, tvb, offset + 36 + isr,
+                                                    1,
+                                                    "BSS requires support for mandatory features of HT PHY (IEEE 802.11"
+                                                    " - Clause 20)");
+                         } else {
+                             wmem_strbuf_append_printf(sb, "%2.1f%s ",
+-                                      (tag_data_ptr[isr] & 0x7F) * 0.5,
+-                                      (tag_data_ptr[isr] & 0x80) ? "(B)" : "");
++                                      (isr_value & 0x7F) * 0.5,
++                                      (isr_value & 0x80) ? "(B)" : "");
+ 
+                         }
+                     }
+-- 
+2.1.4
+
