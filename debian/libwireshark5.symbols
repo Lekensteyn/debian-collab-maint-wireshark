@@ -131,6 +131,7 @@ libwireshark.so.5 libwireshark5 #MINVER#
  col_fill_in_frame_data@Base 1.9.1
  col_format_desc@Base 1.9.1
  col_format_to_string@Base 1.9.1
+ col_get_text@Base 1.12.8
  col_get_writable@Base 1.9.1
  col_has_time_fmt@Base 1.9.1
  col_prepend_fence_fstr@Base 1.9.1

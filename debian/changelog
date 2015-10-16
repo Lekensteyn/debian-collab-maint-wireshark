@@ -1,5 +1,11 @@
-wireshark (1.12.7+g7fc8978-2) UNRELEASED; urgency=medium
+wireshark (1.12.8+g5b6e543-1) unstable; urgency=high
 
+  * New upstream release 1.12.8
+    - release notes:
+      https://wireshark.org/docs/relnotes/wireshark-1.12.8.html
+    - security fixes:
+      - Pcapng file parser crash. Discovered by Dario Lombardo and
+        Shannon Sabens.(CVE-2015-7830)
   * Enable all hardening flags
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 22 Sep 2015 23:10:57 +0200
