@@ -19,26 +19,32 @@ export docdir = /usr/share/doc/wireshark-doc
 %:
 	dh $@ --with python2 --buildsystem cmake # --parallel
 
-override_dh_auto_configure:
+override_dh_auto_configure-arch:
+	dh_auto_configure -- -DENABLE_GUIDES=OFF \
+		-DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
+	# -DENABLE_QT5=OFF
+
+override_dh_auto_configure-indep:
 	dh_auto_configure -- -DENABLE_GUIDES=ON \
 		-DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
 	# -DENABLE_QT5=OFF
 
-override_dh_auto_build:
+override_dh_auto_build-arch:
 	dh_auto_build
 	# create menu icon
 	convert image/wsicon32.png image/wsicon32.xpm
+
+override_dh_auto_build-indep:
+	dh_auto_build
 	# fix links in documentation
 	sed -i "s|$(CURDIR)/docbook|..|" obj-*/docbook/ws*g_html_chunked/*
 
 override_dh_strip:
 	dh_strip --dbg-package=wireshark-dbg
 
-override_dh_auto_install:
+override_dh_auto_install-arch:
 	dh_auto_install
 	rm -f debian/*.shlibs
-	rm -rf $(CURDIR)/debian/tmp/usr/share/wireshark/COPYING
-	cp debian/license-text-about-dialog $(CURDIR)/debian/tmp/usr/share/wireshark/ABOUT.GPL
 	# icons conforming to freedesktop.org standards
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/icons/hicolor/scalable/apps/ \
 		$(CURDIR)/debian/tmp/usr/share/mime/packages/
@@ -47,17 +53,23 @@ override_dh_auto_install:
 	# upstream uses qtshark for binary's name
 	mv $(CURDIR)/debian/tmp/usr/bin/qtshark $(CURDIR)/debian/tmp/usr/bin/wireshark-qt
 	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
+
+override_dh_auto_install-indep:
+	dh_auto_install
+	rm -rf $(CURDIR)/debian/tmp/usr/share/wireshark/COPYING
+	cp debian/license-text-about-dialog $(CURDIR)/debian/tmp/usr/share/wireshark/ABOUT.GPL
+	mkdir -p $(CURDIR)/debian/tmp/etc/wireshark/
 	mv $(CURDIR)/debian/tmp/usr/share/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/etc/wireshark/
 	ln -s /etc/wireshark/init.lua \
 		$(CURDIR)/debian/tmp/usr/share/wireshark/init.lua
 
-override_dh_install:
+override_dh_install-arch:
 	dh_install
 	# check all necessary headers are included
 	$(CC) -c debian/headers-check.c `pkg-config --cflags glib-2.0` -Idebian/libwireshark-dev/usr/include -Idebian/libwireshark-dev/usr/include/wireshark -Idebian/libwiretap-dev/usr/include/wireshark -Idebian/libwsutil-dev/usr/include/wireshark -o /dev/null
 
-override_dh_fixperms:
+override_dh_fixperms-arch:
 	dh_fixperms
 	chmod 644 debian/wireshark-dev/usr/share/pyshared/wireshark_be.py \
 		debian/wireshark-dev/usr/share/pyshared/wireshark_gen.py
