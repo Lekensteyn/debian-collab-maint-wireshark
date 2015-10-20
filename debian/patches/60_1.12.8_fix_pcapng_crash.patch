@@ -1,0 +1,32 @@
+From 04ae697234127a8a11d94113a28ee58fdb5e5801 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stig=20Bj=C3=B8rlykke?= <stig@bjorlykke.org>
+Date: Thu, 20 Aug 2015 13:00:24 +0200
+Subject: [PATCH] pcapng: Fixed copying if_filter_bpf_bytes
+
+Bug: 11455
+Change-Id: I230ae26ef32ffc9d748b9f3da9011da952b6e175
+Reviewed-on: https://code.wireshark.org/review/10155
+Reviewed-by: Guy Harris <guy@alum.mit.edu>
+(cherry picked from commit 21ec6668d69743153c48adac036f6a22fbf36992)
+Reviewed-on: https://code.wireshark.org/review/11092
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ wiretap/pcapng.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/wiretap/pcapng.c b/wiretap/pcapng.c
+index bb40dca..d6ef31a 100644
+--- a/wiretap/pcapng.c
++++ b/wiretap/pcapng.c
+@@ -923,7 +923,7 @@ pcapng_read_if_descr_block(FILE_T fh, pcapng_block_header_t *bh, pcapng_t *pn,
+                                 } else if (option_content[0] == 1) {
+                                         wblock->data.if_descr.bpf_filter_len = oh.option_length-1;
+                                         wblock->data.if_descr.if_filter_bpf_bytes = (gchar *)g_malloc(oh.option_length-1);
+-                                        memcpy(&wblock->data.if_descr.if_filter_bpf_bytes, option_content+1, oh.option_length-1);
++                                        memcpy(wblock->data.if_descr.if_filter_bpf_bytes, option_content+1, oh.option_length-1);
+                                 }
+                         } else {
+                                 pcapng_debug1("pcapng_read_if_descr_block: if_filter length %u seems strange", oh.option_length);
+-- 
+2.1.4
+

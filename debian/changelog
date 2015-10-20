@@ -1,3 +1,12 @@
+wireshark (1.12.1+g01b65bf-4+deb8u4) jessie-security; urgency=high
+
+  * security fixes from Wireshark 1.12.8:
+    - Pcapng file parser crash. Discovered by Dario Lombardo and
+      Shannon Sabens.(CVE-2015-7830)
+    * Enable all hardening flags
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 18 Oct 2015 19:26:45 +0200
+
 wireshark (1.12.1+g01b65bf-4+deb8u3) jessie-security; urgency=high
 
   * security fixes from Wireshark 1.12.7:

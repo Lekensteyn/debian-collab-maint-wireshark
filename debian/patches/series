@@ -50,3 +50,4 @@
 57_1.12.7_fix_ptvcursor_crash1.patch
 58_1.12.7_fix_ptvcursor_crash2.patch
 59_1.12.7_fix_WCCP_crash.patch
+60_1.12.8_fix_pcapng_crash.patch
