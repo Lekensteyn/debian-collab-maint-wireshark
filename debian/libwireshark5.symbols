@@ -131,6 +131,7 @@ libwireshark.so.5 libwireshark5 #MINVER#
  col_fill_in_frame_data@Base 1.9.1
  col_format_desc@Base 1.9.1
  col_format_to_string@Base 1.9.1
+ col_get_text@Base 1.12.8
  col_get_writable@Base 1.9.1
  col_has_time_fmt@Base 1.9.1
  col_prepend_fence_fstr@Base 1.9.1
@@ -841,6 +842,7 @@ libwireshark.so.5 libwireshark5 #MINVER#
  print_stream_text_stdio_new@Base 1.12.0~rc1
  process_reassembled_data@Base 1.9.1
  process_stat_cmd_arg@Base 1.9.1
+ proto_add_deregistered_data@Base 1.12.5
  proto_all_finfos@Base 1.9.1
  proto_can_match_selected@Base 1.9.1
  proto_can_toggle_protocol@Base 1.9.1
@@ -853,6 +855,7 @@ libwireshark.so.5 libwireshark5 #MINVER#
  proto_find_field_from_offset@Base 1.9.1
  proto_find_finfo@Base 1.9.1
  proto_frame@Base 1.9.1
+ proto_free_deregistered_fields@Base 1.12.5
  proto_get_data_protocol@Base 1.9.1
  proto_get_finfo_ptr_array@Base 1.9.1
  proto_get_first_protocol@Base 1.9.1
@@ -1396,6 +1399,7 @@ libwireshark.so.5 libwireshark5 #MINVER#
  uat_remove_record_idx@Base 1.9.1
  uat_save@Base 1.9.1
  uat_swap@Base 1.9.1
+ uat_update_record@Base 1.12.4
  union_of_tap_listener_flags@Base 1.9.1
  uri_str_to_bytes@Base 1.9.1
  val64_to_str@Base 1.12.0~rc1
