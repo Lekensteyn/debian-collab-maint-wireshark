@@ -1,3 +1,11 @@
+wireshark (1.8.2-5wheezy17) UNRELEASED; urgency=high
+
+  * security fixes from Wireshark 1.12.8:
+    - Pcapng file parser crash. Discovered by Dario Lombardo and
+      Shannon Sabens. (CVE-2015-7830)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 25 Oct 2015 14:16:06 +0100
+
 wireshark (1.8.2-5wheezy16) wheezy-security; urgency=high
 
   * security fixes from Wireshark 1.10.14:
