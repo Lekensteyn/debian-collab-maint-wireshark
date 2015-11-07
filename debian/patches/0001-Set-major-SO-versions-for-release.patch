@@ -1,0 +1,54 @@
+From fe7aff7a5f6ef4e1562efad1cfdd063a15637af3 Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Thu, 5 Nov 2015 17:48:10 +0400
+Subject: [PATCH] Set major SO versions for release
+
+Change-Id: I8c14aa69a04cc30d5667110ed31fdcef3baaf4aa
+---
+ epan/CMakeLists.txt    | 2 +-
+ wiretap/CMakeLists.txt | 2 +-
+ wsutil/CMakeLists.txt  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/epan/CMakeLists.txt b/epan/CMakeLists.txt
+index daa2e48..cb4a12c 100644
+--- a/epan/CMakeLists.txt
++++ b/epan/CMakeLists.txt
+@@ -1754,7 +1754,7 @@ set(FULL_SO_VERSION "6.0.0")
+ 
+ set_target_properties(epan PROPERTIES COMPILE_DEFINITIONS "WS_BUILD_DLL")
+ set_target_properties(epan PROPERTIES LINK_FLAGS "${WS_LINK_FLAGS}")
+-set_target_properties(epan PROPERTIES VERSION ${FULL_SO_VERSION} SOVERSION 0)
++set_target_properties(epan PROPERTIES VERSION ${FULL_SO_VERSION} SOVERSION 6)
+ 
+ if(ENABLE_APPLICATION_BUNDLE)
+ 	set_target_properties(epan PROPERTIES
+diff --git a/wiretap/CMakeLists.txt b/wiretap/CMakeLists.txt
+index a5a6811..db4b0ac 100644
+--- a/wiretap/CMakeLists.txt
++++ b/wiretap/CMakeLists.txt
+@@ -115,7 +115,7 @@ set(FULL_SO_VERSION "5.0.0")
+ set_target_properties(wiretap PROPERTIES
+ 	COMPILE_DEFINITIONS "WS_BUILD_DLL"
+ 	LINK_FLAGS "${WS_LINK_FLAGS}"
+-	VERSION ${FULL_SO_VERSION} SOVERSION 0
++	VERSION ${FULL_SO_VERSION} SOVERSION 5
+ 	FOLDER "DLLs"
+ )
+ IF(MSVC)
+diff --git a/wsutil/CMakeLists.txt b/wsutil/CMakeLists.txt
+index 9474073..5ed4442 100644
+--- a/wsutil/CMakeLists.txt
++++ b/wsutil/CMakeLists.txt
+@@ -221,7 +221,7 @@ set_target_properties(wsutil PROPERTIES
+ 	PREFIX "lib"
+ 	COMPILE_DEFINITIONS "WS_BUILD_DLL"
+ 	LINK_FLAGS "${WS_LINK_FLAGS}"
+-	VERSION ${FULL_SO_VERSION} SOVERSION 0
++	VERSION ${FULL_SO_VERSION} SOVERSION 6
+ 	FOLDER "Libs")
+ 
+ if(ENABLE_APPLICATION_BUNDLE)
+-- 
+2.1.4
+
