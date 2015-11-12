@@ -31,8 +31,6 @@ override_dh_auto_configure-indep:
 
 override_dh_auto_build-arch:
 	dh_auto_build
-	# don't ship upstream's menu entry
-	rm debian/wireshark.menu
 
 override_dh_auto_build-indep:
 	dh_auto_build

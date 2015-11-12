@@ -31,8 +31,12 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark6 (>= ${binary:Version}),
  libwiretap5 (>= ${binary:Version}), debconf, libcap2-bin [linux-any]
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
-Replaces: ethereal-common (<< 1.0.0-3)
-Conflicts: ethereal-common (<< 1.0.0-3)
+Breaks: ethereal (<< 1.0.0-3),
+        wireshark (<< 2.0.0~),
+        wireshark-qt (<< 2.0.0~rc3+g841d5e1)
+Replaces: ethereal (<< 1.0.0-3),
+        wireshark (<< 2.0.0~),
+        wireshark-qt (<< 2.0.0~rc3+g841d5e1)
 Description: network traffic analyzer - common files
  Wireshark is a network "sniffer" - a tool that captures and analyzes
  packets off the wire. Wireshark can decode too many protocols to list
