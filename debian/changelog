@@ -1,3 +1,10 @@
+wireshark (2.0.0+g9a73b82-2) UNRELEASED; urgency=medium
+
+  * Make wireshark depend on wireshark-qt _or_ wireshark-gtk
+    (Closes: #805758)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 22 Nov 2015 00:07:02 +0100
+
 wireshark (2.0.0+g9a73b82-1) unstable; urgency=medium
 
   * Don't ship unused duplicated images for guides
