@@ -113,7 +113,7 @@ Description: network traffic analyzer - development tools
 
 Package: wireshark-dbg
 Priority: extra
-Architecture: any
+Architecture: amd64
 Section: debug
 Depends: ${misc:Depends}, wireshark-common (= ${binary:Version}) | wireshark (= ${binary:Version}) | tshark (= ${binary:Version})
 Description: network traffic analyzer - debug symbols

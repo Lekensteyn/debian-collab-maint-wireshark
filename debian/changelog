@@ -5,6 +5,10 @@ wireshark (2.0.0+g9a73b82-3) UNRELEASED; urgency=medium
   * Build-depend on qtmultimedia5-dev and libqt5svg5-dev
     This fixes missing RTP player functionality in wireshark-qt
   * Refresh patches for back-porting
+  * Ship wireshark-dbg only on amd64
+    This is the most populat architecture and the debug package is rarely
+    used anyway. In the next step the package will switch to relying on
+    automatic debug packages
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 01 Dec 2015 20:36:39 +0100
 
