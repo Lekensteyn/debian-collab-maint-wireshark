@@ -1,32 +1,30 @@
 Author: Balint Reczey <balint@balintreczey.hu>
 Description: Change d/control to use old Qt4 dev packages
  This is useful for back-porting.
-Index: debian/control
-===================================================================
---- ./debian/control	(revision 26097)
-+++ ./debian/control	(working copy)
-@@ -5,9 +5,9 @@
- Standards-Version: 3.9.5
+--- a/debian/control
++++ b/debian/control
+@@ -5,10 +5,10 @@
+ Standards-Version: 3.9.6
  Build-Depends: libgtk-3-dev,
  # enable Qt 5 related dependencies for Qt 5-enabled build
 - qtbase5-dev, qtbase5-dev-tools, qttools5-dev, qttools5-dev-tools,
+- qtmultimedia5-dev, libqt5svg5-dev,
 +# qtbase5-dev, qtbase5-dev-tools, qttools5-dev, qttools5-dev-tools,
++# qtmultimedia5-dev, libqt5svg5-dev,
  # enable Qt 4 related dependencies for Qt 4-enabled build
 -# qt4-qmake, libqt4-dev,
 + qt4-qmake, libqt4-dev,
   libpcap0.8-dev, flex, libz-dev, debhelper (>= 9), po-debconf, libtool,
-  python (>= 2.6.6-3~), python-ply, libc-ares-dev, xsltproc,
+  python (>= 2.6.6-3~), python-ply, libc-ares-dev, xsltproc, dh-python,
   docbook-xsl (>= 1.64.1.0-0), docbook-xml, libxml2-utils, libpcre3-dev,
-Index: debian/rules
-===================================================================
---- ./debian/rules	(revision 26097)
-+++ ./debian/rules	(working copy)
-@@ -19,7 +19,7 @@
- override_dh_auto_configure:
- 	dh_auto_configure -- -DENABLE_GUIDES=ON \
+--- a/debian/rules
++++ b/debian/rules
+@@ -22,7 +22,7 @@
+ override_dh_auto_configure-arch:
+ 	dh_auto_configure -- \
  		-DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
 -	# -DENABLE_QT5=OFF
 +	-DENABLE_QT5=OFF
  
- override_dh_auto_build:
- 	dh_auto_build
+ override_dh_auto_configure-indep:
+ 	dh_auto_configure -- -DENABLE_HTML_GUIDES=ON \
