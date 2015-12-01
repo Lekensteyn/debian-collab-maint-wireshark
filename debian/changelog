@@ -6,9 +6,9 @@ wireshark (2.0.0+g9a73b82-2) unstable; urgency=medium
     This fixes missing RTP player functionality in wireshark-qt
   * Refresh patches for back-porting
   * Ship wireshark-dbg only on amd64
-    This is the most populat architecture and the debug package is rarely
+    This is the most popular architecture and the debug package is rarely
     used anyway. In the next step the package will switch to relying on
-    automatic debug packages
+    automatic debug packages.
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 01 Dec 2015 20:36:39 +0100
 
