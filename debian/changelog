@@ -1,4 +1,4 @@
-wireshark (2.0.0+g9a73b82-3) UNRELEASED; urgency=medium
+wireshark (2.0.0+g9a73b82-2) unstable; urgency=medium
 
   * Make wireshark depend on wireshark-qt _or_ wireshark-gtk
     (Closes: #805758)
