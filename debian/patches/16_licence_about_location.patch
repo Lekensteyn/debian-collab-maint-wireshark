@@ -13,3 +13,14 @@ Author: Frederic Peters <fpeters@debian.org>
  #endif
    page = text_page_new(absolute_path);
  
+--- a/ui/qt/about_dialog.cpp
++++ b/ui/qt/about_dialog.cpp
+@@ -312,7 +312,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
+ #if defined(_WIN32)
+     f_license.setFileName(get_datafile_path("COPYING.txt"));
+ #else
+-    f_license.setFileName(get_datafile_path("COPYING"));
++    f_license.setFileName(get_datafile_path("ABOUT.GPL"));
+ #endif
+ 
+     f_license.open(QFile::ReadOnly | QFile::Text);
