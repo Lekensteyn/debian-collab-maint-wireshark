@@ -1,9 +1,10 @@
-wireshark (2.0.0+g9a73b82-3) UNRELEASED; urgency=medium
+wireshark (2.0.0+g9a73b82-4) UNRELEASED; urgency=medium
 
   * Set license tab content on Qt UI to the same as shown on GTK+ UI
     (Closes: #807127)
+  * Fix build on wheezy when PIE is enabled
 
- -- Balint Reczey <balint@balintreczey.hu>  Sun, 06 Dec 2015 13:24:45 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 18 Dec 2015 01:10:09 +0100
 
 wireshark (2.0.0+g9a73b82-2) unstable; urgency=medium
 
