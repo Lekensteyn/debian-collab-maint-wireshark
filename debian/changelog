@@ -3,6 +3,8 @@ wireshark (2.0.0+g9a73b82-4) UNRELEASED; urgency=medium
   * Set license tab content on Qt UI to the same as shown on GTK+ UI
     (Closes: #807127)
   * Fix build on wheezy when PIE is enabled
+  * Recommend libqt5multimedia5-plugins for wireshark-qt
+    This makes RTP Player actually play RTP stream using Qt, too.
 
  -- Balint Reczey <balint@balintreczey.hu>  Fri, 18 Dec 2015 01:10:09 +0100
 

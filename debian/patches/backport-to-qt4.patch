@@ -17,6 +17,14 @@ Description: Change d/control to use old Qt4 dev packages
   libpcap0.8-dev, flex, libz-dev, debhelper (>= 9), po-debconf, libtool,
   python (>= 2.6.6-3~), python-ply, libc-ares-dev, xsltproc, dh-python,
   docbook-xsl (>= 1.64.1.0-0), docbook-xml, libxml2-utils, libpcre3-dev,
+@@ -61,7 +61,6 @@
+ Package: wireshark-qt
+ Architecture: any
+ Depends: ${shlibs:Depends}, ${misc:Depends}, wireshark-common (= ${binary:Version}), xdg-utils
+-Recommends: libqt5multimedia5-plugins
+ Replaces: ethereal (<< 1.0.0-3), wireshark (<< 2.0.0~)
+ Breaks: ethereal (<< 1.0.0-3), wireshark (<< 2.0.0~)
+ Description: network traffic analyzer - Qt version
 --- a/debian/rules
 +++ b/debian/rules
 @@ -22,7 +22,7 @@
