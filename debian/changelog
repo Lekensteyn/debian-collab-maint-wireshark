@@ -1,12 +1,42 @@
-wireshark (2.0.0+g9a73b82-4) UNRELEASED; urgency=medium
+wireshark (2.0.1+g59ea380-1) unstable; urgency=medium
 
   * Set license tab content on Qt UI to the same as shown on GTK+ UI
     (Closes: #807127)
   * Fix build on wheezy when PIE is enabled
   * Recommend libqt5multimedia5-plugins for wireshark-qt
     This makes RTP Player actually play RTP stream using Qt, too.
+  * New upstream release 2.0.1
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.0.1.html
+    - security fixes:
+      - NBAP dissector crashes
+      - NLM dissector crash
+      - BER dissector crash
+      - Zlib decompression crash
+      - SCTP dissector crash
+      - 802.11 decryption crash
+      - DIAMETER dissector crash
+      - VeriWave file parser crashes
+      - RSVP dissector crash
+      - ANSI A & GSM A dissector crashes
+      - Ascend file parser crash
+      - NBAP dissector crash
+      - RSL dissector crash
+      - ZigBee ZCL dissector crash
+      - Sniffer file parser crash
+      - NWP dissector crash
+      - BT ATT dissector crash
+      - MP2T file parser crashes
+      - S7COMM dissector crash
+      - IPMI dissector crash
+      - TDS dissector crash
+      - PPI dissector crash
+      - MS-WSP dissector crash
+  * Drop 0001-Set-major-SO-versions-for-release.patch which has been
+    integrated upstream
+  * Update symbols file
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 18 Dec 2015 01:10:09 +0100
+ -- Balint Reczey <balint@balintreczey.hu>  Wed, 30 Dec 2015 21:21:18 +0100
 
 wireshark (2.0.0+g9a73b82-2) unstable; urgency=medium
 
