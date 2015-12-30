@@ -1,11 +1,9 @@
 Author: Balint Reczey <balint@balintreczey.hu>
 Description: Change d/control to use old gnutls-dev package
  This is useful for back-porting.
-Index: debian/control
-===================================================================
---- ./debian/control	(revision 26097)
-+++ ./debian/control	(working copy)
-@@ -14,9 +14,9 @@
+--- a/debian/control
++++ b/debian/control
+@@ -15,9 +15,9 @@
   libcap2-dev [linux-any] | libcap-dev (>= 2.17) [linux-any],
   bison,
  # enable versioned libgnutls28-dev below to have GPLv2+ compatible GMP
@@ -16,4 +14,4 @@ Index: debian/control
 + libgnutls-dev,
   libgcrypt-dev, portaudio19-dev, libkrb5-dev, liblua5.2-dev, libsmi2-dev,
   libgeoip-dev, dpkg-dev (>= 1.16.1~), imagemagick, xdg-utils,
-  libnl-genl-3-dev [linux-any], libnl-route-3-dev [linux-any], asciidoc, cmake, w3m
+  libnl-genl-3-dev [linux-any], libnl-route-3-dev [linux-any], asciidoc, cmake, w3m,

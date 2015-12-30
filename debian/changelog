@@ -1,3 +1,65 @@
+wireshark (2.0.0+g9a73b82-4) UNRELEASED; urgency=medium
+
+  * Set license tab content on Qt UI to the same as shown on GTK+ UI
+    (Closes: #807127)
+  * Fix build on wheezy when PIE is enabled
+  * Recommend libqt5multimedia5-plugins for wireshark-qt
+    This makes RTP Player actually play RTP stream using Qt, too.
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 18 Dec 2015 01:10:09 +0100
+
+wireshark (2.0.0+g9a73b82-2) unstable; urgency=medium
+
+  * Make wireshark depend on wireshark-qt _or_ wireshark-gtk
+    (Closes: #805758)
+  * Build-depend on qtmultimedia5-dev and libqt5svg5-dev
+    This fixes missing RTP player functionality in wireshark-qt
+  * Refresh patches for back-porting
+  * Ship wireshark-dbg only on amd64
+    This is the most popular architecture and the debug package is rarely
+    used anyway. In the next step the package will switch to relying on
+    automatic debug packages.
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 01 Dec 2015 20:36:39 +0100
+
+wireshark (2.0.0+g9a73b82-1) unstable; urgency=medium
+
+  * Don't ship unused duplicated images for guides
+  * Fix my email address in README.Debian
+  * New upstream release 2.0.0
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.0.0.html
+  * Update symbols files
+  * Upload to unstable
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 21 Nov 2015 19:42:43 +0100
+
+wireshark (2.0.0~rc3+g841d5e1-1) experimental; urgency=medium
+
+  * New upstream release candidate 2.0.0 RC3
+  * Add note to README.Debian to log in again to be able to capture packets
+  * Move icon and mime info file to wireshark-common
+  * Ship .desktop file for GTK+ interface
+  * Update symbols files
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sat, 07 Nov 2015 22:23:15 +0400
+
+wireshark (2.0.0~rc2+g74e5b56-1) experimental; urgency=medium
+
+  * New upstream release candidate 2.0.0 RC2
+  * Set library versions to the proper value
+  * Rename library packages to reflect SOVERSION bumps
+  * Drop obsolete patches
+  * Refresh patches
+  * Enable parallel build
+  * Provide wireshark metapackage which depends on wireshark-qt
+    This makes the Qt interface the default GUI for Wireshark in sync with
+    upstream's intention. The GTK interface is shipped in wireshark-gtk.
+  * Build-depend on libsbc-dev
+  * Stop shipping menu entry
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 05 Nov 2015 21:42:50 +0400
+
 wireshark (1.12.8+g5b6e543-2) unstable; urgency=medium
 
   * Split arch and indep rules in debian/rules to fix FTBFS
