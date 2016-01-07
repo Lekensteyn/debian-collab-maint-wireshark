@@ -1,4 +1,4 @@
-wireshark (2.0.1+g59ea380-2) UNRELEASED; urgency=medium
+wireshark (2.0.1+g59ea380-2) unstable; urgency=medium
 
   * Stop providing wireshark-dbg and migrate to automatic debug packages
 
