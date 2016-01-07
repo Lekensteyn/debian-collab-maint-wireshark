@@ -46,7 +46,7 @@ override_dh_auto_build-indep:
 	sed -i "s|$(CURDIR)/docbook|..|" obj-*/docbook/ws*g_html_chunked/*.html
 
 override_dh_strip:
-	dh_strip --dbg-package=wireshark-dbg
+	dh_strip --ddeb-migration="wireshark-dbg (<< 2.0.1+g59ea380-12.0.1+g59ea380-2~)" || dh_strip
 
 override_dh_auto_install-arch:
 	dh_auto_install
