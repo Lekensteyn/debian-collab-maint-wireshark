@@ -1,3 +1,9 @@
+wireshark (2.0.1+g59ea380-3) UNRELEASED; urgency=medium
+
+  * Fix setting -Wl,-Bsymbolic on Wheezy only (Closes: #810159)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 11 Jan 2016 01:08:58 +0100
+
 wireshark (2.0.1+g59ea380-2) unstable; urgency=medium
 
   * Stop providing wireshark-dbg and migrate to automatic debug packages
