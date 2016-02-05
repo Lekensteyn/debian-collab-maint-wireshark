@@ -1,0 +1,61 @@
+From 1d9c54c2dd366d2c9ba1026fe2e877b794aa13dd Mon Sep 17 00:00:00 2001
+From: Peter Wu <peter@lekensteyn.nl>
+Date: Sat, 28 Nov 2015 01:24:12 +0100
+Subject: [PATCH 74/90] Add boundary check for 802.11 decryption
+
+Fixed stack-based buffer overflow when the frame length exceeds 8KB.
+
+Bug: 11790
+Change-Id: I20db8901765a7660e587057e955d4fb5a8645574
+Reviewed-on: https://code.wireshark.org/review/12237
+Petri-Dish: Anders Broman <a.broman58@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Peter Wu <peter@lekensteyn.nl>
+(cherry picked from commit 40b283181c63cb28bc6f58d80315eccca6650da0)
+[resolved conflict by accepting comments from v2.1.0rc0-764-g9cd66b2]
+Reviewed-on: https://code.wireshark.org/review/12247
+(cherry picked from commit a6e8fc8c9af56124d44423c3a85c695ac01c70e7)
+Reviewed-on: https://code.wireshark.org/review/13761
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/crypt/airpdcap.c        | 6 ++++++
+ epan/crypt/airpdcap_system.h | 6 ++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/epan/crypt/airpdcap.c b/epan/crypt/airpdcap.c
+index deef466..eb03605 100644
+--- a/epan/crypt/airpdcap.c
++++ b/epan/crypt/airpdcap.c
+@@ -688,6 +688,12 @@ INT AirPDcapPacketProcess(
+         return AIRPDCAP_RET_WRONG_DATA_SIZE;
+     }
+ 
++    /* Assume that the decrypt_data field is at least this size. */
++    if (tot_len > AIRPDCAP_MAX_CAPLEN) {
++        AIRPDCAP_DEBUG_PRINT_LINE("AirPDcapPacketProcess", "length too large", AIRPDCAP_DEBUG_LEVEL_3);
++        return AIRPDCAP_RET_UNSUCCESS;
++    }
++
+     /* get BSSID */
+     if ( (addr=AirPDcapGetBssidAddress((const AIRPDCAP_MAC_FRAME_ADDR4 *)(data))) != NULL) {
+         memcpy(id.bssid, addr, AIRPDCAP_MAC_LEN);
+diff --git a/epan/crypt/airpdcap_system.h b/epan/crypt/airpdcap_system.h
+index 36d2be5..a9ea3ec 100644
+--- a/epan/crypt/airpdcap_system.h
++++ b/epan/crypt/airpdcap_system.h
+@@ -181,8 +181,10 @@ extern "C" {
+  * @param data_off [IN] Payload offset (aka the MAC header length)
+  * @param data_len [IN] Total length of the MAC header and the payload
+  * @param decrypt_data [OUT] Pointer to a buffer that will contain
+- *   decrypted data
+- * @param decrypt_len [OUT] Length of decrypted data
++ *   decrypted data. If this parameter is set to NULL, decrypted data will
++ *   be discarded. Must have room for at least AIRPDCAP_MAX_CAPLEN bytes.
++ * @param decrypt_len [OUT] Length of decrypted data if decrypt_data
++ *   is not NULL.
+  * @param key [OUT] Pointer to a preallocated key structure containing
+  *   the key used during the decryption process (if done). If this parameter
+  *   is set to NULL, the key will be not returned.
+-- 
+2.1.4
+

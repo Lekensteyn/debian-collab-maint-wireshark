@@ -1,0 +1,38 @@
+From 582b67ce77e0fec96adc3fb55c88f70133246233 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Fri, 11 Dec 2015 21:43:53 -0500
+Subject: [PATCH 84/90] Range check ett_ array access.
+
+Bug: 11830
+Change-Id: I010093f0ee6f876161de0aca24ea5037616d0039
+Reviewed-on: https://code.wireshark.org/review/12555
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 9352616ec9742f2ed3d2802d0c8c100d51ca410b)
+Reviewed-on: https://code.wireshark.org/review/12568
+(cherry picked from commit b11c868857f98ffdf4b2d3dc8ae30d0219278709)
+Reviewed-on: https://code.wireshark.org/review/12569
+(cherry picked from commit 49e7e7fbb99723394f03217087589c3086ba6889)
+Reviewed-on: https://code.wireshark.org/review/13771
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-zbee-zcl-general.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-zbee-zcl-general.c b/epan/dissectors/packet-zbee-zcl-general.c
+index b06bbde..6f4b87d 100644
+--- a/epan/dissectors/packet-zbee-zcl-general.c
++++ b/epan/dissectors/packet-zbee-zcl-general.c
+@@ -3591,7 +3591,7 @@ dissect_zcl_pwr_prof_pwrprofstatersp(tvbuff_t *tvb, proto_tree *tree, guint *off
+     guint8 power_profile_count;
+ 
+     /* Retrieve "Total Profile Number" field */
+-    power_profile_count = tvb_get_guint8(tvb, *offset);
++    power_profile_count = MIN(tvb_get_guint8(tvb, *offset), ZBEE_ZCL_PWR_PROF_NUM_PWR_PROF_ETT);
+     proto_tree_add_item(tree, hf_zbee_zcl_pwr_prof_pwr_prof_count, tvb, *offset, 1, ENC_NA);
+     *offset += 1;
+ 
+-- 
+2.1.4
+

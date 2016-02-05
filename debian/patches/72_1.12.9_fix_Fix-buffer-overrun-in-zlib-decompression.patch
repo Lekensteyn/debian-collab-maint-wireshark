@@ -1,0 +1,57 @@
+From 3d2e2a209cf34108ca71c6be576bebeea1f9570d Mon Sep 17 00:00:00 2001
+From: Peter Wu <peter@lekensteyn.nl>
+Date: Sun, 22 Nov 2015 18:16:46 +0100
+Subject: [PATCH 72/90] Fix buffer overrun in zlib decompression
+
+After updating next_in (to remove the gzip header), avail_in must also
+be updated. Failing to do makes zlib read past the input buffer. In
+theory this would resukt in a buffer overrun of at most double the input
+length, in practice zlib returns as soon as the compression fails (after
+reading a few bytes).
+
+Bug: 11548
+Change-Id: If71691a2846338f46d866964a77cc4e74a9b61dd
+Reviewed-on: https://code.wireshark.org/review/12038
+Petri-Dish: Peter Wu <peter@lekensteyn.nl>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Peter Wu <peter@lekensteyn.nl>
+(cherry picked from commit cec0593ae6c3bca65eff65741c2a10f3de3e0afe)
+Reviewed-on: https://code.wireshark.org/review/12138
+(cherry picked from commit ff0220fda472b0b08796dbd8aa4c22dd665d9223)
+Reviewed-on: https://code.wireshark.org/review/13759
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/tvbuff_zlib.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/epan/tvbuff_zlib.c b/epan/tvbuff_zlib.c
+index 176e2da..74fec91 100644
+--- a/epan/tvbuff_zlib.c
++++ b/epan/tvbuff_zlib.c
+@@ -228,9 +228,6 @@ tvb_uncompress(tvbuff_t *tvb, const int offset, int comprlen)
+ 			}
+ 
+ 
+-			inflateReset(strm);
+-			next = c;
+-			strm->next_in = next;
+ 			if (c - compr > comprlen) {
+ 				inflateEnd(strm);
+ 				g_free(strm);
+@@ -238,7 +235,13 @@ tvb_uncompress(tvbuff_t *tvb, const int offset, int comprlen)
+ 				g_free(strmbuf);
+ 				return NULL;
+ 			}
++			/* Drop gzip header */
+ 			comprlen -= (int) (c - compr);
++			next = c;
++
++			inflateReset(strm);
++			strm->next_in   = next;
++			strm->avail_in  = comprlen;
+ 
+ 			inflateEnd(strm);
+ 			inflateInit2(strm, wbits);
+-- 
+2.1.4
+

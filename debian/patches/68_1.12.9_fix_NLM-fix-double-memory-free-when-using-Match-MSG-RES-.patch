@@ -1,0 +1,68 @@
+From 964810a86a32a4cbfb21a9f7e901d62501f24a77 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Fri, 30 Oct 2015 14:53:33 +0100
+Subject: [PATCH 68/90] NLM: fix double memory free when using "Match MSG/RES
+ packets for async NLM" option
+
+Change-Id: I8ac8bbb7830a49c1a0973b16378515b00a1a7b65
+Reviewed-on: https://code.wireshark.org/review/11432
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit 916dfc5895a3b18572d9128fa686ce3d32f9810a)
+Reviewed-on: https://code.wireshark.org/review/13755
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-nlm.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/epan/dissectors/packet-nlm.c b/epan/dissectors/packet-nlm.c
+index 413a717..015912f 100644
+--- a/epan/dissectors/packet-nlm.c
++++ b/epan/dissectors/packet-nlm.c
+@@ -119,7 +119,7 @@ nlm_msg_res_unmatched_free_all(gpointer key_arg _U_, gpointer value, gpointer us
+ {
+ 	nlm_msg_res_unmatched_data *umd = (nlm_msg_res_unmatched_data *)value;
+ 
+-	g_free((gpointer)umd->cookie);
++	wmem_free(NULL, (gpointer)umd->cookie);
+ 	g_free(umd);
+ 
+ 	return TRUE;
+@@ -255,17 +255,18 @@ nlm_register_unmatched_res(packet_info *pinfo, tvbuff_t *tvb, int offset)
+ 	/* have we seen this cookie before? */
+ 	old_umd=(nlm_msg_res_unmatched_data *)g_hash_table_lookup(nlm_msg_res_unmatched, (gconstpointer)&umd);
+ 	if(old_umd){
+-		nlm_msg_res_matched_data *md;
++		nlm_msg_res_matched_data *md_req, *md_rep;
+ 
+-		md=(nlm_msg_res_matched_data *)g_malloc(sizeof(nlm_msg_res_matched_data));
+-		md->req_frame=old_umd->req_frame;
+-		md->rep_frame=pinfo->fd->num;
+-		md->ns=old_umd->ns;
+-		g_hash_table_insert(nlm_msg_res_matched, GINT_TO_POINTER(md->req_frame), (gpointer)md);
+-		g_hash_table_insert(nlm_msg_res_matched, GINT_TO_POINTER(md->rep_frame), (gpointer)md);
++		md_req=(nlm_msg_res_matched_data *)g_malloc(sizeof(nlm_msg_res_matched_data));
++		md_req->req_frame=old_umd->req_frame;
++		md_req->rep_frame=pinfo->fd->num;
++		md_req->ns=old_umd->ns;
++		md_rep=(nlm_msg_res_matched_data *)g_memdup(md_req, sizeof(nlm_msg_res_matched_data));
++		g_hash_table_insert(nlm_msg_res_matched, GINT_TO_POINTER(md_req->req_frame), (gpointer)md_req);
++		g_hash_table_insert(nlm_msg_res_matched, GINT_TO_POINTER(md_rep->rep_frame), (gpointer)md_rep);
+ 
+ 		g_hash_table_remove(nlm_msg_res_unmatched, (gconstpointer)old_umd);
+-		g_free((gpointer)old_umd->cookie);
++		wmem_free(NULL, (gpointer)old_umd->cookie);
+ 		g_free(old_umd);
+ 	}
+ }
+@@ -287,7 +288,7 @@ nlm_register_unmatched_msg(packet_info *pinfo, tvbuff_t *tvb, int offset)
+ 	old_umd=(nlm_msg_res_unmatched_data *)g_hash_table_lookup(nlm_msg_res_unmatched, (gconstpointer)umd);
+ 	if(old_umd){
+ 		g_hash_table_remove(nlm_msg_res_unmatched, (gconstpointer)old_umd);
+-		g_free((gpointer)old_umd->cookie);
++		wmem_free(NULL, (gpointer)old_umd->cookie);
+ 		g_free(old_umd);
+ 	}
+ 
+-- 
+2.1.4
+

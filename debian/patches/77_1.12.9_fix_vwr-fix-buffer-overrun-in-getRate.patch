@@ -1,0 +1,48 @@
+From d0bf4b25f86407072d3c9a2c2060e3d9154b28e9 Mon Sep 17 00:00:00 2001
+From: Peter Wu <peter@lekensteyn.nl>
+Date: Sat, 28 Nov 2015 10:54:16 +0100
+Subject: [PATCH 77/90] vwr: fix buffer overrun in getRate
+
+Bug: 11789
+Change-Id: Ieba9f32928b91be5d07b25bf54005155f7cc79f6
+Reviewed-on: https://code.wireshark.org/review/12261
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 135c8f050f7f0145b54d952b38ca73eb0d1060cf)
+Reviewed-on: https://code.wireshark.org/review/12262
+(cherry picked from commit fef89fc4cf5da5df6e07af22adcb1b24ac41048b)
+Reviewed-on: https://code.wireshark.org/review/13764
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ wiretap/vwr.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/wiretap/vwr.c b/wiretap/vwr.c
+index 73c6509..5ae80bb 100644
+--- a/wiretap/vwr.c
++++ b/wiretap/vwr.c
+@@ -2112,7 +2112,10 @@ static float getRate( guint8 plcpType, guint8 mcsIndex, guint16 rflags, guint8 n
+     float symbol_tx_time, bitrate  = 0.0f;
+ 
+     if (plcpType == 0)
+-        bitrate =  canonical_rate_legacy[mcsIndex];
++    {
++        if (mcsIndex < G_N_ELEMENTS(canonical_rate_legacy))
++            bitrate =  canonical_rate_legacy[mcsIndex];
++    }
+     else if (plcpType == 1 || plcpType == 2)
+     {
+         if ( rflags & FLAGS_CHAN_SHORTGI)
+@@ -2134,8 +2137,8 @@ static float getRate( guint8 plcpType, guint8 mcsIndex, guint16 rflags, guint8 n
+         else
+             symbol_tx_time = 4.0f;
+ 
+-    /* Check for the out of range mcsIndex.  Should never happen, but if mcs index is greater than 9 assume 9 is the value */
+-    if (mcsIndex > 9) mcsIndex = 9;
++        /* Check for the out of range mcsIndex.  Should never happen, but if mcs index is greater than 9 assume 9 is the value */
++        if (mcsIndex > 9) mcsIndex = 9;
+         if ( rflags & FLAGS_CHAN_40MHZ )
+             bitrate = (canonical_ndbps_40_vht[ mcsIndex ] * nss) / symbol_tx_time;
+         else if (rflags & FLAGS_CHAN_80MHZ )
+-- 
+2.1.4
+

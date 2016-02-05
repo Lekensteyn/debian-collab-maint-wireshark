@@ -1,0 +1,47 @@
+From 4667397d5d81fc9d2994218fa731d0b617c31b02 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Sat, 28 Nov 2015 19:08:11 -0500
+Subject: [PATCH 80/90] Add bounds checking to find_signature.
+
+Bug: 11791
+Change-Id: Ibaa2c16229c1b78818283ba5f954b09f3894dc60
+Reviewed-on: https://code.wireshark.org/review/12270
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 185911de7d337246044c8e99da2f5b4bac74c0d5)
+Reviewed-on: https://code.wireshark.org/review/12294
+(cherry picked from commit e4267dd4d03b81c74cd6bc9f574f3f10936ee354)
+Reviewed-on: https://code.wireshark.org/review/12295
+(cherry picked from commit 51ccf92c014f6e1423ce74e62f7ebf8647e316e1)
+Reviewed-on: https://code.wireshark.org/review/13767
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ wiretap/vwr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/wiretap/vwr.c b/wiretap/vwr.c
+index 5ae80bb..3c2befa 100644
+--- a/wiretap/vwr.c
++++ b/wiretap/vwr.c
+@@ -2050,7 +2050,7 @@ int find_signature(const guint8 *m_ptr, int rec_size, int pay_off, guint32 flow_
+     /*  flow ID and sequence number at the appropriate offsets.                             */
+     for (tgt = pay_off; tgt < (rec_size); tgt++) {
+         if (m_ptr[tgt] == 0xdd) {                       /* found magic byte? check fields */
+-            if (m_ptr[tgt + 15] == 0xe2) {
++            if ((tgt + 15 < rec_size) && (m_ptr[tgt + 15] == 0xe2)) {
+                 if (m_ptr[tgt + 4] != flow_seq)
+                     continue;
+ 
+@@ -2061,7 +2061,7 @@ int find_signature(const guint8 *m_ptr, int rec_size, int pay_off, guint32 flow_
+ 
+                 return (tgt);
+             }
+-            else
++            else if (tgt + SIG_FSQ_OFF < rec_size)
+             {                                               /* out which one... */
+                 if (m_ptr[tgt + SIG_FSQ_OFF] != flow_seq)   /* check sequence number */
+                     continue;                               /* if failed, keep scanning */
+-- 
+2.1.4
+

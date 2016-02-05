@@ -1,0 +1,44 @@
+From 550e37d39380ae172568df818f70c6f68f63e361 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Tue, 27 Oct 2015 15:42:45 +0100
+Subject: [PATCH 67/90] GVCP: do not try to append register value to info
+ column when READREG_ACK has an error status
+
+Bug: 11639
+Change-Id: I1389b74092138e3b28cf4f0dd2d2c8967ec8ba12
+Reviewed-on: https://code.wireshark.org/review/11310
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit 4f22e9937f72a43e53262d0ca3297f686109f4c4)
+Reviewed-on: https://code.wireshark.org/review/11314
+(cherry picked from commit 78fee11f4b9a253cfb65d3f4e60aee3acf59ba58)
+Reviewed-on: https://code.wireshark.org/review/13754
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-gvcp.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-gvcp.c b/epan/dissectors/packet-gvcp.c
+index e98afd5..f3f15d9 100644
+--- a/epan/dissectors/packet-gvcp.c
++++ b/epan/dissectors/packet-gvcp.c
+@@ -1952,7 +1952,14 @@ static void dissect_readreg_ack(proto_tree *gvcp_telegram_tree, tvbuff_t *tvb, p
+ 				address_string = get_register_name_from_address(*((guint32*)wmem_array_index(gvcp_trans->addr_list, 0)), &is_custom_register);
+ 			}
+ 
+-			col_append_fstr(pinfo->cinfo, COL_INFO, "%s Value=0x%08X", address_string, tvb_get_ntohl(tvb, offset));
++			if (num_registers)
++			{
++				col_append_fstr(pinfo->cinfo, COL_INFO, "%s Value=0x%08X", address_string, tvb_get_ntohl(tvb, offset));
++			}
++			else
++			{
++				col_append_fstr(pinfo->cinfo, COL_INFO, "%s", address_string);
++			}
+ 		}
+ 	}
+ 
+-- 
+2.1.4
+

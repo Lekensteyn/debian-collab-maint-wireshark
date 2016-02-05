@@ -1,0 +1,51 @@
+From b4fe449f2ccf353ca4eb662d865c067fb7310d15 Mon Sep 17 00:00:00 2001
+From: Guy Harris <guy@alum.mit.edu>
+Date: Sun, 20 Dec 2015 16:41:24 -0800
+Subject: [PATCH 89/90] Squelch some compiler warnings.
+
+Change-Id: Iee46c43498f42e19dfab0178e80743d35d843d2d
+Reviewed-on: https://code.wireshark.org/review/12762
+Reviewed-by: Guy Harris <guy@alum.mit.edu>
+(cherry picked from commit f553431ad0340355885fc9820f5727205c44e7c4)
+Reviewed-on: https://code.wireshark.org/review/12764
+(cherry picked from commit b5ffe6f65f32c878f24741601f1a323a59cf0f8a)
+Reviewed-on: https://code.wireshark.org/review/13776
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ wiretap/ngsniffer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/wiretap/ngsniffer.c b/wiretap/ngsniffer.c
+index fec9dc2..1201347 100644
+--- a/wiretap/ngsniffer.c
++++ b/wiretap/ngsniffer.c
+@@ -1240,7 +1240,7 @@ ngsniffer_process_record(wtap *wth, gboolean is_random, guint *padding,
+ 		size = pletoh16(&frame2.size);
+ 		true_size = pletoh16(&frame2.true_size);
+ 
+-		rec_length_remaining -= sizeof frame2;	/* we already read that much */
++		rec_length_remaining -= (guint)sizeof frame2;	/* we already read that much */
+ 
+ 		set_pseudo_header_frame2(wth, &phdr->pseudo_header, &frame2);
+ 		break;
+@@ -1288,7 +1288,7 @@ ngsniffer_process_record(wtap *wth, gboolean is_random, guint *padding,
+ 		size = pletoh16(&frame4.size);
+ 		true_size = pletoh16(&frame4.true_size);
+ 
+-		rec_length_remaining -= sizeof frame4;	/* we already read that much */
++		rec_length_remaining -= (guint)sizeof frame4;	/* we already read that much */
+ 
+ 		set_pseudo_header_frame4(&phdr->pseudo_header, &frame4);
+ 		break;
+@@ -1316,7 +1316,7 @@ ngsniffer_process_record(wtap *wth, gboolean is_random, guint *padding,
+ 		size = pletoh16(&frame6.size);
+ 		true_size = pletoh16(&frame6.true_size);
+ 
+-		rec_length_remaining -= sizeof frame6;	/* we already read that much */
++		rec_length_remaining -= (guint)sizeof frame6;	/* we already read that much */
+ 
+ 		set_pseudo_header_frame6(wth, &phdr->pseudo_header, &frame6);
+ 		break;
+-- 
+2.1.4
+

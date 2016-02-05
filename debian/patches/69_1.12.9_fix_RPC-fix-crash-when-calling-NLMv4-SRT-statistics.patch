@@ -1,0 +1,38 @@
+From fce6e2d02ff5e730bf4b9697bf38c79e81044cf7 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Fri, 30 Oct 2015 19:09:39 +0100
+Subject: [PATCH 69/90] RPC: fix crash when calling NLMv4 SRT statistics
+
+Packet scope is not valid when called from GUI.
+As master-1.12 does not benefit from the code refactring done in master, we
+cannot use the same solution as in g59f4c1c
+Instead allow to leak a bit of memory by allocating in the epan scope.
+
+Bug: 11654
+Change-Id: Ia896299766f7e132b944af48a210fd44d8412282
+Reviewed-on: https://code.wireshark.org/review/11447
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit e654611ffb00dd1c91eefa6f36654de5fdfd64f2)
+Reviewed-on: https://code.wireshark.org/review/13756
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-rpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-rpc.c b/epan/dissectors/packet-rpc.c
+index 8534c01..58b27cc 100644
+--- a/epan/dissectors/packet-rpc.c
++++ b/epan/dissectors/packet-rpc.c
+@@ -389,7 +389,7 @@ rpc_proc_name(guint32 prog, guint32 vers, guint32 proc)
+ 	else {
+ 		/* happens only with strange program versions or
+ 		   non-existing dissectors */
+-		procname = wmem_strdup_printf(wmem_packet_scope(), "proc-%u", key.proc);
++		procname = wmem_strdup_printf(wmem_epan_scope(), "proc-%u", key.proc);
+ 	}
+ 	return procname;
+ }
+-- 
+2.1.4
+

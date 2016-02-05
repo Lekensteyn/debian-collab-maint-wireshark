@@ -1,0 +1,44 @@
+From 476a5da22f0ccf31a3f832ac4154a4c390d553bb Mon Sep 17 00:00:00 2001
+From: Martin Kaiser <wireshark@kaiser.cx>
+Date: Sun, 20 Dec 2015 15:47:28 +0100
+Subject: [PATCH 75/90] [airpdcap] check the length of the WPA broadcast key we
+ calculated
+
+return an error if our key is shorter than the key type required for the
+encryption method we detected
+
+this check prevents an out-of-bounds memory access when the key is copied
+
+Bug: 11826
+Change-Id: Ic779b5d87aa97a3b2d2b2c92ce12d0fff4a85adc
+Reviewed-on: https://code.wireshark.org/review/12743
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+Reviewed-on: https://code.wireshark.org/review/12771
+Reviewed-by: Alexis La Goutte <alexis.lagoutte@gmail.com>
+(cherry picked from commit 8110a703cc1f17222b3010b3993bbf8be21436d4)
+Reviewed-on: https://code.wireshark.org/review/13762
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/crypt/airpdcap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/epan/crypt/airpdcap.c b/epan/crypt/airpdcap.c
+index eb03605..be6e059 100644
+--- a/epan/crypt/airpdcap.c
++++ b/epan/crypt/airpdcap.c
+@@ -456,6 +456,10 @@ AirPDcapDecryptWPABroadcastKey(const EAPOL_RSN_KEY *pEAPKey, guint8  *decryption
+     }
+ 
+     key_len = (sa->wpa.key_ver==AIRPDCAP_WPA_KEY_VER_NOT_CCMP)?TKIP_GROUP_KEY_LEN:CCMP_GROUP_KEY_LEN;
++    if (key_len > key_bytes_len) {
++        /* the key required for this protocol is longer than the key that we just calculated */
++        return AIRPDCAP_RET_NO_VALID_HANDSHAKE;
++    }
+ 
+     /* Decrypted key is now in szEncryptedKey with len of key_len */
+     DEBUG_DUMP("Broadcast key:", szEncryptedKey, key_len);
+-- 
+2.1.4
+

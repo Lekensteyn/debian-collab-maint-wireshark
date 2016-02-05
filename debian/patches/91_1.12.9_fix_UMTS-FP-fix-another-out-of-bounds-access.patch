@@ -1,0 +1,38 @@
+From df9b7eceddaab6f4585477b8dc05adff6dfe87b4 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Sun, 18 Oct 2015 10:58:37 +0200
+Subject: [PATCH 91/91] UMTS FP: fix another out of bounds access
+
+According to NBAP ASN.1, the maximum DCH ID value is 255
+
+Bug: 11606
+Change-Id: Ic5c85a31eb1a84d59f25baaed4afbd040a7852c5
+Reviewed-on: https://code.wireshark.org/review/11126
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit 67b6d4f7e6f2117b40957fd51518aa2a3e659002)
+Reviewed-on: https://code.wireshark.org/review/11128
+(cherry picked from commit 6ba54030d248c2d7d0436e6544784f2591d9986f)
+Reviewed-on: https://code.wireshark.org/review/13778
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-umts_fp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-umts_fp.c b/epan/dissectors/packet-umts_fp.c
+index 51b8fbe..7d21b83 100644
+--- a/epan/dissectors/packet-umts_fp.c
++++ b/epan/dissectors/packet-umts_fp.c
+@@ -3812,7 +3812,7 @@ heur_dissect_fp(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, void *data
+     return TRUE;
+ }
+ static guint8 fakes =5; /*[] ={1,5,8};*/
+-static guint8 fake_map[31];
++static guint8 fake_map[256];
+ 
+  /*
+  * TODO: This need to be fixed!
+-- 
+2.1.4
+

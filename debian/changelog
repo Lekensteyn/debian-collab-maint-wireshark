@@ -3,7 +3,28 @@ wireshark (1.12.1+g01b65bf-4+deb8u4) jessie-security; urgency=high
   * security fixes from Wireshark 1.12.8:
     - Pcapng file parser crash. Discovered by Dario Lombardo and
       Shannon Sabens.(CVE-2015-7830)
-    * Enable all hardening flags
+  * Enable all hardening flags
+  * security fixes from Wireshark 1.12.9:
+    - NBAP dissector crashes (CVE-2015-8711)
+    - UMTS FP dissector crashes (CVE-2015-8712, CVE-2015-8713)
+    - DCOM dissector crash (CVE-2015-8714)
+    - AllJoyn dissector infinite loop (CVE-2015-8715)
+    - T.38 dissector crash (CVE-2015-8716)
+    - SDP dissector crash (CVE-2015-8717)
+    - NLM dissector crash (CVE-2015-8718)
+    - DNS dissector crash (CVE-2015-8719)
+    - BER dissector crash (CVE-2015-8720)
+    - Zlib decompression crash (CVE-2015-8721)
+    - SCTP dissector crash (CVE-2015-8722)
+    - 802.11 decryption crash (CVE-2015-8723, CVE-2015-8724)
+    - DIAMETER dissector crash (CVE-2015-8725)
+    - VeriWave file parser crashes (CVE-2015-8726)
+    - RSVP dissector crash (CVE-2015-8727)
+    - ANSI A & GSM A dissector crashes (CVE-2015-8728)
+    - Ascend file parser crash (CVE-2015-8729)
+    - NBAP dissector crash (CVE-2015-8730)
+    - ZigBee ZCL dissector crash (CVE-2015-8732)
+    - Sniffer file parser crash (CVE-2015-8733)
 
  -- Balint Reczey <balint@balintreczey.hu>  Sun, 18 Oct 2015 19:26:45 +0200
 

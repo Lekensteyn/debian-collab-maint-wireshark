@@ -1,0 +1,76 @@
+From ccad93e06da8f781d1226e3af1875ab8973e7b4b Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Wed, 25 Nov 2015 17:53:30 +0100
+Subject: [PATCH 73/90] SCTP: verify frame pointer before dereferencing it
+
+Bug: 11767
+Change-Id: Icd01550e0aaa4cd0cc33ae3acc0ef702c38f4db4
+Reviewed-on: https://code.wireshark.org/review/12146
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 2259bf8a827088081bef101f98e4983de8aa8099)
+Conflicts:
+	epan/dissectors/packet-sctp.c
+Reviewed-on: https://code.wireshark.org/review/12174
+(cherry picked from commit 39a50f4a3feeef031b234a49899af1380b757409)
+Reviewed-on: https://code.wireshark.org/review/13760
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-sctp.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
+
+diff --git a/epan/dissectors/packet-sctp.c b/epan/dissectors/packet-sctp.c
+index 500b409..92efd17 100644
+--- a/epan/dissectors/packet-sctp.c
++++ b/epan/dissectors/packet-sctp.c
+@@ -3094,14 +3094,16 @@ dissect_fragmented_payload(tvbuff_t *payload_tvb, packet_info *pinfo, proto_tree
+     const gchar *proto_name;
+     gboolean retval;
+ 
+-	cur = wmem_list_tail(pinfo->layers);
++    cur = wmem_list_tail(pinfo->layers);
+     retval = dissect_payload(new_tvb, pinfo, tree, ppi);
+     cur = wmem_list_frame_next(cur);
+-    proto_id = GPOINTER_TO_UINT(wmem_list_frame_data(cur));
+-    proto_name = proto_get_protocol_filter_name(proto_id);
+-    if(strcmp(proto_name, "data") != 0){
+-      if (have_tap_listener(exported_pdu_tap)){
+-        export_sctp_data_chunk(pinfo,payload_tvb, proto_name);
++    if (cur) {
++      proto_id = GPOINTER_TO_UINT(wmem_list_frame_data(cur));
++      proto_name = proto_get_protocol_filter_name(proto_id);
++      if(strcmp(proto_name, "data") != 0){
++        if (have_tap_listener(exported_pdu_tap)){
++          export_sctp_data_chunk(pinfo,payload_tvb, proto_name);
++        }
+       }
+     }
+     return retval;
+@@ -3250,14 +3252,16 @@ dissect_data_chunk(tvbuff_t *chunk_tvb,
+       guint proto_id;
+       const gchar *proto_name;
+ 
+-	  cur = wmem_list_tail(pinfo->layers);
++      cur = wmem_list_tail(pinfo->layers);
+       retval = dissect_payload(payload_tvb, pinfo, tree, payload_proto_id);
+       cur = wmem_list_frame_next(cur);
+-      proto_id = GPOINTER_TO_UINT(wmem_list_frame_data(cur));
+-      proto_name = proto_get_protocol_filter_name(proto_id);
+-      if(strcmp(proto_name, "data") != 0){
+-        if (have_tap_listener(exported_pdu_tap)){
+-          export_sctp_data_chunk(pinfo,payload_tvb, proto_name);
++      if (cur) {
++        proto_id = GPOINTER_TO_UINT(wmem_list_frame_data(cur));
++        proto_name = proto_get_protocol_filter_name(proto_id);
++        if(strcmp(proto_name, "data") != 0){
++          if (have_tap_listener(exported_pdu_tap)){
++            export_sctp_data_chunk(pinfo,payload_tvb, proto_name);
++          }
+         }
+       }
+     }
+-- 
+2.1.4
+

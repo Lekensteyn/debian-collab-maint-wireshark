@@ -1,0 +1,59 @@
+From eb3df770b2e660432c213decd78a190a9f4fe118 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Mon, 30 Nov 2015 23:42:33 -0500
+Subject: [PATCH 82/90] [NBAP] Prevent crash.
+
+If no previous conversation exists, a memcpy will try to copy from NULL destination.
+
+Bug: 11835
+Change-Id: I445480bb425834c5a918f1ffa148cb83d6c9750c
+Reviewed-on: https://code.wireshark.org/review/12326
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 5b4ada17723ed8af7e85cb48d537437ed614e417)
+Reviewed-on: https://code.wireshark.org/review/12329
+(cherry picked from commit 3e1cd492a534fb8fc2501de30e6b05659f1a00f6)
+Reviewed-on: https://code.wireshark.org/review/13769
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ asn1/nbap/nbap.cnf            | 5 +++--
+ epan/dissectors/packet-nbap.c | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/asn1/nbap/nbap.cnf b/asn1/nbap/nbap.cnf
+index d5c12c9..a1e0d0f 100644
+--- a/asn1/nbap/nbap.cnf
++++ b/asn1/nbap/nbap.cnf
+@@ -1454,8 +1454,9 @@ BindingID_port = 0;
+             conversation_set_dissector(conversation, fp_handle);
+             if(actx->pinfo->link_dir==P2P_DIR_DL){
+                 umts_fp_conversation_info = wmem_new0(wmem_file_scope(), umts_fp_conversation_info_t);
+-                /*Steal the old informatoin*/
+-                memcpy(umts_fp_conversation_info,conversation_get_proto_data(old_conversation, proto_fp),sizeof(umts_fp_conversation_info_t));
++                /* Steal the old information */
++                if (old_conversation)
++                    memcpy(umts_fp_conversation_info,conversation_get_proto_data(old_conversation, proto_fp),sizeof(umts_fp_conversation_info_t));
+ 
+                 /* Overwrite the data */
+                 umts_fp_conversation_info->iface_type        = IuB_Interface;
+diff --git a/epan/dissectors/packet-nbap.c b/epan/dissectors/packet-nbap.c
+index 7d93b34..6ae30e2 100644
+--- a/epan/dissectors/packet-nbap.c
++++ b/epan/dissectors/packet-nbap.c
+@@ -18672,8 +18672,9 @@ BindingID_port = 0;
+             conversation_set_dissector(conversation, fp_handle);
+             if(actx->pinfo->link_dir==P2P_DIR_DL){
+                 umts_fp_conversation_info = wmem_new0(wmem_file_scope(), umts_fp_conversation_info_t);
+-                /*Steal the old informatoin*/
+-                memcpy(umts_fp_conversation_info,conversation_get_proto_data(old_conversation, proto_fp),sizeof(umts_fp_conversation_info_t));
++                /* Steal the old information */
++                if (old_conversation)
++                    memcpy(umts_fp_conversation_info,conversation_get_proto_data(old_conversation, proto_fp),sizeof(umts_fp_conversation_info_t));
+ 
+                 /* Overwrite the data */
+                 umts_fp_conversation_info->iface_type        = IuB_Interface;
+-- 
+2.1.4
+
