@@ -85,3 +85,7 @@
 89_1.10.13_fix_WCP_crash.patch
 90_1.10.14_fix_WCP_crash.patch
 91_1.12.8_fix_pcapng_crash.patch
+92_1.12.7_fix_ptvcursor_crash1.patch
+93_1.12.7_fix_ptvcursor_crash2.patch
+94_1.12.7_fix_dissector-table_crash.patch
+95_1.12.7_fix_WaveAgent_crash.patch

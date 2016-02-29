@@ -3,6 +3,10 @@ wireshark (1.8.2-5wheezy17) UNRELEASED; urgency=high
   * security fixes from Wireshark 1.12.8:
     - Pcapng file parser crash. Discovered by Dario Lombardo and
       Shannon Sabens. (CVE-2015-7830)
+  * security fixes from Wireshark 1.12.7:
+    - The ptvcursor implementation could crash (CVE-2015-6248)
+    - Crash in the dissector table implementation (CVE-2015-6243)
+    - The WaveAgent dissector could crash (CVE-2015-6246)
 
  -- Balint Reczey <balint@balintreczey.hu>  Sun, 25 Oct 2015 14:16:06 +0100
 

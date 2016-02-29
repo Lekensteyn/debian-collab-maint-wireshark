@@ -1,0 +1,67 @@
+From 01eb0a8664ffa7a94a1eb4cf47a404f0d56d2830 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Thu, 23 Jul 2015 09:01:26 -0400
+Subject: [PATCH 1/4] Add test_length to ptvcursor_add so it can do some bounds
+ checking.
+
+Change-Id: Id052bbfb42f33861294cd4bcba9c3219b7a6b9ff
+Ping-Bug: 11358
+Reviewed-on: https://code.wireshark.org/review/9755
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 3c38a92f7884ad724367b57ff141fdebd5282300)
+Reviewed-on: https://code.wireshark.org/review/10588
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+(cherry picked from commit 012daad15734f23b213528e1efc40ceac1d48c78)
+Reviewed-on: https://code.wireshark.org/review/11256
+---
+ epan/proto.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/epan/proto.c b/epan/proto.c
+index 95cdd49..3ee5e92 100644
+--- a/epan/proto.c
++++ b/epan/proto.c
+@@ -1692,6 +1692,30 @@ proto_tree_new_item(field_info *new_fi, proto_tree *tree,
+ 	return pi;
+ }
+ 
++/*
++ * Validates that field length bytes are available starting from
++ * start (pos/neg). Throws an exception if they aren't.
++ */
++static void
++test_length(header_field_info *hfinfo, tvbuff_t *tvb,
++	    gint start, gint length)
++{
++	gint size = length;
++
++	if (!tvb)
++		return;
++
++	if (hfinfo->type == FT_STRINGZ) {
++		/* If we're fetching until the end of the TVB, only validate
++		 * that the offset is within range.
++		 */
++		if (length == -1)
++			size = 0;
++	}
++
++	tvb_ensure_bytes_exist(tvb, start, size);
++}
++
+ /* Gets data from tvbuff, adds it to proto_tree, increments offset,
+    and returns proto_item* */
+ proto_item *
+@@ -1720,6 +1744,8 @@ ptvcursor_add(ptvcursor_t *ptvc, int hfindex, gint length,
+ 		ptvc->offset += n;
+ 	}
+ 
++	test_length(hfinfo, ptvc->tvb, ptvc->offset, item_length);
++
+ 	/* Coast clear. Try and fake it */
+ 	TRY_TO_FAKE_THIS_ITEM(ptvc->tree, hfindex, hfinfo);
+ 
+-- 
+2.1.4
+
