@@ -1,19 +1,3 @@
-docsis.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-ethercat.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-gryphon.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-irda.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
 libwireshark.so.6 libwireshark6 #MINVER#
  AdmissionRejectReason_vals@Base 1.9.1
  AirPDcapDestroyContext@Base 1.9.1
@@ -763,6 +747,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  h248_register_package@Base 1.9.1
  has_heur_dissector_list@Base 1.12.0~rc1
  have_custom_cols@Base 1.9.1
+ have_field_extractors@Base 2.0.2
  have_filtering_tap_listeners@Base 1.9.1
  have_tap_listener@Base 1.12.0~rc1
  heur_dissector_add@Base 1.9.1
@@ -1663,38 +1648,3 @@ libwireshark.so.6 libwireshark6 #MINVER#
  xml_get_attrib@Base 1.9.1
  xml_get_cdata@Base 1.9.1
  xml_get_tag@Base 1.9.1
-m2m.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-mate.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-opcua.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-profinet.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-stats_tree.so libwireshark6 #MINVER#
- plugin_register_tap_listener@Base 1.9.1
- version@Base 1.9.1
-unistim.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-wimax.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-wimaxasncp.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
-wimaxmacphy.so libwireshark6 #MINVER#
- plugin_reg_handoff@Base 1.9.1
- plugin_register@Base 1.9.1
- version@Base 1.9.1
