@@ -1,3 +1,34 @@
+wireshark (2.0.2+ga16e22e-1) unstable; urgency=high
+
+  * New upstream release 2.0.2
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.0.2.html
+    - security fixes:
+      - DLL hijacking vulnerability (CVE-2016-2521)
+      - ASN.1 BER dissector crash (CVE-2016-2522)
+      - DNP dissector infinite loop (CVE-2016-2523)
+      - X.509AF dissector crash (CVE-2016-2524)
+      - HTTP/2 dissector crash (CVE-2016-2525)
+      - HiQnet dissector crash (CVE-2016-2526)
+      - 3GPP TS 32.423 Trace file parser crash (CVE-2016-2527)
+      - LBMC dissector crash (CVE-2016-2528)
+      - iSeries file parser crash (CVE-2016-2529)
+      - RSL dissector crash (CVE-2016-2530 CVE-2016-2531)
+      - LLRP dissector crash (CVE-2016-2532)
+      - Ixia IxVeriWave file parser crash
+      - IEEE 802.11 dissector crash
+      - GSM A-bis OML dissector crash
+      - ASN.1 BER dissector crash
+      - SPICE dissector large loop
+      - NFS dissector crash
+      - ASN.1 BER dissector crash
+  * Update symbols file
+  * Bump SO version properly using patch cherry-picked from upstream
+  * Drop obsolete and unused
+    0002-Fix-wireshark.pc-when-CMAKE_INSTALL_LIBDIR-is-absolu.patch
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 28 Feb 2016 16:51:35 +0100
+
 wireshark (2.0.1+g59ea380-3) unstable; urgency=medium
 
   * Fix setting -Wl,-Bsymbolic on Wheezy only (Closes: #810159)
