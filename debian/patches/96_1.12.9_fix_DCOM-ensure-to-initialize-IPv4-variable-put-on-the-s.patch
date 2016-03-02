@@ -1,0 +1,36 @@
+From 32e3f8d00f962654e36ef96325eda9c652bf435e Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Sun, 18 Oct 2015 23:12:30 +0200
+Subject: [PATCH 1/6] DCOM: ensure to initialize IPv4 variable put on the stack
+
+Bug: 11610
+Change-Id: I920b88ab035ff34e7cff9eab8158aa2dabe2faac
+Reviewed-on: https://code.wireshark.org/review/11134
+Reviewed-by: Martin Kaiser <wireshark@kaiser.cx>
+(cherry picked from commit d34267d0503a67235bf259fd2f2f2d2bb8b18cf5)
+Reviewed-on: https://code.wireshark.org/review/11136
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit af920d25e2477b07c89cadcf913cd8d529bc0e71)
+Reviewed-on: https://code.wireshark.org/review/13750
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+(cherry picked from commit 47c80e6938657b1a45fde4fc67b211c396a98685)
+Reviewed-on: https://code.wireshark.org/review/14244
+---
+ epan/dissectors/packet-dcom.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/epan/dissectors/packet-dcom.c b/epan/dissectors/packet-dcom.c
+index 89b90c2..7e934aa 100644
+--- a/epan/dissectors/packet-dcom.c
++++ b/epan/dissectors/packet-dcom.c
+@@ -1920,6 +1920,7 @@ dissect_dcom_OBJREF(tvbuff_t *tvb, gint offset, packet_info *pinfo,
+ 	gchar ip[4];
+ 
+ 	memset(&ipid, 0, sizeof(ipid));
++	memset(ip, 0, sizeof(ip));
+ 
+ 	/* add subtree header */
+ 	sub_item = proto_tree_add_item(tree, hf_dcom_objref, tvb, offset, 0, ENC_NA);
+-- 
+2.1.4
+

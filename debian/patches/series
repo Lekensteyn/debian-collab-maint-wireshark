@@ -89,3 +89,9 @@
 93_1.12.7_fix_ptvcursor_crash2.patch
 94_1.12.7_fix_dissector-table_crash.patch
 95_1.12.7_fix_WaveAgent_crash.patch
+96_1.12.9_fix_DCOM-ensure-to-initialize-IPv4-variable-put-on-the-s.patch
+97_1.12.9_fix_Fix-out-of-bounds-read-in-ascend_seek.patch
+98_1.12.9_fix_RSVP-copy-all-rsvp_request_key-info-in-file-scope.patch
+99_1.12.9_fix_NLM-fix-double-memory-free-when-using-Match-MSG-RES-.patch
+100_1.12.9_fix_BER_crash.patch
+101_1.12.9_fix_Fix-buffer-overrun-in-zlib-decompression.patch
