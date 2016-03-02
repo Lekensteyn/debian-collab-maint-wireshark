@@ -1,0 +1,40 @@
+From f1ca44a1f9bcb7692ea1088a4c4ed408dc3b20ed Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Sat, 28 Nov 2015 16:17:22 -0500
+Subject: [PATCH 2/6] Fix out-of-bounds read in ascend_seek.
+
+Bug: 11794
+Change-Id: I74517806b119729ae6d9780bbd4bb094701ff05e
+Reviewed-on: https://code.wireshark.org/review/12266
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Reviewed-by: Peter Wu <peter@lekensteyn.nl>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 338da1c0ea0b2f8595d3a7b6d6c9548f7da3e27b)
+Reviewed-on: https://code.wireshark.org/review/12296
+(cherry picked from commit 7abfa36686850a0d81ef1ef280a181d09e5e639c)
+Reviewed-on: https://code.wireshark.org/review/12297
+(cherry picked from commit 9cf09cf777cb5478d470436278db45ab42d84e06)
+Reviewed-on: https://code.wireshark.org/review/13768
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+(cherry picked from commit 38ede4e33b373ff5ff0aed2237ec0695d7c731b9)
+Reviewed-on: https://code.wireshark.org/review/14245
+---
+ wiretap/ascendtext.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/wiretap/ascendtext.c b/wiretap/ascendtext.c
+index 2795a23..35eeb26 100644
+--- a/wiretap/ascendtext.c
++++ b/wiretap/ascendtext.c
+@@ -129,6 +129,7 @@ static gint64 ascend_seek(wtap *wth, int *err, gchar **err_info)
+              but keep looking for other headers. */
+ 	  if (strcmp(strptr, ASCEND_DATE) == 0) {
+             date_off = cur_off - len;
++            string_level[string_i] = 0;
+           } else {
+             if (date_off == -1) {
+               /* Back up over the header we just read; that's where a read
+-- 
+2.1.4
+
