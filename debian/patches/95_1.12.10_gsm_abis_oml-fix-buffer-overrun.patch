@@ -1,0 +1,39 @@
+From d223fd6de0520a051a9f8b50fc975fe96e9ba4b2 Mon Sep 17 00:00:00 2001
+From: Peter Wu <peter@lekensteyn.nl>
+Date: Sat, 20 Feb 2016 15:27:40 +0100
+Subject: [PATCH 4/6] gsm_abis_oml: fix buffer overrun
+
+Do not read outside boundaries when tag is exactly 0xff.
+
+    tag = tvb_get_guint8(tvb, offset);
+    tdef = find_tlv_tag(tag);
+        ...
+        return &nm_att_tlvdef_base.def[tag];
+
+Bug: 11825
+Change-Id: I42e624185abb2166aa0f8d0dbd71a2a86fc0b18e
+Reviewed-on: https://code.wireshark.org/review/14030
+Reviewed-by: Peter Wu <peter@lekensteyn.nl>
+(cherry picked from commit c31425f9ae15067e26ccc6183c206c34713cb256)
+Reviewed-on: https://code.wireshark.org/review/14344
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-gsm_abis_oml.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-gsm_abis_oml.c b/epan/dissectors/packet-gsm_abis_oml.c
+index ee5a2ba..a9c5a43 100644
+--- a/epan/dissectors/packet-gsm_abis_oml.c
++++ b/epan/dissectors/packet-gsm_abis_oml.c
+@@ -620,7 +620,7 @@ struct tlv_def {
+ };
+ 
+ struct tlv_definition {
+-	struct tlv_def def[0xff];
++	struct tlv_def def[0x100];
+ };
+ 
+ enum abis_nm_ipacc_test_no {
+-- 
+2.1.4
+

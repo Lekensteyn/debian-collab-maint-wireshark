@@ -82,3 +82,10 @@
 89_1.12.9_fix_Sniffer_parser_crash3.patch
 90_1.12.9_fix_Sniffer_parser_crash4.patch
 91_1.12.9_fix_UMTS-FP-fix-another-out-of-bounds-access.patch
+92_1.12.10_Prevent-infinite-loop-in-DNP3-dissector.patch
+93_1.12.10_rsl-avoid-buffer-overread.patch
+94_1.12.10_3-llrp-limit-recursion-depth.patch
+95_1.12.10_gsm_abis_oml-fix-buffer-overrun.patch
+96_1.12.10_ber-fix-buffer-overrun-when-handling-empty-sets.patch
+97_1.12.10_ber-avoid-deep-recursion-for-constructed-strings.patch
+98_1.12.9_RSL-Just-return-rest-of-packet-if-TLV-type-is-unknow.patch

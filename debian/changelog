@@ -1,3 +1,16 @@
+wireshark (1.12.1+g01b65bf-4+deb8u5) UNRELEASED; urgency=medium
+
+  * security fixes from Wireshark 1.12.10:
+    - DNP dissector infinite loop (CVE-2016-2523)
+    - RSL dissector crash (CVE-2016-2530 CVE-2016-2531)
+    - LLRP dissector crash (CVE-2016-2532)
+    - GSM A-bis OML dissector crash
+    - ASN.1 BER dissector crashes
+  * security fixes from Wireshark 1.12.9:
+    - RSL dissector crash (CVE-2015-8731)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 04 Mar 2016 18:10:30 +0100
+
 wireshark (1.12.1+g01b65bf-4+deb8u4) jessie-security; urgency=high
 
   * security fixes from Wireshark 1.12.8:

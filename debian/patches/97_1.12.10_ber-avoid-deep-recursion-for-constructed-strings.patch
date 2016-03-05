@@ -1,0 +1,98 @@
+From e1f3c188e7f37d698dfcf4c74892b5ee512f520c Mon Sep 17 00:00:00 2001
+From: Peter Wu <peter@lekensteyn.nl>
+Date: Wed, 24 Feb 2016 03:06:46 +0100
+Subject: [PATCH 6/6] ber: avoid deep recursion for constructed strings
+
+Bound the recursion depth to avoid a stack overflow while parsing a
+deeply nested constructed string.
+
+Call chain before this patch:
+
+ - dissect_ber_octet_string
+   - dissect_ber_constrained_octet_string
+     - reassemble_octet_string (called for constructed types)
+       - dissect_ber_octet_string *recursion*
+
+After this patch, the reassemble_octet_string will throw if the maximum
+recursion depth is reached.
+
+Bug: 11822
+Change-Id: I6753e3c9f5dcbfab0e4c174418b2c7eb784d64d2
+Reviewed-on: https://code.wireshark.org/review/14108
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 9ff932bf5ea554f9e94ee1364284aff9eb3fd619)
+Reviewed-on: https://code.wireshark.org/review/14110
+(cherry picked from commit 307bbd253fc61657935eca992ec9325dbfff3274)
+Reviewed-on: https://code.wireshark.org/review/14111
+(cherry picked from commit 8f7a26e8fcf878bb55601edae5032caf71c2e587)
+Reviewed-on: https://code.wireshark.org/review/14348
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-ber.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/epan/dissectors/packet-ber.c b/epan/dissectors/packet-ber.c
+index 3dafd41..2f4e968 100644
+--- a/epan/dissectors/packet-ber.c
++++ b/epan/dissectors/packet-ber.c
+@@ -1404,7 +1404,10 @@ static void ber_defragment_init(void) {
+ }
+ 
+ static int
+-reassemble_octet_string(asn1_ctx_t *actx, proto_tree *tree, gint hf_id, tvbuff_t *tvb, int offset, guint32 con_len, gboolean ind, tvbuff_t **out_tvb)
++dissect_ber_constrained_octet_string_impl(gboolean implicit_tag, asn1_ctx_t *actx, proto_tree *tree, tvbuff_t *tvb, int offset, gint32 min_len, gint32 max_len, gint hf_id, tvbuff_t **out_tvb, guint nest_level);
++
++static int
++reassemble_octet_string(asn1_ctx_t *actx, proto_tree *tree, gint hf_id, tvbuff_t *tvb, int offset, guint32 con_len, gboolean ind, tvbuff_t **out_tvb, guint nest_level)
+ {
+     fragment_head *fd_head         = NULL;
+     tvbuff_t      *next_tvb        = NULL;
+@@ -1414,6 +1417,11 @@ reassemble_octet_string(asn1_ctx_t *actx, proto_tree *tree, gint hf_id, tvbuff_t
+     gboolean       fragment        = TRUE;
+     gboolean       firstFragment   = TRUE;
+ 
++    if (nest_level > BER_MAX_NESTING) {
++        /* Assume that we have a malformed packet. */
++        THROW(ReportedBoundsError);
++    }
++
+     /* so we need to consume octet strings for the given length */
+ 
+     if (out_tvb)
+@@ -1427,7 +1435,8 @@ reassemble_octet_string(asn1_ctx_t *actx, proto_tree *tree, gint hf_id, tvbuff_t
+ 
+     while(!fd_head) {
+ 
+-        offset = dissect_ber_octet_string(FALSE, actx, NULL, tvb, offset, hf_id, &next_tvb);
++        offset = dissect_ber_constrained_octet_string_impl(FALSE, actx, NULL,
++                tvb, offset, NO_BOUND, NO_BOUND, hf_id, &next_tvb, nest_level + 1);
+ 
+         if (next_tvb == NULL) {
+             /* Assume that we have a malformed packet. */
+@@ -1503,6 +1512,11 @@ reassemble_octet_string(asn1_ctx_t *actx, proto_tree *tree, gint hf_id, tvbuff_t
+ /* 8.7 Encoding of an octetstring value */
+ int
+ dissect_ber_constrained_octet_string(gboolean implicit_tag, asn1_ctx_t *actx, proto_tree *tree, tvbuff_t *tvb, int offset, gint32 min_len, gint32 max_len, gint hf_id, tvbuff_t **out_tvb) {
++  return dissect_ber_constrained_octet_string_impl(implicit_tag, actx, tree, tvb, offset, min_len, max_len, hf_id, out_tvb, 0);
++}
++
++static int
++dissect_ber_constrained_octet_string_impl(gboolean implicit_tag, asn1_ctx_t *actx, proto_tree *tree, tvbuff_t *tvb, int offset, gint32 min_len, gint32 max_len, gint hf_id, tvbuff_t **out_tvb, guint nest_level) {
+     gint8       ber_class;
+     gboolean    pc, ind;
+     gint32      tag;
+@@ -1597,7 +1611,7 @@ printf("OCTET STRING dissect_ber_octet_string(%s) entered\n", name);
+ 
+     if (pc) {
+         /* constructed */
+-        end_offset = reassemble_octet_string(actx, tree, hf_id, tvb, offset, len, ind, out_tvb);
++        end_offset = reassemble_octet_string(actx, tree, hf_id, tvb, offset, len, ind, out_tvb, nest_level);
+     } else {
+         /* primitive */
+         gint length_remaining;
+-- 
+2.1.4
+

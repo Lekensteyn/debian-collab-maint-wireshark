@@ -1,0 +1,40 @@
+From 3bd3e46535c73796a8f485ea0e171323d61484a4 Mon Sep 17 00:00:00 2001
+From: Peter Wu <peter@lekensteyn.nl>
+Date: Fri, 19 Feb 2016 18:36:38 +0100
+Subject: [PATCH 2/6] rsl: avoid buffer overread
+
+Fixes a buffer overrun in dissct_rsl_ipaccess_msg when the tag is
+exactly 0xff:
+
+        tag = tvb_get_guint8(tvb, offset);
+        tdef = &rsl_att_tlvdef.def[tag];
+
+Bug: 11829
+Change-Id: I25a3c6948242a52f59431ce84c108b2e52008930
+Reviewed-on: https://code.wireshark.org/review/14011
+Reviewed-by: Peter Wu <peter@lekensteyn.nl>
+(cherry picked from commit de65fd6b00d0b891930324b9549c93ccfe9cac30)
+Reviewed-on: https://code.wireshark.org/review/14013
+(cherry picked from commit 08d1876a23668470ea4f706ee6d7a5f102d72810)
+Reviewed-on: https://code.wireshark.org/review/14342
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-rsl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-rsl.c b/epan/dissectors/packet-rsl.c
+index fe36946..904b007 100644
+--- a/epan/dissectors/packet-rsl.c
++++ b/epan/dissectors/packet-rsl.c
+@@ -660,7 +660,7 @@ struct tlv_def {
+ };
+ 
+ struct tlv_definition {
+-    struct tlv_def def[0xff];
++    struct tlv_def def[0x100];
+ };
+ 
+ /* This structure is initialized in proto_register_rsl() */
+-- 
+2.1.4
+
