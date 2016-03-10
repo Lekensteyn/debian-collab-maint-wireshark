@@ -1,4 +1,4 @@
-wireshark (1.12.1+g01b65bf-4+deb8u5) UNRELEASED; urgency=medium
+wireshark (1.12.1+g01b65bf-4+deb8u5) jessie-security; urgency=medium
 
   * security fixes from Wireshark 1.12.10:
     - DNP dissector infinite loop (CVE-2016-2523)
