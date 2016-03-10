@@ -1,0 +1,38 @@
+From cc9fccf12dccd60b9f9889520d461a669d55f8b1 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Fri, 11 Dec 2015 22:23:59 -0500
+Subject: [PATCH 102/110] [RSL] Just return rest of packet if TLV type is
+ unknown
+
+Bug: 11829
+Change-Id: Id31ec9ee970c3a1e1fe64e3bf823f9ab78f7cd9e
+Reviewed-on: https://code.wireshark.org/review/12558
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 2930d3105c3ff2bfb1278b34ad10e2e71c3b8fb0)
+Reviewed-on: https://code.wireshark.org/review/12564
+(cherry picked from commit f899e8a2013d6c63b1ce92018f8a64591ca91ae6)
+Reviewed-on: https://code.wireshark.org/review/14355
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+(cherry picked from commit 1c9d2c89fd4ae998f3a35528ec04144d33ae4f90)
+Reviewed-on: https://code.wireshark.org/review/14356
+---
+ epan/dissectors/packet-rsl.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-rsl.c b/epan/dissectors/packet-rsl.c
+index ab58eb1..8d815b4 100644
+--- a/epan/dissectors/packet-rsl.c
++++ b/epan/dissectors/packet-rsl.c
+@@ -3143,8 +3143,7 @@ dissct_rsl_ipaccess_msg(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, int
+             break;
+         case TLV_TYPE_UNKNOWN:
+         default:
+-            DISSECTOR_ASSERT_NOT_REACHED();
+-            break;
++            return tvb_reported_length(tvb);
+         }
+ 
+         ti = proto_tree_add_item(tree, hf_rsl_ie_id, tvb, offset, 1, ENC_BIG_ENDIAN);
+-- 
+2.1.4
+

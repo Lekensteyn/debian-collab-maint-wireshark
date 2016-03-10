@@ -95,3 +95,12 @@
 99_1.12.9_fix_NLM-fix-double-memory-free-when-using-Match-MSG-RES-.patch
 100_1.12.9_fix_BER_crash.patch
 101_1.12.9_fix_Fix-buffer-overrun-in-zlib-decompression.patch
+102_1.12.9_RSL-Just-return-rest-of-packet-if-TLV-type-is-unknow.patch
+103_1.12.10_Prevent-infinite-loop-in-DNP3-dissector.patch
+104_1.12.10_rsl-avoid-buffer-overread.patch
+105_1.12.10_gsm_abis_oml-fix-buffer-overrun.patch
+106_1.12.10_ber-fix-buffer-overrun-when-handling-empty-sets.patch
+107_1.12.9_Add-boundary-check-for-802.11-decryption.patch
+108_1.12.10_ber-avoid-deep-recursion-for-constructed-strings.patch
+109_1.12.9_Diameter-check-IPv6-prefix-length-before-copying-it-.patch
+110_1.12.9_Limit-my_dgt_tbcd_unpack-in-writing-to-global-buffer.patch

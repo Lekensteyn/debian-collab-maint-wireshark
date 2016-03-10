@@ -1,0 +1,44 @@
+From 1472ec2a3857266faaf2b4fe59457bd4ca28ae50 Mon Sep 17 00:00:00 2001
+From: Peter Wu <peter@lekensteyn.nl>
+Date: Sat, 20 Feb 2016 15:06:50 +0100
+Subject: [PATCH 106/110] ber: fix buffer overrun when handling empty sets
+
+When a set is empty, only a terminator (ber_sequence_t with NULL func)
+is present. In that case, do not try to find more values as that will
+never succeed.
+
+Bug: 12106
+Change-Id: I26cd4ba84a9580e92d5921592a27c2af17c0bebf
+Reviewed-on: https://code.wireshark.org/review/14028
+Petri-Dish: Peter Wu <peter@lekensteyn.nl>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Peter Wu <peter@lekensteyn.nl>
+(cherry picked from commit 55b5b7caf3ec4856838b0416d5a91d3a3ff67ec8)
+Reviewed-on: https://code.wireshark.org/review/14036
+(cherry picked from commit c43f94f03a46cd5778e807aa3454dbbb48dfaed9)
+Reviewed-on: https://code.wireshark.org/review/14347
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+(cherry picked from commit f03f508842a1fba434a6990bf8e5773aa4763abd)
+Reviewed-on: https://code.wireshark.org/review/14374
+---
+ epan/dissectors/packet-ber.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/epan/dissectors/packet-ber.c b/epan/dissectors/packet-ber.c
+index 528f384..73e4360 100644
+--- a/epan/dissectors/packet-ber.c
++++ b/epan/dissectors/packet-ber.c
+@@ -2561,6 +2561,10 @@ printf("SET dissect_ber_set(%s) entered\n",name);
+ 
+                 cset=set; /* reset to the beginning */
+                 set_idx = 0;
++                /* If the set has no values, there is no point in trying again. */
++                if (!cset->func) {
++                    break;
++                }
+             }
+ 
+             if((first_pass && ((cset->ber_class==ber_class) && (cset->tag==tag))) ||
+-- 
+2.1.4
+

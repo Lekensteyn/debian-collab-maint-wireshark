@@ -1,3 +1,18 @@
+wireshark (1.8.2-5wheezy18) wheezy-security; urgency=medium
+
+  * security fixes from Wireshark 1.12.10:
+    - DNP dissector infinite loop (CVE-2016-2523)
+    - RSL dissector crash (CVE-2016-2530 CVE-2016-2531)
+    - GSM A-bis OML dissector crash
+    - ASN.1 BER dissector crashes
+  * security fixes from Wireshark 1.12.9:
+    - RSL dissector crash (CVE-2015-8731)
+    - 802.11 decryption crash (CVE-2015-8723, CVE-2015-8724)
+    - ANSI A & GSM A dissector crashes (CVE-2015-8728)
+    - DIAMETER dissector crash (CVE-2015-8725)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 10 Mar 2016 19:25:58 +0100
+
 wireshark (1.8.2-5wheezy17) wheezy-security; urgency=high
 
   * security fixes from Wireshark 1.12.8:

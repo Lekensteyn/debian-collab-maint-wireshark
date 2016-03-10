@@ -1,0 +1,65 @@
+From bf92b0ea7e8257c963a426012412b87ba5e23702 Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Sun, 6 Mar 2016 22:59:15 +0100
+Subject: [PATCH 110/110] Limit my_dgt_tbcd_unpack() in writing to global
+ buffer
+
+Ping-Bug: 11797
+Change-Id: I3b0843f05dc15de8db34a40290afcd8370f84b3d
+Reviewed-on: https://code.wireshark.org/review/14378
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-ansi_a.c       | 10 ++++++++--
+ epan/dissectors/packet-gsm_a_common.c |  8 +++++++-
+ 2 files changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/epan/dissectors/packet-ansi_a.c b/epan/dissectors/packet-ansi_a.c
+index 55a364f..00d0892 100644
+--- a/epan/dissectors/packet-ansi_a.c
++++ b/epan/dissectors/packet-ansi_a.c
+@@ -769,7 +769,7 @@ static ansi_a_dgt_set_t Dgt_meid = {
+  */
+ static int
+ my_dgt_tbcd_unpack(
+-    char        *out,           /* ASCII pattern out */
++    char        *out,           /* ASCII pattern out, always global a_bigbuf */
+     guchar      *in,            /* packed pattern in */
+     int         num_octs,       /* Number of octets to unpack */
+     ansi_a_dgt_set_t   *dgt            /* Digit definitions */
+@@ -778,7 +778,13 @@ my_dgt_tbcd_unpack(
+     int cnt = 0;
+     unsigned char i;
+ 
+-    while (num_octs)
++    /* Fix for CVE-2015-8728
++     * Since we always write to a_bigbuf we need to limit num_octs to not
++     * overflow it
++     */
++    if (num_octs > 510) num_octs = 510;
++
++    while (num_octs > 0)
+     {
+         /*
+          * unpack first value in byte
+diff --git a/epan/dissectors/packet-gsm_a_common.c b/epan/dissectors/packet-gsm_a_common.c
+index 1ed2a40..656d4c0 100644
+--- a/epan/dissectors/packet-gsm_a_common.c
++++ b/epan/dissectors/packet-gsm_a_common.c
+@@ -1904,7 +1904,13 @@ my_dgt_tbcd_unpack(
+     int cnt = 0;
+     unsigned char i;
+ 
+-    while (num_octs)
++    /* Fix for CVE-2015-8728
++     * Since we always write to a_bigbuf we need to limit num_octs to not
++     * overflow it
++     */
++    if (num_octs > 510) num_octs = 510;
++
++    while (num_octs > 0)
+     {
+         /*
+          * unpack first value in byte
+-- 
+2.1.4
+

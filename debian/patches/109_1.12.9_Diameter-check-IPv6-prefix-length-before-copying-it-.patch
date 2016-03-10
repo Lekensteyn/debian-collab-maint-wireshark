@@ -1,0 +1,53 @@
+From 39509e4568e93ec54670860635a97203cb7f30ab Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Sat, 28 Nov 2015 11:45:24 +0100
+Subject: [PATCH 109/110] Diameter: check IPv6 prefix length before copying it
+ in e_in6_addr structure
+
+Conflicts:
+	epan/dissectors/packet-diameter.c
+
+Bug: 11792
+Change-Id: I37a07044d40f10e9a1a90025d90753fdb3db2278
+Reviewed-on: https://code.wireshark.org/review/12248
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Reviewed-by: Peter Wu <peter@lekensteyn.nl>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit aaa28a9d39158ca1033bbd3372cf423abbf4f202)
+Reviewed-on: https://code.wireshark.org/review/12252
+(cherry picked from commit 644bc7868dda0717f7e49ec01e07e0043f7385fb)
+Reviewed-on: https://code.wireshark.org/review/13763
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+Reviewed-on: https://code.wireshark.org/review/14377
+---
+ epan/dissectors/packet-diameter.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-diameter.c b/epan/dissectors/packet-diameter.c
+index e18021f..6138cac 100644
+--- a/epan/dissectors/packet-diameter.c
++++ b/epan/dissectors/packet-diameter.c
+@@ -348,11 +348,18 @@ static int
+ dissect_diameter_base_framed_ipv6_prefix(tvbuff_t *tvb, packet_info *pinfo _U_, proto_tree *tree)
+ {
+ 	guint8 prefix_len, prefix_len_bytes;
++	proto_item *pi;
+ 
+ 	proto_tree_add_item(tree, hf_framed_ipv6_prefix_reserved, tvb, 0, 1, ENC_BIG_ENDIAN);
+-	proto_tree_add_item(tree, hf_framed_ipv6_prefix_length, tvb, 1, 1, ENC_BIG_ENDIAN);
++	pi = proto_tree_add_item(tree, hf_framed_ipv6_prefix_length, tvb, 1, 1, ENC_BIG_ENDIAN);
+ 
+ 	prefix_len = tvb_get_guint8(tvb, 1);
++	if (prefix_len > 128) {
++		expert_add_info_format(pinfo, pi, PI_MALFORMED, PI_NOTE,
++				       "Bad Prefix Length (%u), using 128 bits", prefix_len);
++		prefix_len = 128;
++	}
++
+ 	prefix_len_bytes = prefix_len / 8;
+ 	if (prefix_len % 8)
+ 		prefix_len_bytes++;
+-- 
+2.1.4
+
