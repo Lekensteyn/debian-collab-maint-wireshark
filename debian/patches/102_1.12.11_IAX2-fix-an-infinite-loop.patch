@@ -1,0 +1,46 @@
+From deffb02507100d3f22962e3b4a44cf133b209d5a Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Mon, 14 Mar 2016 23:35:56 +0100
+Subject: [PATCH 4/6] IAX2: fix an infinite loop
+
+Bug: 12260
+Change-Id: I29b23ff2d862027fd44c6dd4de3cbb304664fd05
+Reviewed-on: https://code.wireshark.org/review/14473
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 42f299be6abb302f32cec78b1c0812364c9f9285)
+Reviewed-on: https://code.wireshark.org/review/14474
+(cherry picked from commit fedd01d412836b89962184919498d69a221a5a67)
+Reviewed-on: https://code.wireshark.org/review/14475
+(cherry picked from commit 73dbc54c266eaed245f2c38e7f68fe10c9b4f39d)
+Reviewed-on: https://code.wireshark.org/review/15444
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-iax2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-iax2.c b/epan/dissectors/packet-iax2.c
+index b525544..c0873d0 100644
+--- a/epan/dissectors/packet-iax2.c
++++ b/epan/dissectors/packet-iax2.c
+@@ -1596,13 +1596,13 @@ static void iax2_add_ts_fields(packet_info *pinfo, proto_tree *iax2_tree, iax_pa
+ 
+   if (iax_packet->abstime.secs == -1) {
+     time_t start_secs = iax_packet->call_data->start_time.secs;
+-    gint32 abs_secs = (gint32)(start_secs + longts/1000);
++    time_t abs_secs = start_secs + longts/1000;
+ 
+     /* deal with short timestamps by assuming that packets are never more than
+      * 16 seconds late */
+     while(abs_secs < pinfo->fd->abs_ts.secs - 16) {
+       longts += 32768;
+-      abs_secs = (gint32)(start_secs + longts/1000);
++      abs_secs = start_secs + longts/1000;
+     }
+ 
+     iax_packet->abstime.secs=abs_secs;
+-- 
+2.1.4
+
