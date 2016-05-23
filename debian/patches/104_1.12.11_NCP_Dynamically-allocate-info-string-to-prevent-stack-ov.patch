@@ -1,0 +1,59 @@
+From c5e64fed3c4a2826996bc359bc82d02dab169023 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Sat, 26 Mar 2016 10:03:25 -0400
+Subject: [PATCH 6/6] Dynamically allocate info string to prevent stack
+ overflow.
+
+Bug: 12293
+Change-Id: I2b11afeed283c3a98ab2990ea99322a9f8bb0567
+Reviewed-on: https://code.wireshark.org/review/14640
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 99efcb0f5aeeb4b2179e88c7a4233022aaeecf0b)
+Reviewed-on: https://code.wireshark.org/review/15446
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-ncp2222.inc | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-ncp2222.inc b/epan/dissectors/packet-ncp2222.inc
+index 7ef087c..35f0fa6 100644
+--- a/epan/dissectors/packet-ncp2222.inc
++++ b/epan/dissectors/packet-ncp2222.inc
+@@ -7689,7 +7689,7 @@ dissect_ncp_request(tvbuff_t *tvb, packet_info *pinfo,
+         if (run_info_str) {
+             GPtrArray *parray;
+             char*   byte_string;
+-            char    non_uni_string[1024];
++            char*   non_uni_string;
+             int i, len;
+             field_info *finfo;
+             int info_type;
+@@ -7732,6 +7732,8 @@ dissect_ncp_request(tvbuff_t *tvb, packet_info *pinfo,
+                     else
+                     {
+                         if (info_type == 2) {   /* Is this a String? */
++                            non_uni_string = (char*)wmem_alloc(wmem_packet_scope(), get_finfo_length(finfo)+1);
++                            non_uni_string[0] = '\0';
+                             uni_to_string(get_finfo_value_string(finfo), get_finfo_length(finfo), non_uni_string);
+                             col_append_fstr(pinfo->cinfo, COL_INFO,
+                                             (const gchar*) ncp_rec->req_info_str->first_string,
+@@ -7754,7 +7756,6 @@ dissect_ncp_request(tvbuff_t *tvb, packet_info *pinfo,
+             }
+             if (len > 1) {
+                 for (i = 1; i < len; i++) {
+-                    non_uni_string[0]='\0';
+                     finfo = (field_info *)g_ptr_array_index(parray, i);
+                     info_type = get_info_type((const gchar*) ncp_rec->req_info_str->repeat_string);
+ 
+@@ -7769,6 +7770,8 @@ dissect_ncp_request(tvbuff_t *tvb, packet_info *pinfo,
+                         else
+                         {
+                             if (info_type == 2) {   /* Is this a String? */
++                                non_uni_string = (char*)wmem_alloc(wmem_packet_scope(), get_finfo_length(finfo)+1);
++                                non_uni_string[0] = '\0';
+                                 uni_to_string(get_finfo_value_string(finfo), get_finfo_length(finfo), non_uni_string);
+                                 col_append_fstr(pinfo->cinfo, COL_INFO,
+                                                 (const gchar*) ncp_rec->req_info_str->repeat_string,
+-- 
+2.1.4
+

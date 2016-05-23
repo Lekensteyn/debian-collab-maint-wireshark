@@ -1,0 +1,45 @@
+From cde78261a2d26f8b3e11295b9eaeed2fb840ea0c Mon Sep 17 00:00:00 2001
+From: Jaap Keuter <jaap.keuter@xs4all.nl>
+Date: Fri, 1 Apr 2016 18:55:27 +0200
+Subject: [PATCH 2/6] replace dangerous tvb_get_ptr with safer string function.
+
+Using tvb_get_ptr to get a string is always dangerous in the face of
+malformed packets. Instead using string functions allow for safe handling
+of these.
+
+Bug: 12242
+Change-Id: Id5a57a3d9ab744386b3358d378fe9e0e62df54fa
+Reviewed-on: https://code.wireshark.org/review/14769
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit df3d07b4bf80decf504cb007b9a73c85a3eef737)
+Reviewed-on: https://code.wireshark.org/review/15443
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-pktc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-pktc.c b/epan/dissectors/packet-pktc.c
+index 4874d66..12dd95f 100644
+--- a/epan/dissectors/packet-pktc.c
++++ b/epan/dissectors/packet-pktc.c
+@@ -435,7 +435,7 @@ dissect_pktc_rekey(packet_info *pinfo, proto_tree *tree, tvbuff_t *tvb, int offs
+ 
+     /* Timestamp: YYMMDDhhmmssZ */
+     /* They really came up with a two-digit year in late 1990s! =8o */
+-    timestr=tvb_get_ptr(tvb, offset, 13);
++    timestr=tvb_get_string_enc(wmem_packet_scope(), tvb, offset, 13, ENC_ASCII);
+     proto_tree_add_string_format_value(tree, hf_pktc_timestamp, tvb, offset, 13, timestr,
+                                 "%.2s-%.2s-%.2s %.2s:%.2s:%.2s",
+ 				 timestr, timestr+2, timestr+4, timestr+6, timestr+8, timestr+10);
+@@ -663,7 +663,7 @@ proto_register_pktc(void)
+ 	    "Server Kerberos Principal Identifier", "pktc.server_principal", FT_STRING, BASE_NONE,
+ 	    NULL, 0, NULL, HFILL }},
+ 	{ &hf_pktc_timestamp, {
+-	    "Timestamp", "pktc.timestamp", FT_STRING, BASE_NONE,
++	    "Timestamp", "pktc.timestamp", FT_STRING, STR_UNICODE,
+ 	    NULL, 0, "Timestamp (UTC)", HFILL }},
+ 	{ &hf_pktc_app_spec_data, {
+ 	    "Application Specific Data", "pktc.asd", FT_NONE, BASE_NONE,
+-- 
+2.1.4
+

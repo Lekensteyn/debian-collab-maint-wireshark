@@ -89,3 +89,9 @@
 96_1.12.10_ber-fix-buffer-overrun-when-handling-empty-sets.patch
 97_1.12.10_ber-avoid-deep-recursion-for-constructed-strings.patch
 98_1.12.9_RSL-Just-return-rest-of-packet-if-TLV-type-is-unknow.patch
+99_1.12.11_fix_stack_overflow_Restrict-the-depth-of-the-protocol-tree.patch
+100_1.12.11_PKTC_replace-dangerous-tvb_get_ptr-with-safer-string-func.patch
+101_1.12.11_PKTC_must-be-stricter-with-its-Kerberos-application-.patch
+102_1.12.11_IAX2-fix-an-infinite-loop.patch
+103_1.12.11_GSM-CBCH-fix-an-out-of-bounds-access.patch
+104_1.12.11_NCP_Dynamically-allocate-info-string-to-prevent-stack-ov.patch
