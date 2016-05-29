@@ -1,3 +1,13 @@
+wireshark (1.12.1+g01b65bf-4+deb8u6~deb7u1) wheezy-security; urgency=high
+
+  * Backport to wheezy-security
+    - Use Qt 4 for wireshark-qt
+    - Use -Wl,-Bsymbolic ld flag to fix FTBFS on wheezy
+    - Build-depend on libgnutls-dev for GnuTLS development files
+    - Build-depend on lsb-release to detect Debian release
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 29 May 2016 00:16:18 +0200
+
 wireshark (1.12.1+g01b65bf-4+deb8u6) jessie-security; urgency=medium
 
   * security fixes from Wireshark 1.12.11:
