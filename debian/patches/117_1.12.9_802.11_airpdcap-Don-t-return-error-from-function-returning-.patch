@@ -1,0 +1,33 @@
+From dd6b2d833612b16a72e3ff8b4c3b14ba03e7a3b7 Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint@balintreczey.hu>
+Date: Sat, 25 Jun 2016 23:43:23 +0200
+Subject: [PATCH 117/117] [airpdcap] Don't return error from function returning
+ void
+
+Cherry-picking 8110a703cc1f17222b3010b3993bbf8be21436d4 to lts-1.12.1
+made AirPDcapDecryptWPABroadcastKey() return error code
+while it should return void.
+
+Change-Id: Iee6bc0b7dd61eb80fe27e848db11dfba570d4759
+Reviewed-on: https://code.wireshark.org/review/16141
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/crypt/airpdcap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/crypt/airpdcap.c b/epan/crypt/airpdcap.c
+index 1a8119c..37914c3 100644
+--- a/epan/crypt/airpdcap.c
++++ b/epan/crypt/airpdcap.c
+@@ -458,7 +458,7 @@ AirPDcapDecryptWPABroadcastKey(const EAPOL_RSN_KEY *pEAPKey, guint8  *decryption
+     key_len = (sa->wpa.key_ver==AIRPDCAP_WPA_KEY_VER_NOT_CCMP)?TKIP_GROUP_KEY_LEN:CCMP_GROUP_KEY_LEN;
+     if (key_len > key_bytes_len) {
+         /* the key required for this protocol is longer than the key that we just calculated */
+-        return AIRPDCAP_RET_NO_VALID_HANDSHAKE;
++        return;
+     }
+ 
+     /* Decrypted key is now in szEncryptedKey with len of key_len */
+-- 
+2.1.4
+

@@ -1,3 +1,26 @@
+wireshark (1.12.1+g01b65bf-4+deb8u6~deb7u2) wheezy-security; urgency=high
+
+  * security fixes from Wireshark 1.12.12:
+    - The SPOOLS dissector could go into an infinite loop
+      Discovered by the CESG (CVE-2016-5350)
+    - The IEEE 802.11 dissector could crash (CVE-2016-5351)
+    - The UMTS FP dissector could crash (CVE-2016-5353)
+    - Some USB dissectors could crash. Discovered by Mateusz Jurczyk
+      (CVE-2016-5354)
+    - The Toshiba file parser could crash. Discovered by iDefense Labs
+      (CVE-2016-5355)
+    - The CoSine file parser could crash. Discovered by iDefense Labs
+      (CVE-2016-5356)
+    - The NetScreen file parser could crash. Discovered by iDefense Labs
+      (CVE-2016-5357)
+    - The WBXML dissector could go into an infinite loop.
+      Discovered by Chris Benedict, Aurelien Delaitre,
+      NIST SAMATE Project (CVE-2016-5359)
+  * Fix patch for CVE-2015-8724 released in 1.12.1+g01b65bf-4+deb8u4
+    to not return error code from a function returning void
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 26 Jun 2016 20:35:36 +0200
+
 wireshark (1.12.1+g01b65bf-4+deb8u6~deb7u1) wheezy-security; urgency=high
 
   * Backport to wheezy-security

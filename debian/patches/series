@@ -95,3 +95,16 @@
 102_1.12.11_IAX2-fix-an-infinite-loop.patch
 103_1.12.11_GSM-CBCH-fix-an-out-of-bounds-access.patch
 104_1.12.11_NCP_Dynamically-allocate-info-string-to-prevent-stack-ov.patch
+105_1.12.12_Toshiba_Fix-packet-length-handling.patch
+106_1.12.12_Toshiba-2_Don-t-treat-the-packet-length-as-unsigned.patch
+107_1.12.12_CoSine_Fix-packet-length-handling.patch
+108_1.12.12_CoSine-2_Don-t-treat-the-packet-length-as-unsigned.patch
+109_1.12.12_NetScreen_Fix-packet-length-handling.patch
+110_1.12.12_NetScree_Don-t-treat-the-packet-length-as-unsigned.patch
+111_1.12.12_WBXML-add-a-basic-sanity-check-for-offset-overflow.patch
+112_1.12.12_UMTS_FP-fix-handling-reserved-C-T-value.patch
+113_1.12.12_SPOOLSS-Try-to-avoid-an-infinite-loop.patch
+114_1.12.12_Make-class-type-for-USB-conversations.patch
+115_1.12.12_802.11_Make-sure-EAPOL-body-is-big-enough-for-a-EAPOL_RSN_K.patch
+116_1.12.12_802.11_Fix-previous-change.patch
+117_1.12.9_802.11_airpdcap-Don-t-return-error-from-function-returning-.patch

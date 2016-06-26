@@ -1,0 +1,86 @@
+From 5d18307cac7be1e6cc143d216545e0319f539774 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Sun, 1 May 2016 12:55:23 -0400
+Subject: [PATCH 114/117] Make class "type" for USB conversations.
+
+USB dissectors can't assume that only their class type has been passed around in the conversation.  Make explicit check that class type expected matches the dissector and stop/prevent dissection if there isn't a match.
+
+Conflicts:
+	epan/dissectors/packet-usb.h
+
+Bug: 12356
+Change-Id: Ib23973a4ebd0fbb51952ffc118daf95e3389a209
+Reviewed-on: https://code.wireshark.org/review/15212
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Reviewed-by: Martin Kaiser <wireshark@kaiser.cx>
+Petri-Dish: Martin Kaiser <wireshark@kaiser.cx>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+Reviewed-on: https://code.wireshark.org/review/15214
+Reviewed-on: https://code.wireshark.org/review/16120
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-usb-masstorage.c | 5 ++++-
+ epan/dissectors/packet-usb-video.c      | 4 ++++
+ epan/dissectors/packet-usb.h            | 5 ++++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-usb-masstorage.c b/epan/dissectors/packet-usb-masstorage.c
+index 8ac950c..7f84a3b 100644
+--- a/epan/dissectors/packet-usb-masstorage.c
++++ b/epan/dissectors/packet-usb-masstorage.c
+@@ -200,9 +200,12 @@ dissect_usb_ms_bulk(tvbuff_t *tvb, packet_info *pinfo, proto_tree *parent_tree,
+         usb_ms_conv_info->itl=wmem_tree_new(wmem_file_scope());
+         usb_ms_conv_info->itlq=wmem_tree_new(wmem_file_scope());
+         usb_conv_info->class_data=usb_ms_conv_info;
++        usb_conv_info->class_data_type = USB_CONV_MASS_STORAGE;
++    } else if (usb_conv_info->class_data_type != USB_CONV_MASS_STORAGE) {
++        /* Don't dissect if another USB type is in the conversation */
++        return 0;
+     }
+ 
+-
+     is_request=(pinfo->srcport==NO_ENDPOINT);
+ 
+     col_set_str(pinfo->cinfo, COL_PROTOCOL, "USBMS");
+diff --git a/epan/dissectors/packet-usb-video.c b/epan/dissectors/packet-usb-video.c
+index 1a82e20..4ff85cf 100644
+--- a/epan/dissectors/packet-usb-video.c
++++ b/epan/dissectors/packet-usb-video.c
+@@ -1032,6 +1032,10 @@ dissect_usb_video_control_interface_descriptor(proto_tree *parent_tree, tvbuff_t
+             video_conv_info = wmem_new(wmem_file_scope(), video_conv_info_t);
+             video_conv_info->entities = wmem_tree_new(wmem_file_scope());
+             usb_conv_info->class_data = video_conv_info;
++            usb_conv_info->class_data_type = USB_CONV_VIDEO;
++        } else if (usb_conv_info->class_data_type != USB_CONV_VIDEO) {
++            /* Stop dissection if another USB type is in the conversation */
++            return descriptor_len;
+         }
+ 
+         entity = (video_entity_t*) wmem_tree_lookup32(video_conv_info->entities, entity_id);
+diff --git a/epan/dissectors/packet-usb.h b/epan/dissectors/packet-usb.h
+index f008b1c..68d5b26 100644
+--- a/epan/dissectors/packet-usb.h
++++ b/epan/dissectors/packet-usb.h
+@@ -79,6 +79,8 @@ typedef struct _usb_trans_info_t {
+     usb_conv_info_t *interface_info;
+ } usb_trans_info_t;
+ 
++enum usb_conv_class_data_type {USB_CONV_UNKNOWN = 0, USB_CONV_AUDIO, USB_CONV_VIDEO, USB_CONV_MASS_STORAGE};
++
+ /* Conversation Structure
+  * there is one such structure for each device/endpoint conversation */
+ struct _usb_conv_info_t {
+@@ -102,7 +104,8 @@ struct _usb_conv_info_t {
+     wmem_tree_t *transactions;
+     usb_trans_info_t *usb_trans_info; /* pointer to the current transaction */
+ 
+-    void *class_data;	/* private class/id decode data */
++    void *class_data;           /* private class/id decode data */
++    enum usb_conv_class_data_type class_data_type;
+ };
+ 
+ /* This is what a tap will tap */
+-- 
+2.1.4
+

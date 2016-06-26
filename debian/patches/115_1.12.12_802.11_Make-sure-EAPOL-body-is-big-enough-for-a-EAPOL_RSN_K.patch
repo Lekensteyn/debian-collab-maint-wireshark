@@ -1,0 +1,50 @@
+From 9ab8209542d911de8e39cf7d1bdbec821d1060c3 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Sun, 22 May 2016 20:21:17 -0400
+Subject: [PATCH 115/117] Make sure EAPOL body is big enough for a
+ EAPOL_RSN_KEY.
+
+A pointer to a EAPOL_RSN_KEY is set on the packet presuming the
+whole EAPOL_RSN_KEY is there.  That's not always the case for
+fuzzed/malicious captures.
+
+Conflicts:
+	epan/crypt/airpdcap.c
+
+Cherry picking also changes the comparison according to
+commit f42616a6216454656b7b958955d336d7b304714f.
+
+Bug: 11585
+Change-Id: Ib94b8aceef444c7820e43b969596efdb8dbecccd
+Reviewed-on: https://code.wireshark.org/review/15540
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 9b0b20b8d5f8c9f7839d58ff6c5900f7e19283b4)
+Reviewed-on: https://code.wireshark.org/review/15544
+(cherry picked from commit f2c0a286479b208b2c4f68afc218dacfc4ac709e)
+Reviewed-on: https://code.wireshark.org/review/16139
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/crypt/airpdcap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/epan/crypt/airpdcap.c b/epan/crypt/airpdcap.c
+index be6e059..1152eed 100644
+--- a/epan/crypt/airpdcap.c
++++ b/epan/crypt/airpdcap.c
+@@ -547,8 +547,8 @@ static INT AirPDcapScanForGroupKey(
+ 
+         /* get and check the body length (IEEE 802.1X-2004, pg. 25) */
+         bodyLength=pntoh16(data+offset+2);
+-        if ((tot_len-offset-4) > bodyLength) {
+-            AIRPDCAP_DEBUG_PRINT_LINE("AirPDcapScanForGroupKey", "EAPOL body too short", AIRPDCAP_DEBUG_LEVEL_3);
++        if (((tot_len-offset-4) < bodyLength) || (bodyLength < sizeof(EAPOL_RSN_KEY))) { /* Only check if frame is long enough for eapol header, ignore tailing garbage, see bug 9065 */
++            AIRPDCAP_DEBUG_PRINT_LINE("AirPDcapScanForKeys", "EAPOL body too short", AIRPDCAP_DEBUG_LEVEL_3);
+             return AIRPDCAP_RET_NO_VALID_HANDSHAKE;
+         }
+ 
+-- 
+2.1.4
+
