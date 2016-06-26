@@ -1,0 +1,89 @@
+From 1a8ed46c02e2aad04b30ccaf916b4ad553e28467 Mon Sep 17 00:00:00 2001
+From: Guy Harris <guy@alum.mit.edu>
+Date: Fri, 29 Apr 2016 15:19:49 -0700
+Subject: [PATCH 105/117] Fix packet length handling.
+
+Treat the packet length as unsigned - it shouldn't be negative in the
+file.  If it is, that'll probably cause the sscanf to fail, so we'll
+report the file as bad.
+
+Check it against WTAP_MAX_PACKET_SIZE to make sure we don't try to
+allocate a huge amount of memory, just as we do in other file readers.
+
+Use the now-validated packet size as the length in
+ws_buffer_assure_space(), so we are certain to have enough space, and
+don't allocate too much space.
+
+Bug: 12394
+Change-Id: If0b79376fc6fe2f49c7b7d7796dee7b7683485cb
+Reviewed-on: https://code.wireshark.org/review/15171
+Reviewed-by: Guy Harris <guy@alum.mit.edu>
+(cherry picked from commit 303680c3eae0263854c80845a660a1784d731533)
+Reviewed-on: https://code.wireshark.org/review/16111
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ wiretap/toshiba.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
+
+diff --git a/wiretap/toshiba.c b/wiretap/toshiba.c
+index 0492514..892a31e 100644
+--- a/wiretap/toshiba.c
++++ b/wiretap/toshiba.c
+@@ -100,11 +100,6 @@ static const char toshiba_hdr_magic[]  =
+ static const char toshiba_rec_magic[]  = { '[', 'N', 'o', '.' };
+ #define TOSHIBA_REC_MAGIC_SIZE  (sizeof toshiba_rec_magic  / sizeof toshiba_rec_magic[0])
+ 
+-/*
+- * XXX - is this the biggest packet we can get?
+- */
+-#define TOSHIBA_MAX_PACKET_LEN	16384
+-
+ static gboolean toshiba_read(wtap *wth, int *err, gchar **err_info,
+ 	gint64 *data_offset);
+ static gboolean toshiba_seek_read(wtap *wth, gint64 seek_off,
+@@ -255,7 +250,8 @@ parse_toshiba_packet(FILE_T fh, struct wtap_pkthdr *phdr, Buffer *buf,
+ 	union wtap_pseudo_header *pseudo_header = &phdr->pseudo_header;
+ 	char	line[TOSHIBA_LINE_LENGTH];
+ 	int	num_items_scanned;
+-	int	pkt_len, pktnum, hr, min, sec, csec;
++	guint	pkt_len;
++	int	pktnum, hr, min, sec, csec;
+ 	char	channel[10], direction[10];
+ 	int	i, hex_lines;
+ 	guint8	*pd;
+@@ -307,12 +303,22 @@ parse_toshiba_packet(FILE_T fh, struct wtap_pkthdr *phdr, Buffer *buf,
+ 
+ 	} while (strcmp(line, "OFFSET 0001-0203") != 0);
+ 
+-	num_items_scanned = sscanf(line+64, "LEN=%9d", &pkt_len);
++	num_items_scanned = sscanf(line+64, "LEN=%9u", &pkt_len);
+ 	if (num_items_scanned != 1) {
+ 		*err = WTAP_ERR_BAD_FILE;
+ 		*err_info = g_strdup("toshiba: OFFSET line doesn't have valid LEN item");
+ 		return FALSE;
+ 	}
++	if (pkt_len > WTAP_MAX_PACKET_SIZE) {
++		/*
++		 * Probably a corrupt capture file; don't blow up trying
++		 * to allocate space for an immensely-large packet.
++		 */
++		*err = WTAP_ERR_BAD_FILE;
++		*err_info = g_strdup_printf("toshiba: File has %u-byte packet, bigger than maximum of %u",
++		    pkt_len, WTAP_MAX_PACKET_SIZE);
++		return FALSE;
++	}
+ 
+ 	phdr->rec_type = REC_TYPE_PACKET;
+ 	phdr->presence_flags = WTAP_HAS_TS|WTAP_HAS_CAP_LEN;
+@@ -343,7 +349,7 @@ parse_toshiba_packet(FILE_T fh, struct wtap_pkthdr *phdr, Buffer *buf,
+ 	}
+ 
+ 	/* Make sure we have enough room for the packet */
+-	buffer_assure_space(buf, TOSHIBA_MAX_PACKET_LEN);
++	buffer_assure_space(buf, pkt_len);
+ 	pd = buffer_start_ptr(buf);
+ 
+ 	/* Calculate the number of hex dump lines, each
+-- 
+2.1.4
+

@@ -1,0 +1,40 @@
+From 9a76c295c93f8697791bdd4d09c735c9eb412f7b Mon Sep 17 00:00:00 2001
+From: Guy Harris <guy@alum.mit.edu>
+Date: Mon, 23 May 2016 18:20:50 -0700
+Subject: [PATCH 116/117] Fix previous change.
+
+In 1.12, an EAPOL_RSN_KEY structure has an extra
+TKIP_GROUP_KEYBYTES_LEN_MAX-byte array at the end; that's not there in
+2.0 and later.
+
+So comparing against sizeof(EAPOL_RSN_KEY) does different things in 1.12
+and 2.x.
+
+Instead, we should compare against RSN_KEY_WITHOUT_KEYBYTES_LEN, as that
+has the same value in 1.12 as sizeof(EAPOL_RSN_KEY) has in 2.x.
+
+Change-Id: I5464c592cf42ae1bab6b878b049c40ef63a5fd51
+Reviewed-on: https://code.wireshark.org/review/15548
+Reviewed-by: Guy Harris <guy@alum.mit.edu>
+Reviewed-on: https://code.wireshark.org/review/16140
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/crypt/airpdcap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/crypt/airpdcap.c b/epan/crypt/airpdcap.c
+index 1152eed..1a8119c 100644
+--- a/epan/crypt/airpdcap.c
++++ b/epan/crypt/airpdcap.c
+@@ -547,7 +547,7 @@ static INT AirPDcapScanForGroupKey(
+ 
+         /* get and check the body length (IEEE 802.1X-2004, pg. 25) */
+         bodyLength=pntoh16(data+offset+2);
+-        if (((tot_len-offset-4) < bodyLength) || (bodyLength < sizeof(EAPOL_RSN_KEY))) { /* Only check if frame is long enough for eapol header, ignore tailing garbage, see bug 9065 */
++        if (((tot_len-offset-4) < bodyLength) || (bodyLength < RSN_KEY_WITHOUT_KEYBYTES_LEN)) { /* Only check if frame is long enough for eapol header, ignore tailing garbage, see bug 9065 */
+             AIRPDCAP_DEBUG_PRINT_LINE("AirPDcapScanForKeys", "EAPOL body too short", AIRPDCAP_DEBUG_LEVEL_3);
+             return AIRPDCAP_RET_NO_VALID_HANDSHAKE;
+         }
+-- 
+2.1.4
+
