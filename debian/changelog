@@ -1,8 +1,26 @@
-wireshark (2.0.4+gdd7746e-2) UNRELEASED; urgency=medium
+wireshark (2.0.5+ga3be9c6-1) unstable; urgency=medium
 
   * Generate better pkg-config file (Closes: #832926)
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.0.5.html
+    - bug fixes
+      - Allow restoring maximized windows as maximized (Closes: #780089)
+      - Restart current capture fails with "no interface selected" error
+        when capturing in promiscuous mode (Closes: #812495, #813680,
+        #826385)
+    - security fixes:
+      - PacketBB dissector could divide by zero (CVE-2016-6505)
+      - WSP infinite loop (CVE-2016-6506)
+      - RLC long loop (CVE-2016-6508)
+      - LDSS dissector crash (CVE-2016-6509)
+      - RLC dissector crash (CVE-2016-6510)
+      - OpenFlow long loop (CVE-2016-6511)
+      - MMSE, WAP, WBXML, and WSP infinite loop (CVE-2016-6512)
+      - WBXML crash (CVE-2016-6513)
+   * Bump standards version to 3.9.8
 
- -- Balint Reczey <balint@balintreczey.hu>  Sun, 31 Jul 2016 12:03:03 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 02 Aug 2016 11:11:21 +0200
 
 wireshark (2.0.4+gdd7746e-1) unstable; urgency=high
 
