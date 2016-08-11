@@ -1,0 +1,48 @@
+From 5576ce24c69cf38c890f70696285e84d6e4c2932 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Sat, 2 Jul 2016 08:23:34 -0400
+Subject: [PATCH 119/125] packetbb: Prevent divide by 0.
+
+Bug: 12577
+Change-Id: Ibfa605597b786d8dbf1e256ef2ca6dc691498974
+Reviewed-on: https://code.wireshark.org/review/16241
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 94e97e45cf614c7bb8fe90c23df52910246b2c95)
+Reviewed-on: https://code.wireshark.org/review/16244
+(cherry picked from commit 3ce7de0ce8d32ded8e4c0ebf747886b9b5b1b26f)
+Reviewed-on: https://code.wireshark.org/review/17016
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-packetbb.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/epan/dissectors/packet-packetbb.c b/epan/dissectors/packet-packetbb.c
+index 28355d4..ac2c3b0 100644
+--- a/epan/dissectors/packet-packetbb.c
++++ b/epan/dissectors/packet-packetbb.c
+@@ -282,12 +282,14 @@ static int dissect_pbb_tlvblock(tvbuff_t *tvb, proto_tree *tree, guint offset,
+       }
+       else {
+         int i;
+-        guint8 c = indexEnd - indexStart + 1;
+-        tlvValue_tree = proto_item_add_subtree(tlvValue_item, ett_packetbb_tlv_value);
+-
+-        for (i=indexStart; i<=indexEnd; i++) {
+-          proto_tree_add_item(tlvValue_tree, hf_packetbb_tlv_multivalue, tvb, offset, length/c, ENC_NA);
+-          offset += (length/c);
++        guint c = indexEnd - indexStart + 1;
++        if (c > 0) {
++          tlvValue_tree = proto_item_add_subtree(tlvValue_item, ett_packetbb_tlv_value);
++
++          for (i=indexStart; i<=indexEnd; i++) {
++            proto_tree_add_item(tlvValue_tree, hf_packetbb_tlv_multivalue, tvb, offset, length/c, ENC_NA);
++            offset += (length/c);
++          }
+         }
+       }
+     }
+-- 
+2.1.4
+

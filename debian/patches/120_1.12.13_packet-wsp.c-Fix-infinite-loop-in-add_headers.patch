@@ -1,0 +1,66 @@
+From e8148eaee8b2e8c3ed495a49f147bd6433844ee5 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Sat, 9 Jul 2016 09:05:12 -0400
+Subject: [PATCH 120/125] packet-wsp.c: Fix infinite loop in add_headers
+
+# Conflicts:
+#	epan/dissectors/packet-wsp.c
+
+Bug: 12594
+Change-Id: Id86d1e5f2db12871bc1b345721e79e57192f01e1
+Reviewed-on: https://code.wireshark.org/review/16355
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit a9d5256890c9189c7461bfce6ed6edce5d861499)
+Reviewed-on: https://code.wireshark.org/review/16358
+Reviewed-by: Alexis La Goutte <alexis.lagoutte@gmail.com>
+Reviewed-on: https://code.wireshark.org/review/16360
+(cherry picked from commit ee37b7dcdbf86e674a0222f35b1ef1db95fd5c9d)
+Reviewed-on: https://code.wireshark.org/review/17017
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-wsp.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/epan/dissectors/packet-wsp.c b/epan/dissectors/packet-wsp.c
+index 7ed42ae..f0e356a 100644
+--- a/epan/dissectors/packet-wsp.c
++++ b/epan/dissectors/packet-wsp.c
+@@ -1743,6 +1743,7 @@ add_headers (proto_tree *tree, tvbuff_t *tvb, int hf, packet_info *pinfo)
+     guint8      hdr_id, val_id, codepage = 1;
+     gint32      tvb_len                  = tvb_length(tvb);
+     gint32      offset                   = 0;
++    gint32      save_offset;
+     gint32      hdr_len, hdr_start;
+     gint32      val_len, val_start;
+     gchar      *hdr_str, *val_str;
+@@ -1770,15 +1771,25 @@ add_headers (proto_tree *tree, tvbuff_t *tvb, int hf, packet_info *pinfo)
+             if (codepage == 1) { /* Default header code page */
+                 DebugLog(("add_headers(code page 0): %s\n",
+                           val_to_str_ext_const (hdr_id & 0x7f, &vals_field_names_ext, "Undefined")));
++                save_offset = offset;
+                 offset = WellKnownHeader[hdr_id & 0x7F](wsp_headers, tvb,
+                                                         hdr_start, pinfo);
++                /* Make sure we're progressing forward */
++                if (save_offset <= offset) {
++                    break;
++                }
+             } else { /* Openwave header code page */
+                 /* Here I'm delibarately assuming that Openwave is the only
+                  * company that defines a WSP header code page. */
+                 DebugLog(("add_headers(code page 0x%02x - assumed to be x-up-1): %s\n",
+                           codepage, val_to_str_ext_const (hdr_id & 0x7f, &vals_openwave_field_names_ext, "Undefined")));
++                save_offset = offset;
+                 offset = WellKnownOpenwaveHeader[hdr_id & 0x7F](wsp_headers,
+                                                                 tvb, hdr_start, pinfo);
++                /* Make sure we're progressing forward */
++                if (save_offset <= offset) {
++                    break;
++                }
+             }
+         } else if (hdr_id == 0x7F) { /* HCP shift sequence */
+             codepage = tvb_get_guint8(tvb, offset+1);
+-- 
+2.1.4
+

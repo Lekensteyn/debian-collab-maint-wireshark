@@ -1,0 +1,36 @@
+From 4efb64c856fbaaa6e078a5efdce4f4fa45891b6c Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Mon, 25 Jul 2016 09:54:06 +0200
+Subject: [PATCH 122/125] RLC: fix a stack overflow in rlc_decode_li function
+
+The test to check whether the array was full or not was off by 1
+
+Bug: 12664
+Change-Id: If2057b71d92c7f03e05b0f4676abc62d5a03ae73
+Reviewed-on: https://code.wireshark.org/review/16640
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit 47a5fa850b388fcf4ea762073806f01b459820fe)
+Reviewed-on: https://code.wireshark.org/review/16643
+(cherry picked from commit 604b8929f3ca540862de4f539fae848abb78dfb6)
+Reviewed-on: https://code.wireshark.org/review/17019
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-rlc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-rlc.c b/epan/dissectors/packet-rlc.c
+index 993210b..bc0d914 100644
+--- a/epan/dissectors/packet-rlc.c
++++ b/epan/dissectors/packet-rlc.c
+@@ -1828,7 +1828,7 @@ rlc_decode_li(enum rlc_mode mode, tvbuff_t *tvb, packet_info *pinfo, proto_tree
+         li[num_li].tree = tree_add_li(mode, &li[num_li], num_li, li_offs, li_on_2_bytes, tvb, tree);
+         num_li++;
+ 
+-        if (num_li > max_li) {
++        if (num_li >= max_li) {
+             /* OK, so this is not really a malformed packet, but for now,
+             * we will treat it as such, so that it is marked in some way */
+             expert_add_info(pinfo, li[num_li-1].tree, &ei_rlc_li_too_many);
+-- 
+2.1.4
+
