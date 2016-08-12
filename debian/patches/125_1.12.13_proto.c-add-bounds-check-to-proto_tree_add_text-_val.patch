@@ -1,0 +1,62 @@
+From 787933902b7063428ee8b425afe6bfb30f247470 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Mon, 25 Jul 2016 11:19:05 +0200
+Subject: [PATCH 125/125] proto.c: add bounds check to
+ proto_tree_add_text(_valist)
+
+Bug: 12659
+Change-Id: I44cb3ce8e647ae2816d5ffa95435068c435a1e5c
+Reviewed-on: https://code.wireshark.org/review/16648
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 56706427f53cc64793870bf072c2c06248ae88f3)
+Conflicts:
+	epan/proto.c
+Reviewed-on: https://code.wireshark.org/review/16697
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 32abb637139699bb329719ae68fdb65a7258f1bf)
+Reviewed-on: https://code.wireshark.org/review/17022
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/proto.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/epan/proto.c b/epan/proto.c
+index 2f8d387..a8038c0 100644
+--- a/epan/proto.c
++++ b/epan/proto.c
+@@ -1119,6 +1119,14 @@ proto_tree_add_text(proto_tree *tree, tvbuff_t *tvb, gint start, gint length,
+ 	va_list		   ap;
+ 	header_field_info *hfinfo;
+ 
++	if (length == -1) {
++		/* If we're fetching until the end of the TVB, only validate
++		 * that the offset is within range.
++		 */
++		length = 0;
++	}
++	tvb_ensure_bytes_exist(tvb, start, length);
++
+ 	TRY_TO_FAKE_THIS_ITEM(tree, hf_text_only, hfinfo);
+ 
+ 	pi = proto_tree_add_text_node(tree, tvb, start, length);
+@@ -1140,6 +1148,14 @@ proto_tree_add_text_valist(proto_tree *tree, tvbuff_t *tvb, gint start,
+ 	proto_item        *pi;
+ 	header_field_info *hfinfo;
+ 
++	if (length == -1) {
++		/* If we're fetching until the end of the TVB, only validate
++		 * that the offset is within range.
++		 */
++		length = 0;
++	}
++	tvb_ensure_bytes_exist(tvb, start, length);
++
+ 	TRY_TO_FAKE_THIS_ITEM(tree, hf_text_only, hfinfo);
+ 
+ 	pi = proto_tree_add_text_node(tree, tvb, start, length);
+-- 
+2.1.4
+

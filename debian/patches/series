@@ -108,3 +108,12 @@
 115_1.12.12_802.11_Make-sure-EAPOL-body-is-big-enough-for-a-EAPOL_RSN_K.patch
 116_1.12.12_802.11_Fix-previous-change.patch
 117_1.12.9_802.11_airpdcap-Don-t-return-error-from-function-returning-.patch
+118_1.12.13_dissect_nds_request-Add-NULL-check.patch
+119_1.12.13_packetbb-Prevent-divide-by-0.patch
+120_1.12.13_packet-wsp.c-Fix-infinite-loop-in-add_headers.patch
+121_1.12.13_MMSE-remove-proto_tree_add_text-calls.patch
+122_1.12.13_RLC-fix-a-stack-overflow-in-rlc_decode_li-function.patch
+123_1.12.13_RLC-fix-a-variable-overflow-in-rlc_decode_li-functio.patch
+124_1.12.13_LDSS-check-if-a-conversation-already-exists-before-r.patch
+125_1.12.13_proto.c-add-bounds-check-to-proto_tree_add_text-_val.patch
+126_proto.c-do-not-perform-bound-checks-in-proto_tree_ad.patch
