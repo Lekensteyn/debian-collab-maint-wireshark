@@ -1,0 +1,33 @@
+From 471830020143111ca694a1153d9ea477343edde7 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Sat, 2 Jul 2016 10:37:20 -0400
+Subject: [PATCH 118/125] dissect_nds_request: Add NULL check
+
+Bug: 12576
+Change-Id: If25d65b58ccc3860a48a48d5dbc4a076a79ad459
+Reviewed-on: https://code.wireshark.org/review/16245
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 9eacbb4d48df647648127b9258f9e5aeeb0c7d99)
+Reviewed-on: https://code.wireshark.org/review/17015
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-ncp2222.inc | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-ncp2222.inc b/epan/dissectors/packet-ncp2222.inc
+index 35f0fa6..6c7c4c6 100644
+--- a/epan/dissectors/packet-ncp2222.inc
++++ b/epan/dissectors/packet-ncp2222.inc
+@@ -11803,7 +11803,8 @@ dissect_nds_request(tvbuff_t *tvb, packet_info *pinfo,
+             ; /* nothing */
+             break;
+         }
+-        ptvcursor_free(ptvc);
++        if (ptvc != NULL)
++            ptvcursor_free(ptvc);
+ 
+         /* Free the temporary proto_tree */
+         CLEANUP_CALL_AND_POP;
+-- 
+2.1.4
+

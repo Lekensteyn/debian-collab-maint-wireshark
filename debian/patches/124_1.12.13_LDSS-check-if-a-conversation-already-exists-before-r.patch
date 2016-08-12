@@ -1,0 +1,61 @@
+From b49c8d37528d3cb6fee8e8576406b5cbaf039a39 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Mon, 25 Jul 2016 13:32:45 +0200
+Subject: [PATCH 124/125] LDSS: check if a conversation already exists before
+ recreating it
+
+Bug: 12662
+Change-Id: I81d91d54544e5865336dc08ffda9fe109fc643ed
+Reviewed-on: https://code.wireshark.org/review/16660
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+(cherry picked from commit 5a469ddc893f7c1912d0e15cc73bd3011e6cc2fb)
+Reviewed-on: https://code.wireshark.org/review/16663
+(cherry picked from commit e347b39b46e9a90c6d6d55d86768883fb6672589)
+Reviewed-on: https://code.wireshark.org/review/17021
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-ldss.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/epan/dissectors/packet-ldss.c b/epan/dissectors/packet-ldss.c
+index 8fd83c1..3e6adc4 100644
+--- a/epan/dissectors/packet-ldss.c
++++ b/epan/dissectors/packet-ldss.c
+@@ -219,17 +219,20 @@ static unsigned int highest_num_seen = 0;
+ static void
+ prepare_ldss_transfer_conv(ldss_broadcast_t *broadcast)
+ {
+-	conversation_t *transfer_conv;
+-	ldss_transfer_info_t *transfer_info;
+-
+-	transfer_info = wmem_new0(wmem_file_scope(), ldss_transfer_info_t);
+-	transfer_info->broadcast = broadcast;
+-
+-	/* Preparation for later push/pull dissection */
+-	transfer_conv = conversation_new (broadcast->num, &broadcast->broadcaster->addr, &broadcast->broadcaster->addr,
+-					  PT_TCP, broadcast->broadcaster->port, broadcast->broadcaster->port, NO_ADDR2|NO_PORT2);
+-	conversation_add_proto_data(transfer_conv, proto_ldss, transfer_info);
+-	conversation_set_dissector(transfer_conv, ldss_tcp_handle);
++	if (!find_conversation(broadcast->num, &broadcast->broadcaster->addr, &broadcast->broadcaster->addr,
++	                       PT_TCP, broadcast->broadcaster->port, broadcast->broadcaster->port, NO_ADDR2|NO_PORT2)) {
++		conversation_t *transfer_conv;
++		ldss_transfer_info_t *transfer_info;
++
++		transfer_info = wmem_new0(wmem_file_scope(), ldss_transfer_info_t);
++		transfer_info->broadcast = broadcast;
++
++		/* Preparation for later push/pull dissection */
++		transfer_conv = conversation_new (broadcast->num, &broadcast->broadcaster->addr, &broadcast->broadcaster->addr,
++						PT_TCP, broadcast->broadcaster->port, broadcast->broadcaster->port, NO_ADDR2|NO_PORT2);
++		conversation_add_proto_data(transfer_conv, proto_ldss, transfer_info);
++		conversation_set_dissector(transfer_conv, ldss_tcp_handle);
++	}
+ }
+ 
+ /* Broadcasts are searches, offers or promises.
+-- 
+2.1.4
+

@@ -1,0 +1,73 @@
+From 301713bf64c12dea1239471e8df4577f9335f27a Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Thu, 28 Jul 2016 19:56:56 +0200
+Subject: [PATCH] proto.c: do not perform bound checks in
+ proto_tree_add_text(_valist)_internal if tvb is NULL
+
+As seen in bug 12676, some buggy dissectors do not systematically provide a tvb when calling proto_tree_add_XXX functions.
+On stable branch, let's deactivate the bound checks in that case.
+
+Bug: 12676
+Change-Id: Ia3cf0b0972c127f34feca2e097e0ec1fd1753b23
+Reviewed-on: https://code.wireshark.org/review/16752
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit 8c7ab5f2b2c18f23c1baa856e30ff8dcb0b7151c)
+Reviewed-on: https://code.wireshark.org/review/17024
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/proto.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
+
+diff --git a/epan/proto.c b/epan/proto.c
+index a8038c0..d4346b5 100644
+--- a/epan/proto.c
++++ b/epan/proto.c
+@@ -1119,13 +1119,15 @@ proto_tree_add_text(proto_tree *tree, tvbuff_t *tvb, gint start, gint length,
+ 	va_list		   ap;
+ 	header_field_info *hfinfo;
+ 
+-	if (length == -1) {
+-		/* If we're fetching until the end of the TVB, only validate
+-		 * that the offset is within range.
+-		 */
+-		length = 0;
++	if (tvb) {
++		if (length == -1) {
++			/* If we're fetching until the end of the TVB, only validate
++			 * that the offset is within range.
++			 */
++			length = 0;
++		}
++		tvb_ensure_bytes_exist(tvb, start, length);
+ 	}
+-	tvb_ensure_bytes_exist(tvb, start, length);
+ 
+ 	TRY_TO_FAKE_THIS_ITEM(tree, hf_text_only, hfinfo);
+ 
+@@ -1148,13 +1150,15 @@ proto_tree_add_text_valist(proto_tree *tree, tvbuff_t *tvb, gint start,
+ 	proto_item        *pi;
+ 	header_field_info *hfinfo;
+ 
+-	if (length == -1) {
+-		/* If we're fetching until the end of the TVB, only validate
+-		 * that the offset is within range.
+-		 */
+-		length = 0;
++	if (tvb) {
++		if (length == -1) {
++			/* If we're fetching until the end of the TVB, only validate
++			 * that the offset is within range.
++			 */
++			length = 0;
++		}
++		tvb_ensure_bytes_exist(tvb, start, length);
+ 	}
+-	tvb_ensure_bytes_exist(tvb, start, length);
+ 
+ 	TRY_TO_FAKE_THIS_ITEM(tree, hf_text_only, hfinfo);
+ 
+-- 
+2.1.4
+
