@@ -116,3 +116,4 @@
 123_1.12.13_RLC-fix-a-variable-overflow-in-rlc_decode_li-functio.patch
 124_1.12.13_LDSS-check-if-a-conversation-already-exists-before-r.patch
 125_1.12.13_proto.c-add-bounds-check-to-proto_tree_add_text-_val.patch
+126_proto.c-do-not-perform-bound-checks-in-proto_tree_ad.patch

@@ -9,6 +9,7 @@ wireshark (1.12.1+g01b65bf-4+deb8u8) jessie-security; urgency=medium
     - The LDSS dissector could crash (CVE-2016-6509)
     - The RLC dissector could crash (CVE-2016-6510)
     - The OpenFlow dissector could go into a long loop (CVE-2016-6511)
+  * Cherry-pick fix for regressions caused by CVE-2016-6511's fix
 
  -- Balint Reczey <balint@balintreczey.hu>  Thu, 11 Aug 2016 19:21:15 +0200
 
