@@ -1,4 +1,4 @@
-wireshark (1.12.1+g01b65bf-4+deb8u6~deb7u3) UNRELEASED; urgency=medium
+wireshark (1.12.1+g01b65bf-4+deb8u6~deb7u3) wheezy-security; urgency=medium
 
   * security fixes from Wireshark 1.12.13:
     - The NDS dissector could crash (CVE-2016-6504)
@@ -11,7 +11,7 @@ wireshark (1.12.1+g01b65bf-4+deb8u6~deb7u3) UNRELEASED; urgency=medium
     - The OpenFlow dissector could go into a long loop (CVE-2016-6511)
   * Cherry-pick fix for regressions caused by CVE-2016-6511's fix
 
- -- Balint Reczey <balint@balintreczey.hu>  Fri, 12 Aug 2016 20:26:57 +0200
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 14 Aug 2016 16:20:12 +0200
 
 wireshark (1.12.1+g01b65bf-4+deb8u6~deb7u2) wheezy-security; urgency=high
 
