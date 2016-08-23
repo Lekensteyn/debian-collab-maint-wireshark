@@ -1,4 +1,4 @@
-libwireshark.so.6 libwireshark6 #MINVER#
+libwireshark.so.8 libwireshark8 #MINVER#
  AdmissionRejectReason_vals@Base 1.9.1
  AirPDcapDestroyContext@Base 1.9.1
  AirPDcapInitContext@Base 1.9.1
@@ -27,11 +27,14 @@ libwireshark.so.6 libwireshark6 #MINVER#
  add_itu_tcap_subdissector@Base 1.9.1
  add_new_data_source@Base 1.9.1
  add_srt_table_data@Base 1.99.8
+ address_to_bytes@Base 2.1.1
  address_to_display@Base 1.99.2
+ address_to_name@Base 2.1.0
  address_to_str@Base 1.12.0~rc1
  address_with_resolution_to_str@Base 1.99.3
  address_to_str_buf@Base 1.9.1
  address_type_dissector_register@Base 2.0.0
+ address_type_get_by_name@Base 2.1.0
  addresses_ports_reassembly_table_functions@Base 1.9.1
  addresses_reassembly_table_functions@Base 1.9.1
  airpdcap_ctx@Base 1.9.1
@@ -57,20 +60,25 @@ libwireshark.so.6 libwireshark6 #MINVER#
  ber_decode_as_foreach@Base 1.9.1
  ber_set_filename@Base 1.9.1
  bluetooth_company_id_vals_ext@Base 1.99.6
- bluetooth_uuid_custom@Base 1.99.2
+ bluetooth_gatt_has_no_parameter@Base 2.1.0
  bluetooth_uuid_vals@Base 1.99.2
  bluetooth_uuid_vals_ext@Base 1.99.2
+ bluetooth_uuids@Base 2.1.0
  bssgp_cause_vals_ext@Base 1.9.1
+ bthci_cmd_authentication_enable_values@Base 2.1.2
+ bthci_cmd_encrypt_mode_vals@Base 2.1.2
+ bthci_cmd_inq_modes@Base 2.1.2
+ bthci_cmd_scan_enable_values@Base 2.1.2
  bthci_evt_hci_version@Base 1.99.6
  bthci_evt_lmp_version@Base 1.99.6
  build_column_format_array@Base 1.9.1
- build_follow_conv_filter@Base 1.12.0~rc1
- build_follow_index_filter@Base 1.12.0~rc1
  byte_array_dup@Base 1.9.1
  byte_array_equal@Base 1.9.1
+ bytes_to_hexstr@Base 2.1.0
  bytes_to_str@Base 1.99.2
  bytestring_to_str@Base 1.9.1
  call_ber_oid_callback@Base 1.9.1
+ call_data_dissector@Base 2.1.0
  call_dissector@Base 1.9.1
  call_dissector_only@Base 1.9.1
  call_dissector_with_data@Base 1.9.1
@@ -78,33 +86,10 @@ libwireshark.so.6 libwireshark6 #MINVER#
  call_per_oid_callback@Base 1.99.1
  camelSRTtype_naming@Base 1.9.1
  camel_opr_code_strings@Base 1.9.1
- capture_ap1394@Base 1.9.1
- capture_arcnet@Base 1.9.1
- capture_atm@Base 1.9.1
- capture_ax25@Base 1.9.1
- capture_ax25_kiss@Base 1.9.1
- capture_chdlc@Base 1.9.1
- capture_clip@Base 1.9.1
- capture_enc@Base 1.9.1
- capture_eth@Base 1.9.1
- capture_fddi@Base 1.9.1
- capture_fr@Base 1.9.1
- capture_i2c@Base 1.9.1
- capture_ieee80211@Base 1.9.1
- capture_ipfc@Base 1.9.1
- capture_llap@Base 1.9.1
- capture_loop@Base 1.99.3
- capture_null@Base 1.9.1
- capture_pktap@Base 1.12.0~rc1
- capture_ppi@Base 1.9.1
- capture_ppp_hdlc@Base 1.9.1
- capture_prism@Base 1.9.1
- capture_radiotap@Base 1.9.1
- capture_raw@Base 1.9.1
- capture_sll@Base 1.9.1
- capture_tr@Base 1.9.1
- capture_wlancap@Base 1.9.1
+ capture_dissector_get_count@Base 2.1.0
+ capture_dissector_increment_count@Base 2.1.0
  check_xdlc_control@Base 1.9.1
+ chunk_type_values@Base 2.1.0
  circuit_add_proto_data@Base 1.9.1
  circuit_get_proto_data@Base 1.9.1
  circuit_new@Base 1.9.1
@@ -113,6 +98,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  col_add_str@Base 1.9.1
  col_append_fstr@Base 1.9.1
  col_append_lstr@Base 1.99.0
+ col_append_ports@Base 2.1.0
  col_append_sep_fstr@Base 1.9.1
  col_append_sep_str@Base 1.9.1
  col_append_str@Base 1.9.1
@@ -137,6 +123,24 @@ libwireshark.so.6 libwireshark6 #MINVER#
  col_set_time@Base 1.9.1
  col_set_writable@Base 1.9.1
  col_setup@Base 1.9.1
+ color_filter_delete@Base 2.1.0
+ color_filter_list_delete@Base 2.1.0
+ color_filter_new@Base 2.1.0
+ color_filters_apply@Base 2.1.0
+ color_filters_cleanup@Base 2.1.0
+ color_filters_clone@Base 2.1.0
+ color_filters_colorize_packet@Base 2.1.0
+ color_filters_export@Base 2.1.0
+ color_filters_import@Base 2.1.0
+ color_filters_init@Base 2.1.0
+ color_filters_prime_edt@Base 2.1.0
+ color_filters_read_globals@Base 2.1.0
+ color_filters_reload@Base 2.1.0
+ color_filters_reset_tmp@Base 2.1.0
+ color_filters_set_tmp@Base 2.1.0
+ color_filters_tmp_color@Base 2.1.0
+ color_filters_used@Base 2.1.0
+ color_filters_write@Base 2.1.0
  column_dump_column_formats@Base 1.12.0~rc1
  conv_filter_list@Base 2.0.0
  conversation_add_proto_data@Base 1.9.1
@@ -157,6 +161,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  crc16_ccitt_tvb_offset@Base 1.9.1
  crc16_ccitt_tvb_offset_seed@Base 1.9.1
  crc16_ccitt_tvb_seed@Base 1.9.1
+ crc16_iso14443a_tvb_offset@Base 2.1.0
  crc16_plain_tvb_offset@Base 1.9.1
  crc16_plain_tvb_offset_seed@Base 1.9.1
  crc16_r3_ccitt_tvb@Base 1.99.3
@@ -173,9 +178,9 @@ libwireshark.so.6 libwireshark6 #MINVER#
  crc32_mpeg2_tvb_seed@Base 1.9.1
  crc32c_tvb_offset_calculate@Base 1.99.0
  crc6_compute_tvb@Base 1.99.0
- create_dissector_handle@Base 1.9.1
- data_out_file@Base 1.9.1
- dcerpc_get_proto_hf_opnum@Base 1.9.1
+ create_dissector_handle@Base 2.1.0
+ create_dissector_handle_with_name@Base 2.1.0
+ dcerpc_get_proto_hf_opnum@Base 2.1.0
  dcerpc_get_proto_name@Base 1.9.1
  dcerpc_get_proto_sub_dissector@Base 1.9.1
  dcerpc_get_transport_salt@Base 1.9.1
@@ -222,10 +227,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  decode_tcp_ports@Base 1.99.0
  decode_udp_ports@Base 1.99.0
  delete_itu_tcap_subdissector@Base 1.9.1
- deregister_dissector@Base 1.99.9
- deregister_dissector_table@Base 1.99.9
- deregister_postdissector@Base 1.99.9
- destroy_dissector_handle@Base 1.99.9
+ deregister_depend_dissector@Base 2.1.0
  destroy_print_stream@Base 1.12.0~rc1
  dfilter_apply_edt@Base 1.9.1
  dfilter_compile@Base 1.9.1
@@ -337,7 +339,6 @@ libwireshark.so.6 libwireshark6 #MINVER#
  dissect_per_PrintableString@Base 1.9.1
  dissect_per_VisibleString@Base 1.9.1
  dissect_per_bit_string@Base 1.9.1
- dissect_per_bit_string_containing_pdu@Base 1.9.1
  dissect_per_bit_string_containing_pdu_new@Base 1.9.1
  dissect_per_boolean@Base 1.9.1
  dissect_per_choice@Base 1.9.1
@@ -353,10 +354,8 @@ libwireshark.so.6 libwireshark6 #MINVER#
  dissect_per_object_identifier@Base 1.9.1
  dissect_per_object_identifier_str@Base 1.9.1
  dissect_per_octet_string@Base 1.9.1
- dissect_per_octet_string_containing_pdu@Base 1.9.1
  dissect_per_octet_string_containing_pdu_new@Base 1.9.1
  dissect_per_open_type@Base 1.9.1
- dissect_per_open_type_pdu@Base 1.9.1
  dissect_per_open_type_pdu_new@Base 1.9.1
  dissect_per_real@Base 1.9.1
  dissect_per_relative_oid@Base 1.12.0~rc1
@@ -393,6 +392,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  dissect_xdlc_control@Base 1.9.1
  dissector_add_custom_table_handle@Base 1.99.8
  dissector_add_for_decode_as@Base 1.9.1
+ dissector_add_guid@Base 2.1.0
  dissector_add_string@Base 1.9.1
  dissector_add_uint@Base 1.9.1
  dissector_add_uint_range@Base 1.12.0~rc1
@@ -412,6 +412,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  dissector_get_custom_table_handle@Base 1.99.8
  dissector_get_default_string_handle@Base 1.12.0~rc1
  dissector_get_default_uint_handle@Base 1.12.0~rc1
+ dissector_get_guid_handle@Base 2.1.0
  dissector_get_string_handle@Base 1.9.1
  dissector_get_uint_handle@Base 1.9.1
  dissector_handle_get_dissector_name@Base 1.12.0~rc1
@@ -423,7 +424,10 @@ libwireshark.so.6 libwireshark6 #MINVER#
  dissector_table_foreach@Base 1.9.1
  dissector_table_foreach_handle@Base 1.9.1
  dissector_table_get_dissector_handles@Base 1.12.0~rc1
+ dissector_table_get_proto_allowed@Base 2.1.0
  dissector_table_get_type@Base 1.12.0~rc1
+ dissector_try_guid@Base 2.1.0
+ dissector_try_guid_new@Base 2.1.0
  dissector_try_heuristic@Base 1.9.1
  dissector_try_string@Base 1.9.1
  dissector_try_uint@Base 1.9.1
@@ -433,9 +437,13 @@ libwireshark.so.6 libwireshark6 #MINVER#
  dscp_vals_ext@Base 1.9.1
  dtbl_entry_get_handle@Base 1.9.1
  dtbl_entry_get_initial_handle@Base 1.9.1
+ dtls_dissector_add@Base 2.1.0
+ dtls_dissector_delete@Base 2.1.0
  dvb_add_chartbl@Base 1.12.0~rc1
  dvb_analyze_string_charset@Base 1.12.0~rc1
  dvb_enc_to_item_enc@Base 1.12.0~rc1
+ dvbci_event@Base 2.1.0
+ dword_to_hex@Base 2.1.0
  eap_aka_subtype_vals@Base 1.9.1
  eap_code_vals@Base 1.9.1
  eap_ms_chap_v2_opcode_vals@Base 1.9.1
@@ -443,6 +451,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  eap_type_vals_ext@Base 1.9.1
  ecn_short_vals_ext@Base 2.0.0
  ecn_vals_ext@Base 2.0.0
+ ei_btatt_invalid_usage@Base 2.1.0
  elem_lv@Base 1.9.1
  elem_t@Base 1.9.1
  elem_tlv@Base 1.9.1
@@ -450,7 +459,6 @@ libwireshark.so.6 libwireshark6 #MINVER#
  elem_tv_short@Base 1.9.1
  elem_v@Base 1.9.1
  elem_v_short@Base 1.9.1
- empty_tcp_stream@Base 1.9.1
  epan_cleanup@Base 1.9.1
  epan_dissect_cleanup@Base 1.9.1
  epan_dissect_fake_protocols@Base 1.9.1
@@ -462,6 +470,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  epan_dissect_new@Base 1.9.1
  epan_dissect_packet_contains_field@Base 1.12.0~rc1
  epan_dissect_prime_dfilter@Base 1.9.1
+ epan_dissect_prime_hfid@Base 2.1.0
  epan_dissect_reset@Base 1.12.0~rc1
  epan_dissect_run@Base 1.9.1
  epan_dissect_run_with_taps@Base 1.9.1
@@ -498,10 +507,15 @@ libwireshark.so.6 libwireshark6 #MINVER#
  except_throwd@Base 1.9.1
  except_throwf@Base 1.9.1
  except_unhandled_catcher@Base 1.9.1
+ exp_pdu_data_dst_ip@Base 2.1.2
+ exp_pdu_data_dst_port@Base 2.1.2
+ exp_pdu_data_orig_frame_num@Base 2.1.2
+ exp_pdu_data_port_type@Base 2.1.2
+ exp_pdu_data_src_ip@Base 2.1.2
+ exp_pdu_data_src_port@Base 2.1.2
  expert_add_info@Base 1.12.0~rc1
  expert_add_info_format@Base 1.9.1
  expert_checksum_vals@Base 1.12.0~rc1
- expert_deregister_protocol@Base 1.99.9
  expert_get_highest_severity@Base 1.9.1
  expert_get_summary@Base 1.99.10
  expert_group_vals@Base 1.12.0~rc1
@@ -509,6 +523,8 @@ libwireshark.so.6 libwireshark6 #MINVER#
  expert_register_protocol@Base 1.12.0~rc1
  expert_severity_vals@Base 1.12.0~rc1
  expert_update_comment_count@Base 1.12.0~rc1
+ export_pdu_create_common_tags@Base 2.1.1
+ export_pdu_create_tags@Base 2.1.1
  ext_menubar_add_entry@Base 1.99.8
  ext_menubar_add_separator@Base 1.99.8
  ext_menubar_add_submenu@Base 1.99.8
@@ -524,7 +540,9 @@ libwireshark.so.6 libwireshark6 #MINVER#
  find_circuit@Base 1.9.1
  find_conversation@Base 1.9.1
  find_conversation_filter@Base 2.0.0
+ find_depend_dissector_list@Base 2.1.0
  find_dissector@Base 1.9.1
+ find_dissector_add_dependency@Base 2.1.0
  find_dissector_table@Base 1.9.1
  find_heur_dissector_by_unique_short_name@Base 1.99.8
  find_heur_dissector_list@Base 1.99.2
@@ -533,9 +551,10 @@ libwireshark.so.6 libwireshark6 #MINVER#
  find_sid_name@Base 1.9.1
  find_stream_circ@Base 1.9.1
  find_tap_id@Base 1.9.1
- follow_addr@Base 1.99.2
- follow_index@Base 1.99.2
- follow_stats@Base 1.9.1
+ follow_get_stat_tap_string@Base 2.1.0
+ follow_iterate_followers@Base 2.1.0
+ follow_reset_stream@Base 2.1.0
+ follow_tvb_tap_listener@Base 2.1.0
  format_text@Base 1.9.1
  format_text_chr@Base 1.12.0~rc1
  format_text_wsp@Base 1.9.1
@@ -566,7 +585,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  frame_data_set_after_dissect@Base 1.9.1
  frame_data_set_before_dissect@Base 1.9.1
  free_frame_data_sequence@Base 1.12.0~rc1
- free_key_string@Base 2.0.0
+ free_key_string@Base 2.0.0~rc1
  free_rtd_table@Base 1.99.8
  free_srt_table@Base 1.99.8
  free_srt_table_data@Base 1.99.8
@@ -582,7 +601,6 @@ libwireshark.so.6 libwireshark6 #MINVER#
  ftype_can_slice@Base 1.9.1
  ftype_name@Base 1.9.1
  ftype_pretty_name@Base 1.9.1
- funnel_deregister_menus@Base 1.99.9
  funnel_get_funnel_ops@Base 1.9.1
  funnel_register_all_menus@Base 1.9.1
  funnel_register_menu@Base 1.9.1
@@ -639,7 +657,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  get_ber_identifier@Base 1.9.1
  get_ber_length@Base 1.9.1
  get_column_char_width@Base 1.9.1
- get_column_custom_field@Base 1.9.1
+ get_column_custom_fields@Base 2.1.0
  get_column_custom_occurrence@Base 1.9.1
  get_column_format@Base 1.9.1
  get_column_format_from_str@Base 1.9.1
@@ -670,8 +688,15 @@ libwireshark.so.6 libwireshark6 #MINVER#
  get_ebcdic_string@Base 1.12.0~rc1
  get_eth_hashtable@Base 1.12.0~rc1
  get_ether_name@Base 1.9.1
+ get_follow_address_func@Base 2.1.0
+ get_follow_by_name@Base 2.1.0
+ get_follow_conv_func@Base 2.1.0
+ get_follow_index_func@Base 2.1.0
+ get_follow_port_to_display@Base 2.1.0
+ get_follow_proto_id@Base 2.1.0
+ get_follow_tap_handler@Base 2.1.0
+ get_follow_tap_string@Base 2.1.0
  get_export_pdu_tap_list@Base 1.99.0
- get_follow_index@Base 1.99.2
  get_hash_ether_status@Base 1.99.3
  get_hash_ether_hexaddr@Base 1.99.3
  get_hash_ether_resolved_name@Base 1.99.3
@@ -716,6 +741,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  get_udp_stream_count@Base 1.12.0~rc1
  get_unichar2_string@Base 1.12.0~rc1
  get_utf_16_string@Base 1.12.0~rc1
+ get_vlan_hash_table@Base 2.1.0
  get_wka_hashtable@Base 1.12.0~rc1
  golay_decode@Base 1.9.1
  golay_encode@Base 1.9.1
@@ -747,8 +773,8 @@ libwireshark.so.6 libwireshark6 #MINVER#
  h248_register_package@Base 1.9.1
  has_heur_dissector_list@Base 1.12.0~rc1
  have_custom_cols@Base 1.9.1
- have_field_extractors@Base 2.0.2
  have_filtering_tap_listeners@Base 1.9.1
+ have_field_extractors@Base 2.0.2
  have_tap_listener@Base 1.12.0~rc1
  heur_dissector_add@Base 1.9.1
  heur_dissector_delete@Base 1.9.1
@@ -757,25 +783,24 @@ libwireshark.so.6 libwireshark6 #MINVER#
  hex_str_to_bytes_encoding@Base 1.12.0~rc1
  hf_text_only@Base 1.9.1
  hfinfo_bitshift@Base 1.12.0~rc1
- host_ip_af@Base 1.9.1
  host_name_lookup_process@Base 1.9.1
  hostlist_table_set_gui_info@Base 1.99.0
- http_dissector_add@Base 1.9.1
- http_port_add@Base 1.9.1
- ieee80211_float_htrates@Base 1.99.1
+ http_tcp_dissector_add@Base 2.1.0
+ http_tcp_port_add@Base 2.1.0
+ ieee80211_ht_Dbps@Base 2.1.0
  ieee80211_supported_rates_vals_ext@Base 1.99.1
  ieee802a_add_oui@Base 1.9.1
  in_cksum@Base 1.9.1
- incomplete_tcp_stream@Base 1.9.1
  init_srt_table@Base 1.99.8
  init_srt_table_row@Base 1.99.8
  ip_checksum@Base 1.99.0
  ip_checksum_tvb@Base 1.99.0
  ipopt_type_class_vals@Base 1.9.1
  ipopt_type_number_vals@Base 1.9.1
- ipproto_val_ext@Base 2.0.0
+ ipproto_val_ext@Base 2.1.0
  ipprotostr@Base 1.9.1
  ipv4_get_net_order_addr@Base 1.9.1
+ ipv6extprotostr@Base 2.1.0
  is_big_endian@Base 1.9.1
  is_broadcast_bssid@Base 2.0.0
  is_tpkt@Base 1.9.1
@@ -783,9 +808,9 @@ libwireshark.so.6 libwireshark6 #MINVER#
  isup_message_type_value_acro_ext@Base 1.9.1
  join_string_list@Base 1.99.0
  ldap_procedure_names@Base 1.99.8
+ link_type_vals@Base 2.1.0
  list_stat_cmd_args@Base 1.9.1
  llc_add_oui@Base 1.9.1
- load_export_pdu_tags@Base 1.12.0~rc1
  make_printable_string@Base 1.9.1
  manually_resolve_cleanup@Base 1.12.0~rc1
  mark_frame_as_depended_upon@Base 1.9.1
@@ -793,18 +818,14 @@ libwireshark.so.6 libwireshark6 #MINVER#
  memory_usage_component_register@Base 1.12.0~rc1
  memory_usage_gc@Base 1.12.0~rc1
  memory_usage_get@Base 1.12.0~rc1
- mtp3_addr_to_str_buf@Base 1.9.1
+ mibenum_charset_to_encoding@Base 2.1.0
+ mibenum_vals_character_sets_ext@Base 2.1.0
  mtp3_network_indicator_vals@Base 1.9.1
  mtp3_service_indicator_code_short_vals@Base 1.9.1
  mtp3_standard_vals@Base 1.9.1
- new_create_dissector_handle@Base 1.9.1
- new_create_dissector_handle_with_name@Base 1.99.8
+ ncp_nds_verb_vals@Base 2.1.0
  new_frame_data_sequence@Base 1.12.0~rc1
  new_page@Base 1.12.0~rc1
- new_register_ber_oid_dissector@Base 1.99.1
- new_register_ber_syntax_dissector@Base 1.99.1
- new_register_dissector@Base 1.9.1
- new_register_per_oid_dissector@Base 1.99.1
  new_stat_tap_add_table@Base 1.99.8
  new_stat_tap_get_field_data@Base 1.99.8
  new_stat_tap_get_filter@Base 1.99.8
@@ -817,6 +838,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  next_tvb_add_uint@Base 1.9.1
  next_tvb_call@Base 1.9.1
  next_tvb_init@Base 1.9.1
+ nmas_subverb_enum@Base 2.1.0
  nt_cmd_vals_ext@Base 1.9.1
  num_tree_types@Base 1.9.1
  oid_add@Base 1.9.1
@@ -863,10 +885,12 @@ libwireshark.so.6 libwireshark6 #MINVER#
  parse_key_string@Base 1.9.1
  pfilter_expression_head@Base 1.9.1
  plugin_if_apply_filter@Base 1.99.8
+ plugin_if_get_ws_info@Base 2.1.0
  plugin_if_goto_frame@Base 2.0.0
  plugin_if_register_gui_cb@Base 1.99.8
  plugin_if_save_preference@Base 1.99.8
  port_type_to_str@Base 1.12.0~rc1
+ port_with_resolution_to_str@Base 2.1.0
  port_with_resolution_to_str_buf@Base 2.0.0
  postseq_cleanup_all_protocols@Base 1.9.1
  prefs@Base 1.9.1
@@ -875,7 +899,6 @@ libwireshark.so.6 libwireshark6 #MINVER#
  prefs_capture_device_monitor_mode@Base 1.9.1
  prefs_capture_options_dialog_column_is_visible@Base 1.9.1
  prefs_clear_string_list@Base 1.9.1
- prefs_deregister_protocol@Base 1.99.9
  prefs_find_module@Base 1.9.1
  prefs_find_preference@Base 1.9.1
  prefs_get_string_list@Base 1.9.1
@@ -893,7 +916,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  prefs_register_directory_preference@Base 1.9.1
  prefs_register_enum_preference@Base 1.9.1
  prefs_register_filename_preference@Base 1.9.1
- prefs_register_modules@Base 1.9.1
+ prefs_register_module@Base 2.1.0
  prefs_register_obsolete_preference@Base 1.9.1
  prefs_register_protocol@Base 1.9.1
  prefs_register_protocol_subtree@Base 1.9.1
@@ -901,11 +924,14 @@ libwireshark.so.6 libwireshark6 #MINVER#
  prefs_register_stat@Base 1.9.1
  prefs_register_static_text_preference@Base 1.9.1
  prefs_register_string_preference@Base 1.9.1
+ prefs_register_subtree@Base 2.1.0
  prefs_register_uat_preference@Base 1.9.1
  prefs_register_uat_preference_qt@Base 1.12.0~rc1
  prefs_register_uint_preference@Base 1.9.1
  prefs_reset@Base 1.9.1
  prefs_set_pref@Base 1.9.1
+ prefs_set_range_value@Base 2.1.0
+ prefs_set_string_like_value@Base 2.1.0
  print_bookmark@Base 1.12.0~rc1
  print_finale@Base 1.12.0~rc1
  print_hex_data@Base 1.12.0~rc1
@@ -915,6 +941,8 @@ libwireshark.so.6 libwireshark6 #MINVER#
  print_stream_ps_stdio_new@Base 1.12.0~rc1
  print_stream_text_new@Base 1.12.0~rc1
  print_stream_text_stdio_new@Base 1.12.0~rc1
+ print_uuid@Base 2.0.0
+ print_numeric_uuid@Base 2.0.0
  process_reassembled_data@Base 1.9.1
  process_stat_cmd_arg@Base 1.9.1
  proto_all_finfos@Base 1.9.1
@@ -922,14 +950,16 @@ libwireshark.so.6 libwireshark6 #MINVER#
  proto_can_match_selected@Base 1.9.1
  proto_can_toggle_protocol@Base 1.9.1
  proto_check_field_name@Base 1.9.1
+ proto_checksum_vals@Base 2.2.0~
  proto_construct_match_selected_string@Base 1.9.1
  proto_deregister_field@Base 1.99.9
- proto_deregister_protocol@Base 1.99.9
+ proto_disable_by_default@Base 2.1.2
  proto_disable_proto_by_name@Base 1.99.8
  proto_enable_all@Base 1.9.1
  proto_enable_heuristic_by_name@Base 1.99.8
  proto_expert@Base 1.9.1
  proto_field_is_referenced@Base 1.9.1
+ proto_field_display_to_string@Base 2.1.0
  proto_find_field_from_offset@Base 1.9.1
  proto_find_finfo@Base 1.9.1
  proto_find_undecoded_data@Base 1.99.3
@@ -953,7 +983,6 @@ libwireshark.so.6 libwireshark6 #MINVER#
  proto_is_protocol_enabled@Base 1.9.1
  proto_is_frame_protocol@Base 1.99.1
  proto_item_add_subtree@Base 1.9.1
- proto_item_append_string@Base 1.9.1
  proto_item_append_text@Base 1.9.1
  proto_item_fill_label@Base 1.9.1
  proto_item_get_len@Base 1.9.1
@@ -979,6 +1008,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  proto_registrar_get_abbrev@Base 1.9.1
  proto_registrar_get_byname@Base 1.9.1
  proto_registrar_get_ftype@Base 1.9.1
+ proto_registrar_get_id_byname@Base 2.1.0
  proto_registrar_get_name@Base 1.99.8
  proto_registrar_get_nth@Base 1.9.1
  proto_registrar_get_parent@Base 1.9.1
@@ -991,10 +1021,13 @@ libwireshark.so.6 libwireshark6 #MINVER#
  proto_tree_add_bitmask@Base 1.9.1
  proto_tree_add_bitmask_len@Base 1.9.1
  proto_tree_add_bitmask_list@Base 1.99.4
+ proto_tree_add_bitmask_list_value@Base 2.1.0
+ proto_tree_add_bitmask_ret_uint64@Base 2.1.0
  proto_tree_add_bitmask_text@Base 1.9.1
  proto_tree_add_bitmask_value@Base 1.99.4
  proto_tree_add_bitmask_value_with_flags@Base 1.99.4
  proto_tree_add_bitmask_with_flags@Base 1.99.2
+ proto_tree_add_bitmask_with_flags_ret_uint64@Base 2.1.0
  proto_tree_add_bits_item@Base 1.9.1
  proto_tree_add_bits_ret_val@Base 1.9.1
  proto_tree_add_boolean@Base 1.9.1
@@ -1005,6 +1038,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  proto_tree_add_bytes_format_value@Base 1.9.1
  proto_tree_add_bytes_item@Base 1.12.0~rc1
  proto_tree_add_bytes_with_length@Base 1.99.3
+ proto_tree_add_checksum@Base 2.1.1
  proto_tree_add_debug_text@Base 1.9.1
  proto_tree_add_double@Base 1.9.1
  proto_tree_add_double_format@Base 1.9.1
@@ -1040,7 +1074,11 @@ libwireshark.so.6 libwireshark6 #MINVER#
  proto_tree_add_ipxnet_format_value@Base 1.9.1
  proto_tree_add_item@Base 1.9.1
  proto_tree_add_item_new@Base 1.12.0~rc1
+ proto_tree_add_item_new_ret_length@Base 2.1.0
  proto_tree_add_item_ret_int@Base 1.99.6
+ proto_tree_add_item_ret_length@Base 2.1.0
+ proto_tree_add_item_ret_string@Base 2.1.0
+ proto_tree_add_item_ret_string_and_length@Base 2.1.0
  proto_tree_add_item_ret_uint@Base 1.99.6
  proto_tree_add_none_format@Base 1.9.1
  proto_tree_add_protocol_format@Base 1.9.1
@@ -1089,6 +1127,10 @@ libwireshark.so.6 libwireshark6 #MINVER#
  q850_cause_code_vals_ext@Base 1.9.1
  q931_cause_code_vals_ext@Base 1.9.1
  q931_message_type_vals@Base 1.9.1
+ q932_PartyNumber_vals@Base 2.1.0
+ q932_PartySubaddress_vals@Base 2.1.0
+ q932_PresentedNumberScreened_vals@Base 2.1.0
+ q932_PresentedNumberUnscreened_vals@Base 2.1.0
  qs_func_vals@Base 1.9.1
  qs_rate_vals_ext@Base 1.9.1
  range_convert_range@Base 1.9.1
@@ -1108,29 +1150,34 @@ libwireshark.so.6 libwireshark6 #MINVER#
  register_all_plugin_tap_listeners@Base 1.9.1
  register_all_protocol_handoffs@Base 1.9.1
  register_all_protocols@Base 1.9.1
- register_ber_oid_dissector@Base 1.9.1
+ register_ber_oid_dissector@Base 2.1.0
  register_ber_oid_dissector_handle@Base 1.9.1
  register_ber_oid_syntax@Base 1.9.1
- register_ber_syntax_dissector@Base 1.9.1
+ register_ber_syntax_dissector@Base 2.1.0
+ register_capture_dissector@Base 2.1.0
+ register_capture_dissector_table@Base 2.1.0
+ register_cleanup_routine@Base 1.99.8
+ register_conversation_filter@Base 2.0.0
  register_count@Base 1.9.1
  register_custom_dissector_table@Base 1.99.8
- register_conversation_filter@Base 2.0.0
  register_custom_dissector_table@Base 1.99.8
  register_decode_as@Base 1.12.0~rc1
- register_dissector@Base 1.9.1
+ register_depend_dissector@Base 2.1.0
+ register_dissector@Base 2.1.0
  register_dissector_table@Base 1.9.1
  register_export_pdu_tap@Base 1.99.0
+ register_follow_stream@Base 2.1.0
  register_final_registration_routine@Base 1.9.1
  register_giop_user@Base 1.9.1
  register_giop_user_module@Base 1.9.1
  register_heur_dissector_list@Base 1.9.1
  register_init_routine@Base 1.9.1
- register_cleanup_routine@Base 1.99.8
- register_new_stat_tap_ui@Base 1.99.8
+ register_per_oid_dissector@Base 2.1.0
  register_postdissector@Base 1.9.1
  register_postseq_cleanup_routine@Base 1.9.1
  register_rtd_table@Base 1.99.8
  register_srt_table@Base 1.99.8
+ register_stat_tap_table_ui@Base 2.1.0
  register_stat_tap_ui@Base 1.99.1
  register_tap@Base 1.9.1
  register_tap_listener@Base 1.9.1
@@ -1149,8 +1196,6 @@ libwireshark.so.6 libwireshark6 #MINVER#
  reset_srt_table@Base 1.99.8
  reset_stat_table@Base 1.99.8
  reset_tap_listeners@Base 1.9.1
- reset_tcp_reassembly@Base 1.9.1
- reset_udp_follow@Base 1.99.2
  rose_ctx_clean_data@Base 1.9.1
  rose_ctx_init@Base 1.9.1
  rpc_init_prog@Base 1.9.1
@@ -1198,8 +1243,9 @@ libwireshark.so.6 libwireshark6 #MINVER#
  scsi_smc_vals_ext@Base 1.12.0~rc1
  scsi_ssc_vals_ext@Base 1.12.0~rc1
  sctp_port_to_display@Base 1.99.2
+ serv_name_lookup@Base 2.1.0
  set_actual_length@Base 1.9.1
- set_column_custom_field@Base 1.9.1
+ set_column_custom_fields@Base 2.1.0
  set_column_custom_occurrence@Base 1.9.1
  set_column_format@Base 1.9.1
  set_column_resolved@Base 1.9.1
@@ -1216,6 +1262,8 @@ libwireshark.so.6 libwireshark6 #MINVER#
  show_fragment_tree@Base 1.9.1
  sid_name_snooping@Base 1.9.1
  sid_name_table@Base 1.9.1
+ signed_time_msecs_to_str@Base 2.1.0
+ signed_time_secs_to_str@Base 2.1.0
  smb2_cmd_vals_ext@Base 1.9.1
  smb_cmd_vals_ext@Base 1.9.1
  sminmpec_values_ext@Base 1.9.1
@@ -1225,11 +1273,14 @@ libwireshark.so.6 libwireshark6 #MINVER#
  srt_table_iterate_tables@Base 1.99.8
  srtcp_add_address@Base 1.9.1
  srtp_add_address@Base 1.9.1
- ssl_dissector_add@Base 1.9.1
- ssl_dissector_delete@Base 1.9.1
+ ssl_dissector_add@Base 2.1.0
+ ssl_dissector_delete@Base 2.1.0
+ ssl_starttls_ack@Base 2.1.0
+ ssl_starttls_post_ack@Base 2.1.0
  ssl_session_hash@Base 1.9.1
  ssl_crandom_hash@Base 1.99.4
  ssl_set_master_secret@Base 1.9.1
+ sss_verb_enum@Base 2.1.0
  start_requested_stats@Base 1.9.1
  stat_node_array_sortcmp@Base 1.12.0~rc1
  stats_tree_branch_max_namelen@Base 1.9.1
@@ -1266,8 +1317,8 @@ libwireshark.so.6 libwireshark6 #MINVER#
  stats_tree_sort_compare@Base 1.12.0~rc1
  stats_tree_tick_pivot@Base 1.9.1
  stats_tree_tick_range@Base 1.9.1
- str_to_ip6@Base 2.0.0
- str_to_ip@Base 2.0.0
+ str_to_ip6@Base 2.1.0
+ str_to_ip@Base 2.1.0
  str_to_str@Base 1.9.1
  str_to_val@Base 1.9.1
  str_to_val_idx@Base 1.9.1
@@ -1301,6 +1352,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  tfs_asynchronous_synchronous@Base 1.99.1
  tfs_available_not_available@Base 1.9.1
  tfs_capable_not_capable@Base 1.9.1
+ tfs_client_server@Base 2.1.0
  tfs_command_response@Base 1.9.1
  tfs_complete_incomplete@Base 1.12.0~rc1
  tfs_confirmed_unconfirmed@Base 1.12.0~rc1
@@ -1311,6 +1363,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  tfs_disabled_enabled@Base 1.9.1
  tfs_do_not_clear_clear@Base 1.12.0~rc1
  tfs_enabled_disabled@Base 1.9.1
+ tfs_encrypt_do_not_encrypt@Base 2.1.0
  tfs_enforced_not_enforced@Base 1.12.0~rc1
  tfs_error_ok@Base 1.9.1
  tfs_fail_success@Base 1.9.1
@@ -1329,6 +1382,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  tfs_ok_error@Base 1.9.1
  tfs_on_off@Base 1.9.1
  tfs_possible_not_possible@Base 1.99.0
+ tfs_preferred_no_preference@Base 2.1.0
  tfs_present_absent@Base 1.9.1
  tfs_present_not_present@Base 1.9.1
  tfs_pressed_not_pressed@Base 1.9.1
@@ -1338,8 +1392,11 @@ libwireshark.so.6 libwireshark6 #MINVER#
  tfs_reliable_not_reliable@Base 1.9.1
  tfs_requested_not_requested@Base 1.9.1
  tfs_required_not_required@Base 1.99.0
+ tfs_response_command@Base 2.1.0
  tfs_response_request@Base 1.99.8
  tfs_restricted_allowed@Base 1.9.1
+ tfs_segmentation_no_segmentation@Base 2.1.0
+ tfs_server_client@Base 2.1.0
  tfs_set_notset@Base 1.9.1
  tfs_shared_independent@Base 1.9.1
  tfs_success_fail@Base 1.9.1
@@ -1349,8 +1406,6 @@ libwireshark.so.6 libwireshark6 #MINVER#
  tfs_valid_invalid@Base 1.9.1
  tfs_valid_not_valid@Base 1.12.0~rc1
  tfs_yes_no@Base 1.9.1
- time_msecs_to_str@Base 1.99.0
- time_secs_to_str@Base 1.99.0
  time_stat_init@Base 1.12.0~rc1
  time_stat_update@Base 1.12.0~rc1
  timestamp_get_precision@Base 1.9.1
@@ -1359,11 +1414,14 @@ libwireshark.so.6 libwireshark6 #MINVER#
  timestamp_set_precision@Base 1.9.1
  timestamp_set_seconds_type@Base 1.9.1
  timestamp_set_type@Base 1.9.1
+ tmp_color_filters_used@Base 2.1.0
  trans2_cmd_vals_ext@Base 1.9.1
  tree_expanded@Base 1.12.0~rc1
  tree_expanded_set@Base 1.12.0~rc1
+ try_capture_dissector@Base 2.1.0
  try_rval_to_str@Base 1.9.1
  try_rval_to_str_idx@Base 1.9.1
+ try_serv_name_lookup@Base 2.1.0
  try_str_to_str@Base 1.9.1
  try_str_to_str_idx@Base 1.9.1
  try_val64_to_str@Base 1.12.0~rc1
@@ -1534,7 +1592,9 @@ libwireshark.so.6 libwireshark6 #MINVER#
  uat_update_record@Base 1.99.3
  udp_dissect_pdus@Base 1.99.3
  udp_port_to_display@Base 1.99.2
+ uint_to_str_back@Base 2.1.0
  union_of_tap_listener_flags@Base 1.9.1
+ unsigned_time_secs_to_str@Base 2.1.0
  update_crc10_by_bytes_tvb@Base 1.99.0
  uri_str_to_bytes@Base 1.9.1
  val64_to_str@Base 1.12.0~rc1
@@ -1552,10 +1612,12 @@ libwireshark.so.6 libwireshark6 #MINVER#
  wmem_alloc@Base 1.9.1
  wmem_allocator_new@Base 1.9.1
  wmem_array_append@Base 1.12.0~rc1
+ wmem_array_bzero@Base 2.1.0
  wmem_array_get_count@Base 1.12.0~rc1
  wmem_array_get_raw@Base 1.12.0~rc1
  wmem_array_index@Base 1.12.0~rc1
  wmem_array_new@Base 1.12.0~rc1
+ wmem_array_set_null_terminator@Base 2.1.0
  wmem_array_sized_new@Base 1.12.0~rc1
  wmem_array_sort@Base 1.12.0~rc1
  wmem_ascii_strdown@Base 1.12.0~rc1
@@ -1570,8 +1632,14 @@ libwireshark.so.6 libwireshark6 #MINVER#
  wmem_gc@Base 1.9.1
  wmem_init@Base 1.12.0~rc1
  wmem_int64_hash@Base 1.12.0~rc1
+ wmem_itree_find_intervals@Base 2.1.0
+ wmem_itree_insert@Base 2.1.0
+ wmem_itree_is_empty@Base 2.1.0
+ wmem_itree_new@Base 2.1.0
  wmem_list_append@Base 1.12.0~rc1
  wmem_list_count@Base 1.12.0~rc1
+ wmem_list_find@Base 2.1.0
+ wmem_list_foreach@Base 2.1.0
  wmem_list_frame_data@Base 1.12.0~rc1
  wmem_list_frame_next@Base 1.12.0~rc1
  wmem_list_frame_prev@Base 1.12.0~rc1
@@ -1581,10 +1649,12 @@ libwireshark.so.6 libwireshark6 #MINVER#
  wmem_list_remove@Base 1.12.0~rc1
  wmem_list_remove_frame@Base 1.12.0~rc1
  wmem_list_tail@Base 1.12.0~rc1
+ wmem_map_foreach@Base 2.1.0
  wmem_map_insert@Base 1.12.0~rc1
  wmem_map_lookup@Base 1.12.0~rc1
  wmem_map_new@Base 1.12.0~rc1
  wmem_map_remove@Base 1.12.0~rc1
+ wmem_map_size@Base 2.1.0
  wmem_memdup@Base 1.12.0~rc1
  wmem_packet_scope@Base 1.9.1
  wmem_realloc@Base 1.9.1
@@ -1623,12 +1693,17 @@ libwireshark.so.6 libwireshark6 #MINVER#
  wmem_tree_new_autoreset@Base 1.12.0~rc1
  wmem_tree_remove_string@Base 1.99.9
  wmem_unregister_callback@Base 1.12.0~rc1
+ word_to_hex@Base 2.1.0
  write_carrays_hex_data@Base 1.99.1
  write_csv_column_titles@Base 1.99.1
  write_csv_columns@Base 1.99.1
+ write_ek_proto_tree@Base 2.1.2
  write_fields_finale@Base 1.12.0~rc1
  write_fields_preamble@Base 1.12.0~rc1
  write_fields_proto_tree@Base 1.99.1
+ write_json_finale@Base 2.1.2
+ write_json_preamble@Base 2.1.2
+ write_json_proto_tree@Base 2.1.2
  write_pdml_finale@Base 1.12.0~rc1
  write_pdml_preamble@Base 1.12.0~rc1
  write_pdml_proto_tree@Base 1.99.1
@@ -1636,6 +1711,7 @@ libwireshark.so.6 libwireshark6 #MINVER#
  write_psml_columns@Base 1.99.1
  write_psml_finale@Base 1.12.0~rc1
  write_psml_preamble@Base 1.12.0~rc1
+ ws_find_media_type_parameter@Base 2.2.0~
  ws_strdup_escape_char@Base 1.9.1
  ws_strdup_unescape_char@Base 1.9.1
  wslua_count_plugins@Base 1.12.0~rc1

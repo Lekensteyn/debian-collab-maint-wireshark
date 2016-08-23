@@ -1,3 +1,18 @@
+wireshark (2.2.0~rc1+g438c022-1) unstable; urgency=medium
+
+  * New upstream release candidate
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.2.0rc1.html
+    - bug fixes
+      - Fix null dereference in stats (Closes: #786704)
+      - Detect proper large file defines (Closes: #776206)
+      - Use field info length instead of packet length for protocol
+        hierarchy stats (Closes: #151017)
+   * Drop obsolete patches integrated upstream
+   * Refresh patches
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 23 Aug 2016 02:31:31 +0200
+
 wireshark (2.0.5+ga3be9c6-1) unstable; urgency=medium
 
   * Generate better pkg-config file (Closes: #832926)
