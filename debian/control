@@ -29,8 +29,8 @@ Homepage: http://www.wireshark.org/
 
 Package: wireshark-common
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark6 (>= ${binary:Version}),
- libwiretap5 (>= ${binary:Version}), libcap2-bin [linux-any]
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark8 (>= ${binary:Version}),
+ libwiretap6 (>= ${binary:Version}), libcap2-bin [linux-any]
 Recommends: wireshark (>= ${binary:Version}) | tshark (>= ${binary:Version})
 Breaks: ethereal (<< 1.0.0-3),
         wireshark (<< 2.0.0~),
@@ -126,13 +126,13 @@ Description: network traffic analyzer - documentation
  This package contains Wireshark User's guide, Wireshark Developer's Guide
  and the Lua Reference.
 
-Package: libwireshark6
+Package: libwireshark8
 Section: libs
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}, libwireshark-data (>= ${source:Version}),
- libwsutil6 (>= ${source:Version})
+ libwsutil7 (>= ${source:Version}), libwscodecs1 (>= ${source:Version})
 Suggests: wireshark-doc (>= ${source:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1)
@@ -140,7 +140,7 @@ Description: network packet dissection library -- shared library
  The libwireshark library provides the network packet dissection services
  developed by the Wireshark project.
 
-Package: libwsutil6
+Package: libwsutil7
 Section: libs
 Architecture: any
 Multi-Arch: same
@@ -149,12 +149,12 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark1 (<< 1.4.2-2)
 Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark1 (<< 1.4.2-2)
 Description: network packet dissection utilities library -- shared library
- The libwsutil library provides utility functions for libwireshark6.
+ The libwsutil library provides utility functions for libwireshark8.
 
 Package: libwsutil-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends} , libwsutil6 (= ${binary:Version})
+Depends: ${misc:Depends} , libwsutil7 (= ${binary:Version})
 Conflicts: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2),
  wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-common (<< 1.4.0~rc2-1), libwireshark-dev (<< 1.4.2-2),
@@ -164,6 +164,15 @@ Description: network packet dissection utilities library -- development files
  .
  This package contains the static library and the C header files that are
  needed for applications to use the libwsutil library.
+
+Package: libwscodecs1
+Section: libs
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: network packet dissection codecs library -- shared library
+ The libwscodecs library provides codec functions for libwireshark8.
 
 Package: libwireshark-data
 Section: libs
@@ -182,7 +191,7 @@ Description: network packet dissection library -- data files
 
 Package: libwireshark-dev
 Section: libdevel
-Depends: ${misc:Depends}, libwsutil-dev, libwireshark6 (= ${binary:Version})
+Depends: ${misc:Depends}, libwsutil-dev, libwireshark8 (= ${binary:Version})
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
@@ -193,7 +202,7 @@ Description: network packet dissection library -- development files
  This package contains the static library and the C header files that are
  needed for applications to use libwireshark services.
 
-Package: libwiretap5
+Package: libwiretap6
 Section: libs
 Architecture: any
 Multi-Arch: same
@@ -228,7 +237,7 @@ Description: network packet capture library -- shared library
 
 Package: libwiretap-dev
 Section: libdevel
-Depends: ${misc:Depends}, libwiretap5 (= ${binary:Version})
+Depends: ${misc:Depends}, libwiretap6 (= ${binary:Version})
 Conflicts: wireshark-dev (<< 1.4.0~rc2-1)
 Replaces: wireshark-dev (<< 1.4.0~rc2-1)
 Architecture: any
