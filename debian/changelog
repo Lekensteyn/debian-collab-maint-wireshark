@@ -1,3 +1,9 @@
+wireshark (2.2.0~rc1+g438c022-2) UNRELEASED; urgency=medium
+
+  * Use proper CC flags when test-compiling with development headers
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 23 Aug 2016 16:02:54 +0200
+
 wireshark (2.2.0~rc1+g438c022-1) unstable; urgency=medium
 
   * New upstream release candidate
