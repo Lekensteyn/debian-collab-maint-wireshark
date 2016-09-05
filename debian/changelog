@@ -1,3 +1,28 @@
+wireshark (2.2.0~rc2+g7670a27-1) unstable; urgency=medium
+
+  * Use proper CC flags when test-compiling with development headers
+  * New upstream release candidate
+  * Update symbols files
+  * Build-depend on lsb-release to make release detection work
+  * Build-depend on libnghttp2-dev and use system's libnghttp2
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 02 Sep 2016 02:49:32 +0200
+
+wireshark (2.2.0~rc1+g438c022-1) unstable; urgency=medium
+
+  * New upstream release candidate
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.2.0rc1.html
+    - bug fixes
+      - Fix null dereference in stats (Closes: #786704)
+      - Detect proper large file defines (Closes: #776206)
+      - Use field info length instead of packet length for protocol
+        hierarchy stats (Closes: #151017)
+   * Drop obsolete patches integrated upstream
+   * Refresh patches
+
+ -- Balint Reczey <balint@balintreczey.hu>  Tue, 23 Aug 2016 02:31:31 +0200
+
 wireshark (2.0.5+ga3be9c6-1) unstable; urgency=medium
 
   * Generate better pkg-config file (Closes: #832926)
