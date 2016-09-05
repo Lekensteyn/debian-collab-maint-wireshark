@@ -28,11 +28,15 @@ export docdir = /usr/share/doc/wireshark-doc
 	dh $@ --with python2 --buildsystem cmake --parallel
 
 override_dh_auto_configure-arch:
+	# move away embedded nghttp2
+	-mv epan/nghttp2 debian/nghttp2.bak
 	dh_auto_configure -- \
 		-DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
 	# -DENABLE_QT5=OFF
 
 override_dh_auto_configure-indep:
+	# move away embedded nghttp2
+	-mv epan/nghttp2 debian/nghttp2.bak
 	dh_auto_configure -- -DENABLE_HTML_GUIDES=ON \
 		-DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
 	# -DENABLE_QT5=OFF
@@ -81,3 +85,7 @@ override_dh_fixperms-arch:
 		debian/wireshark-dev/usr/share/pyshared/wireshark_be.py \
 		debian/wireshark-dev/usr/share/pyshared/wireshark_gen.py
 
+override_dh_auto_clean:
+	# restore embedded nghttp2
+	-mv debian/nghttp2.bak epan/nghttp2
+	dh_auto_clean
