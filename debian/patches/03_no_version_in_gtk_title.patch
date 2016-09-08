@@ -1,0 +1,13 @@
+diff --git a/epan/prefs.c b/epan/prefs.c
+index 1ff3ed4..b1ae5bc 100644
+--- a/epan/prefs.c
++++ b/epan/prefs.c
+@@ -3107,7 +3107,7 @@ pre_init_prefs(void)
+     prefs.gui_prepend_window_title   = g_strdup("");
+     if (prefs.gui_start_title) g_free(prefs.gui_start_title);
+     prefs.gui_start_title            = g_strdup("The World's Most Popular Network Protocol Analyzer");
+-    prefs.gui_version_placement      = version_both;
++    prefs.gui_version_placement      = version_welcome_only;
+     prefs.gui_auto_scroll_on_expand  = FALSE;
+     prefs.gui_auto_scroll_percentage = 0;
+     prefs.gui_layout_type            = layout_type_5;
