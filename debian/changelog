@@ -1,3 +1,12 @@
+wireshark (2.2.0+g5368c50-1) unstable; urgency=medium
+
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.2.0.html
+  * Don't show version in window title by default (Closes: #642427)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 08 Sep 2016 23:16:17 +0200
+
 wireshark (2.2.0~rc2+g7670a27-1) unstable; urgency=medium
 
   * Use proper CC flags when test-compiling with development headers
