@@ -1,0 +1,34 @@
+From d3df7f15f5562a73c312f9dce6099f4a44811cc0 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Wed, 24 Aug 2016 08:10:27 +0200
+Subject: [PATCH 131/131] IPMI: do not use col_set_str with non const strings
+
+Bug: 12782
+Change-Id: Ia082ccf5355d7f8dd6073861c59c804fecc96266
+Reviewed-on: https://code.wireshark.org/review/17289
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit 5213496250aceff086404c568e3718ebc0060934)
+Reviewed-on: https://code.wireshark.org/review/17291
+(cherry picked from commit 26daf4ae99b0dfb1e544c8250f36d7a00fd58dac)
+Reviewed-on: https://code.wireshark.org/review/17799
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-ipmi-trace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/epan/dissectors/packet-ipmi-trace.c b/epan/dissectors/packet-ipmi-trace.c
+index fa5dc03..4139579 100755
+--- a/epan/dissectors/packet-ipmi-trace.c
++++ b/epan/dissectors/packet-ipmi-trace.c
+@@ -303,7 +303,7 @@ dissect_ipmi_trace(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+ 
+ 
+ 	col_add_fstr(pinfo->cinfo, COL_DEF_SRC, "Channel %d", chn_num);
+-	col_set_str(pinfo->cinfo, COL_PROTOCOL,
++	col_add_str(pinfo->cinfo, COL_PROTOCOL,
+ 			val_to_str(data_type, str_protocol_types,
+ 					"Reserved (0x%02x)"));
+ 
+-- 
+2.1.4
+

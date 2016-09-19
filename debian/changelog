@@ -1,3 +1,14 @@
+wireshark (1.12.1+g01b65bf-4+deb8u9) jessie-security; urgency=medium
+
+  * security fixes from Wireshark 2.0.6:
+    - The H.225 dissector could crash (CVE-2016-7176)
+    - The Catapult DCT2000 dissector could crash (CVE-2016-7177)
+    - The UMTS FP dissector could crash (CVE-2016-7178)
+    - The Catapult DCT2000  dissector could crash (CVE-2016-7179)
+    - The IPMI trace dissector could crash (CVE-2016-7180)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 19 Sep 2016 16:25:25 +0200
+
 wireshark (1.12.1+g01b65bf-4+deb8u8) jessie-security; urgency=medium
 
   * security fixes from Wireshark 1.12.13:
