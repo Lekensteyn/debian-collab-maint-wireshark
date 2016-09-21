@@ -1,0 +1,40 @@
+From 0d1a93def0350cf0f16f9a28cdc2e854b814eb25 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Tue, 16 Aug 2016 23:40:25 +0200
+Subject: [PATCH 130/131] DCT2000: prevent a stack buffer overflow
+
+Conflicts:
+	epan/dissectors/packet-catapult-dct2000.c
+
+Bug: 12752
+Change-Id: I2007082909cea07314ac40d6db32ee9c2804ecdf
+Reviewed-on: https://code.wireshark.org/review/17095
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+(cherry picked from commit 3b97fbddc23c065727b0147aab52a27c4aadffe7)
+Reviewed-on: https://code.wireshark.org/review/17104
+Reviewed-on: https://code.wireshark.org/review/17802
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-catapult-dct2000.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-catapult-dct2000.c b/epan/dissectors/packet-catapult-dct2000.c
+index 4cef69c..43149c6 100644
+--- a/epan/dissectors/packet-catapult-dct2000.c
++++ b/epan/dissectors/packet-catapult-dct2000.c
+@@ -1406,8 +1406,8 @@ static void parse_outhdr_string(const guchar *outhdr_string, gint outhdr_string_
+         guint   d;
+ 
+         /* Find digits */
+-        for ( ; n < outhdr_string_len; n++) {
+-            if (!isdigit(outhdr_string[n])) {
++        for ( ; (n < outhdr_string_len) && (number_digits < MAX_OUTHDR_VALUES); n++) {
++            if (!g_ascii_isdigit(outhdr_string[n])) {
+                 break;
+             }
+             else {
+-- 
+2.1.4
+

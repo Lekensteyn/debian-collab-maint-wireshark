@@ -117,3 +117,8 @@
 124_1.12.13_LDSS-check-if-a-conversation-already-exists-before-r.patch
 125_1.12.13_proto.c-add-bounds-check-to-proto_tree_add_text-_val.patch
 126_proto.c-do-not-perform-bound-checks-in-proto_tree_ad.patch
+127_2.0.6_Don-t-snprintf-into-a-string-with-one-of-the-argumen.patch
+128_2.0.6_DCT2000-fix-a-buffer-overflow-in-case-of-malformed-p.patch
+129_2.0.6_FP-ensure-that-mac-and-rlc-structures-are-always-all.patch
+130_2.0.6_DCT2000-prevent-a-stack-buffer-overflow.patch
+131_2.0.6_IPMI-do-not-use-col_set_str-with-non-const-strings.patch
