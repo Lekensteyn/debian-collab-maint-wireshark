@@ -45,8 +45,6 @@ override_dh_auto_build-arch:
 	# regenerate ASN.1 dissectors
 	$(MAKE) -C $(CURDIR)/obj-* asn1
 	dh_auto_build
-	# some extcap binaries are not built automatically
-	$(MAKE) -C $(CURDIR)/obj-* sshdump ciscodump
 
 override_dh_auto_build-indep:
 	$(MAKE) -C $(CURDIR)/obj-* asn1
