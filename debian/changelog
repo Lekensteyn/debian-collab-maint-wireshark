@@ -1,7 +1,7 @@
 wireshark (2.2.1+ga6fbd27-2) UNRELEASED; urgency=medium
 
   * Use HTTPS links in README.Debian
-  * Ship sshdump and csiscodump
+  * Ship sshdump and ciscodump
 
  -- Balint Reczey <balint@balintreczey.hu>  Tue, 18 Oct 2016 15:54:01 +0200
 
