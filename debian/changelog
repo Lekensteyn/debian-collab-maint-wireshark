@@ -1,3 +1,13 @@
+wireshark (1.12.1+g01b65bf-4+deb8u10) jessie-security; urgency=medium
+
+  * security fixes from Wireshark 2.0.8:
+    - AllJoyn dissector crash (CVE-2016-9374)
+    - OpenFlow dissector crash (CVE-2016-9376)
+    - DCERPC dissector crash (CVE-2016-9373)
+    - DTN dissector infinite loop (CVE-2016-9375)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Fri, 18 Nov 2016 21:48:54 +0100
+
 wireshark (1.12.1+g01b65bf-4+deb8u9) jessie-security; urgency=medium
 
   * security fixes from Wireshark 2.0.6:

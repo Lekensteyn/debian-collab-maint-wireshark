@@ -1,0 +1,128 @@
+From 3527ea3624ad8f5840844718dd7f04e3d5d5e408 Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Sun, 30 Oct 2016 00:14:04 +0200
+Subject: [PATCH 134/135] OpenFlow 1.4: check length to avoid rewinding offset
+
+Conflicts:
+	epan/dissectors/packet-openflow_v5.c
+
+Bug: 13071
+Change-Id: Ia9d55212fe8423311222330ed516da35ee9f53de
+Reviewed-on: https://code.wireshark.org/review/18565
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit d1a7ed109b37c87546393160e03223e7bf770d57)
+Reviewed-on: https://code.wireshark.org/review/18569
+(cherry picked from commit 51348a7e3edae9cfaf995841854b7cf01895fff8)
+Reviewed-on: https://code.wireshark.org/review/18570
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Reviewed-on: https://code.wireshark.org/review/18874
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+Tested-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-openflow_v5.c | 35 +++++++++++++++++++++++++++++++----
+ 1 file changed, 31 insertions(+), 4 deletions(-)
+
+diff --git a/epan/dissectors/packet-openflow_v5.c b/epan/dissectors/packet-openflow_v5.c
+index 9932e27..c82cd90 100644
+--- a/epan/dissectors/packet-openflow_v5.c
++++ b/epan/dissectors/packet-openflow_v5.c
+@@ -872,6 +872,7 @@ static expert_field ei_openflow_v5_queue_desc_prop_undecoded = EI_INIT;
+ static expert_field ei_openflow_v5_async_config_prop_undecoded = EI_INIT;
+ static expert_field ei_openflow_v5_bundle_prop_undecoded = EI_INIT;
+ static expert_field ei_openflow_v5_message_undecoded = EI_INIT;
++static expert_field ei_openflow_v5_length_too_short = EI_INIT;
+ 
+ static const value_string openflow_v5_version_values[] = {
+     { 0x05, "1.4" },
+@@ -1300,9 +1301,14 @@ dissect_openflow_match_v5(tvbuff_t *tvb, packet_info *pinfo _U_, proto_tree *tre
+     match_length = tvb_get_ntohs(tvb, offset);
+     pad_length = (match_length + 7)/8*8 - match_length;
+     proto_item_set_len(ti, match_length + pad_length);
+-    proto_tree_add_item(match_tree, hf_openflow_v5_match_length, tvb, offset, 2, ENC_BIG_ENDIAN);
++    ti = proto_tree_add_item(match_tree, hf_openflow_v5_match_length, tvb, offset, 2, ENC_BIG_ENDIAN);
+     offset+=2;
+ 
++    if (match_length < 4) {
++        expert_add_info(pinfo, ti, &ei_openflow_v5_length_too_short);
++        return offset;
++    }
++
+     /* body */
+     switch (match_type) {
+     case OFPMT_STANDARD:
+@@ -1376,7 +1382,7 @@ dissect_openflow_meter_band_v5(tvbuff_t *tvb, packet_info *pinfo _U_, proto_tree
+     /* uint16_t len; */
+     band_len = tvb_get_ntohs(tvb, offset);
+     proto_item_set_len(ti, band_len);
+-    proto_tree_add_item(band_tree, hf_openflow_v5_meter_band_len, tvb, offset, 2, ENC_BIG_ENDIAN);
++    ti = proto_tree_add_item(band_tree, hf_openflow_v5_meter_band_len, tvb, offset, 2, ENC_BIG_ENDIAN);
+     offset+=2;
+ 
+     /* uint32_t rate; */
+@@ -1387,6 +1393,11 @@ dissect_openflow_meter_band_v5(tvbuff_t *tvb, packet_info *pinfo _U_, proto_tree
+     proto_tree_add_item(band_tree, hf_openflow_v5_meter_band_burst_size, tvb, offset, 4, ENC_BIG_ENDIAN);
+     offset+=4;
+ 
++    if (band_len < 12) {
++        expert_add_info(pinfo, ti, &ei_openflow_v5_length_too_short);
++        return offset;
++    }
++
+     switch (band_type) {
+     case OFPMBT_DROP:
+         /* uint8_t pad[4]; */
+@@ -5014,13 +5025,18 @@ dissect_openflow_queue_desc_prop_v5(tvbuff_t *tvb, packet_info *pinfo _U_, proto
+     /* uint16_t len; */
+     prop_len = tvb_get_ntohs(tvb, offset);
+     proto_item_set_len(ti, prop_len);
+-    proto_tree_add_item(prop_tree, hf_openflow_v5_queue_desc_prop_len, tvb, offset, 2, ENC_BIG_ENDIAN);
++    ti = proto_tree_add_item(prop_tree, hf_openflow_v5_queue_desc_prop_len, tvb, offset, 2, ENC_BIG_ENDIAN);
+     offset+=2;
+ 
+     /* uint8_t pad[4]; */
+     proto_tree_add_item(prop_tree, hf_openflow_v5_queue_desc_prop_pad, tvb, offset, 4, ENC_NA);
+     offset+=4;
+ 
++    if (prop_len < 8) {
++        expert_add_info(pinfo, ti, &ei_openflow_v5_length_too_short);
++        return offset;
++    }
++
+     switch (prop_type) {
+     case OFPQDPT_MIN_RATE:
+         /* uint16_t rate; */
+@@ -5167,9 +5183,16 @@ dissect_openflow_flow_update_v5(tvbuff_t *tvb, packet_info *pinfo _U_, proto_tre
+ 
+     /* uint16_t length; */
+     proto_tree_add_item(update_tree, hf_openflow_v5_flow_update_length, tvb, offset, 2, ENC_BIG_ENDIAN);
++    offset+=2;
+ 
+     /* uint16_t event; */
+-    proto_tree_add_item(update_tree, hf_openflow_v5_flow_update_event, tvb, offset, 2, ENC_BIG_ENDIAN);
++    ti = proto_tree_add_item(update_tree, hf_openflow_v5_flow_update_event, tvb, offset, 2, ENC_BIG_ENDIAN);
++    offset+=2;
++
++    if (update_len < 4) {
++        expert_add_info(pinfo, ti, &ei_openflow_v5_length_too_short);
++        return offset;
++    }
+ 
+     switch (update_event) {
+     case OFPFME_INITIAL:
+@@ -9846,6 +9869,10 @@ proto_register_openflow_v5(void)
+         {&ei_openflow_v5_message_undecoded,
+             { "openflow_v5.message.undecoded", PI_UNDECODED, PI_NOTE,
+               "Unknown message body.", EXPFILL }
++        },
++        {&ei_openflow_v5_length_too_short,
++            { "openflow_v5.message.length_too_short", PI_MALFORMED, PI_ERROR,
++              "Length is too short.", EXPFILL }
+         }
+     };
+ 
+-- 
+2.1.4
+
