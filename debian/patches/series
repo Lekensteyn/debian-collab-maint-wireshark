@@ -122,3 +122,7 @@
 129_2.0.6_FP-ensure-that-mac-and-rlc-structures-are-always-all.patch
 130_2.0.6_DCT2000-prevent-a-stack-buffer-overflow.patch
 131_2.0.6_IPMI-do-not-use-col_set_str-with-non-const-strings.patch
+132_2.0.8_DCERPC-save-strings-in-wmem-file-scope.patch
+133_2.0.8_alljoyn-fix-signature-length-adjustments.patch
+134_2.0.8_OpenFlow-1.4-check-length-to-avoid-rewinding-offset.patch
+135_2.0.8_packet-dtn.c-break-loop-if-evaluate_sdnv-doesn-t-suc.patch

@@ -1,0 +1,46 @@
+From 0bde1d7efb43d6fbadca1d2926435639ea65d19a Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Fri, 11 Nov 2016 21:58:45 -0500
+Subject: [PATCH 135/135] packet-dtn.c break loop if evaluate_sdnv doesn't
+ succeed.
+
+Bug: 13097
+Change-Id: If6128f5a3c940b4713c396e1a4a8f002a6bd03b8
+Reviewed-on: https://code.wireshark.org/review/18764
+Petri-Dish: Alexis La Goutte <alexis.lagoutte@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 63776db384f75b2dc793cab46cf27250d8913711)
+Reviewed-on: https://code.wireshark.org/review/18810
+(cherry picked from commit 14bba927e3c343007ce408f0fc7c9ad0ed94b88c)
+Reviewed-on: https://code.wireshark.org/review/18811
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Reviewed-on: https://code.wireshark.org/review/18875
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+Tested-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-dtn.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/epan/dissectors/packet-dtn.c b/epan/dissectors/packet-dtn.c
+index bbfbf37..5f9d364 100644
+--- a/epan/dissectors/packet-dtn.c
++++ b/epan/dissectors/packet-dtn.c
+@@ -1513,10 +1513,12 @@ display_metadata_block(proto_tree *tree, tvbuff_t *tvb, packet_info *pinfo, int
+ 
+         for (i = 0; i < num_eid_ref; i++)
+         {
+-            evaluate_sdnv(tvb, offset, &sdnv_length);
++            if (evaluate_sdnv(tvb, offset, &sdnv_length) < 0)
++                break;
+             offset += sdnv_length;
+ 
+-            evaluate_sdnv(tvb, offset, &sdnv_length);
++            if (evaluate_sdnv(tvb, offset, &sdnv_length) < 0)
++                break;
+             offset += sdnv_length;
+         }
+     }
+-- 
+2.1.4
+

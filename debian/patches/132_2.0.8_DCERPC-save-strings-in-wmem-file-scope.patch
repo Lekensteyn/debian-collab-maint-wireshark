@@ -1,0 +1,63 @@
+From d101dc0b3c76ea0dd9796b4794df5bf12acd11cc Mon Sep 17 00:00:00 2001
+From: Pascal Quantin <pascal.quantin@gmail.com>
+Date: Sat, 29 Oct 2016 20:15:45 +0200
+Subject: [PATCH 132/135] DCERPC: save strings in wmem file scope
+
+Bug: 13072
+Change-Id: Ib5f3d91be822a3d7180d95e3299dec978941c1d5
+Reviewed-on: https://code.wireshark.org/review/18564
+Reviewed-by: Pascal Quantin <pascal.quantin@gmail.com>
+Petri-Dish: Pascal Quantin <pascal.quantin@gmail.com>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit 929ad3805fa31431c39de629e9b09e77e8152709)
+Reviewed-on: https://code.wireshark.org/review/18567
+(cherry picked from commit 3f457988ca74b4ca6feb859aedb41fd11899c498)
+Reviewed-on: https://code.wireshark.org/review/18568
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+(cherry picked from commit cc8e37f0f53c4401bb1644a34eddea345940a8df)
+Reviewed-on: https://code.wireshark.org/review/18870
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-dcerpc-nt.c      | 4 ++--
+ epan/dissectors/packet-dcerpc-spoolss.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/epan/dissectors/packet-dcerpc-nt.c b/epan/dissectors/packet-dcerpc-nt.c
+index d24c3ab..049fbd9 100644
+--- a/epan/dissectors/packet-dcerpc-nt.c
++++ b/epan/dissectors/packet-dcerpc-nt.c
+@@ -1256,7 +1256,7 @@ void cb_wstr_postprocess(packet_info *pinfo, proto_tree *tree _U_,
+ 	/* Save string to dcv->private_data */
+ 	if (options & CB_STR_SAVE) {
+ 		dcerpc_call_value *dcv = (dcerpc_call_value *)di->call_data;
+-		dcv->private_data = s;
++		dcv->private_data = wmem_strdup(wmem_file_scope(), s);
+ 	}
+ }
+ 
+@@ -1319,7 +1319,7 @@ void cb_str_postprocess(packet_info *pinfo, proto_tree *tree _U_,
+ 	if (options & CB_STR_SAVE) {
+ 		dcerpc_call_value *dcv = (dcerpc_call_value *)di->call_data;
+ 
+-		dcv->private_data = s;
++		dcv->private_data = wmem_strdup(wmem_file_scope(), s);
+ 	}
+ }
+ 
+diff --git a/epan/dissectors/packet-dcerpc-spoolss.c b/epan/dissectors/packet-dcerpc-spoolss.c
+index f6bbea8..0291ebc 100644
+--- a/epan/dissectors/packet-dcerpc-spoolss.c
++++ b/epan/dissectors/packet-dcerpc-spoolss.c
+@@ -612,7 +612,7 @@ dissect_SYSTEM_TIME_ptr(tvbuff_t *tvb, int offset, packet_info *pinfo,
+ 
+ 	offset =  dissect_SYSTEM_TIME(
+ 		tvb, offset, pinfo, tree, di, drep, NULL, FALSE, &str);
+-	dcv->private_data = str;
++	dcv->private_data = wmem_strdup(wmem_file_scope(), str);
+ 
+ 	return offset;
+ }
+-- 
+2.1.4
+
