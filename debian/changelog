@@ -1,4 +1,4 @@
-wireshark (1.12.1+g01b65bf-4+deb8u10) jessie-security; urgency=medium
+wireshark (1.12.1+g01b65bf-4+deb8u10) jessie-security; urgency=high
 
   * security fixes from Wireshark 2.0.8:
     - AllJoyn dissector crash (CVE-2016-9374)
