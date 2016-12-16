@@ -1,3 +1,11 @@
+wireshark (2.2.3+g57531cd-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.2.3.html
+
+ -- Balint Reczey <balint@balintreczey.hu>  Thu, 15 Dec 2016 23:20:18 +0100
+
 wireshark (2.2.2+g9c5aae3-1) unstable; urgency=medium
 
   * Use HTTPS links in README.Debian
