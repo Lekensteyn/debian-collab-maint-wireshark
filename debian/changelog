@@ -1,3 +1,27 @@
+wireshark (2.2.5+g440fd4d-1) experimental; urgency=medium
+
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.2.5.html
+    - security fixes:
+      - The STANAG 4607 file parser could go into an infinite loop
+        (CVE-2017-6014)
+      - The NetScaler file parser could go into an infinite loop
+        (CVE-2017-6467)
+      - The NetScaler file parser could crash (CVE-2017-6468)
+      - The LDSS dissector could crash (CVE-2017-6469)
+      - The IAX2 dissector could go into an infinite loop
+        (CVE-2017-6470)
+      - The WSP dissector could go into an infinite loop (CVE-2017-6471)
+      - The RTMTP dissector could go into an infinite loop
+        (CVE-2017-6472)
+      - The K12 file parser could crash (CVE-2017-6473)
+      - The NetScaler file parser could go into an infinite loop
+        (CVE-2017-6474)
+  * Update symbols file for libwireshark8
+
+ -- Balint Reczey <balint@balintreczey.hu>  Sun, 05 Mar 2017 20:20:45 +0100
+
 wireshark (2.2.4+gcc3dc1b-1) unstable; urgency=medium
 
   * New upstream release
