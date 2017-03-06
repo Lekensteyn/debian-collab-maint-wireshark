@@ -7,7 +7,11 @@ wireshark (1.12.1+g01b65bf-4+deb8u11) UNRELEASED; urgency=medium
     - The DHCPv6 dissector could go into a large loop. Discovered by
       Antti Levomäki and Christian Jalio, Forcepoint.(CVE-2017-5597)
 
- -- Balint Reczey <balint@balintreczey.hu>  Sun, 29 Jan 2017 21:02:49 +0100
+  [ Chris Lamb ]
+  * CVE-2017-6014: Fix memory exhausion/infinite loop via malformed STANAG 4607
+    capture file. (Closes: #855408)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 06 Mar 2017 21:46:50 +0100
 
 wireshark (1.12.1+g01b65bf-4+deb8u10) jessie-security; urgency=high
 
