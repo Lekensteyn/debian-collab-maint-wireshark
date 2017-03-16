@@ -1,0 +1,67 @@
+From f2edf446e20be1a26ff199b2ade6ce579d581f4f Mon Sep 17 00:00:00 2001
+From: Guy Harris <guy@alum.mit.edu>
+Date: Thu, 16 Feb 2017 00:18:30 -0800
+Subject: [PATCH 138/144] Report an error for too-short packets.
+
+The packet length field gives the length of the *entire* packet, so, by
+definition, it must not be zero.  Make sure it's at least big enough for
+the packet header itself plus one segment header.
+
+Conflicts:
+	wiretap/stanag4607.c
+
+Bug: 13416
+Change-Id: I625bd5c0ce75ab1200b3becf12fc1c819fefcd63
+Reviewed-on: https://code.wireshark.org/review/20133
+Reviewed-by: Guy Harris <guy@alum.mit.edu>
+(cherry picked from commit c7042bedbb3b12c5f4e19e59e52da370d4ffe62f)
+Reviewed-on: https://code.wireshark.org/review/20135
+Reviewed-on: https://code.wireshark.org/review/20430
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ wiretap/stanag4607.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/wiretap/stanag4607.c b/wiretap/stanag4607.c
+index c3703cc..a5ff6e7 100644
+--- a/wiretap/stanag4607.c
++++ b/wiretap/stanag4607.c
+@@ -37,6 +37,9 @@ typedef struct {
+   time_t base_secs;
+ } stanag4607_t;
+ 
++#define PKT_HDR_SIZE  32 /* size of a packet header */
++#define SEG_HDR_SIZE  5  /* size of a segment header */
++
+ static gboolean is_valid_id(guint16 version_id)
+ {
+ #define VERSION_21 0x3231
+@@ -54,7 +57,7 @@ static gboolean stanag4607_read_file(wtap *wth, FILE_T fh, struct wtap_pkthdr *p
+   stanag4607_t *stanag4607 = (stanag4607_t *)wth->priv;
+   guint32 millisecs, secs, nsecs;
+   gint64 offset = 0;
+-  guint8 stanag_pkt_hdr[37];
++  guint8 stanag_pkt_hdr[PKT_HDR_SIZE+SEG_HDR_SIZE];
+   int bytes_read;
+   guint32 packet_size;
+ 
+@@ -76,6 +79,16 @@ static gboolean stanag4607_read_file(wtap *wth, FILE_T fh, struct wtap_pkthdr *p
+ 
+   /* The next 4 bytes are the packet length */
+   packet_size = pntoh32(&stanag_pkt_hdr[2]);
++  if (packet_size < PKT_HDR_SIZE+SEG_HDR_SIZE) {
++    /*
++     * Probably a corrupt capture file; don't, for example, loop
++     * infinitely if the size is zero.
++     */
++    *err = WTAP_ERR_BAD_FILE;
++    *err_info = g_strdup_printf("stanag4607: File has %" G_GUINT32_FORMAT "d-byte packet, "
++      "smaller than minimum of %u", packet_size, PKT_HDR_SIZE+SEG_HDR_SIZE);
++    return FALSE;
++  }
+   phdr->caplen = packet_size;
+   phdr->len = packet_size;
+ 
+-- 
+2.1.4
+
