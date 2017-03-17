@@ -1,0 +1,82 @@
+From d62e7bfa20b37f2a0a46245e045c76f63184f3d4 Mon Sep 17 00:00:00 2001
+From: Gerald Combs <gerald@wireshark.org>
+Date: Mon, 23 Jan 2017 10:09:33 -0800
+Subject: [PATCH 137/137] DHCPv6: Avoid integer overflows.
+
+Count using ints instead of guint16s.
+
+Make sure dissect_packetcable_ccc_option and
+dissect_packetcable_cccV6_option return positive values while we're
+here.
+
+Bug: 13345
+Change-Id: Ic303ddc266f46ee3144e079731742c85808faf37
+Reviewed-on: https://code.wireshark.org/review/19747
+Petri-Dish: Gerald Combs <gerald@wireshark.org>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Gerald Combs <gerald@wireshark.org>
+(cherry picked from commit 57894f741f7cc98b46c9fdce7eee8256d2a4ae3f)
+Reviewed-on: https://code.wireshark.org/review/19750
+(cherry picked from commit f291d1f0f50a0aeaa0e8d85a8c03d42e4f3e8d32)
+Reviewed-on: https://code.wireshark.org/review/19751
+(cherry picked from commit 12723d7f38dfe3264c024a43bd7599cc66aa430d)
+Reviewed-on: https://code.wireshark.org/review/19845
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-dhcpv6.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/epan/dissectors/packet-dhcpv6.c b/epan/dissectors/packet-dhcpv6.c
+index 5743fab..1d8ddc8 100644
+--- a/epan/dissectors/packet-dhcpv6.c
++++ b/epan/dissectors/packet-dhcpv6.c
+@@ -745,7 +745,7 @@ dissect_packetcable_ccc_option(proto_tree *v_tree, proto_item *v_item, packet_in
+     /* There must be at least five octets left to be a valid sub element */
+     if (optend <= 0) {
+         expert_add_info_format(pinfo, v_item, &ei_dhcpv6_no_suboption_len, "Sub element %d: no room left in option for suboption length", subopt);
+-        return (optend);
++        return (suboptoff - optoff);
+     }
+     /* g_print("dissect packetcable ccc option subopt_len=%d optend=%d\n\n", subopt_len, optend); */
+ 
+@@ -869,7 +869,7 @@ dissect_packetcable_cccV6_option(proto_tree *v_tree, proto_item *v_item, packet_
+     /* There must be at least five octets left to be a valid sub element */
+     if (optend <= 0) {
+         expert_add_info_format(pinfo, v_item, &ei_dhcpv6_no_suboption_len, "Sub element %d: no room left in option for suboption length", subopt);
+-        return (optend);
++        return (suboptoff - optoff);
+     }
+ 
+     vti = proto_tree_add_item(v_tree, hf_packetcable_cccV6_suboption, tvb, optoff, 2, ENC_BIG_ENDIAN);
+@@ -983,21 +983,21 @@ dissect_packetcable_cccV6_option(proto_tree *v_tree, proto_item *v_item, packet_
+ static void
+ dissect_cablelabs_specific_opts(proto_tree *v_tree, proto_item *v_item, packet_info *pinfo, tvbuff_t *tvb, int voff, int len)
+ {
+-    guint16 type,
+-            tlv_len, /* holds the number of elements in the tlv */
+-            opt_len, /* holds the length of the suboption */
+-            sub_value;
++    guint type,
++          sub_value;
+     proto_item *ti;
+     proto_item *ti2;
+     proto_tree *subtree;
+     proto_tree *subtree2;
+-    gint tlv5_cap_index,
+-         tlv5_counter,
+-         tlv5_cap_len;
++    int tlv5_cap_index,
++        tlv5_counter,
++        tlv5_cap_len;
+     int off = voff,
+         sub_off, /** The offset for the sub-option */
+         i,
++        tlv_len, /* holds the number of elements in the tlv */
+         field_len, /* holds the length of one occurrence of a field */
++        opt_len, /* holds the length of the suboption */
+         field_value;
+     gchar *device_type = NULL;
+ 
+-- 
+2.1.4
+
