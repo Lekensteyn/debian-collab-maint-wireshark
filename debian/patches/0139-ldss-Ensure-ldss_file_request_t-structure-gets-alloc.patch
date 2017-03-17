@@ -1,0 +1,103 @@
+From 510cac07580c58248d92e3d472f79faff0683c23 Mon Sep 17 00:00:00 2001
+From: Michael Mann <mmann78@netscape.net>
+Date: Tue, 24 Jan 2017 22:17:49 -0500
+Subject: [PATCH 139/144] ldss: Ensure ldss_file_request_t structure gets
+ allocated
+
+# Conflicts:
+#	epan/dissectors/packet-ldss.c
+
+Bug: 13346
+Change-Id: I83175fefeef5035039e378dd68ffdcd0787970b8
+Reviewed-on: https://code.wireshark.org/review/19775
+Petri-Dish: Michael Mann <mmann78@netscape.net>
+Tested-by: Petri Dish Buildbot <buildbot-no-reply@wireshark.org>
+Reviewed-by: Michael Mann <mmann78@netscape.net>
+Reviewed-on: https://code.wireshark.org/review/19793
+Reviewed-by: Anders Broman <a.broman58@gmail.com>
+Reviewed-on: https://code.wireshark.org/review/19815
+(cherry picked from commit 4f753c127082d5e28abf482d6d175cbfee6661f7)
+Reviewed-on: https://code.wireshark.org/review/20463
+Reviewed-by: Balint Reczey <balint@balintreczey.hu>
+---
+ epan/dissectors/packet-ldss.c | 25 +++----------------------
+ 1 file changed, 3 insertions(+), 22 deletions(-)
+
+diff --git a/epan/dissectors/packet-ldss.c b/epan/dissectors/packet-ldss.c
+index 3e6adc4..a77350e 100644
+--- a/epan/dissectors/packet-ldss.c
++++ b/epan/dissectors/packet-ldss.c
+@@ -210,9 +210,6 @@ static dissector_handle_t	ldss_tcp_handle;
+ /* Global variables associated with the preferences for ldss */
+ static guint	global_udp_port_ldss	= UDP_PORT_LDSS;
+ 
+-/* Avoid creating conversations and data twice */
+-static unsigned int highest_num_seen = 0;
+-
+ /* When seeing a broadcast talking about an open TCP port on a host, create
+  * a conversation to dissect anything sent/received at that address.  Setup
+  * protocol data so the TCP dissection knows what broadcast triggered it. */
+@@ -406,9 +403,8 @@ dissect_ldss_broadcast(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+ 	 * These steps only need to be done once per packet, so a variable
+ 	 * tracks the highest frame number seen. Handles the case of first frame
+ 	 * being frame zero. */
+-	if (messageDetail != INFERRED_PEERSHUTDOWN &&
+-	    (highest_num_seen == 0 ||
+-	     highest_num_seen < pinfo->fd->num)) {
++	if ((messageDetail != INFERRED_PEERSHUTDOWN) &&
++	    !PINFO_FD_VISITED(pinfo)) {
+ 
+ 		ldss_broadcast_t *data;
+ 
+@@ -435,9 +431,6 @@ dissect_ldss_broadcast(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+ 		if (port > 0) {
+ 			prepare_ldss_transfer_conv(data);
+ 		}
+-
+-		/* Record that the frame was processed */
+-		highest_num_seen = pinfo->fd->num;
+ 	}
+ 
+ 	return tvb_length(tvb);
+@@ -496,13 +489,11 @@ dissect_ldss_transfer (tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, void
+ 
+ 		col_set_str(pinfo->cinfo, COL_INFO, "LDSS File Transfer (Requesting file - pull)");
+ 
+-		if (highest_num_seen == 0 ||
+-		    highest_num_seen < pinfo->fd->num) {
++		if (transfer_info->req == NULL) {
+ 
+ 			already_dissected = FALSE;
+ 			transfer_info->req = wmem_new0(wmem_file_scope(), ldss_file_request_t);
+ 			transfer_info->req->file = wmem_new0(wmem_file_scope(), ldss_file_t);
+-			highest_num_seen = pinfo->fd->num;
+ 		}
+ 
+ 		if (tree) {
+@@ -818,15 +809,6 @@ dissect_ldss (tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, void *data _U
+ 	return 0;
+ }
+ 
+-/* Initialize the highest num seen each time a
+- * new file is loaded or re-loaded in wireshark */
+-static void
+-ldss_init_protocol(void)
+-{
+-	/* We haven't dissected anything yet. */
+-	highest_num_seen = 0;
+-}
+-
+ void
+ proto_register_ldss (void) {
+ 	static hf_register_info hf[] =	{
+@@ -990,7 +972,6 @@ proto_register_ldss (void) {
+ 						"broadcasts will be sent",
+ 						10, &global_udp_port_ldss);
+ 
+-	register_init_routine(&ldss_init_protocol);
+ }
+ 
+ 
+-- 
+2.1.4
+
