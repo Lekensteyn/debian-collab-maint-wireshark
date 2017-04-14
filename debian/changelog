@@ -1,3 +1,24 @@
+wireshark (2.2.6+g32dac6a-1) experimental; urgency=medium
+
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.2.6.html
+    - security fixes:
+      - The IMAP dissector could crash (CVE-2017-7703)
+      - The WBXML dissector could enter an infinite loop (CVE-2017-7702)
+      - The NetScaler file parser could enter an infinite loop
+        (CVE-2017-7700)
+      - The RPCoRDMA dissector enter an infinite loop (CVE-2017-7705)
+      - The BGP dissector could enter an infinite loop (CVE-2017-7701)
+      - The DOF dissector could enter an infinite loop (CVE-2017-7704)
+      - The PacketBB dissector could crash (CVE-2017-7747)
+      - The SLSK dissector could enter a long loop (CVE-2017-7746)
+      - The SIGCOMP dissector could enter an infinite loop
+        (CVE-2017-7745)
+      - The WSP dissector could enter an infinite loop (CVE-2017-7748)
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Fri, 14 Apr 2017 00:26:19 +0200
+
 wireshark (2.2.5+g440fd4d-2) unstable; urgency=medium
 
   * Upload to unstable
