@@ -3,6 +3,7 @@ wireshark (2.2.6+g32dac6a-3ubuntu1) UNRELEASED; urgency=medium
   [ Balint Reczey ]
   * Convert d/copyright to machine readable format
   * Download releases from GitHub excluding upstream's debian/ dir
+  * Use my @ubuntu.com email address in Maintainer field
 
   [ Alexander Gerasiov ]
   * Fix pkg-config libdir (Closes: #857729)
