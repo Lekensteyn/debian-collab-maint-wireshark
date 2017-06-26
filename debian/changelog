@@ -1,14 +1,30 @@
-wireshark (2.2.6+g32dac6a-3ubuntu1) UNRELEASED; urgency=medium
+wireshark (2.2.7-1) unstable; urgency=medium
 
   [ Balint Reczey ]
   * Convert d/copyright to machine readable format
   * Download releases from GitHub excluding upstream's debian/ dir
   * Use my @ubuntu.com email address in Maintainer field
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.2.7.html
+    - security fixes (Closes: #864058):
+      - Bazaar dissector infinite loop (CVE-2017-9352)
+      - DOF dissector read overflow (CVE-2017-9348)
+      - DHCP dissector read overflow (CVE-2017-9351)
+      - SoulSeek dissector infinite loop (CVE-2017-9346)
+      - DNS dissector infinite loop (CVE-2017-9345)
+      - DICOM dissector infinite loop (CVE-2017-9349)
+      - openSAFETY dissector memory exhaustion (CVE-2017-9350)
+      - BT L2CAP dissector divide by zero (CVE-2017-9344)
+      - MSNIP dissector crash (CVE-2017-9343)
+      - ROS dissector crash (CVE-2017-9347)
+      - RGMP dissector crash (CVE-2017-9354)
+      - IPv6 dissector crash (CVE-2017-9353)
 
   [ Alexander Gerasiov ]
   * Fix pkg-config libdir (Closes: #857729)
 
- -- Balint Reczey <rbalint@ubuntu.com>  Tue, 27 Jun 2017 00:40:59 +0200
+ -- Balint Reczey <rbalint@ubuntu.com>  Tue, 27 Jun 2017 00:48:15 +0200
 
 wireshark (2.2.6+g32dac6a-2) unstable; urgency=medium
 
