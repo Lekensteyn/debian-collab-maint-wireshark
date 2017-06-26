@@ -1,9 +1,13 @@
-wireshark (2.2.6+g32dac6a-3) UNRELEASED; urgency=medium
+wireshark (2.2.6+g32dac6a-3ubuntu1) UNRELEASED; urgency=medium
 
+  [ Balint Reczey ]
   * Convert d/copyright to machine readable format
   * Download releases from GitHub excluding upstream's debian/ dir
 
- -- Balint Reczey <rbalint@ubuntu.com>  Sun, 18 Jun 2017 14:30:10 +0200
+  [ Alexander Gerasiov ]
+  * Fix pkg-config libdir (Closes: #857729)
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Tue, 27 Jun 2017 00:40:59 +0200
 
 wireshark (2.2.6+g32dac6a-2) unstable; urgency=medium
 

@@ -6,3 +6,4 @@
 06_release-version.patch
 09_idl2wrs.patch
 16_licence_about_location.patch
+17_libdir_location.patch

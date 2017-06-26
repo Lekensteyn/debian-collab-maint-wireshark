@@ -1,0 +1,27 @@
+Description: Fix lubdir location in pkg-config and cmake files.
+Author: Alexander Gerasiov <gq@debian.org>
+Bug-Debian: https://bugs.debian.org/857729
+Last-Update: 2017-03-27
+
+--- wireshark-2.2.5+g440fd4d.orig/CMakeLists.txt
++++ wireshark-2.2.5+g440fd4d/CMakeLists.txt
+@@ -1193,7 +1193,7 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake
+ 
+ set( prefix "${CMAKE_INSTALL_PREFIX}" )
+ set( exec_prefix "\${prefix}" )
+-set( libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}" )
++set( libdir "${CMAKE_INSTALL_LIBDIR}" )
+ set( includedir  "\${prefix}/include" )
+ set( plugindir "\${libdir}/wireshark/plugins/${CPACK_PACKAGE_VERSION}" )
+ 
+--- wireshark-2.2.5+g440fd4d.orig/cmake/modules/WiresharkConfig.cmake.in
++++ wireshark-2.2.5+g440fd4d/cmake/modules/WiresharkConfig.cmake.in
+@@ -7,7 +7,7 @@ set(Wireshark_VERSION_STRING "@PROJECT_M
+ set(Wireshark_INSTALL_DIR        "@CMAKE_INSTALL_PREFIX@")
+ set(Wireshark_PLUGIN_INSTALL_DIR "@PLUGIN_INSTALL_DIR@")
+ 
+-set(Wireshark_LIB_DIR           "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@")
++set(Wireshark_LIB_DIR           "@CMAKE_INSTALL_LIBDIR@")
+ set(Wireshark_INCLUDE_DIR       "@CMAKE_INSTALL_PREFIX@/include/wireshark")
+ set(Wireshark_CMAKE_MODULES_DIR "@CMAKE_INSTALL_MODULES_DIR@")
+ 
