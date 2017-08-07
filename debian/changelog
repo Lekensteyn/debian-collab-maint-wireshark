@@ -1,8 +1,34 @@
-wireshark (2.2.7-2) UNRELEASED; urgency=medium
+wireshark (2.4.0-1) UNRELEASED; urgency=medium
 
   * Use debconf messages instead of "echo" in postinst/postrm (LP: #1687344)
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.4.0.html
+    - security fixes:
+      - deeply nested DAAP data may cause stack exhaustion
+        (uncontrolled recursion) in the dissect_daap_one_tag function
+        (CVE-2017-9617) (Closes: #870174)
+      - PROFINET IO data with a high recursion depth allows remote
+        attackers to cause a denial of service (stack exhaustion)
+        in the dissect_IODWriteReq function. (CVE-2017-9766)
+        (Closes: #870175)
+      - the DOCSIS dissector could go into an infinite loop (CVE-2017-11406)
+        (Closes: #870172)
+      - the MQ dissector could crash (CVE-2017-11407) (Closes: #870172)
+      - the AMQP dissector could crash (CVE-2017-11408) (Closes: #870172)
+      - the WBXML dissector could go into an infinite loop, triggered
+        by packet injection or a malformed capture file (CVE-2017-11410)
+        (Closes: #870180)
+      - the openSAFETY dissector could crash or exhaust system memory
+        (CVE-2017-11411) (Closes: #870179)
+  * Update shared library package names to match new .so versions
+  * Refresh patches
+  * Drop workaround to use system's nghttp2 since upstream does not
+    ship the embedded copy anymore
+  * Add build-dependency on libparse-yapp-perl, liblz4-dev, libsnappy-dev,
+    libspandsp-dev, libxml2-dev and lynx to enable new upstream features
 
- -- Balint Reczey <rbalint@ubuntu.com>  Sun, 06 Aug 2017 11:43:23 -0400
+ -- Balint Reczey <rbalint@ubuntu.com>  Sun, 06 Aug 2017 13:22:45 -0400
 
 wireshark (2.2.7-1) unstable; urgency=medium
 

@@ -1,0 +1,52 @@
+From 719e6b5db5353d9d097342aa5e8f828836f0c46f Mon Sep 17 00:00:00 2001
+From: Balint Reczey <balint.reczey@canonical.com>
+Date: Sat, 5 Aug 2017 22:58:45 -0400
+Subject: [PATCH] Set libwscodecs.so's version to 1.1.0
+
+It was 1.0.0 in the 2.2.x branch already and there is one new
+exported function.
+
+Change-Id: I71a7a8927741a290692ce1a97368f4626f9ffe37
+Signed-off-by: Balint Reczey <balint.reczey@canonical.com>
+---
+ codecs/CMakeLists.txt | 4 ++--
+ codecs/Makefile.am    | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/codecs/CMakeLists.txt b/codecs/CMakeLists.txt
+index 4595054059..4fe314c1e2 100644
+--- a/codecs/CMakeLists.txt
++++ b/codecs/CMakeLists.txt
+@@ -57,14 +57,14 @@ add_library(wscodecs ${LINK_MODE_LIB}
+   ${CMAKE_BINARY_DIR}/image/libwscodecs.rc
+ )
+ 
+-set(FULL_SO_VERSION "0.0.0")
++set(FULL_SO_VERSION "1.1.0")
+ 
+ set_target_properties(wscodecs PROPERTIES
+   PREFIX "lib"
+   COMPILE_DEFINITIONS "WS_BUILD_DLL"
+   COMPILE_OPTIONS "${WS_WS_WARNINGS_C_FLAGS}"
+   LINK_FLAGS "${WS_LINK_FLAGS}"
+-  VERSION ${FULL_SO_VERSION} SOVERSION 0
++  VERSION ${FULL_SO_VERSION} SOVERSION 1
+   FOLDER "DLLs"
+ )
+ 
+diff --git a/codecs/Makefile.am b/codecs/Makefile.am
+index 46c4190a99..61f5a67a9a 100644
+--- a/codecs/Makefile.am
++++ b/codecs/Makefile.am
+@@ -45,7 +45,7 @@ libwscodecs_la_SOURCES += speex/resample.c
+ endif
+ 
+ # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+-libwscodecs_la_LDFLAGS = -version-info 0:0:0 @LDFLAGS_SHAREDLIB@
++libwscodecs_la_LDFLAGS = -version-info 2:0:1 @LDFLAGS_SHAREDLIB@
+ 
+ libwscodecs_la_LIBADD = $(top_builddir)/wsutil/libwsutil.la $(GLIB_LIBS) $(SBC_LIBS) $(SPANDSP_LIBS)
+ 
+-- 
+2.11.0
+
