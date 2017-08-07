@@ -1,4 +1,4 @@
-wireshark (2.4.0-1) UNRELEASED; urgency=medium
+wireshark (2.4.0-1) unstable; urgency=medium
 
   * Use debconf messages instead of "echo" in postinst/postrm (LP: #1687344)
   * New upstream release
