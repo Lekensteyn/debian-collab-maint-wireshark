@@ -27,6 +27,7 @@ wireshark (2.4.0-1) UNRELEASED; urgency=medium
     ship the embedded copy anymore
   * Add build-dependency on libparse-yapp-perl, liblz4-dev, libsnappy-dev,
     libspandsp-dev, libxml2-dev and lynx to enable new upstream features
+  * Update PO files about debconf templates
 
  -- Balint Reczey <rbalint@ubuntu.com>  Sun, 06 Aug 2017 13:22:45 -0400
 
