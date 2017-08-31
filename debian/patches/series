@@ -1,4 +1,3 @@
-01_use_system_nghttp2.patch
 02_use_packaged_openlayers_js.patch
 03_no_version_in_gtk_title.patch
 04_asn2wrs_ply.patch

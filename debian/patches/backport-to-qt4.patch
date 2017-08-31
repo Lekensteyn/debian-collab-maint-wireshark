@@ -4,7 +4,7 @@ Description: Change d/control to use old Qt4 dev packages
 --- a/debian/control
 +++ b/debian/control
 @@ -5,10 +5,10 @@
- Standards-Version: 3.9.6
+ Standards-Version: 3.9.8
  Build-Depends: libgtk-3-dev,
  # enable Qt 5 related dependencies for Qt 5-enabled build
 - qtbase5-dev, qtbase5-dev-tools, qttools5-dev, qttools5-dev-tools,
@@ -17,22 +17,22 @@ Description: Change d/control to use old Qt4 dev packages
   libpcap0.8-dev, flex, libz-dev, debhelper (>= 9), po-debconf, libtool,
   python (>= 2.6.6-3~), python-ply, libc-ares-dev, xsltproc, dh-python,
   docbook-xsl (>= 1.64.1.0-0), docbook-xml, libxml2-utils, libpcre3-dev,
-@@ -61,7 +61,6 @@
+@@ -62,6 +62,7 @@
  Package: wireshark-qt
  Architecture: any
  Depends: ${shlibs:Depends}, ${misc:Depends}, wireshark-common (= ${binary:Version}), xdg-utils
--Recommends: libqt5multimedia5-plugins
++Recommends: libqt5multimedia5-plugins
  Replaces: ethereal (<< 1.0.0-3), wireshark (<< 2.0.0~)
  Breaks: ethereal (<< 1.0.0-3), wireshark (<< 2.0.0~)
  Description: network traffic analyzer - Qt version
 --- a/debian/rules
 +++ b/debian/rules
-@@ -22,7 +22,7 @@
+@@ -30,7 +30,7 @@
  override_dh_auto_configure-arch:
- 	dh_auto_configure -- \
+ 	dh_auto_configure -- -DBUILD_wireshark_gtk=ON \
  		-DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
 -	# -DENABLE_QT5=OFF
 +	-DENABLE_QT5=OFF
  
  override_dh_auto_configure-indep:
- 	dh_auto_configure -- -DENABLE_HTML_GUIDES=ON \
+ 	dh_auto_configure -- -DENABLE_HTML_GUIDES=ON -DBUILD_wireshark_gtk=ON \

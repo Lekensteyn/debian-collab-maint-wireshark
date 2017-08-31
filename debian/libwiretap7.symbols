@@ -1,4 +1,4 @@
-libwiretap.so.6 libwiretap6 #MINVER#
+libwiretap.so.7 libwiretap7 #MINVER#
  file_eof@Base 1.9.1
  file_error@Base 1.9.1
  file_getc@Base 1.9.1
@@ -10,6 +10,8 @@ libwiretap.so.6 libwiretap6 #MINVER#
  file_tell@Base 1.9.1
  init_open_routines@Base 1.12.0~rc1
  merge_files@Base 1.99.9
+ merge_files_to_stdout@Base 2.3.0
+ merge_files_to_tempfile@Base 2.3.0
  merge_idb_merge_mode_to_string@Base 1.99.9
  merge_string_to_idb_merge_mode@Base 1.99.9
  open_info_name_to_type@Base 1.12.0~rc1
@@ -37,8 +39,8 @@ libwiretap.so.6 libwiretap6 #MINVER#
  wtap_block_get_string_option_value@Base 2.1.2
  wtap_block_get_uint64_option_value@Base 2.1.2
  wtap_block_get_uint8_option_value@Base 2.1.2
- wtap_block_remove_nth_option_instance@Base 2.2.0~
- wtap_block_remove_option@Base 2.2.0~
+ wtap_block_remove_nth_option_instance@Base 2.2.0
+ wtap_block_remove_option@Base 2.2.0
  wtap_block_set_custom_option_value@Base 2.1.2
  wtap_block_set_ipv4_option_value@Base 2.1.2
  wtap_block_set_ipv6_option_value@Base 2.1.2
@@ -65,6 +67,7 @@ libwiretap.so.6 libwiretap6 #MINVER#
  wtap_dump_file_tell@Base 1.12.0~rc1
  wtap_dump_file_write@Base 1.12.0~rc1
  wtap_dump_flush@Base 1.9.1
+ wtap_dump_get_needs_reload@Base 2.4.0
  wtap_dump_has_name_resolution@Base 1.9.1
  wtap_dump_open@Base 1.9.1
  wtap_dump_open_ng@Base 1.9.1
@@ -93,7 +96,7 @@ libwiretap.so.6 libwiretap6 #MINVER#
  wtap_free_extensions_list@Base 1.9.1
  wtap_free_idb_info@Base 1.99.9
  wtap_fstat@Base 1.9.1
- wtap_get_all_file_extensions_list@Base 1.12.0~rc1
+ wtap_get_all_capture_file_extensions_list@Base 2.3.0
  wtap_get_bytes_dumped@Base 1.9.1
  wtap_get_debug_if_descr@Base 1.99.9
  wtap_get_file_extension_type_extensions@Base 1.12.0~rc1
@@ -104,11 +107,13 @@ libwiretap.so.6 libwiretap6 #MINVER#
  wtap_get_num_file_types_subtypes@Base 1.12.0~rc1
  wtap_get_savable_file_types_subtypes@Base 1.12.0~rc1
  wtap_has_open_info@Base 1.12.0~rc1
- wtap_init@Base 2.2.4
+ wtap_init@Base 2.3.0
+ wtap_cleanup@Base 2.3.0
  wtap_iscompressed@Base 1.9.1
  wtap_open_offline@Base 1.9.1
  wtap_opttype_register_custom_block_type@Base 2.1.2
  wtap_opttypes_initialize@Base 2.1.2
+ wtap_opttypes_cleanup@Base 2.3.0
  wtap_pcap_encap_to_wtap_encap@Base 1.9.1
  wtap_phdr@Base 1.9.1
  wtap_phdr_cleanup@Base 1.99.2
@@ -122,7 +127,6 @@ libwiretap.so.6 libwiretap6 #MINVER#
  wtap_register_file_type_extension@Base 1.12.0~rc1
  wtap_register_file_type_subtypes@Base 1.12.0~rc1
  wtap_register_open_info@Base 1.12.0~rc1
- wtap_register_plugin_types@Base 1.12.0~rc1
  wtap_seek_read@Base 1.9.1
  wtap_sequential_close@Base 1.9.1
  wtap_set_bytes_dumped@Base 1.9.1

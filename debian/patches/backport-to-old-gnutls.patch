@@ -4,8 +4,8 @@ Description: Change d/control to use old gnutls-dev package
 --- a/debian/control
 +++ b/debian/control
 @@ -15,9 +15,9 @@
-  libcap2-dev [linux-any] | libcap-dev (>= 2.17) [linux-any],
-  bison,
+  libcap2-dev [linux-any] | libcap-dev (>= 2.17) [linux-any], lsb-release,
+  bison, libparse-yapp-perl,
  # enable versioned libgnutls28-dev below to have GPLv2+ compatible GMP
 - libgnutls28-dev (>= 3.2.14-1~),
 +# libgnutls28-dev (>= 3.2.14-1~),
@@ -14,4 +14,4 @@ Description: Change d/control to use old gnutls-dev package
 + libgnutls-dev,
   libgcrypt-dev, portaudio19-dev, libkrb5-dev, liblua5.2-dev, libsmi2-dev,
   libgeoip-dev, dpkg-dev (>= 1.16.1~), imagemagick, xdg-utils,
-  libnl-genl-3-dev [linux-any], libnl-route-3-dev [linux-any], asciidoc, cmake, w3m,
+  libnl-genl-3-dev [linux-any], libnl-route-3-dev [linux-any], asciidoc,
