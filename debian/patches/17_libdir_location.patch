@@ -3,9 +3,9 @@ Author: Alexander Gerasiov <gq@debian.org>
 Bug-Debian: https://bugs.debian.org/857729
 Last-Update: 2017-03-27
 
---- wireshark-2.2.5+g440fd4d.orig/CMakeLists.txt
-+++ wireshark-2.2.5+g440fd4d/CMakeLists.txt
-@@ -1193,7 +1193,7 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1358,7 +1358,7 @@
  
  set( prefix "${CMAKE_INSTALL_PREFIX}" )
  set( exec_prefix "\${prefix}" )
@@ -14,9 +14,9 @@ Last-Update: 2017-03-27
  set( includedir  "\${prefix}/include" )
  set( plugindir "\${libdir}/wireshark/plugins/${CPACK_PACKAGE_VERSION}" )
  
---- wireshark-2.2.5+g440fd4d.orig/cmake/modules/WiresharkConfig.cmake.in
-+++ wireshark-2.2.5+g440fd4d/cmake/modules/WiresharkConfig.cmake.in
-@@ -7,7 +7,7 @@ set(Wireshark_VERSION_STRING "@PROJECT_M
+--- a/cmake/modules/WiresharkConfig.cmake.in
++++ b/cmake/modules/WiresharkConfig.cmake.in
+@@ -7,7 +7,7 @@
  set(Wireshark_INSTALL_DIR        "@CMAKE_INSTALL_PREFIX@")
  set(Wireshark_PLUGIN_INSTALL_DIR "@PLUGIN_INSTALL_DIR@")
  

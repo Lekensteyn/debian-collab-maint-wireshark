@@ -1,8 +1,6 @@
-diff --git a/epan/prefs.c b/epan/prefs.c
-index 1ff3ed4..b1ae5bc 100644
 --- a/epan/prefs.c
 +++ b/epan/prefs.c
-@@ -3107,7 +3107,7 @@ pre_init_prefs(void)
+@@ -4017,7 +4017,7 @@
      prefs.gui_prepend_window_title   = g_strdup("");
      if (prefs.gui_start_title) g_free(prefs.gui_start_title);
      prefs.gui_start_title            = g_strdup("The World's Most Popular Network Protocol Analyzer");

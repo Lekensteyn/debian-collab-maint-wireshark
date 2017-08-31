@@ -1,3 +1,19 @@
+wireshark (2.4.1-1) unstable; urgency=medium
+
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.4.1.html
+    - security fixes:
+      - MSDP dissector infinite loop (CVE-2017-13767)
+      - Profinet I/O buffer overrun (CVE-2017-13766)
+      - Modbus dissector crash (CVE-2017-13764)
+      - IrCOMM dissector buffer overrun (CVE-2017-13765)
+  * Refresh patches
+  * Drop 0001-Set-libwscodecs.so-s-version-to-1.1.0.patch which is now
+    integrated upstream
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Thu, 31 Aug 2017 09:46:17 +0200
+
 wireshark (2.4.0-1) unstable; urgency=medium
 
   * Use debconf messages instead of "echo" in postinst/postrm (LP: #1687344)
