@@ -7,6 +7,8 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+include /usr/share/dpkg/pkg-info.mk
+
 distrelease  := $(shell lsb_release -cs)
 ifeq ($(distrelease),n/a)
   distrelease     := sid
@@ -22,17 +24,20 @@ endif
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
-VERSION := $(shell dpkg-parsechangelog | sed -n 's/^Version: \(.*\)-.*/\1/p')
 export docdir = /usr/share/doc/wireshark-doc
 %:
 	dh $@ --with python2 --buildsystem cmake --parallel
 
 override_dh_auto_configure-arch:
+	test -f version.conf.bak || \
+		(mv version.conf version.conf.bak && echo "git_description: Git v"$(DEB_VERSION_UPSTREAM)" packaged by Debian as "$(DEB_VERSION) > version.conf)
 	dh_auto_configure -- -DBUILD_wireshark_gtk=ON \
 		-DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
 	# -DENABLE_QT5=OFF
 
 override_dh_auto_configure-indep:
+	test -f version.conf.bak || \
+		(mv version.conf version.conf.bak && echo "git_description: Git v"$(DEB_VERSION_UPSTREAM)" packaged by Debian as "$(DEB_VERSION) > version.conf)
 	dh_auto_configure -- -DENABLE_HTML_GUIDES=ON -DBUILD_wireshark_gtk=ON \
 		-DCMAKE_INSTALL_LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
 	# -DENABLE_QT5=OFF
@@ -82,3 +87,5 @@ override_dh_fixperms-arch:
 		debian/wireshark-dev/usr/share/pyshared/wireshark_be.py \
 		debian/wireshark-dev/usr/share/pyshared/wireshark_gen.py
 
+override_dh_clean:
+	test ! -f version.conf.bak || mv version.conf.bak version.conf

@@ -2,7 +2,6 @@
 03_no_version_in_gtk_title.patch
 04_asn2wrs_ply.patch
 05_note-README-when-running-as-root.patch
-06_release-version.patch
 09_idl2wrs.patch
 16_licence_about_location.patch
 17_libdir_location.patch
