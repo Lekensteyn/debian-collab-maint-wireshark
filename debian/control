@@ -113,7 +113,7 @@ Description: network traffic analyzer - development tools
  new packet dissectors.
 
 Package: wireshark-doc
-Priority: extra
+Priority: optional
 Architecture: all
 Multi-Arch: foreign
 Section: doc

@@ -89,3 +89,4 @@ override_dh_fixperms-arch:
 
 override_dh_clean:
 	test ! -f version.conf.bak || mv version.conf.bak version.conf
+	dh_clean
