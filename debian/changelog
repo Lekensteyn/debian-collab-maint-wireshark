@@ -1,3 +1,25 @@
+wireshark (2.4.4-1) unstable; urgency=medium
+
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.4.4.html
+    - security fixes:
+      - Multiple dissectors could crash (CVE-2018-5336)
+      - The IxVeriWave file parser could crash (CVE-2018-5334)
+      - The WCP dissector could crash (CVE-2018-5335)
+      - Prior to this release dumpcap enabled the Linux kernel’s BPF JIT
+        compiler via the net.core.bpf_jit_enable sysctl. This could make
+        systems more vulnerable to Spectre variant 1 (CVE-2017-5753) and
+        this feature has been removed (Closes: #886619)
+      - There was a potential buffer underflow in File_read_line function
+        in epan/wslua/wslua_file.c file (CVE-2017-17935) (Closes: #885831)
+  * Update symbols files
+  * Fix dh_clean target in debian/rules
+  * Change wireshark-doc's priority to optional from extra following Policy
+    change
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Sat, 13 Jan 2018 01:31:25 +0100
+
 wireshark (2.4.3-1) unstable; urgency=medium
 
   * Show version info instead of just "Git Rev Unknown from unknown"
