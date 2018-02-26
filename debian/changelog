@@ -1,4 +1,4 @@
-wireshark (2.4.5-1) UNRELEASED; urgency=medium
+wireshark (2.4.5-1) unstable; urgency=medium
 
   * New upstream release
     - release notes:
@@ -19,8 +19,9 @@ wireshark (2.4.5-1) UNRELEASED; urgency=medium
       - The IPMI dissector could crash (CVE-2018-7417)
       - The NBAP disssector could crash (CVE-2018-7419)
       - The pcapng file parser could crash (CVE-2018-7420)
+  * Only recommend libjs-openlayers (Closes: #888744)
 
- -- Balint Reczey <rbalint@ubuntu.com>  Mon, 26 Feb 2018 12:58:31 +0700
+ -- Balint Reczey <rbalint@ubuntu.com>  Mon, 26 Feb 2018 16:45:39 +0700
 
 wireshark (2.4.4-1) unstable; urgency=medium
 
