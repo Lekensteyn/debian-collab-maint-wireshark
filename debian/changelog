@@ -1,3 +1,27 @@
+wireshark (2.4.5-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+    - release notes:
+      https://www.wireshark.org/docs/relnotes/wireshark-2.4.5.html
+    - security fixes:
+      - The SIGCOMP dissector could crash (CVE-2018-7320, CVE-2018-7418)
+      - Multiple dissectors could go into large infinite loops.
+        All ASN.1 BER dissectors,  along with the DICOM, DMP, LLTD, OpenFlow,
+        RELOAD, RPCoRDMA, RPKI-Router, S7COMM, SCCP, Thread, Thrift, USB,
+        and WCCP dissectors were susceptible. (CVE-2018-7321, CVE-2018-7322,
+        CVE-2018-7323, CVE-2018-7324, CVE-2018-7325, CVE-2018-7326,
+        CVE-2018-7327, CVE-2018-7328, CVE-2018-7329, CVE-2018-7330,
+        CVE-2018-7331, CVE-2018-7332, CVE-2018-7333)
+      - The UMTS MAC dissector could crash (CVE-2018-7334)
+      - The IEEE 802.11 dissector could crash (CVE-2018-7335)
+      - The FCP dissector could crash (CVE-2018-7336)
+      - The DOCSIS dissector could crash (CVE-2018-7337)
+      - The IPMI dissector could crash (CVE-2018-7417)
+      - The NBAP disssector could crash (CVE-2018-7419)
+      - The pcapng file parser could crash (CVE-2018-7420)
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Mon, 26 Feb 2018 12:58:31 +0700
+
 wireshark (2.4.4-1) unstable; urgency=medium
 
   * New upstream release
